@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/extensions/effects/get_random_character_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = ""
+text_key = "获得此道具时，你有{2}几率变身为{0}个角色：{1}"
+value = 2
+custom_key = "fox_无脸_prev_items"
+storage_method = 1
+effect_sign = 0
+custom_args = [  ]
+value2 = 50
+sum_strategy = 0
+value_base = 2

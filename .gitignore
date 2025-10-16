@@ -1,0 +1,13 @@
+*.import
+.import
+.assets
+.autoconverted
+*.translation
+*.mp3
+*.translation
+*.csv
+*.godot
+*.png
+*.webp
+*.stex
+*.wav

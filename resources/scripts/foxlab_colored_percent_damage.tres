@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/percent_damage_effect.gd" type="Script" id=1]
+
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_all"
+text_key = "敌人受伤后在{2}秒内额外承受{0}%伤害（上限：{3}%）"
+value = 30
+max_stacks = 100
+max_procs = -1
+duration_secs = 8
+custom_key = ""
+outline_color = Color("ebffbfff")
+storage_method = 0
+effect_sign = 0

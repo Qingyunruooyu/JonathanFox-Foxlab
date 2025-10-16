@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/extensions/effects/get_random_weapon_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = ""
+text_key = "获得此道具时，你会装备{0}并赋予其{1}效果"
+value = 1
+custom_key = ""
+storage_method = 0
+effect_sign = 0
+custom_args = [  ]
+value_base = 1

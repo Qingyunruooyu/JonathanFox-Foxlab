@@ -1,0 +1,23 @@
+extends "res://entities/units/player/player.gd"
+
+func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
+		
+	if not current_weapons.has(weapon):
+		return
+
+	emit_signal("wanted_to_spawn_gold", gold_dropped, weapon.global_position, 300)
+	var _r = RunData.remove_weapon_by_index(weapon.weapon_pos, player_index)
+
+	current_weapons.erase(weapon)
+
+	for current_weapon in current_weapons:
+		if current_weapon.weapon_pos > weapon.weapon_pos:
+			current_weapon.weapon_pos -= 1
+
+	SoundManager.play(Utils.get_rand_element(WeaponService.breaking_sounds), - 15, 0.1, true)
+
+	weapon._current_cooldown = 99999999.9
+	weapon.visible = false
+	weapon.disable_hitbox()
+	weapon.disable_target_tracking()
+	.on_weapon_wanted_to_break(weapon, gold_dropped)

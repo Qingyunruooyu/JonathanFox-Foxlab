@@ -1,5 +1,19 @@
 extends "res://singletons/player_run_data.gd"
 
+static func init_stats(all_null_values: bool = false)->Dictionary:
+	if (not Utils == null) :
+		var vanilla_stats = .init_stats(all_null_values)
+		var new_stats: = {
+			"stat_levels": 0,
+			"fox_猫_duplicate_item": 0
+		}
+
+		new_stats.merge(vanilla_stats)
+
+		return new_stats;
+	else:
+		return {}
+
 static func init_effects()->Dictionary:
 	if (not Utils == null) :
 		var vanilla_effects = .init_effects()
@@ -48,7 +62,6 @@ static func init_effects()->Dictionary:
 			"fox_独狼_enemy_health_1er": 0,
 			"fox_衔尾蛇_cache": 0, # 1.1.12.0之后，蝾螈生效后已经会reset_stat_cache了，兼容旧版
 			"fox_无脸_wave_started": 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
-
 			"fox_无脸_prev_items":[],  # 所有面具效果的道具在获得的时候，都会清理已有的变身
 			"temp_stats_on_structure_crit": [], # 被删掉的原版词条
 		}

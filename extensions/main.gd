@@ -2,6 +2,6 @@ extends "res://main.gd"
 
 func _on_enemy_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int) -> void :
 	._on_enemy_took_damage(enemy, _value, _knockback_direction, _is_crit, _is_dodge, _is_protected, _armor_did_something, args, _hit_type)
-	if enemy.dead and args.hitbox.from is Structure:
+	if enemy.dead and args.hitbox.from is Structure and _is_crit:
 		for effect in RunData.get_player_effect("temp_stats_on_structure_crit", args.from_player_index):
 			TempStats.add_stat(effect[0], effect[1], args.from_player_index)

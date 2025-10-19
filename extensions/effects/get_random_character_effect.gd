@@ -4,13 +4,15 @@ extends DoubleValueEffect
 export(int) var value_base = 2 # set to == value by default to indicate this effect is not cursed
 
 const SAME_CHAR_CHANCE = 0.05
-# character_builder, character_druid, character_technomage, character_engineer, character_brolab_僧侣_493
-var debug_item_name: String = ""
+const MIN_TRANSFORM_CHANCE = 10.0
+const MAX_TRANSFORM_NUM = 3.05
+const MIN_TRANSFORM_NUM = 0.95
+# character_builder, character_druid, character_technomage, character_engineer, character_brolab_僧侣_493, character_brolab_砺练者_422, character_brolab_机械恶魔_43
+var debug_item_name: Array = []
+var curse_character: bool = false
 
 var chars_to_get: Array = []
 var starting_items: Array = []
-# before wave one started
-var special_starting_items: Array = []
 
 var chars_name: String = ""
 
@@ -22,19 +24,45 @@ func _get_armor_chance(player_index: int, armor_increases_chance: bool) -> float
 	var num = -1 if armor_increases_chance else 1
 	var armor = RunData.get_armor_coef(num * Utils.get_stat("stat_armor", player_index))
 	return armor
+	
+func _get_transform_chance(player_index: int) -> float:
+	var armor = _get_armor_chance(player_index, false)
+	return max(armor * value2, MIN_TRANSFORM_CHANCE)
+	
+func _can_character_be_modified(character: CharacterData) -> bool:
+	if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
+		for effect in character.effects: 
+			# cyborg, demon
+			if effect is ConvertStatEffect:
+				return false
+			# ghost, cryptid, sailor
+			if effect.key == "dodge_cap":
+				return false
+			# sailor, wild, knight
+			if effect.key == "min_weapon_tier" or effect.key == "max_weapon_tier":
+				return false
+			# generalist
+			if effect.key == "max_melee_weapons" or effect.key == "max_ranged_weapons":
+				return false
+		return true
+	return false
 
 
 func unapply(player_index: int) -> void:
 	pass
 
-func apply(player_index: int) -> void:		
-	if chars_name.empty():
+func apply(player_index: int) -> void:	
+	var wave_started = RunData.get_player_effect_bool("fox_无脸_wave_started", player_index)	
+	if chars_name.empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
+		if not wave_started:
+			chars_name = ""
+			starting_items.clear()
 		chars_to_get = _get_rand_chars(player_index)
-	if RunData.current_wave <= 1:
+	if not wave_started:
 		RunData.remove_item_displayed(RunData.get_player_character(player_index),player_index)
 	
-	var armor = _get_armor_chance(player_index, false)
-	if not (RunData.current_wave <= 1 or Utils.get_chance_success(value2 * armor / 100.0)):
+	var transform_chance = _get_transform_chance(player_index)
+	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
 		return		
 	
 	cleanup(player_index)
@@ -42,71 +70,145 @@ func apply(player_index: int) -> void:
 	var prev_items = RunData.get_player_effect(custom_key,player_index)
 	for character in chars_to_get:
 		RunData.add_item(character, player_index)
-		prev_items.append(character)
+		prev_items.append([character.my_id, character.is_cursed])
 
 	chars_to_get.clear()
 		
 	for item in starting_items:
 		if item is ItemData:
 			RunData.add_item(item, player_index)
-			prev_items.append(item)
+			prev_items.append([item.my_id, item.is_cursed])
 
 		else:
 			var weapon = RunData.add_weapon(item, player_index)
-			prev_items.append(weapon)
+			#即便是相同的武器ID也可能会有不同的效果，所以用序列化精确判断
+			prev_items.append(weapon.serialize())
 
 	starting_items.clear()
 
+	if Utils.get_chance_success(transform_chance / 100.0):
+		_duplicate_weapon(player_index)
+		
+	_revert_negative_curse(player_index)		
+		
 	if value_base == value:
 		chars_name = ""
+		
+func _revert_negative_curse(player_index: int):
+	#诅咒小于0会秒杀敌人，如果变身后诅咒小于零并且诅咒的修改大于-100%，说明不是玩负诅咒的特殊角色
+	var curse_value = Utils.get_stat("stat_curse", player_index)
+	var curse_gain = RunData.get_stat_gain("stat_curse", player_index)
+	if curse_value >= 0 or curse_gain < 0:
+		return
+
+	var effects = RunData.get_player_effects(player_index)
+	var curse_temp = TempStats.get_stat("stat_curse", player_index)
+	var curse_linked = LinkedStats.get_stat("stat_curse", player_index)
+	var new_curse_permanent = (-curse_value - curse_temp - curse_linked) / curse_gain
+	effects["stat_curse"] = new_curse_permanent
+	Utils.reset_stat_cache(player_index)
+
+func _duplicate_weapon(player_index: int):
+	var gain_stat_effect :Array= RunData.get_player_effect("fox_无脸_upgrade_on_transform",player_index)
+	if  gain_stat_effect.empty() or RunData.current_wave == gain_stat_effect.back():
+		return
+
+	gain_stat_effect.clear()
+	gain_stat_effect.append(RunData.current_wave)
+	DebugService.log_data("begin to duplicate a weapon")
+	var weapon = Utils.get_rand_element(RunData.get_player_weapons(player_index)).duplicate()
+	var weapon_for_effect:WeaponData = Utils.get_rand_element(ItemService.weapons)
+	while weapon_for_effect.effects.empty():
+		weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
+	weapon_for_effect = weapon_for_effect.duplicate()
+	var new_effects := []
+	for effect in weapon_for_effect.effects:
+		effect = effect.duplicate()
+		new_effects.append(effect)
+		if effect is WeaponStackEffect: # stick
+			effect.weapon_stacked_name = weapon.name
+			effect.weapon_stacked_id = weapon.weapon_id
+		elif effect is PercentDamageEffect: # lute etc
+			effect.source_id = weapon.weapon_id
+		elif effect.custom_key == "yztato_destory_weapons":
+			effect.key = weapon.my_id
+			effect.text_key = "每波结束时，只保留%s" % [tr(weapon.name)]
+	DebugService.log_data("get weapon for effect" + tr(weapon_for_effect.name))
+	weapon_for_effect.effects = new_effects
+	weapon.effects.append_array(new_effects)
+	var current = weapon
+	var upgrade_into = current.upgrades_into
+	while upgrade_into != null:
+		upgrade_into = upgrade_into.duplicate()
+		upgrade_into.effects.append_array(weapon_for_effect.effects)
+		current.upgrades_into = upgrade_into
+		current = upgrade_into
+		upgrade_into = current.upgrades_into
+	RunData.add_weapon(weapon, player_index)
 
 func cleanup(player_index: int) -> void:
-	var prev_items = RunData.get_player_effect(custom_key,player_index)
-	if  RunData.get_player_effect_bool("fox_无脸_wave_started", player_index) and not special_starting_items.empty():
-		prev_items.append_array(special_starting_items)
-		special_starting_items.clear()
-	for item_data in prev_items:
-		if item_data is WeaponData:
-			RunData.remove_weapon(item_data, player_index)
-		elif "ITEM_BUILDER_TURRET" == item_data.name:
-			var structure_range = RunData.get_player_effect("structure_range", player_index)
-			var level = BuilderTurret.get_level(structure_range)
-			var player_items = RunData.get_player_items(player_index)
-			for item in player_items:
-				if item.my_id == "item_builder_turret_" + str(level) or item.my_id == item_data.my_id:
-					RunData.remove_item(item, player_index)
-					break
-		else:
-			RunData.remove_item(item_data, player_index, true)
+	if  not RunData.get_player_effect_bool("fox_无脸_wave_started", player_index) :
+		return
+		
+	var prev_items :Array= RunData.get_player_effect(custom_key,player_index)
+	var weapon_to_remove = []
+	for i in range(prev_items.size()):
+		var weapon_data = prev_items[i]
+		if weapon_data is Dictionary:
+			var weapon = WeaponData.new()
+			weapon.deserialize_and_merge(weapon_data)
+			RunData.remove_weapon(weapon, player_index)
+			weapon_to_remove.append(i)
+	weapon_to_remove.invert()
+	for i in weapon_to_remove:
+		prev_items.remove(i)
+		
+	var items_to_remove:Dictionary={}
+	var player_items = RunData.get_player_items(player_index)
+	player_items.invert()
+	for item_data in player_items:
+		for i in range(prev_items.size()):
+			if items_to_remove.has(i):
+				continue
+			if [item_data.my_id, item_data.is_cursed] == prev_items[i] :
+				items_to_remove[i] = item_data
+			elif (item_data.my_id.begins_with("item_builder_turret") and prev_items[i][0].begins_with("item_builder_turret"))\
+				and (item_data.is_cursed == prev_items[i][1]):
+				items_to_remove[i] = item_data	
+	for item_data in items_to_remove.values():
+		RunData.remove_item(item_data, player_index)
 	prev_items.clear()
 
 
 func get_args(player_index: int) -> Array:
 	if chars_name.empty():
 		chars_to_get = _get_rand_chars(player_index)
-	var armor = _get_armor_chance(player_index, false)
-	return [str(chars_to_get.size()), chars_name, "%s%%" % [stepify(value2 * armor,0.01)]]
+	return [str(chars_to_get.size()), chars_name, "%s%%" % [stepify(_get_transform_chance(player_index), 0.01)]]
 
 func _get_rand_chars(player_index: int) -> Array:
 	var chars_return:Array=[]
 	var chars_id:Array = []
 	if RunData.get_player_character(player_index) != null:
 		chars_id.append(RunData.get_player_character(player_index).my_id)
-	var char_value :float = value * _get_armor_chance(player_index, true)
+	var char_value :float = clamp(value * _get_armor_chance(player_index, true), MIN_TRANSFORM_NUM, MAX_TRANSFORM_NUM)
 	var char_value_floored :int = int(char_value)
 	var residual_value = 1 if Utils.get_chance_success(char_value - char_value_floored) else 0
 	var final_value =  char_value_floored + residual_value
 	for char_idx in range(final_value):
 		var current_char:CharacterData = null
 		if !debug_item_name.empty():
-			current_char = ItemService.get_element(ItemService.characters, debug_item_name)
-			debug_item_name = ""
-		else:
+			current_char = ItemService.get_element(ItemService.characters, debug_item_name.front())
+			debug_item_name.pop_front()
+		if current_char == null:
 			current_char = Utils.get_rand_element(ItemService.characters)
 			while current_char.my_id in chars_id:
 				if !Utils.get_chance_success(SAME_CHAR_CHANCE):
 					current_char = Utils.get_rand_element(ItemService.characters)
-		current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
+		if _can_character_be_modified(current_char):
+			if curse_character:
+				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+				current_char = dlc.curse_item(current_char, player_index)
+			current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
 		chars_return.append(current_char)
 		chars_id.append(current_char.my_id)
 		chars_name += tr(current_char.name)
@@ -117,8 +219,11 @@ func _get_rand_chars(player_index: int) -> Array:
 			chars_name += ", "
 		
 		var container = starting_items
-		if not RunData.get_player_effect_bool("fox_无脸_wave_started", player_index):
-			container = special_starting_items
+		var special_starting :Array = []
+		var wave_started = RunData.get_player_effect_bool("fox_无脸_wave_started", player_index)
+		if not wave_started:
+			container = special_starting
+		var prev_items :Array= RunData.get_player_effect(custom_key,player_index)
 		for effect in current_char.effects:
 			if effect.custom_key == "starting_item":
 				for i in range(effect.value):
@@ -133,38 +238,37 @@ func _get_rand_chars(player_index: int) -> Array:
 				for i in range(effect.value):
 					var item = ItemService.get_element(ItemService.items, effect.key)
 					if dlc:
-						item = dlc.curse_item(item, player_index)
+						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 			elif effect.custom_key == "cursed_starting_weapon" and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
 				for i in range(effect.value):
 					var weapon = ItemService.get_element(ItemService.weapons, effect.key)
 					if dlc:
-						weapon = dlc.curse_item(weapon, player_index)
+						weapon = dlc.curse_item(weapon, player_index, true)
 					container.append(weapon)
 			elif effect.key == "brolab_effect_receive_item_at_wave" \
-				and effect.brolab_receive_item_wave == 1 and RunData.current_wave > 1:
+				and effect.brolab_receive_item_wave == 1:
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
 				for i in range(effect.value):
 					var item = ItemService.get_element(ItemService.items, effect.brolab_receive_item_id)
 					if dlc and effect.brolab_cursed_item:
-						item = dlc.curse_item(item, player_index)
-					starting_items.append(item)
-				
+						item = dlc.curse_item(item, player_index, true)
+					container.append(item)
+					
+		for starting in special_starting:
+			if starting is WeaponData:
+				prev_items.append(starting.serialize())
+			else:
+				prev_items.append([starting.my_id, starting.is_cursed])
 	return chars_return
 	
 func serialize() -> Dictionary:
 	var serialized =.serialize()
-
-	serialized.chars_name = chars_name
 	serialized.value_base = value_base
-
 	return serialized
 
 
 func deserialize_and_merge(serialized: Dictionary) -> void:
 	.deserialize_and_merge(serialized)
-
-	chars_name = serialized.chars_name if "chars_name" in serialized else ""
 	value_base = serialized.value_base if "value_base" in serialized else 2
-

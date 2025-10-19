@@ -133,7 +133,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		var level_suffix := "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
 		var break_effect := load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
 		weapon.effects.append(break_effect)
-		extra_item_id += "([color=%s]+%s[/color])" % [Utils.NEG_COLOR_STR, tr("WEAPON_BRICK")]
+		var neg_color = ("#" + ProgressData.settings.color_negative) if ProgressData.settings.has("color_negative") else Utils.NEG_COLOR_STR
+		extra_item_id += "([color=%s]+%s[/color])" % [neg_color, tr("WEAPON_BRICK")]
 	elif item_to_get == null:
 		var current = weapon
 		var upgrade_into = current.upgrades_into

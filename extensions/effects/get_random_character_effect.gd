@@ -22,12 +22,13 @@ static func get_id() -> String:
 	
 func _get_armor_chance(player_index: int, armor_increases_chance: bool) -> float:
 	var num = -1 if armor_increases_chance else 1
+	# 如果armor_increases_chance为 false，护甲越高概率越低
 	var armor = RunData.get_armor_coef(num * Utils.get_stat("stat_armor", player_index))
 	return armor
 	
 func _get_transform_chance(player_index: int) -> float:
 	var armor = _get_armor_chance(player_index, false)
-	return max(armor * value2, MIN_TRANSFORM_CHANCE)
+	return  max(armor * value2, MIN_TRANSFORM_CHANCE)
 	
 func _can_character_be_modified(character: CharacterData) -> bool:
 	if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
@@ -47,12 +48,36 @@ func _can_character_be_modified(character: CharacterData) -> bool:
 		return true
 	return false
 
-
+func _is_wave_started(player_index: int) -> bool:
+	# 对于无面，简单判断bool就可以判断有没有开始游戏
+	if RunData.get_player_effect_bool("fox_无脸_wave_started", player_index):
+		return true
+	# 其他角色如果拿了面具
+	# 如果是初始携带或者第一波商店出现面具，会有问题，但由于面具是紫装，只要不乱搞不会出现这种情况，能规避
+	if RunData.current_wave <= 1:
+		return false
+	# 这个是特殊处理，防止无面在第一波之后的波次重新开始游戏，RunData.reset()还没有设置当前波次
+	for effect in RunData.get_player_character(player_index).effects:
+		if effect.has_meta("brolab_receive_stat_key") and effect.brolab_receive_stat_key == "fox_无脸_wave_started":
+			return false
+	return true
+	
+func _update_character_bg(character: CharacterData, player_index: int) -> CharacterData:
+	var diff_info = ProgressData.get_character_difficulty_info(character.my_id, RunData.current_zone)
+	var new_item = character.duplicate()
+	if diff_info.max_difficulty_beaten.difficulty_value < 0:
+		new_item.tier = Tier.COMMON
+	if diff_info.max_difficulty_beaten.difficulty_value == 0:
+		new_item.tier = Tier.DANGER_0
+	elif diff_info.max_difficulty_beaten.difficulty_value > 0:
+		new_item.tier = diff_info.max_difficulty_beaten.difficulty_value
+	return new_item
+	
 func unapply(player_index: int) -> void:
 	pass
 
 func apply(player_index: int) -> void:	
-	var wave_started = RunData.get_player_effect_bool("fox_无脸_wave_started", player_index)	
+	var wave_started = _is_wave_started(player_index)	
 	if chars_name.empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
 		if not wave_started:
 			chars_name = ""
@@ -62,14 +87,17 @@ func apply(player_index: int) -> void:
 		RunData.remove_item_displayed(RunData.get_player_character(player_index),player_index)
 	
 	var transform_chance = _get_transform_chance(player_index)
+	DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
+		DebugService.log_data("transform failed")
 		return		
 	
 	cleanup(player_index)
 	
 	var prev_items = RunData.get_player_effect(custom_key,player_index)
 	for character in chars_to_get:
-		RunData.add_item(character, player_index)
+		RunData.add_item(_update_character_bg(character, player_index), player_index)
+		DebugService.log_data("add character " + character.my_id)
 		prev_items.append([character.my_id, character.is_cursed])
 
 	chars_to_get.clear()
@@ -77,12 +105,14 @@ func apply(player_index: int) -> void:
 	for item in starting_items:
 		if item is ItemData:
 			RunData.add_item(item, player_index)
+			DebugService.log_data("add item " + item.my_id)
 			prev_items.append([item.my_id, item.is_cursed])
 
 		else:
 			var weapon = RunData.add_weapon(item, player_index)
 			#即便是相同的武器ID也可能会有不同的效果，所以用序列化精确判断
 			prev_items.append(weapon.serialize())
+			DebugService.log_data("add weapon " + weapon.my_id)
 
 	starting_items.clear()
 
@@ -133,7 +163,7 @@ func _duplicate_weapon(player_index: int):
 		elif effect.custom_key == "yztato_destory_weapons":
 			effect.key = weapon.my_id
 			effect.text_key = "每波结束时，只保留%s" % [tr(weapon.name)]
-	DebugService.log_data("get weapon for effect" + tr(weapon_for_effect.name))
+	DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
 	weapon_for_effect.effects = new_effects
 	weapon.effects.append_array(new_effects)
 	var current = weapon
@@ -145,9 +175,11 @@ func _duplicate_weapon(player_index: int):
 		current = upgrade_into
 		upgrade_into = current.upgrades_into
 	RunData.add_weapon(weapon, player_index)
+	DebugService.log_data("duplicate weapon " + weapon.my_id)
 
 func cleanup(player_index: int) -> void:
-	if  not RunData.get_player_effect_bool("fox_无脸_wave_started", player_index) :
+	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）
+	if  not _is_wave_started(player_index) :
 		return
 		
 	var prev_items :Array= RunData.get_player_effect(custom_key,player_index)
@@ -157,6 +189,7 @@ func cleanup(player_index: int) -> void:
 		if weapon_data is Dictionary:
 			var weapon = WeaponData.new()
 			weapon.deserialize_and_merge(weapon_data)
+			DebugService.log_data("remove " + weapon.my_id)
 			RunData.remove_weapon(weapon, player_index)
 			weapon_to_remove.append(i)
 	weapon_to_remove.invert()
@@ -165,7 +198,7 @@ func cleanup(player_index: int) -> void:
 		
 	var items_to_remove:Dictionary={}
 	var player_items = RunData.get_player_items(player_index)
-	player_items.invert()
+	player_items.invert() #要移除的往往是新获得的物品
 	for item_data in player_items:
 		for i in range(prev_items.size()):
 			if items_to_remove.has(i):
@@ -176,6 +209,7 @@ func cleanup(player_index: int) -> void:
 				and (item_data.is_cursed == prev_items[i][1]):
 				items_to_remove[i] = item_data	
 	for item_data in items_to_remove.values():
+		DebugService.log_data("remove " + item_data.my_id)
 		RunData.remove_item(item_data, player_index)
 	prev_items.clear()
 
@@ -184,6 +218,46 @@ func get_args(player_index: int) -> Array:
 	if chars_name.empty():
 		chars_to_get = _get_rand_chars(player_index)
 	return [str(chars_to_get.size()), chars_name, "%s%%" % [stepify(_get_transform_chance(player_index), 0.01)]]
+	
+func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictionary):
+	if not character.my_id in convert_stat_dict:
+		for effect in character.effects:
+			if effect is ConvertStatEffect:
+				convert_stat_dict[character.my_id] = 1
+				return
+		convert_stat_dict[character.my_id] = 0
+	
+func _are_chars_compatiable(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
+	var convert_stat_dict = RunData.get_player_effect("fox_无脸_convert_stat_characters", player_index)
+	var player_character = RunData.get_player_character(player_index)
+	_get_convert_stat_result(player_character, convert_stat_dict)
+	_get_convert_stat_result(candidate, convert_stat_dict)
+	DebugService.log_data("player: %s, value: %s" % [player_character.my_id,convert_stat_dict[player_character.my_id]])
+	DebugService.log_data("candidate: %s, value: %s" % [candidate.my_id, convert_stat_dict[candidate.my_id]])
+	var conver_stat_num = convert_stat_dict[player_character.my_id]
+	for character in chars_data:
+		DebugService.log_data("already exists:%s, value: %s " %[ character.my_id, convert_stat_dict[character.my_id]])
+		conver_stat_num += convert_stat_dict[character.my_id]
+		
+	conver_stat_num += convert_stat_dict[candidate.my_id]
+	DebugService.log_data("convert_stat_num: %d" % [conver_stat_num])
+	return ( conver_stat_num <= 1)
+
+func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -> CharacterData:
+	var current_char: CharacterData = null
+	while current_char == null:
+		var candidate:CharacterData = null
+		if !debug_item_name.empty():
+			candidate = ItemService.get_element(ItemService.characters, debug_item_name.front())
+			debug_item_name.pop_front()
+		if candidate == null:
+			candidate = Utils.get_rand_element(ItemService.characters)
+			while candidate.my_id in chars_id:
+				if !Utils.get_chance_success(SAME_CHAR_CHANCE):
+					candidate = Utils.get_rand_element(ItemService.characters)
+		if _are_chars_compatiable(player_index, candidate, chars_data):
+			current_char = candidate
+	return current_char
 
 func _get_rand_chars(player_index: int) -> Array:
 	var chars_return:Array=[]
@@ -195,15 +269,7 @@ func _get_rand_chars(player_index: int) -> Array:
 	var residual_value = 1 if Utils.get_chance_success(char_value - char_value_floored) else 0
 	var final_value =  char_value_floored + residual_value
 	for char_idx in range(final_value):
-		var current_char:CharacterData = null
-		if !debug_item_name.empty():
-			current_char = ItemService.get_element(ItemService.characters, debug_item_name.front())
-			debug_item_name.pop_front()
-		if current_char == null:
-			current_char = Utils.get_rand_element(ItemService.characters)
-			while current_char.my_id in chars_id:
-				if !Utils.get_chance_success(SAME_CHAR_CHANCE):
-					current_char = Utils.get_rand_element(ItemService.characters)
+		var current_char:CharacterData = _get_one_character(player_index, chars_id, chars_return)
 		if _can_character_be_modified(current_char):
 			if curse_character:
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
@@ -219,8 +285,9 @@ func _get_rand_chars(player_index: int) -> Array:
 			chars_name += ", "
 		
 		var container = starting_items
+		# 游戏本体已经添加的初始物品，也就是游戏开始前的变身是自带初始物品的角色，在这里只记录，不添加了，下次变身的时候清理这些物品
 		var special_starting :Array = []
-		var wave_started = RunData.get_player_effect_bool("fox_无脸_wave_started", player_index)
+		var wave_started = _is_wave_started(player_index)
 		if not wave_started:
 			container = special_starting
 		var prev_items :Array= RunData.get_player_effect(custom_key,player_index)

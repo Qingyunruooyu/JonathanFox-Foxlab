@@ -21,13 +21,16 @@ const EXTENSION_SCRIPTS: =[
 	"run_data.gd",
 	"base_shop.gd",
 	"item_description.gd",
-	"main.gd"
 ]
 
 func _init():
 	ModLoaderLog.info("Init", MOD_NAME)
 	for script in EXTENSION_SCRIPTS:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
+	if "1.1.13" in CrashReporter.VERSION:
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_beta.gd")
+	else:
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main.gd")
 	
 
 

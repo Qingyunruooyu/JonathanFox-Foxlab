@@ -5,12 +5,15 @@ func buy_item(item_data: ItemData, player_index: int) -> void :
 	.buy_item(item_data, player_index)
 	var update_weapon = false
 	var update_item = false
+	var update_go_next = false
 	for effect in item_data.effects:
 		if effect.get_id() == "get_rand_character":
 			update_weapon = true
 			update_item = true
 		elif effect.get_id() == "get_rand_weapon":
 			update_weapon = true
+			update_item = true
+			update_go_next = true
 	if RunData.get_player_effect("weapon_slot", player_index) != prev_weapon_slot: 
 		update_weapon = true
 		
@@ -21,6 +24,8 @@ func buy_item(item_data: ItemData, player_index: int) -> void :
 	if update_item:
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
+	if update_go_next and has_method("update_go_next_button_text"):
+		call_deferred("update_go_next_button_text")
 
 func _on_RerollButton_pressed(player_index: int) -> void :
 	var prev_weapon_slot = RunData.get_player_effect("weapon_slot", player_index)

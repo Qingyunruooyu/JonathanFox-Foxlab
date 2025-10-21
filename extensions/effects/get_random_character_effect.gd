@@ -11,28 +11,28 @@ const MIN_TRANSFORM_NUM = 0.95
 var debug_item_name: Array = []
 var curse_character: bool = false
 
-var chars_to_get: Array = []
-var starting_items: Array = []
+var chars_to_get: Array = [[], [], [], []]
+var starting_items: Array =  [[], [], [], []]
 
-var chars_name: String = ""
+var chars_name: Array = ["","","",""]
 
 
 static func get_id() -> String:
 	return "get_rand_character"
-	
+
 func _get_armor_chance(player_index: int, armor_increases_chance: bool) -> float:
 	var num = -1 if armor_increases_chance else 1
 	# 如果armor_increases_chance为 false，护甲越高概率越低
 	var armor = RunData.get_armor_coef(num * Utils.get_stat("stat_armor", player_index))
 	return armor
-	
+
 func _get_transform_chance(player_index: int) -> float:
 	var armor = _get_armor_chance(player_index, false)
 	return  max(armor * value2, MIN_TRANSFORM_CHANCE)
-	
+
 func _can_character_be_modified(character: CharacterData) -> bool:
 	if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
-		for effect in character.effects: 
+		for effect in character.effects:
 			# cyborg, demon
 			if effect is ConvertStatEffect:
 				return false
@@ -49,19 +49,10 @@ func _can_character_be_modified(character: CharacterData) -> bool:
 	return false
 
 func _is_wave_started(player_index: int) -> bool:
-	# 对于无面，简单判断bool就可以判断有没有开始游戏
-	if RunData.get_player_effect_bool("fox_无脸_wave_started", player_index):
-		return true
-	# 其他角色如果拿了面具
-	# 如果是初始携带或者第一波商店出现面具，会有问题，但由于面具是紫装，只要不乱搞不会出现这种情况，能规避
-	if RunData.current_wave <= 1:
-		return false
-	# 这个是特殊处理，防止无面在第一波之后的波次重新开始游戏，RunData.reset()还没有设置当前波次
-	for effect in RunData.get_player_character(player_index).effects:
-		if effect.has_meta("brolab_receive_stat_key") and effect.brolab_receive_stat_key == "fox_无脸_wave_started":
-			return false
-	return true
-	
+	var started = RunData.is_wave_started()
+	DebugService.log_data("check fox_wave_started: %s" % [str(started)])
+	return started
+
 func _update_character_bg(character: CharacterData, player_index: int) -> CharacterData:
 	var diff_info = ProgressData.get_character_difficulty_info(character.my_id, RunData.current_zone)
 	var new_item = character.duplicate()
@@ -72,37 +63,46 @@ func _update_character_bg(character: CharacterData, player_index: int) -> Charac
 	elif diff_info.max_difficulty_beaten.difficulty_value > 0:
 		new_item.tier = diff_info.max_difficulty_beaten.difficulty_value
 	return new_item
-	
+
 func unapply(player_index: int) -> void:
 	pass
 
-func apply(player_index: int) -> void:	
-	var wave_started = _is_wave_started(player_index)	
-	if chars_name.empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
+func apply(player_index: int) -> void:
+	var wave_started = _is_wave_started(player_index)
+	if chars_name[player_index].empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
 		if not wave_started:
-			chars_name = ""
-			starting_items.clear()
-		chars_to_get = _get_rand_chars(player_index)
+			chars_name[player_index] = ""
+			starting_items[player_index].clear()
+		chars_to_get[player_index] = _get_rand_chars(player_index)
 	if not wave_started:
 		RunData.remove_item_displayed(RunData.get_player_character(player_index),player_index)
-	
+
 	var transform_chance = _get_transform_chance(player_index)
 	DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
 		DebugService.log_data("transform failed")
-		return		
-	
+		return
+
 	cleanup(player_index)
-	
+
 	var prev_items = RunData.get_player_effect(custom_key,player_index)
-	for character in chars_to_get:
+	# always place ConvertStatEffect of characters ahead
+	var convert_stats_half_wave:Array = RunData.get_player_effect("convert_stats_half_wave", player_index)
+	var convert_stats_end_of_wave:Array = RunData.get_player_effect("convert_stats_end_of_wave", player_index)
+	var convert_stats_half_wave_bak:Array = convert_stats_half_wave.duplicate()
+	var convert_stats_end_of_wave_bak:Array = convert_stats_end_of_wave.duplicate()
+	convert_stats_half_wave.clear()
+	convert_stats_end_of_wave.clear()
+	for character in chars_to_get[player_index]:
 		RunData.add_item(_update_character_bg(character, player_index), player_index)
 		DebugService.log_data("add character " + character.my_id)
 		prev_items.append([character.my_id, character.is_cursed])
+	convert_stats_half_wave.append_array(convert_stats_half_wave_bak)
+	convert_stats_end_of_wave.append_array(convert_stats_end_of_wave_bak)
 
-	chars_to_get.clear()
-		
-	for item in starting_items:
+	chars_to_get[player_index].clear()
+
+	for item in starting_items[player_index]:
 		if item is ItemData:
 			RunData.add_item(item, player_index)
 			DebugService.log_data("add item " + item.my_id)
@@ -114,16 +114,16 @@ func apply(player_index: int) -> void:
 			prev_items.append(weapon.serialize())
 			DebugService.log_data("add weapon " + weapon.my_id)
 
-	starting_items.clear()
+	starting_items[player_index].clear()
 
 	if Utils.get_chance_success(transform_chance / 100.0):
 		_duplicate_weapon(player_index)
-		
-	_revert_negative_curse(player_index)		
-		
+
+	_revert_negative_curse(player_index)
+
 	if value_base == value:
-		chars_name = ""
-		
+		chars_name[player_index] = ""
+
 func _revert_negative_curse(player_index: int):
 	#诅咒小于0会秒杀敌人，如果变身后诅咒小于零并且诅咒的修改大于-100%，说明不是玩负诅咒的特殊角色
 	var curse_value = Utils.get_stat("stat_curse", player_index)
@@ -181,7 +181,7 @@ func cleanup(player_index: int) -> void:
 	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）
 	if  not _is_wave_started(player_index) :
 		return
-		
+
 	var prev_items :Array= RunData.get_player_effect(custom_key,player_index)
 	var weapon_to_remove = []
 	for i in range(prev_items.size()):
@@ -190,12 +190,22 @@ func cleanup(player_index: int) -> void:
 			var weapon = WeaponData.new()
 			weapon.deserialize_and_merge(weapon_data)
 			DebugService.log_data("remove " + weapon.my_id)
+			var player_weapons_raw: Array = RunData.players_data[player_index].weapons
+			var weapon_count_before = player_weapons_raw.size()
 			RunData.remove_weapon(weapon, player_index)
+			var weapon_count_after = player_weapons_raw.size()
+			# 没有消除成功，可能是原版里面反序列化没做对，比如秒杀剑的one_shot_on_hit不在ItemServices.effects里面，导致没有反序列化
+			if weapon_count_after == weapon_count_before:
+				for owned_weapon in player_weapons_raw:
+					if owned_weapon.my_id == weapon.my_id and owned_weapon.is_cursed == weapon.is_cursed:
+						player_weapons_raw.erase(owned_weapon)
+						DebugService.log_data("remove " + weapon.my_id + " manually")
+						break
 			weapon_to_remove.append(i)
 	weapon_to_remove.invert()
 	for i in weapon_to_remove:
 		prev_items.remove(i)
-		
+
 	var items_to_remove:Dictionary={}
 	var player_items = RunData.get_player_items(player_index)
 	player_items.invert() #要移除的往往是新获得的物品
@@ -207,7 +217,7 @@ func cleanup(player_index: int) -> void:
 				items_to_remove[i] = item_data
 			elif (item_data.my_id.begins_with("item_builder_turret") and prev_items[i][0].begins_with("item_builder_turret"))\
 				and (item_data.is_cursed == prev_items[i][1]):
-				items_to_remove[i] = item_data	
+				items_to_remove[i] = item_data
 	for item_data in items_to_remove.values():
 		DebugService.log_data("remove " + item_data.my_id)
 		RunData.remove_item(item_data, player_index)
@@ -215,10 +225,10 @@ func cleanup(player_index: int) -> void:
 
 
 func get_args(player_index: int) -> Array:
-	if chars_name.empty():
-		chars_to_get = _get_rand_chars(player_index)
-	return [str(chars_to_get.size()), chars_name, "%s%%" % [stepify(_get_transform_chance(player_index), 0.01)]]
-	
+	if chars_name[player_index].empty():
+		chars_to_get[player_index] = _get_rand_chars(player_index)
+	return [str(chars_to_get[player_index].size()), chars_name[player_index], "%s%%" % [stepify(_get_transform_chance(player_index), 0.01)]]
+
 func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictionary):
 	if not character.my_id in convert_stat_dict:
 		for effect in character.effects:
@@ -226,8 +236,8 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 				convert_stat_dict[character.my_id] = 1
 				return
 		convert_stat_dict[character.my_id] = 0
-	
-func _are_chars_compatiable(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
+
+func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
 	var convert_stat_dict = RunData.get_player_effect("fox_无脸_convert_stat_characters", player_index)
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
@@ -238,7 +248,7 @@ func _are_chars_compatiable(player_index: int, candidate: CharacterData, chars_d
 	for character in chars_data:
 		DebugService.log_data("already exists:%s, value: %s " %[ character.my_id, convert_stat_dict[character.my_id]])
 		conver_stat_num += convert_stat_dict[character.my_id]
-		
+
 	conver_stat_num += convert_stat_dict[candidate.my_id]
 	DebugService.log_data("convert_stat_num: %d" % [conver_stat_num])
 	return ( conver_stat_num <= 1)
@@ -255,7 +265,7 @@ func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -
 			while candidate.my_id in chars_id:
 				if !Utils.get_chance_success(SAME_CHAR_CHANCE):
 					candidate = Utils.get_rand_element(ItemService.characters)
-		if _are_chars_compatiable(player_index, candidate, chars_data):
+		if _are_chars_compatible(player_index, candidate, chars_data):
 			current_char = candidate
 	return current_char
 
@@ -277,14 +287,14 @@ func _get_rand_chars(player_index: int) -> Array:
 			current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
 		chars_return.append(current_char)
 		chars_id.append(current_char.my_id)
-		chars_name += tr(current_char.name)
+		chars_name[player_index] += tr(current_char.name)
 
 		if current_char.is_cursed:
-			chars_name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("BROLAB_CURSED_TEXT")]
+			chars_name[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("BROLAB_CURSED_TEXT")]
 		if char_idx + 1 < final_value:
-			chars_name += ", "
-		
-		var container = starting_items
+			chars_name[player_index] += ", "
+
+		var container = starting_items[player_index]
 		# 游戏本体已经添加的初始物品，也就是游戏开始前的变身是自带初始物品的角色，在这里只记录，不添加了，下次变身的时候清理这些物品
 		var special_starting :Array = []
 		var wave_started = _is_wave_started(player_index)
@@ -322,14 +332,14 @@ func _get_rand_chars(player_index: int) -> Array:
 					if dlc and effect.brolab_cursed_item:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
-					
+
 		for starting in special_starting:
 			if starting is WeaponData:
 				prev_items.append(starting.serialize())
 			else:
 				prev_items.append([starting.my_id, starting.is_cursed])
 	return chars_return
-	
+
 func serialize() -> Dictionary:
 	var serialized =.serialize()
 	serialized.value_base = value_base

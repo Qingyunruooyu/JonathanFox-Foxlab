@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/swap_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+text_key = "当你获得此道具时，交换{0}和{1}（如果其中一个属性的修改减少100%则不会交换）"

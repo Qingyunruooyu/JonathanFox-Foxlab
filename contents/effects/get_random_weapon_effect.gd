@@ -86,8 +86,12 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			# items can be get even if it may exceed the limited number
 		item_for_effect = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.ITEMS, args)
 	for effect in item_for_effect.effects:
-		if effect.custom_key == "duplicate_item" or effect.custom_key == "increase_tier_on_reroll" or effect.key == "item_hourglass":
+		if effect.custom_key == "duplicate_item" or effect.custom_key == "increase_tier_on_reroll":
 			item_to_get[player_index] = item_for_effect
+			break
+		elif effect.key == "item_hourglass" and RunData.get_nb_item("item_hourglass", player_index) == 0:
+			item_to_get[player_index] = item_for_effect
+			break
 
 	item_for_effect = item_for_effect.duplicate()
 	var new_effects := []

@@ -1,19 +1,20 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
 [ext_resource path="res://zones/wave_group_data.gd" type="Script" id=2]
-[ext_resource path="user://brolab/scripts/unit_predator.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/zones/unit_corrupted_tree.tres" type="Resource" id=3]
+
 
 [resource]
 script = ExtResource( 2 )
 spawn_chance = 1.0
 spawn_timing = 1
 repeating = 999
-repeating_interval = 30
+repeating_interval = 3
 reduce_repeating_interval = 0
 min_repeating_interval = 1
 area = -1
-spawn_dist_away_from_edges = 0
-spawn_edge_of_map = true
+spawn_dist_away_from_edges = 20
+spawn_edge_of_map = false
 wave_units_data = [ ExtResource( 3 )]
 is_neutral = false
 is_boss = false

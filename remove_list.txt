@@ -92,5 +92,20 @@
 砺练者.json
 水滴石穿.json
 
-
+scripts/linear_scaling_effect.tres
+scripts/group_corrupted_tree_android.tres
+scripts/group_corrupted_tree_pc.tres
+scripts/group_dead_whale_android.tres
+scripts/group_dead_whale_pc.tres
+scripts/group_eel_android.tres
+scripts/group_eel_pc.tres
+scripts/group_invoker_android.tres
+scripts/group_invoker_pc.tres
+scripts/group_predator_android.tres
+scripts/group_predator_pc.tres
+scripts/unit_corrupted_tree.tres
+scripts/unit_dead_whale.tres
+scripts/unit_eel.tres
+scripts/unit_invoker.tres
+scripts/unit_predator.tres
 

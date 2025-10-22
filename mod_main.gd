@@ -7,12 +7,14 @@ const FOXLAB_TIMESTAMP_FILE: = MOD_PATH + "timestamp.txt"
 const FOXLAB_REMOVE_LIST_FILE: = MOD_PATH + "remove_list.txt"
 const FOXLAB_RESOURCES_DIR: = MOD_PATH + "resources/"
 const FOXLAB_EXTENSION_DIR: = MOD_PATH + "extensions/"
+const FOXLAB_CONTENTS_DIR: = MOD_PATH + "contents/"
 var BROLAB_TARGET_DIR: String = ""
 var mod_timestamp: int = 0
 
 const EFFECTS_SCRIPTS: = [
 	"get_random_weapon_effect.gd",
-	"get_random_character_effect.gd"
+	"get_random_character_effect.gd",
+	"swap_stat_effect.gd"
 ]
 
 const EXTENSION_SCRIPTS: =[
@@ -21,6 +23,7 @@ const EXTENSION_SCRIPTS: =[
 	"run_data.gd",
 	"base_shop.gd",
 	"item_description.gd",
+	"shop_item.gd"
 ]
 
 func _init():
@@ -38,28 +41,39 @@ func _ready():
 	call_deferred("initialize_mod")
 
 func initialize_mod():
-
-	if not load_mod_timestamp():
-		DebugService.log_data("Failed to load MOD timestamp")
-		return
 	ProgressData.init_save_paths()    
 	var save_path: String = ProgressData.SAVE_PATH    
 	var last_splitter: = save_path.find_last("/")
 	var base_save_path: = save_path.left(last_splitter).get_base_dir()    
-	BROLAB_TARGET_DIR = base_save_path.plus_file("brolab")
-	DebugService.log_data("brolab path: " + BROLAB_TARGET_DIR)
+	BROLAB_TARGET_DIR = base_save_path.plus_file("brolab")	
+	
+	if not load_mod_timestamp():
+		DebugService.log_data("Failed to load MOD timestamp")
+		return
+		
 	copy_mod_resources()
-	DebugService.log_data("copied: " + BROLAB_TARGET_DIR)
+	DebugService.log_data("拷贝完成: " + BROLAB_TARGET_DIR)
 	delete_files_from_txt(FOXLAB_REMOVE_LIST_FILE)
 	for s in EFFECTS_SCRIPTS:
-		ItemService.effects.append(load(FOXLAB_EXTENSION_DIR + "/effects/" + s))
+		ItemService.effects.append(load(FOXLAB_CONTENTS_DIR + "/effects/" + s))
 
 func load_mod_timestamp() -> bool:
 	var file: = File.new()
 	var error := file.open(FOXLAB_TIMESTAMP_FILE, File.READ)
 	if error == OK:
-		var timestamp_str: = file.get_as_text()
+		#读取当前OS的时间戳精度，MOD里面给的是秒级别的，安卓上可能会返回毫秒级别
+		var timestamp_file = BROLAB_TARGET_DIR.plus_file("timestamp.txt")
+		copy_single_file(FOXLAB_TIMESTAMP_FILE, timestamp_file)
+		var file_modified_time:String = str(file.get_modified_time(timestamp_file))
+		var dir = Directory.new()
+		dir.remove(timestamp_file)
+		DebugService.log_data("硬盘上文件的时间戳: " + file_modified_time)
+		
+		var timestamp_str:String = file.get_as_text()
+		while timestamp_str.length() < file_modified_time.length():
+			timestamp_str += '0'
 		mod_timestamp = timestamp_str.to_int()
+		DebugService.log_data("MOD内的时间戳文字（补齐后）：" + timestamp_str)
 		file.close()
 		return true
 	return false
@@ -73,7 +87,6 @@ func delete_files_from_txt(file_path: String) -> void:
 		return
 	
 	# 逐行处理
-	DebugService.log_data("删除文件：\n" + file.get_as_text())
 	while not file.eof_reached():
 		var line = file.get_line().strip_edges()
 		
@@ -90,8 +103,6 @@ func delete_files_from_txt(file_path: String) -> void:
 				DebugService.log_data("删除文件失败: " + line)
 			else:
 				DebugService.log_data("成功删除文件: " + line)
-		else:
-			DebugService.log_data("文件不存在: " + line)
 	
 	file.close()
 	
@@ -133,8 +144,8 @@ func should_copy_file(mod_file_path: String, target_file_path: String) -> bool:
 
 func copy_single_file(source_path: String, target_path: String) -> bool:
 	# 确保目标目录存在
-	var BROLAB_TARGET_DIR := target_path.get_base_dir()
-	ensure_directory_exists(BROLAB_TARGET_DIR)
+	var target_path_str := target_path.get_base_dir()
+	ensure_directory_exists(target_path_str)
 	
 	# 拷贝文件
 	var source_file := File.new()
@@ -180,7 +191,7 @@ func get_files_in_directory(path: String) -> Array:
 			if dir.current_is_dir():
 				# 递归处理子目录
 				files.append_array(get_files_in_directory(full_path))
-			else:
+			elif not full_path.ends_with(".import"):
 				files.append(full_path)
 			file_name = dir.get_next()
 		dir.list_dir_end()

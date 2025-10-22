@@ -34,17 +34,17 @@ func _can_character_be_modified(character: CharacterData) -> bool:
 	if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
 		for effect in character.effects:
 			# cyborg, demon
-			if effect is ConvertStatEffect:
+			if effect is ConvertStatEffect and effect.custom_key == "convert_stats_end_of_wave":
 				return false
 			# ghost, cryptid, sailor
-			if effect.key == "dodge_cap":
+			if effect.key == "dodge_cap" and not "1.1.13" in ProgressData.VERSION:
 				return false
 			# sailor, wild, knight
-			if effect.key == "min_weapon_tier" or effect.key == "max_weapon_tier":
-				return false
+#			if effect.key == "min_weapon_tier" or effect.key == "max_weapon_tier":
+#				return false
 			# generalist
-			if effect.key == "max_melee_weapons" or effect.key == "max_ranged_weapons":
-				return false
+#			if effect.key == "max_melee_weapons" or effect.key == "max_ranged_weapons":
+#				return false
 		return true
 	return false
 
@@ -238,7 +238,7 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 		convert_stat_dict[character.my_id] = 0
 
 func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
-	var convert_stat_dict = RunData.get_player_effect("fox_无脸_convert_stat_characters", player_index)
+	var convert_stat_dict = RunData.get_player_effect("fox_无脸_convert_stat_characters", 0)
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
 	_get_convert_stat_result(candidate, convert_stat_dict)
@@ -325,7 +325,8 @@ func _get_rand_chars(player_index: int) -> Array:
 						weapon = dlc.curse_item(weapon, player_index, true)
 					container.append(weapon)
 			elif effect.key == "brolab_effect_receive_item_at_wave" \
-				and effect.brolab_receive_item_wave == 1:
+				and effect.brolab_receive_item_wave == 1\
+				and effect.brolab_receive_item_end_wave == 1:
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
 				for i in range(effect.value):
 					var item = ItemService.get_element(ItemService.items, effect.brolab_receive_item_id)

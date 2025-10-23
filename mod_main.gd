@@ -35,7 +35,15 @@ func _init():
 	else:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main.gd")
 	
-
+	# 如果没开brolab特殊机制，在这里开启
+	var BROLAB_MOD_NAME: String = "QianMo-BroLab"
+	var CONFIG_NAME: = "brolab_config"
+	var configs: Dictionary = ModLoaderConfig.get_configs(BROLAB_MOD_NAME)
+	if configs.has(CONFIG_NAME):
+		var config = ModLoaderConfig.get_config(BROLAB_MOD_NAME, CONFIG_NAME)
+		var data = config.data
+		if not(data and not data.empty() and data.get("BROLAB_ENABLE_SPECIAL_MECHANISMS", false)):
+			ModLoaderMod.install_script_extension("res://mods-unpacked/%s/extensions/main.gd" % [BROLAB_MOD_NAME])
 
 func _ready():
 	call_deferred("initialize_mod")

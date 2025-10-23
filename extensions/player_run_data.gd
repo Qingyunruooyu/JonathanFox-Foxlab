@@ -1,16 +1,18 @@
 extends "res://singletons/player_run_data.gd"
 
-static func init_stats(all_null_values: bool = false)->Dictionary:
-	if (not Utils == null) :
-		var vanilla_stats = .init_stats(all_null_values)
-		var new_stats: = {
+static func init_foxlab_stats() -> Dictionary:
+	return {
 			"stat_levels": 0,
 			"fox_猫_duplicate_item": 0
 		}
 
-		new_stats.merge(vanilla_stats)
+static func init_stats(all_null_values: bool = false)->Dictionary:
+	if (not Utils == null) :
+		var vanilla_stats = .init_stats(all_null_values)
+		var foxlab_stats = init_foxlab_stats()
+		foxlab_stats.merge(vanilla_stats)
 
-		return new_stats;
+		return foxlab_stats;
 	else:
 		return {}
 
@@ -67,6 +69,7 @@ static func init_effects()->Dictionary:
 			"temp_stats_on_structure_crit": [], # 被删掉的原版词条
 		}
 		new_effects.merge(vanilla_effects)
+		new_effects.merge(init_foxlab_stats())
 		return new_effects;
 	else:
 		return {}

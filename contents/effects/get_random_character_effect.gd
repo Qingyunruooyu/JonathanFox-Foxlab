@@ -96,7 +96,7 @@ func apply(player_index: int) -> void:
 	for character in chars_to_get[player_index]:
 		RunData.add_item(_update_character_bg(character, player_index), player_index)
 		DebugService.log_data("add character " + character.my_id)
-		prev_items.append([character.my_id, character.is_cursed])
+		prev_items.append([character.my_id, character.curse_factor])
 	convert_stats_half_wave.append_array(convert_stats_half_wave_bak)
 	convert_stats_end_of_wave.append_array(convert_stats_end_of_wave_bak)
 
@@ -106,7 +106,7 @@ func apply(player_index: int) -> void:
 		if item is ItemData:
 			RunData.add_item(item, player_index)
 			DebugService.log_data("add item " + item.my_id)
-			prev_items.append([item.my_id, item.is_cursed])
+			prev_items.append([item.my_id, item.curse_factor])
 
 		else:
 			var weapon = RunData.add_weapon(item, player_index)
@@ -197,7 +197,7 @@ func cleanup(player_index: int) -> void:
 			# 没有消除成功，可能是原版里面反序列化没做对，比如秒杀剑的one_shot_on_hit不在ItemServices.effects里面，导致没有反序列化
 			if weapon_count_after == weapon_count_before:
 				for owned_weapon in player_weapons_raw:
-					if owned_weapon.my_id == weapon.my_id and owned_weapon.is_cursed == weapon.is_cursed:
+					if owned_weapon.my_id == weapon.my_id and owned_weapon.curse_factor == weapon.curse_factor:
 						player_weapons_raw.erase(owned_weapon)
 						DebugService.log_data("remove " + weapon.my_id + " manually")
 						break
@@ -207,16 +207,17 @@ func cleanup(player_index: int) -> void:
 		prev_items.remove(i)
 
 	var items_to_remove:Dictionary={}
-	var player_items = RunData.get_player_items(player_index)
-	player_items.invert() #要移除的往往是新获得的物品
-	for item_data in player_items:
+	var player_items_raw = RunData.players_data[player_index].items
+	 #要移除的往往是新获得的物品
+	for index in range(player_items_raw.size(), 0, -1):
+		var item_data: ItemData = player_items_raw[index - 1]
 		for i in range(prev_items.size()):
 			if items_to_remove.has(i):
 				continue
-			if [item_data.my_id, item_data.is_cursed] == prev_items[i] :
+			if [item_data.my_id, item_data.curse_factor] == prev_items[i] :
 				items_to_remove[i] = item_data
 			elif (item_data.my_id.begins_with("item_builder_turret") and prev_items[i][0].begins_with("item_builder_turret"))\
-				and (item_data.is_cursed == prev_items[i][1]):
+				and (item_data.curse_factor == prev_items[i][1]):
 				items_to_remove[i] = item_data
 	for item_data in items_to_remove.values():
 		DebugService.log_data("remove " + item_data.my_id)
@@ -338,7 +339,7 @@ func _get_rand_chars(player_index: int) -> Array:
 			if starting is WeaponData:
 				prev_items.append(starting.serialize())
 			else:
-				prev_items.append([starting.my_id, starting.is_cursed])
+				prev_items.append([starting.my_id, starting.curse_factor])
 	return chars_return
 
 func serialize() -> Dictionary:

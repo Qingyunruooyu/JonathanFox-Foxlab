@@ -1,7 +1,7 @@
 class_name SwapStatEffect
 extends Effect
 
-export(Array, String)  var stats_swapped = ["stat_right_hp", "stat_right_hp"]
+export(Array, String)  var stats_swapped = ["stat_max_hp", "stat_max_hp"]
 
 
 static func get_id() -> String:

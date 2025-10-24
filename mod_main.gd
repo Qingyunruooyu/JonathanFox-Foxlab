@@ -14,7 +14,9 @@ var mod_timestamp: int = 0
 const EFFECTS_SCRIPTS: = [
 	"get_random_weapon_effect.gd",
 	"get_random_character_effect.gd",
-	"swap_stat_effect.gd"
+	"swap_stat_effect.gd",
+	"alternative_append_effect.gd",
+	"take_away_effect.gd"
 ]
 
 const EXTENSION_SCRIPTS: =[
@@ -77,7 +79,7 @@ func load_mod_timestamp() -> bool:
 		dir.remove(timestamp_file)
 		DebugService.log_data("硬盘上文件的时间戳: " + file_modified_time)
 		
-		var timestamp_str:String = file.get_as_text()
+		var timestamp_str:String = file.get_as_text().strip_edges()
 		while timestamp_str.length() < file_modified_time.length():
 			timestamp_str += '0'
 		mod_timestamp = timestamp_str.to_int()

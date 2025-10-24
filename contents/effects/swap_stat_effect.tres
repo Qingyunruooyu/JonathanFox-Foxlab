@@ -4,4 +4,11 @@
 
 [resource]
 script = ExtResource( 1 )
+key = ""
 text_key = "当你获得此道具时，交换{0}和{1}（如果其中一个属性的修改减少100%则不会交换）"
+value = 0
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+stats_swapped = [ "stat_max_hp", "stat_max_hp" ]

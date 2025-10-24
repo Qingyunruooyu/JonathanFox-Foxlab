@@ -143,9 +143,9 @@ func _duplicate_weapon(player_index: int):
 	if  gain_stat_effect.empty() or RunData.current_wave == gain_stat_effect.back():
 		return
 
+	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(gain_stat_effect.back()))
 	gain_stat_effect.clear()
 	gain_stat_effect.append(RunData.current_wave)
-	DebugService.log_data("begin to duplicate a weapon")
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons(player_index)).duplicate()
 	var weapon_for_effect:WeaponData = Utils.get_rand_element(ItemService.weapons)
 	while weapon_for_effect.effects.empty():
@@ -196,9 +196,10 @@ func cleanup(player_index: int) -> void:
 			var weapon_count_after = player_weapons_raw.size()
 			# 没有消除成功，可能是原版里面反序列化没做对，比如秒杀剑的one_shot_on_hit不在ItemServices.effects里面，导致没有反序列化
 			if weapon_count_after == weapon_count_before:
-				for owned_weapon in player_weapons_raw:
+				for weapon_index in range(weapon_count_after):
+					var owned_weapon = player_weapons_raw[weapon_index]
 					if owned_weapon.my_id == weapon.my_id and owned_weapon.curse_factor == weapon.curse_factor:
-						player_weapons_raw.erase(owned_weapon)
+						RunData.remove_weapon_by_index(weapon_index, player_index)
 						DebugService.log_data("remove " + weapon.my_id + " manually")
 						break
 			weapon_to_remove.append(i)

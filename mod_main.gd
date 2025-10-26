@@ -34,6 +34,8 @@ func _init():
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 	if "1.1.13" in CrashReporter.VERSION:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_beta.gd")
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "character_panel_ui.gd")
+		
 	else:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main.gd")
 	

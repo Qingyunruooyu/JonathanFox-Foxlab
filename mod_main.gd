@@ -16,7 +16,8 @@ const EFFECTS_SCRIPTS: = [
 	"get_random_character_effect.gd",
 	"swap_stat_effect.gd",
 	"alternative_append_effect.gd",
-	"take_away_effect.gd"
+	"take_away_effect.gd",
+	"convert_remainder_to_stat_effect.gd"
 ]
 
 const EXTENSION_SCRIPTS: =[
@@ -25,7 +26,9 @@ const EXTENSION_SCRIPTS: =[
 	"run_data.gd",
 	"base_shop.gd",
 	"item_description.gd",
-	"shop_item.gd"
+	"shop_item.gd",
+	"floating_text_manager.gd",
+	"utils.gd"
 ]
 
 func _init():
@@ -33,11 +36,11 @@ func _init():
 	for script in EXTENSION_SCRIPTS:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 	if "1.1.13" in CrashReporter.VERSION:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_beta.gd")
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_latest.gd")
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "character_panel_ui.gd")
 		
 	else:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main.gd")
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_legacy.gd")
 	
 	# 如果没开brolab特殊机制，在这里开启
 	var BROLAB_MOD_NAME: String = "QianMo-BroLab"

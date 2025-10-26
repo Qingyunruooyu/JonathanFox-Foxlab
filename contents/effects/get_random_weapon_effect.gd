@@ -110,7 +110,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		elif effect is PercentDamageEffect: # lute, icecube, etc
 			effect.source_id = weapon.weapon_id
 		elif effect.custom_key == "yztato_destory_weapons":
-			effect.key = weapon.my_id
+			effect.key = weapon.weapon_id
 			effect.text_key = "每波结束时，只保留%s" % [tr(weapon.name)]
 		elif effect.get_id() == get_id():
 			effect.weapon_id = ["","","",""]
@@ -122,12 +122,12 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	if item_to_get[player_index] == null:
 		weapon.effects.append_array(item_for_effect.effects)
 		
-	weapon_id[player_index] = "%s%s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
+	weapon_id[player_index] = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 	if weapon.is_cursed:
 		weapon_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("BROLAB_CURSED_TEXT")]
 	
 	if item_for_effect is WeaponData:
-		extra_item_id[player_index] = "%s%s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
+		extra_item_id[player_index] = "%s %s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
 	else:
 		extra_item_id[player_index] = tr(item_for_effect.name)
 

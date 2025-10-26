@@ -116,7 +116,7 @@ func apply(player_index: int) -> void:
 
 	starting_items[player_index].clear()
 
-	if Utils.get_chance_success(transform_chance / 100.0):
+	if RunData.players_data[player_index].weapons.size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
 		_duplicate_weapon(player_index)
 
 	_revert_negative_curse(player_index)
@@ -145,13 +145,19 @@ func _duplicate_weapon(player_index: int):
 
 	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(gain_stat_effect.back()))
 	gain_stat_effect.clear()
-	gain_stat_effect.append(RunData.current_wave)
+	gain_stat_effect.append(RunData.current_wave if _is_wave_started(player_index) else 1)
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons(player_index)).duplicate()
 	var weapon_for_effect:WeaponData = Utils.get_rand_element(ItemService.weapons)
 	while weapon_for_effect.effects.empty():
 		weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
 	weapon_for_effect = weapon_for_effect.duplicate()
-	var new_effects := []
+	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
+	var null_effect = NullEffect.new()
+	if weapon_for_effect.is_cursed:
+		null_effect.text_key += tr("BROLAB_CURSED_TEXT")
+	null_effect.text_key += "%s %s: " % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
+
+	var new_effects := [null_effect]
 	for effect in weapon_for_effect.effects:
 		effect = effect.duplicate()
 		new_effects.append(effect)
@@ -161,7 +167,7 @@ func _duplicate_weapon(player_index: int):
 		elif effect is PercentDamageEffect: # lute etc
 			effect.source_id = weapon.weapon_id
 		elif effect.custom_key == "yztato_destory_weapons":
-			effect.key = weapon.my_id
+			effect.key = weapon.weapon_id #保留的是武器大名，不是带等级的my_id
 			effect.text_key = "每波结束时，只保留%s" % [tr(weapon.name)]
 	DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
 	weapon_for_effect.effects = new_effects
@@ -183,6 +189,9 @@ func cleanup(player_index: int) -> void:
 		return
 
 	var prev_items :Array= RunData.get_player_effect(custom_key,player_index)
+	if prev_items.empty():
+		return
+
 	var weapon_to_remove = []
 	for i in range(prev_items.size()):
 		var weapon_data = prev_items[i]

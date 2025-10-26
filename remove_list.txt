@@ -109,3 +109,8 @@ scripts/unit_eel.tres
 scripts/unit_invoker.tres
 scripts/unit_predator.tres
 
+scripts/effect_apply_only.gd
+scripts/effect_percent_damage_colored.gd
+scripts/foxlab_apply_only_effect.tres
+scripts/foxlab_colored_percent_damage.tres
+scripts/foxlab_linear_scaling_effect.tres

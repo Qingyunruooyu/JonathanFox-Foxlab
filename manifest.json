@@ -10,8 +10,21 @@
 			"incompatibilities": [],
 			"authors": [ "JonathanFox" ],
 			"compatible_mod_loader_version": "6.2.2",
-			"compatible_game_version": ["1.1.8.1"],
-			"config_defaults": {}
+			"compatible_game_version": [ "1.1.12.1" ],
+			"config_defaults": {},
+			"config_schema": {
+				"title": "foxlab_config",
+				"description": "Config for FoxLab",
+				"type": "object",
+				"properties": {
+					"FOXLAB_TRANSFORM_VANILLA_ONLY": {
+						"type": "boolean",
+						"title": "FOXLAB_TRANSFORM_VANILLA_ONLY",
+						"tooltip": "FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP",
+						"default": false
+					}
+				}
+			}
 		}
 	}
 }

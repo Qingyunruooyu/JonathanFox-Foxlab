@@ -4,8 +4,6 @@
 .autoconverted
 *.translation
 *.mp3
-*.translation
-*.csv
 *.godot
 *.png
 *.webp

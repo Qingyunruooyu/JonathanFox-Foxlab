@@ -269,6 +269,8 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 		convert_stat_dict[character.my_id] = 0
 
 func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
+	if ItemService.characters.size() != ItemService.get_foxlab_transform_characters().size():
+		return true
 	var convert_stat_dict = RunData.get_player_effect("fox_无脸_convert_stat_characters", 0)
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
@@ -292,10 +294,10 @@ func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -
 			candidate = ItemService.get_element(ItemService.characters, debug_item_name.front())
 			debug_item_name.pop_front()
 		if candidate == null:
-			candidate = Utils.get_rand_element(ItemService.characters)
+			candidate = Utils.get_rand_element(ItemService.get_foxlab_transform_characters())
 			while candidate.my_id in chars_id:
 				if !Utils.get_chance_success(SAME_CHAR_CHANCE):
-					candidate = Utils.get_rand_element(ItemService.characters)
+					candidate = Utils.get_rand_element(ItemService.get_foxlab_transform_characters())
 		if _are_chars_compatible(player_index, candidate, chars_data):
 			current_char = candidate
 	return current_char

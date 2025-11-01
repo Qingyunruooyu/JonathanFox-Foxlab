@@ -139,7 +139,8 @@ func copy_file_if_needed(mod_file_path: String):
 		copy_single_file(mod_file_path, target_file_path)
 		DebugService.log_data("Copied: " + relative_path)
 	else:
-		DebugService.log_data("Skipped (up to date): " + relative_path)
+		pass
+		#DebugService.log_data("Skipped (up to date): " + relative_path)
 
 func should_copy_file(mod_file_path: String, target_file_path: String) -> bool:
 	# 如果目标文件不存在，需要拷贝

@@ -68,6 +68,15 @@ func unapply(player_index: int) -> void:
 	pass
 
 func apply(player_index: int) -> void:
+	var effects = RunData.get_player_effects(player_index)
+	# [变身堆栈数，正在变身否]
+	var stack_effect:Array = effects["fox_无脸_transform_stack"]
+	if stack_effect[1]:
+		stack_effect[0] += 1
+		DebugService.log_data("add transform stack: %d" % [stack_effect[0]])
+		return
+	stack_effect[1] = true
+	DebugService.log_data("start transform, stack: %d" % [stack_effect[0]])
 	var wave_started = _is_wave_started(player_index)
 	if chars_name[player_index].empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
 		if not wave_started:
@@ -81,6 +90,7 @@ func apply(player_index: int) -> void:
 	DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
 		DebugService.log_data("transform failed")
+		_after_transform(player_index, stack_effect)
 		return
 
 	cleanup(player_index)
@@ -124,6 +134,16 @@ func apply(player_index: int) -> void:
 	if value_base == value:
 		chars_name[player_index] = ""
 
+	_after_transform(player_index, stack_effect)
+
+
+func _after_transform(player_index: int, stack_effect: Array) -> void:
+	stack_effect[1] = false
+	DebugService.log_data("end transform, stack: %d" % [stack_effect[0]])
+	if stack_effect[0] > 0:
+		stack_effect[0] -= 1
+		apply(player_index)
+
 func _revert_negative_curse(player_index: int):
 	#诅咒小于0会秒杀敌人，如果变身后诅咒小于零并且诅咒的修改大于-100%，说明不是玩负诅咒的特殊角色
 	var curse_value = Utils.get_stat("stat_curse", player_index)
@@ -155,7 +175,7 @@ func _duplicate_weapon(player_index: int):
 	var null_effect = NullEffect.new()
 	if weapon_for_effect.is_cursed:
 		null_effect.text_key += tr("BROLAB_CURSED_TEXT")
-	null_effect.text_key += "%s %s: " % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
+	null_effect.text_key += " %s %s: " % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
 
 	var new_effects := [null_effect]
 	for effect in weapon_for_effect.effects:

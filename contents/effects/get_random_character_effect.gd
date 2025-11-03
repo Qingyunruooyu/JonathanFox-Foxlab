@@ -93,6 +93,8 @@ func apply(player_index: int) -> void:
 		_after_transform(player_index, stack_effect)
 		return
 
+	var is_vagabond_on0 = RunData.get_player_effect_bool("all_weapons_count_for_sets", player_index)
+
 	cleanup(player_index)
 
 	var prev_items = RunData.get_player_effect(custom_key,player_index)
@@ -130,6 +132,10 @@ func apply(player_index: int) -> void:
 		_duplicate_weapon(player_index)
 
 	_revert_negative_curse(player_index)
+
+	var is_vagabond_on1 = RunData.get_player_effect_bool("all_weapons_count_for_sets", player_index)
+	if is_vagabond_on0 != is_vagabond_on1:
+		RunData.update_sets(player_index)
 
 	if value_base == value:
 		chars_name[player_index] = ""

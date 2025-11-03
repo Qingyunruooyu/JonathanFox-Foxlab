@@ -24,8 +24,8 @@ func _ready() -> void :
 func _init_configs():
 	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
 	var CONFIG_NAME = "foxlab_config"
-	foxlab_config = ModLoaderConfig.get_configs(FOXLAB_MOD_NAME)
-	if foxlab_config.has(CONFIG_NAME):
+	var configs = ModLoaderConfig.get_configs(FOXLAB_MOD_NAME)
+	if configs.has(CONFIG_NAME):
 		foxlab_config = ModLoaderConfig.get_config(FOXLAB_MOD_NAME, CONFIG_NAME)
 	else:
 		foxlab_config = ModLoaderConfig.create_config(FOXLAB_MOD_NAME, CONFIG_NAME, FOXLAB_DEFAULT_SETTINGS)

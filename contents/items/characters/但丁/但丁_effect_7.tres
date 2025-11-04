@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_brolab_sos_0"
+text_key = "没有双形态时，刷新后{0}物品等级"
+value = -2
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+value2 = 10.0

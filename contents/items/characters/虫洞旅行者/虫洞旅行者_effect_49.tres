@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/convert_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_speed"
+text_key = "击退改为抓取；敌袭结束后若击退成功减半，每{3}点{1}转换为{4}窃取次数并清空击退"
+value = 20
+custom_key = "convert_stats_end_of_wave"
+storage_method = 1
+effect_sign = 3
+custom_args = [  ]
+pct_converted = 100.0
+to_stat = "item_steals"
+to_value = 1

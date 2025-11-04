@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://items/global/item_data.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/通缉令大王具足虫/通缉令_effect_0.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/通缉令大王具足虫/通缉令_effect_1.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/giant_isopod_icon.png" type="Texture" id=4]
+
+[resource]
+script = ExtResource( 1 )
+my_id = "item_brolab_巨型虫_2"
+unlocked_by_default = false
+can_be_looted = false
+icon = ExtResource( 4 )
+name = "通缉令"
+tier = 3
+value = 1.0
+effects = [ ExtResource( 2 ), ExtResource( 3 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = -1.0
+item_appearances = [  ]
+tags = [  ]

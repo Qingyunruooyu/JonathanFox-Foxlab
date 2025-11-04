@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "structure_range"
+text_key = "使用武器一次直接击杀{2}个敌人可获得+{0}{1}"
+value = 3
+custom_key = "gain_stat_when_attack_killed_enemies"
+storage_method = 1
+effect_sign = 3
+custom_args = [  ]
+value2 = 3.0
+sum_strategy = 0

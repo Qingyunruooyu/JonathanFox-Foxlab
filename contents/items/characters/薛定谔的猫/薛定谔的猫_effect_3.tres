@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "random"
+text_key = "[EMPTY]"
+value = 6
+custom_key = "fox_convert_remainder_end_of_wave"
+storage_method = 2
+effect_sign = 3
+custom_args = [  ]
+pct_converted = 100.0
+offset = -3.0
+keep_value = -1
+to_stat = "item_steals"
+to_stat_scaling = 1.0
+is_negative_key = false

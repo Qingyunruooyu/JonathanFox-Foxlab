@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "materials"
+text_key = "黎明时每1存活敌人{0}{1}、每1存活树木{2}{1}"
+value = -1
+custom_key = ""
+storage_method = 0
+effect_sign = 1
+custom_args = [  ]
+value2 = -18.0

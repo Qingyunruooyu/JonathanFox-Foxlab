@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_brolab_瞻星之危_253"
+text_key = "刷新按钮显示{1}时，刷新失去1{1}和1次对应效果"
+value = 0
+custom_key = "increase_tier_on_reroll"
+storage_method = 4
+effect_sign = 1
+custom_args = [  ]

@@ -124,7 +124,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		
 	weapon_id[player_index] = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 	if weapon.is_cursed:
-		weapon_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("BROLAB_CURSED_TEXT")]
+		weapon_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 	
 	if item_for_effect is WeaponData:
 		extra_item_id[player_index] = "%s %s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
@@ -132,7 +132,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		extra_item_id[player_index] = tr(item_for_effect.name)
 
 	if item_for_effect.is_cursed:
-		extra_item_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("BROLAB_CURSED_TEXT")]
+		extra_item_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 		
 	if !_get_chance_success(CHANCE_CONST_WEAPON, luck_chance):
 		var level_suffix := "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])

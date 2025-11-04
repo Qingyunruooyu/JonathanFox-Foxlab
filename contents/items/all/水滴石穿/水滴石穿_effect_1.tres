@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/group_dead_whale.tres"
+text_key = "下场敌袭期间，猎杀者、唤魔者、尸变鲸鱼和鳗鱼四大头目每30秒各有{2}%几率登场"
+value = 1
+custom_key = "extra_enemies_next_wave"
+storage_method = 1
+effect_sign = 3
+custom_args = [  ]
+key2 = "stat_elemental_damage"
+value2 = 25

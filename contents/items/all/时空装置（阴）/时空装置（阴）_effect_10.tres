@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stronger_loot_aliens_on_kill"
+text_key = "你每击杀过一个战利品外星人，未来的会增强{0}%"
+value = 1
+custom_key = ""
+storage_method = 0
+effect_sign = 1
+custom_args = [  ]

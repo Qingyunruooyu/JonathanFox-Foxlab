@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/weapon_gain_stat_for_every_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_range"
+text_key = "每获得直接提升{1}的道具，+{0}%几率在消耗品中发现箱子[已+{4}%]"
+value = 8
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+nb_stat_scaled = 8.0
+stat_scaled = "crate_chance"
+perm_stats_only = false
+increased_stat_name = "damage"

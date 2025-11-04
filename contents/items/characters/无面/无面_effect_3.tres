@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/weapon_cooldown_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "fox_无脸_upgrade_on_transform"
+text_key = "变身成功后，你以此次变身成功的几率复制并改造你的一把武器（不会与上一次成功复制的波次相同）"
+value = 99999999
+custom_key = ""
+storage_method = 0
+effect_sign = 2
+custom_args = [  ]

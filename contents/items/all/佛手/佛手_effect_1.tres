@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "WEAPON_BRICK"
+text_key = "赋予的效果若有+{1}，武器升级后失去此效果"
+value = 1
+custom_key = ""
+storage_method = 0
+effect_sign = 1
+custom_args = [  ]
+value2 = 120.0

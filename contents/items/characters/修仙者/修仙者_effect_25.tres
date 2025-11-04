@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/convert_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "weapon_slot"
+text_key = "4级之后修仙升级时+{0}%{1}"
+value = 1
+custom_key = "convert_stats_end_of_wave"
+storage_method = 1
+effect_sign = 3
+custom_args = [  ]
+pct_converted = 17.0
+to_stat = "weapon_slot"
+to_value = 2.0

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_brolab_球状闪电_3"
+text_key = "在箱子中分别有64/32/16/{0}%初始概率发现四个等级的球状闪电"
+value = -3
+custom_key = "extra_item_in_crate"
+storage_method = 1
+effect_sign = 3
+custom_args = [  ]

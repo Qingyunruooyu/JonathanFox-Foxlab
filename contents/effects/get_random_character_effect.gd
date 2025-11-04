@@ -180,7 +180,7 @@ func _duplicate_weapon(player_index: int):
 	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
 	var null_effect = NullEffect.new()
 	if weapon_for_effect.is_cursed:
-		null_effect.text_key += tr("BROLAB_CURSED_TEXT")
+		null_effect.text_key += tr("FOXLAB_CURSED_TEXT")
 	null_effect.text_key += " %s %s: " % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
 
 	var new_effects := [null_effect]
@@ -329,7 +329,7 @@ func _get_rand_chars(player_index: int) -> Array:
 		chars_name[player_index] += tr(current_char.name)
 
 		if current_char.is_cursed:
-			chars_name[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("BROLAB_CURSED_TEXT")]
+			chars_name[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 		if char_idx + 1 < final_value:
 			chars_name[player_index] += ", "
 
@@ -370,6 +370,15 @@ func _get_rand_chars(player_index: int) -> Array:
 				for i in range(effect.value):
 					var item = ItemService.get_element(ItemService.items, effect.brolab_receive_item_id)
 					if dlc and effect.brolab_cursed_item:
+						item = dlc.curse_item(item, player_index, true)
+					container.append(item)
+			elif effect.key == "foxlab_effect_receive_item_at_wave" \
+				and effect.foxlab_receive_item_wave == 1\
+				and effect.foxlab_receive_item_end_wave == 1:
+				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+				for i in range(effect.value):
+					var item = ItemService.get_element(ItemService.items, effect.foxlab_receive_item_id)
+					if dlc and effect.foxlab_cursed_item:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 

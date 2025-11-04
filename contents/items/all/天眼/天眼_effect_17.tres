@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stronger_elites_on_kill"
+text_key = "每击杀过一个头目或精英怪，未来的头目和精英怪增强{0}%"
+value = 5
+custom_key = ""
+storage_method = 0.0
+effect_sign = 1
+custom_args = [  ]

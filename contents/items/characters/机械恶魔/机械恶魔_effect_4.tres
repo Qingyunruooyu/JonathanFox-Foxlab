@@ -1,0 +1,57 @@
+[gd_resource type="Resource" load_steps=6 format=2]
+
+[ext_resource path="res://items/all/landmines/landmine_exploding_effect.tres" type="Resource" id=1]
+[ext_resource path="res://entities/structures/landmine/landmine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://effects/items/structure_effect.gd" type="Script" id=3]
+[ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=4]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 4 )
+cooldown = 9999999999
+damage = 1
+accuracy = 1.0
+crit_chance = 0.0
+crit_damage = 2.0
+min_range = 0
+max_range = 0
+knockback = 0
+knockback_piercing = 0.0
+can_have_positive_knockback = true
+can_have_negative_knockback = false
+effect_scale = 1.0
+scaling_stats = [ [ "stat_engineering", 1.5 ], [ "stat_levels", 1.5 ] ]
+lifesteal = 0.0
+shooting_sounds = [  ]
+sound_db_mod = -5
+is_healing = false
+recoil = 25
+recoil_duration = 0.1
+additional_cooldown_every_x_shots = -1
+additional_cooldown_multiplier = -1.0
+speed_percent_modifier = 0
+nb_projectiles = 1
+projectile_spread = 0.0
+piercing = 0
+piercing_dmg_reduction = 0.5
+bounce = 0
+bounce_dmg_reduction = 0.5
+can_bounce = true
+projectile_speed = 3000
+increase_projectile_speed_with_range = false
+
+[resource]
+script = ExtResource( 3 )
+key = ""
+text_key = "初始拥有3个发射粒子光束的流浪机器人，之后每{1}秒召唤一个，造成{2}（{3}）伤害"
+value = 0
+custom_key = ""
+storage_method = 0
+effect_sign = 0
+custom_args = [  ]
+spawn_cooldown = 40.0
+scene = ExtResource( 2 )
+stats = SubResource( 1 )
+effects = [ ExtResource( 1 ) ]
+spawn_in_center = -1
+spawn_around_player = -1
+can_be_grouped = false

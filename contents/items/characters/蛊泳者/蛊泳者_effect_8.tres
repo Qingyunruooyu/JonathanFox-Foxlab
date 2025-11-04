@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/weapon_type_bonus_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = ""
+text_key = "你击中敌人会令其暂时增速{0}%"
+value = 12
+custom_key = ""
+storage_method = 0
+effect_sign = 1
+custom_args = [  ]
+weapon_type = 1.0
+stat_displayed_name = "stat_range"
+stat_name = "speed_percent_modifier"

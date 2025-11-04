@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "less_enemy_speed"
+text_key = "当你获得此道具后，未来不再出现其他降低敌人速度的道具"
+value = 0
+custom_key = "remove_shop_items"
+storage_method = 3
+effect_sign = 3
+custom_args = [  ]

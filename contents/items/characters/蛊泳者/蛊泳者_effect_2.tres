@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_percent_damage"
+text_key = "对满血目标造成+{0}{1}，目标每{2}%生命值则{2}{1}"
+value = 50
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+value2 = -10.0

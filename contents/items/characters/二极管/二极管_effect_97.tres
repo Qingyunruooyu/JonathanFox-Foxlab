@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_percent_damage"
+text_key = "[EMPTY]"
+value = -173
+custom_key = "gain_stat_when_attack_killed_enemies"
+storage_method = 1
+effect_sign = 2
+custom_args = [  ]
+value2 = 87.0
+sum_strategy = 0

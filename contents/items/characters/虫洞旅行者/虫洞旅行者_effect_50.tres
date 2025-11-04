@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/convert_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_steals"
+text_key = "每次以此法提升窃取次数时，{0}%的次数会{3}比{4}转换为头目和精英怪的击杀增幅"
+value = 1
+custom_key = "convert_stats_end_of_wave"
+storage_method = 1
+effect_sign = 1
+custom_args = [  ]
+pct_converted = 16.67
+to_stat = "stronger_elites_on_kill"
+to_value = 10.0

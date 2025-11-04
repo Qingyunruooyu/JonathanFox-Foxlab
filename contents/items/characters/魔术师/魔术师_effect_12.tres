@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "enemy_health"
+text_key = "窃取大概率出精英怪，敌袭结束后+{0}%敌人伤害、+{0}%敌人生命值"
+value = 2
+custom_key = "stats_end_of_wave"
+storage_method = 1
+effect_sign = 1
+custom_args = [  ]

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "structure_percent_damage"
+text_key = "构筑物以暴击杀死敌人会+{0}{1}直至敌袭结束"
+value = 6
+custom_key = "temp_stats_on_structure_crit"
+storage_method = 1
+effect_sign = 3
+custom_args = [  ]

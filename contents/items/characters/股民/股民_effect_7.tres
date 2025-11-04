@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/weapon_gain_stat_for_every_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "enemy_speed"
+text_key = "92%的材料在敌袭中途后会{0}：{2}转换为临时{1}和{3}"
+value = 10
+custom_key = ""
+storage_method = 0
+effect_sign = 1
+custom_args = [  ]
+nb_stat_scaled = 1.0
+stat_scaled = "stat_luck"
+perm_stats_only = false
+increased_stat_name = "damage"

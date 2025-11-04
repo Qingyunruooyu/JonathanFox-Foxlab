@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_brolab_百鬼夜行_274"
+text_key = "午夜后材料如果不大于{0}，材料乘以1.1（多个{1}为连乘计算）"
+value = -100
+custom_key = ""
+storage_method = 0
+effect_sign = 1
+custom_args = [  ]
+value2 = -1.0

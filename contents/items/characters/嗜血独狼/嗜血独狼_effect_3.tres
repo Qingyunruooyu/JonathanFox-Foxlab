@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "pct_number_of_enemies"
+text_key = "{0}斩杀，敌袭结束获得+{2}{1}；"
+value = 40
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+value2 = 1.0

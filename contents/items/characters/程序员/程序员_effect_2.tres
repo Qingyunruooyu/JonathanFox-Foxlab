@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "materials"
+text_key = "[EMPTY]"
+value = 0
+custom_key = "fox_convert_remainder_end_of_wave"
+storage_method = 0.0
+effect_sign = 0
+custom_args = [  ]
+pct_converted = 50.0
+offset = 0.0
+keep_value = 1.0
+to_stat = "structure_attack_speed"
+to_stat_scaling = 0.06667
+is_negative_key = false

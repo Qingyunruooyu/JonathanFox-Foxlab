@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "res://zones/zone_1/000_all/group_2.tres"
+text_key = "下场敌袭额外生成碰撞区域敌人"
+value = 2
+custom_key = "extra_enemies_next_wave"
+storage_method = 1
+effect_sign = 2
+custom_args = [  ]

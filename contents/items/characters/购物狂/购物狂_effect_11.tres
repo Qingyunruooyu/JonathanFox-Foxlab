@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "fox_购物狂_item_entries"
+text_key = "[EMPTY]"
+value = 1
+custom_key = "gain_stat_for_equipped_item_with_stat"
+storage_method = 1
+effect_sign = 2
+custom_args = [  ]
+key2 = "stat_crit_chance"
+value2 = 0

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/convert_stat_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_curse"
+text_key = "午夜时+{0}%{1}直至黎明"
+value = 1
+custom_key = "convert_stats_half_wave"
+storage_method = 1
+effect_sign = 5
+custom_args = [  ]
+pct_converted = 50.0
+to_stat = "stat_curse"
+to_value = 2

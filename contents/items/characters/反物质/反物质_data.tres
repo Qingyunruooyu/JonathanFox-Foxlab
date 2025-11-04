@@ -1,0 +1,52 @@
+[gd_resource type="Resource" load_steps=28 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/反物质/反物质_effect_0.tres" type="Resource" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/反物质/反物质_effect_2.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/反物质/反物质_effect_3.tres" type="Resource" id=3]
+[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=4]
+[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=5]
+[ext_resource path="res://items/characters/character_data.gd" type="Script" id=6]
+[ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=7]
+[ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=8]
+[ext_resource path="res://weapons/melee/stick/1/stick_data.tres" type="Resource" id=9]
+[ext_resource path="res://weapons/ranged/double_barrel_shotgun/1/double_barrel_shotgun_data.tres" type="Resource" id=10]
+[ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=11]
+[ext_resource path="res://weapons/melee/dagger/1/dagger_data.tres" type="Resource" id=12]
+[ext_resource path="res://weapons/ranged/shredder/1/shredder_data.tres" type="Resource" id=13]
+[ext_resource path="res://weapons/ranged/slingshot/1/slingshot_data.tres" type="Resource" id=14]
+[ext_resource path="res://weapons/melee/hatchet/1/hatchet_data.tres" type="Resource" id=15]
+[ext_resource path="res://weapons/melee/chopper/1/chopper_data.tres" type="Resource" id=16]
+[ext_resource path="res://weapons/ranged/crossbow/1/crossbow_data.tres" type="Resource" id=17]
+[ext_resource path="res://weapons/melee/jousting_lance/1/jousting_lance_data.tres" type="Resource" id=18]
+[ext_resource path="res://weapons/ranged/revolver/1/revolver_data.tres" type="Resource" id=19]
+[ext_resource path="res://weapons/melee/claw/1/claw_data.tres" type="Resource" id=20]
+[ext_resource path="res://weapons/melee/fighting_stick/1/fighting_stick_data.tres" type="Resource" id=21]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/brick/1/brick_data.tres" type="Resource" id=22]
+[ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=23]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/反物质/反物质_effect_4.tres" type="Resource" id=24]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/反物质/反物质_effect_5.tres" type="Resource" id=25]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/反物质/反物质_effect_1.tres" type="Resource" id=26]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/反物质/反物质_icon.png" type="Texture" id=27]
+
+[resource]
+script = ExtResource( 6 )
+my_id = "character_brolab_反物质_64"
+unlocked_by_default = true
+can_be_looted = true
+icon = ExtResource( 27 )
+name = "反物质"
+tier = 0
+value = 1.0
+effects = [ ExtResource( 1 ), ExtResource( 26 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 24 ), ExtResource( 25 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = -1
+item_appearances = [ ExtResource( 4 ), ExtResource( 5 ) ]
+tags = [  ]
+wanted_tags = [ "xp_gain" ]
+banned_item_groups = [  ]
+banned_items = [  ]
+starting_weapons = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ) ]

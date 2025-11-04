@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_brolab_soa_0"
+text_key = "若你本局只拿取过{1}形态，免除刷新-2等级的效果"
+value = 0
+custom_key = "increase_tier_on_reroll"
+storage_method = 1.0
+effect_sign = 0
+custom_args = [  ]

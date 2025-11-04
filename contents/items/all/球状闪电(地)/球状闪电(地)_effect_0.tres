@@ -1,0 +1,54 @@
+[gd_resource type="Resource" load_steps=6 format=2]
+
+[ext_resource path="res://effects/items/projectile_effect.gd" type="Script" id=1]
+[ext_resource path="res://projectiles/bullet_lightning/delayed_lightning_projectile.tscn" type="PackedScene" id=2]
+[ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=3]
+[ext_resource path="res://weapons/ranged/taser/taser.wav" type="AudioStream" id=4]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 3 )
+cooldown = 120
+damage = 5
+accuracy = 1.0
+crit_chance = 0.3
+crit_damage = 2.0
+min_range = 0
+max_range = 300
+knockback = 10
+knockback_piercing = 0.0
+can_have_positive_knockback = true
+can_have_negative_knockback = false
+effect_scale = 1.0
+scaling_stats = [ [ "stat_elemental_damage", 0.5 ], [ "stat_max_hp", -0.5 ] ]
+lifesteal = 0.0
+shooting_sounds = [ ExtResource( 4 ) ]
+sound_db_mod = -5
+is_healing = false
+recoil = 25
+recoil_duration = 0.1
+additional_cooldown_every_x_shots = -1
+additional_cooldown_multiplier = -1.0
+speed_percent_modifier = 0
+nb_projectiles = 10
+projectile_spread = 3.142
+piercing = 4
+piercing_dmg_reduction = 0.0
+bounce = 0
+bounce_dmg_reduction = 0.0
+can_bounce = true
+projectile_speed = 2000
+increase_projectile_speed_with_range = true
+projectile_scene = ExtResource( 2 )
+
+[resource]
+script = ExtResource( 1 )
+key = "alien_eyes"
+text_key = "每{4}秒向周围发射{0}枚追踪雷电投射物，每枚投射物贯通4个目标，初始范围300，造成{1}({3})伤害"
+value = 11
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+weapon_stats = SubResource( 1 )
+auto_target_enemy = true
+cooldown = 0.8

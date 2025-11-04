@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_tardigrade"
+text_key = "初始拥有{0}{1}（第{2}波结束后失效）"
+value = 2
+custom_key = "starting_item"
+storage_method = 1
+effect_sign = 3
+custom_args = [  ]
+key2 = "stat_elemental_damage"
+value2 = 12

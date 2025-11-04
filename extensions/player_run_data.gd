@@ -50,6 +50,8 @@ static func init_effects()->Dictionary:
 			"fox_无脸_transform_stack":[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
 			"fox_convert_remainder_end_of_wave":[],
 			"temp_stats_on_structure_crit": [], # 被删掉的原版词条
+			"foxlab_effect_receive_item_at_wave": [], # 改自brolab的两个特殊机制词条
+			"foxlab_stats_end_of_wave_after_wave": [],
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

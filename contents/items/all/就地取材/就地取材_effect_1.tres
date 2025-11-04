@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_engineering"
+text_key = "以武器直接命中杀死敌人时有+{0}%几率生成1地雷"
+value = 25
+custom_key = "landmines_on_death_chance"
+storage_method = 1
+effect_sign = 0
+custom_args = [  ]

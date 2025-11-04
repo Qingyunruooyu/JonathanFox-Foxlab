@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "item_brolab_水母_2"
+text_key = "[EMPTY]"
+value = 1
+custom_key = "extra_item_in_crate"
+storage_method = 1
+effect_sign = 2
+custom_args = [  ]

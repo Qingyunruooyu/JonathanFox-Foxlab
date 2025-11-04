@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=11 format=2]
+
+[ext_resource path="res://dlcs/dlc_1/items/builder_turret/builder_turret_3_icon.png" type="Texture" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_1.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_2.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_7.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_3.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_4.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_5.tres" type="Resource" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_0.tres" type="Resource" id=8]
+[ext_resource path="res://items/global/item_data.gd" type="Script" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_6.tres" type="Resource" id=10]
+
+[resource]
+script = ExtResource( 9 )
+my_id = "item_brolab_建造者的炮塔_129"
+unlocked_by_default = false
+can_be_looted = false
+icon = ExtResource( 1 )
+name = "建造者的炮塔"
+tier = 3
+value = 20.0
+effects = [ ExtResource( 8 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 4 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = 7.0
+item_appearances = [  ]
+tags = [ "struccture" ]

@@ -37,6 +37,8 @@ func unapply(_player_index: int) -> void:
 
 
 func get_args(player_index: int) -> Array:
+	if RunData.get_player_character(player_index) == null:
+		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
 	if weapon_id[player_index].empty():
 		weapon_to_get[player_index] = _get_rand_weapon(player_index)
 	

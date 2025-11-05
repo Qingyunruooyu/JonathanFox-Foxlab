@@ -42,12 +42,13 @@ static func init_effects()->Dictionary:
 			"fox_独狼_stat_attack_speed_1er": 0,
 			"fox_独狼_enemy_damage_1er": 0,
 			"fox_独狼_enemy_health_1er": 0,
-			"fox_无脸_wave_started": 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
-			"fox_无脸_prev_items":[],  # 所有面具效果的道具在获得的时候，都会清理已有的变身
-			"fox_无脸_upgrade_on_transform":[],
+			"fox_无面_wave_started": 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
+			"fox_无面_prev_items":[],  # 所有面具效果的道具在获得的时候，都会清理已有的变身
+			"fox_无面_enable_upgrade_on_transform":0,
+			"fox_无面_upgrade_on_transform_wave":Utils.LARGE_NUMBER,
 			#ConvertStatEffect存在短路行为，如果两个角色都有这个效果，则不兼容，不允许同时变身
-			"fox_无脸_convert_stat_characters":{},
-			"fox_无脸_transform_stack":[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
+			"fox_无面_convert_stat_characters":{},
+			"fox_无面_transform_stack":[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
 			"fox_convert_remainder_end_of_wave":[],
 			"temp_stats_on_structure_crit": [], # 被删掉的原版词条
 			"foxlab_effect_receive_item_at_wave": [], # 改自brolab的两个特殊机制词条

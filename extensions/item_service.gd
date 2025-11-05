@@ -57,7 +57,6 @@ func _on_setting_changed(setting_name, value, mod_name)->void :
 			_init_foxlab_transform_characters()
 
 func _init_foxlab_transform_characters():
-	DebugService.log_data("item service _init_foxlab_transform_characters")
 	if not is_transform_vanilla_only():
 		foxlab_transform_characters = characters
 		DebugService.log_data("item service _init_foxlab_transform_characters done, all")
@@ -67,7 +66,7 @@ func _init_foxlab_transform_characters():
 			if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
 				foxlab_vanilla_characters.append(character)
 	foxlab_transform_characters = foxlab_vanilla_characters
-	DebugService.log_data("item service _init_foxlab_transform_characters done, vanilla only")
+	DebugService.log_data("_init_foxlab_transform_characters done, vanilla only")
 
 func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():

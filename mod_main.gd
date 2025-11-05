@@ -29,7 +29,6 @@ func _init():
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 	if IS_NEW_DAWN:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_latest.gd")
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "character_panel_ui.gd")
 
 	else:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_legacy.gd")

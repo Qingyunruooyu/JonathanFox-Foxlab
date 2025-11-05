@@ -1,9 +1,7 @@
 class_name GetRandCharacterEffect
 extends DoubleValueEffect
 
-export(int) var value_base = 2 # set to == value by default to indicate this effect is not cursed
-
-const SAME_CHAR_CHANCE = 0.05
+const SAME_CHAR_CHANCE = 0.33
 const MIN_TRANSFORM_CHANCE = 10.0
 const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
@@ -15,7 +13,6 @@ var chars_to_get: Array = [[], [], [], []]
 var starting_items: Array =  [[], [], [], []]
 
 var chars_name: Array = ["","","",""]
-
 
 static func get_id() -> String:
 	return "get_rand_character"
@@ -70,7 +67,7 @@ func unapply(player_index: int) -> void:
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
 	# [变身堆栈数，正在变身否]
-	var stack_effect:Array = effects["fox_无脸_transform_stack"]
+	var stack_effect:Array = effects["fox_无面_transform_stack"]
 	if stack_effect[1]:
 		stack_effect[0] += 1
 		DebugService.log_data("add transform stack: %d" % [stack_effect[0]])
@@ -78,7 +75,7 @@ func apply(player_index: int) -> void:
 	stack_effect[1] = true
 	DebugService.log_data("start transform, stack: %d" % [stack_effect[0]])
 	var wave_started = _is_wave_started(player_index)
-	if chars_name[player_index].empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
+	if chars_to_get[player_index].empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
 		if not wave_started:
 			chars_name[player_index] = ""
 			starting_items[player_index].clear()
@@ -137,8 +134,7 @@ func apply(player_index: int) -> void:
 	if is_vagabond_on0 != is_vagabond_on1:
 		RunData.update_sets(player_index)
 
-	if value_base == value:
-		chars_name[player_index] = ""
+	chars_name[player_index] = ""
 
 	_after_transform(player_index, stack_effect)
 
@@ -165,13 +161,14 @@ func _revert_negative_curse(player_index: int):
 	Utils.reset_stat_cache(player_index)
 
 func _duplicate_weapon(player_index: int):
-	var gain_stat_effect :Array= RunData.get_player_effect("fox_无脸_upgrade_on_transform",player_index)
-	if  gain_stat_effect.empty() or RunData.current_wave == gain_stat_effect.back():
+	var effects =  RunData.get_player_effects(player_index)
+	var upgrade_enabled = effects["fox_无面_enable_upgrade_on_transform"]
+	var upgrade_wave = effects["fox_无面_upgrade_on_transform_wave"]
+	if  not upgrade_enabled or RunData.current_wave == upgrade_wave:
 		return
 
-	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(gain_stat_effect.back()))
-	gain_stat_effect.clear()
-	gain_stat_effect.append(RunData.current_wave if _is_wave_started(player_index) else 1)
+	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
+	effects["fox_无面_upgrade_on_transform_wave"] = RunData.current_wave if _is_wave_started(player_index) else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons(player_index)).duplicate()
 	var weapon_for_effect:WeaponData = Utils.get_rand_element(ItemService.weapons)
 	while weapon_for_effect.effects.empty():
@@ -262,7 +259,9 @@ func cleanup(player_index: int) -> void:
 
 
 func get_args(player_index: int) -> Array:
-	if chars_name[player_index].empty():
+	if RunData.get_player_character(player_index) == null:
+		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
+	if chars_to_get[player_index].empty():
 		chars_to_get[player_index] = _get_rand_chars(player_index)
 	return [str(chars_to_get[player_index].size()), chars_name[player_index], "%s%%" % [stepify(_get_transform_chance(player_index), 0.01)]]
 
@@ -277,7 +276,7 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
 	if ItemService.characters.size() != ItemService.get_foxlab_transform_characters().size():
 		return true
-	var convert_stat_dict = RunData.get_player_effect("fox_无脸_convert_stat_characters", 0)
+	var convert_stat_dict = RunData.get_player_effect("fox_无面_convert_stat_characters", 0)
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
 	_get_convert_stat_result(candidate, convert_stat_dict)
@@ -388,13 +387,3 @@ func _get_rand_chars(player_index: int) -> Array:
 			else:
 				prev_items.append([starting.my_id, starting.curse_factor])
 	return chars_return
-
-func serialize() -> Dictionary:
-	var serialized =.serialize()
-	serialized.value_base = value_base
-	return serialized
-
-
-func deserialize_and_merge(serialized: Dictionary) -> void:
-	.deserialize_and_merge(serialized)
-	value_base = serialized.value_base if "value_base" in serialized else 2

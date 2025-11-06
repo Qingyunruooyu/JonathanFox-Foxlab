@@ -29,7 +29,7 @@ func _init():
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 	if IS_NEW_DAWN:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_latest.gd")
-
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "character_panel_ui.gd")
 	else:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_legacy.gd")
 
@@ -44,7 +44,8 @@ func initialize_mod():
 
 	if IS_NEW_DAWN:
 		for i in mod_data.items:
-			ProgressData.items_unlocked.push_back(i.my_id)
+			if  not ProgressData.items_unlocked.has(i.my_id):
+				ProgressData.items_unlocked.append(i.my_id)
 
 	ProgressData._append_without_duplicates(ItemService.characters, mod_data.characters)
 	ProgressData._append_without_duplicates(ItemService.items, mod_data.items)

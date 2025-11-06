@@ -1,7 +1,24 @@
 extends "res://entities/units/player/player.gd"
 
+var potato_texture = load("res://entities/units/player/potato.png")
+var transparent_texture = load("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
+
+func apply_items_effects() -> void :
+	.apply_items_effects()
+	for appearance in RunData.get_player_appearances(player_index):
+		if appearance.get_sprite().resource_path.begins_with("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/"):
+				var potato = $Animation / Sprite
+				potato.texture = transparent_texture
+				var legs = $Animation/Legs
+				legs.visible = false
+				return
+
+	var potato = $Animation / Sprite
+	potato.texture = potato_texture
+	var legs = $Animation/Legs
+	legs.visible = true
+
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
-		
 	if not current_weapons.has(weapon):
 		return
 

@@ -38,6 +38,8 @@ func convert_remainder(stats: Array, player_index:int):
 			actual_stat_added = round(actual_stat_added / stat_added_gain) as int
 
 		if storage_method == Effect.StorageMethod.REPLACE:
+			if to_stat in ["lock_current_weapons", "disable_item_locking", "item_steals"]:
+				actual_stat_added = max(0, actual_stat_added)
 			RunData.get_player_effects(player_index)[to_stat] = actual_stat_added
 		else:
 			RunData.get_player_effects(player_index)[to_stat] += actual_stat_added
@@ -63,8 +65,3 @@ func convert_remainder(stats: Array, player_index:int):
 		else:
 			RunData.remove_stat(stat_name, actual_stat_removed, player_index) 
 
-	# 官方代码纰漏：铁砧升级的时候没有用get_player_effect_bool("lock_current_weapons")，导致负数也被认为是true
-	# 薛定谔的猫可能会通过尾数转换得到负数的lock_current_weapons，会让善战者自带的铁砧总是-100%伤害
-	var effects = RunData.get_player_effects(player_index)
-	if effects["lock_current_weapons"] < 0:
-		effects["lock_current_weapons"] = 0

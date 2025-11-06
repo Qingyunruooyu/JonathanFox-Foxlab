@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=22 format=2]
+[gd_resource type="Resource" load_steps=21 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/jellyfish_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/水母_effect_7.tres" type="Resource" id=2]
@@ -7,8 +7,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/水母_effect_5.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/水母_effect_4.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/水母_effect_9.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=8]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/jellyfish_appearance.tres" type="Resource" id=8]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=10]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/captains_sword/3/captains_sword_3_data.tres" type="Resource" id=11]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/trident/2/trident_2_data.tres" type="Resource" id=12]
@@ -38,7 +37,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 8 ), ExtResource( 9 ) ]
+item_appearances = [ ExtResource( 8 ) ]
 tags = [  ]
 wanted_tags = [ "stat_curse", "stat_crit_chance" ]
 banned_item_groups = [  ]

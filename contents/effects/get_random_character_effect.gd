@@ -80,8 +80,6 @@ func apply(player_index: int) -> void:
 			chars_name[player_index] = ""
 			starting_items[player_index].clear()
 		chars_to_get[player_index] = _get_rand_chars(player_index)
-	if not wave_started:
-		RunData.remove_item_displayed(RunData.get_player_character(player_index),player_index)
 
 	var transform_chance = _get_transform_chance(player_index)
 	DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])

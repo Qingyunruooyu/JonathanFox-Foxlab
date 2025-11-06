@@ -1,10 +1,8 @@
-class_name ContentData
 extends Resource
 
 export (Array, Resource) var characters = []
 export (Array, Resource) var items = []
 export (Array, Resource) var weapons = []
-export (Array, Array, Resource) var weapons_characters = []
 
 export (Array, Resource) var sets = []         # ItemService.sets
 export (Array, Resource) var challenges = []   # ChallengeService.challenges

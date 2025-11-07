@@ -51,6 +51,9 @@ func initialize_mod():
 	ProgressData._append_without_duplicates(ItemService.items, mod_data.items)
 	ProgressData._append_without_duplicates(ItemService.effects, mod_data.effects)
 	
+	if not mod_data.tracked_items.empty():
+		RunData.init_tracked_items.merge(mod_data.tracked_items)
+
 	var translation: Translation = Translation.new()
 	for c in mod_data.characters:
 		translation.add_message(c.my_id.to_upper(), tr(c.name))

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=101 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/get_random_character_effect.gd" type="Script" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/get_random_weapon_effect.gd" type="Script" id=4]
@@ -106,13 +106,21 @@ script = ExtResource( 1 )
 characters = [ ExtResource( 37 ), ExtResource( 35 ), ExtResource( 39 ), ExtResource( 44 ), ExtResource( 15 ), ExtResource( 47 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 46 ), ExtResource( 45 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 21 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 26 ), ExtResource( 31 ), ExtResource( 17 ), ExtResource( 32 ), ExtResource( 28 ), ExtResource( 24 ), ExtResource( 42 ), ExtResource( 19 ), ExtResource( 38 ), ExtResource( 12 ), ExtResource( 18 ), ExtResource( 41 ), ExtResource( 29 ), ExtResource( 10 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 20 ), ExtResource( 40 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 34 ), ExtResource( 14 ), ExtResource( 27 ), ExtResource( 43 ) ]
 items = [ ExtResource( 100 ), ExtResource( 54 ), ExtResource( 61 ), ExtResource( 62 ), ExtResource( 64 ), ExtResource( 63 ), ExtResource( 67 ), ExtResource( 70 ), ExtResource( 57 ), ExtResource( 56 ), ExtResource( 58 ), ExtResource( 72 ), ExtResource( 73 ), ExtResource( 76 ), ExtResource( 77 ), ExtResource( 78 ), ExtResource( 79 ), ExtResource( 74 ), ExtResource( 91 ), ExtResource( 93 ), ExtResource( 87 ), ExtResource( 85 ), ExtResource( 82 ), ExtResource( 89 ), ExtResource( 88 ), ExtResource( 90 ), ExtResource( 80 ), ExtResource( 81 ), ExtResource( 50 ), ExtResource( 59 ), ExtResource( 99 ), ExtResource( 52 ), ExtResource( 66 ), ExtResource( 71 ), ExtResource( 68 ), ExtResource( 55 ), ExtResource( 69 ), ExtResource( 83 ), ExtResource( 94 ), ExtResource( 84 ), ExtResource( 92 ), ExtResource( 86 ), ExtResource( 95 ), ExtResource( 65 ), ExtResource( 48 ), ExtResource( 53 ), ExtResource( 98 ), ExtResource( 96 ), ExtResource( 75 ), ExtResource( 60 ), ExtResource( 51 ), ExtResource( 49 ), ExtResource( 97 ) ]
 weapons = [  ]
-weapons_characters = [  ]
 sets = [  ]
-challenges = [  ]
 upgrades = [  ]
 consumables = [  ]
 elites = [  ]
 difficulties = [  ]
 effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 7 ) ]
-debug_items = [  ]
-debug_weapons = [  ]
+challenges = [  ]
+tracked_items = {
+"character_brolab_毒奶_244": 0,
+"character_brolab_河鲀_33": 0,
+"character_brolab_海龟_134": 0,
+"item_brolab_建造者的炮塔_129": 0,
+"item_brolab_浮游炮塔_322": 0,
+"item_brolab_球状闪电_0": 0,
+"item_brolab_球状闪电_1": 0,
+"item_brolab_球状闪电_2": 0,
+"item_brolab_球状闪电_3": 0
+}

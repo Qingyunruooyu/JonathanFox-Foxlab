@@ -135,8 +135,10 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 
 	if item_for_effect.is_cursed:
 		extra_item_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
-		
+
+	var tracked_value = 1
 	if !_get_chance_success(CHANCE_CONST_WEAPON, luck_chance):
+		tracked_value = 0
 		var level_suffix := "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
 		var break_effect := load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
 		weapon.effects.append(break_effect)
@@ -151,6 +153,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			current.upgrades_into = upgrade_into
 			current = upgrade_into
 			upgrade_into = current.upgrades_into
+	RunData.add_tracked_value(player_index, "item_brolab_佛手_422", tracked_value)
 
 	return weapon
 	

@@ -203,6 +203,7 @@ func _duplicate_weapon(player_index: int):
 		upgrade_into = current.upgrades_into
 	RunData.add_weapon(weapon, player_index)
 	DebugService.log_data("duplicate weapon " + weapon.my_id)
+	RunData.add_tracked_value(player_index, "character_brolab_无面_294", 1)
 
 func cleanup(player_index: int) -> void:
 	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）

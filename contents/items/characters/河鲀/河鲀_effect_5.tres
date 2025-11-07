@@ -47,5 +47,5 @@ scale = 1.0
 base_smoke_amount = 20
 sound_db_mod = -15
 stats = SubResource( 1 )
-tracking_key = ""
+tracking_key = "character_brolab_河鲀_33"
 scale_with_missing_health = true

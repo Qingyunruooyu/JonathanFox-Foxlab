@@ -23,4 +23,4 @@ can_be_grouped = true
 shooting_animation_speed = 1.0
 is_burning = false
 is_spawning = false
-tracking_key = "item_builder_turret_3"
+tracking_key = "item_brolab_建造者的炮塔_129"

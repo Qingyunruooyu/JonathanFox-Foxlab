@@ -55,18 +55,18 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/恶魔/恶魔_data.tres" type="Resource" id=53]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_data.tres" type="Resource" id=54]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_data.tres" type="Resource" id=55]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/时空装置（阳）/时空装置（阳）_data.tres" type="Resource" id=56]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/时空装置（阴）/时空装置（阴）_data.tres" type="Resource" id=57]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/时空装置阳/时空装置（阳）_data.tres" type="Resource" id=56]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/时空装置阴/时空装置（阴）_data.tres" type="Resource" id=57]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/时空锚点/时空锚点_data.tres" type="Resource" id=58]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/智械危机/智械危机_data.tres" type="Resource" id=59]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/水滴石穿/水滴石穿_data.tres" type="Resource" id=60]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/浮游炮塔/浮游炮塔_data.tres" type="Resource" id=61]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电(天)/球状闪电(天)_data.tres" type="Resource" id=62]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电(玄)/球状闪电(玄)_data.tres" type="Resource" id=63]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电(地)/球状闪电(地)_data.tres" type="Resource" id=64]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电天/球状闪电(天)_data.tres" type="Resource" id=62]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电玄/球状闪电(玄)_data.tres" type="Resource" id=63]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电地/球状闪电(地)_data.tres" type="Resource" id=64]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/百鬼夜行/百鬼夜行_data.tres" type="Resource" id=65]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/瞻星之危/瞻星之危_data.tres" type="Resource" id=66]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电(黄)/球状闪电(黄)_data.tres" type="Resource" id=67]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电黄/球状闪电(黄)_data.tres" type="Resource" id=67]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/累卵之危/累卵之危_data.tres" type="Resource" id=68]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/膨胀/膨胀_data.tres" type="Resource" id=69]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/虫洞/虫洞_data.tres" type="Resource" id=70]
@@ -114,9 +114,11 @@ difficulties = [  ]
 effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 7 ) ]
 challenges = [  ]
 tracked_items = {
+"character_brolab_无面_294": 0,
 "character_brolab_毒奶_244": 0,
 "character_brolab_河鲀_33": 0,
 "character_brolab_海龟_134": 0,
+"item_brolab_佛手_422": 0,
 "item_brolab_建造者的炮塔_129": 0,
 "item_brolab_浮游炮塔_322": 0,
 "item_brolab_球状闪电_0": 0,

@@ -3,16 +3,24 @@ extends "res://entities/units/player/player.gd"
 var potato_texture = load("res://entities/units/player/potato.png")
 var transparent_texture = load("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
 
+var ball_lightings = ["item_brolab_球状闪电_3", "item_brolab_球状闪电_2", "item_brolab_球状闪电_1", "item_brolab_球状闪电_0"]
+
+func on_alien_eyes_timeout() -> void :
+	.on_alien_eyes_timeout()
+	for track_id in ball_lightings:
+		if RunData.get_nb_item(track_id, player_index):
+			RunData.set_tracked_value(player_index, track_id, RunData.tracked_item_effects[player_index]["item_alien_eyes"])
+			break
+
 func apply_items_effects() -> void :
 	.apply_items_effects()
 	for appearance in RunData.get_player_appearances(player_index):
-		if appearance.get_sprite().resource_path.begins_with("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/"):
+			if "hide_vanilla_potato" in appearance and appearance.hide_vanilla_potato:
 				var potato = $Animation / Sprite
 				potato.texture = transparent_texture
 				var legs = $Animation/Legs
 				legs.visible = false
 				return
-
 	var potato = $Animation / Sprite
 	potato.texture = potato_texture
 	var legs = $Animation/Legs

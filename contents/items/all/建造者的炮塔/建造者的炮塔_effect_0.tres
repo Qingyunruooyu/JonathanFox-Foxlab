@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource( 2 )
 key = "stat_engineering"
-text_key = "effect_builder_turret_alt"
+text_key = "[EMPTY]"
 value = 1
 custom_key = ""
 storage_method = 0

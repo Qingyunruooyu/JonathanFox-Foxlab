@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=32 format=2]
+[gd_resource type="Resource" load_steps=31 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_22.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_11.tres" type="Resource" id=2]
@@ -22,7 +22,6 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_20.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_21.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_0.tres" type="Resource" id=22]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_3.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_5.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_2.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_7.tres" type="Resource" id=26]
@@ -41,7 +40,7 @@ icon = ExtResource( 31 )
 name = "参谋"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 22 ), ExtResource( 9 ), ExtResource( 25 ), ExtResource( 23 ), ExtResource( 5 ), ExtResource( 24 ), ExtResource( 10 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 6 ), ExtResource( 18 ), ExtResource( 2 ), ExtResource( 29 ), ExtResource( 7 ), ExtResource( 28 ), ExtResource( 30 ), ExtResource( 19 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 3 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 1 ) ]
+effects = [ ExtResource( 22 ), ExtResource( 9 ), ExtResource( 25 ), ExtResource( 5 ), ExtResource( 24 ), ExtResource( 10 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 6 ), ExtResource( 18 ), ExtResource( 2 ), ExtResource( 29 ), ExtResource( 7 ), ExtResource( 28 ), ExtResource( 30 ), ExtResource( 19 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 3 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 1 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

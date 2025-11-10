@@ -1,4 +1,4 @@
-class_name GetRandWeaponEffect
+class_name FoxLabGetRandWeaponEffect
 extends Effect
 
 export(int) var value_base = 1 # set to == value by default to indicate this effect is not cursed
@@ -18,7 +18,7 @@ var weapon_id: Array = ["","","",""]
 var extra_item_id: Array = ["","","",""]
 
 static func get_id() -> String:
-	return "get_rand_weapon"
+	return "foxlab_effect_get_rand_weapon"
 
 
 func apply(player_index: int) -> void:
@@ -59,6 +59,9 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	var args := ItemService.GetRandItemForWaveArgs.new()
 	args.increase_tier = value - 1
 	args.owned_and_shop_items = []
+	if RunData.get_nb_item("item_hourglass", player_index) > 0:
+		args.owned_and_shop_items.push_back(ItemService.get_element(ItemService.items, "item_hourglass"))
+
 	var weapon :WeaponData = null
 	# chance to get the same weapon equiped
 	if _get_chance_success(CHANCE_EQUIPPED_WEAPON, luck_chance) and RunData.players_data[player_index].weapons.size() > 0:
@@ -85,13 +88,11 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	if item_for_effect.effects.empty():
 		if _get_chance_success(CHANCE_LEGENDARY_ITEM, luck_chance):
 			args.increase_tier = 3
-			# items can be get even if it may exceed the limited number
+			# items (except hourglass) can be get even if it may exceed the limited number
 		item_for_effect = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.ITEMS, args)
+
 	for effect in item_for_effect.effects:
-		if effect.custom_key == "duplicate_item" or effect.custom_key == "increase_tier_on_reroll":
-			item_to_get[player_index] = item_for_effect
-			break
-		elif effect.key == "item_hourglass" and RunData.get_nb_item("item_hourglass", player_index) == 0:
+		if effect.custom_key == "duplicate_item" or effect.custom_key == "increase_tier_on_reroll" or effect.key == "item_hourglass":
 			item_to_get[player_index] = item_for_effect
 			break
 

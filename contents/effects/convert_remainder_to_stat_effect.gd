@@ -1,4 +1,4 @@
-class_name ConvertRemainderToStatEffect
+class_name FoxLabConvertRemainderToStatEffect
 extends Effect
 
 
@@ -19,7 +19,7 @@ export(bool) var is_negative_key = false # key指示的stat仅在负数/正数�
 
 
 static func get_id() -> String:
-	return "convert_remainder"
+	return "foxlab_effect_convert_remainder"
 
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)

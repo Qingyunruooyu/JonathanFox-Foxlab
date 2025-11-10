@@ -1,11 +1,11 @@
-class_name SwapStatEffect
+class_name FoxLabSwapStatEffect
 extends Effect
 
 export(Array, String)  var stats_swapped = ["stat_max_hp", "stat_max_hp"]
 
 
 static func get_id() -> String:
-	return "swap_stat"
+	return "foxlab_effect_swap_stat"
 
 
 func apply(player_index: int) -> void:

@@ -1,4 +1,4 @@
-class_name GetRandCharacterEffect
+class_name FoxLabGetRandCharacterEffect
 extends DoubleValueEffect
 
 const SAME_CHAR_CHANCE = 0.33
@@ -15,7 +15,7 @@ var starting_items: Array =  [[], [], [], []]
 var chars_name: Array = ["","","",""]
 
 static func get_id() -> String:
-	return "get_rand_character"
+	return "foxlab_effect_get_rand_character"
 
 func _get_armor_chance(player_index: int, armor_increases_chance: bool) -> float:
 	var num = -1 if armor_increases_chance else 1

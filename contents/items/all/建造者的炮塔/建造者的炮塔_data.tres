@@ -1,7 +1,6 @@
-[gd_resource type="Resource" load_steps=11 format=2]
+[gd_resource type="Resource" load_steps=10 format=2]
 
 [ext_resource path="res://dlcs/dlc_1/items/builder_turret/builder_turret_3_icon.png" type="Texture" id=1]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_1.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_2.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_7.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/建造者的炮塔/建造者的炮塔_effect_3.tres" type="Resource" id=5]
@@ -20,8 +19,8 @@ icon = ExtResource( 1 )
 name = "建造者的炮塔"
 tier = 3
 value = 20.0
-effects = [ ExtResource( 8 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 4 ) ]
-tracking_text = "DAMAGE_DEALT"
+effects = [ ExtResource( 8 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 4 ) ]
+tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
 is_cursed = false

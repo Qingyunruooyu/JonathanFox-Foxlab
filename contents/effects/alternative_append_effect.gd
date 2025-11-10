@@ -1,9 +1,9 @@
-class_name AlterAppendEffect
+class_name FoxLabAlterAppendEffect
 extends DoubleKeyValueEffect
 
 
 static func get_id() -> String:
-	return "alter_append"
+	return "foxlab_effect_alter_append"
 
 
 func apply(player_index: int) -> void:

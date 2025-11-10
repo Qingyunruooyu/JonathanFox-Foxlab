@@ -5,3 +5,4 @@ FOXLAB_CURSED_TEXT,被诅咒,Cursed
 FOXLAB_RANDOM,随机,random
 FOXLAB_WEAPON_DUPLICATED,已复制的武器：{0},Weapons duplicated: {0}
 FOXLAB_CONST_WEAPON_GET,已获得的坚固武器：{0},Solid weapons got: {0}
+FOXLAB_EFFECT_GET_ITEM,你将获得{0}{1},You will get {0} {1}

@@ -1,51 +1,13 @@
-[gd_resource type="Resource" load_steps=8 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
-[ext_resource path="res://entities/structures/turret/wandering_bot/wandering_bot.tscn" type="PackedScene" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/funnel/funnel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://effects/items/turret_effect.gd" type="Script" id=2]
-[ext_resource path="res://projectiles/bullet_particle_accelerator/particle_accelerator_projectile.tscn" type="PackedScene" id=3]
-[ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=4]
-[ext_resource path="res://weapons/ranged/laser_gun/gun_silenced_sniper1_shot_04.wav" type="AudioStream" id=5]
-[ext_resource path="res://weapons/ranged/laser_gun/gun_silenced_sniper1_shot_04v2.wav" type="AudioStream" id=6]
-
-[sub_resource type="Resource" id=1]
-script = ExtResource( 4 )
-cooldown = 60
-damage = 1
-accuracy = 1.0
-crit_chance = 0.03
-crit_damage = 2.0
-min_range = 0
-max_range = 350
-knockback = 8
-knockback_piercing = 0.0
-can_have_positive_knockback = true
-can_have_negative_knockback = false
-effect_scale = 1.0
-scaling_stats = [ [ "stat_engineering", 1.5 ], [ "stat_levels", 1.5 ] ]
-lifesteal = 0.0
-shooting_sounds = [ ExtResource( 5 ), ExtResource( 6 ) ]
-sound_db_mod = -10
-is_healing = false
-recoil = 25
-recoil_duration = 0.142
-additional_cooldown_every_x_shots = -1
-additional_cooldown_multiplier = -1.0
-speed_percent_modifier = 0
-nb_projectiles = 1
-projectile_spread = 0.0
-piercing = 99
-piercing_dmg_reduction = 0.0
-bounce = 0
-bounce_dmg_reduction = 0.5
-can_bounce = false
-projectile_speed = 500
-increase_projectile_speed_with_range = false
-projectile_scene = ExtResource( 3 )
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/funnel/funnel_stats.tres" type="Resource" id=3]
 
 [resource]
 script = ExtResource( 2 )
 key = ""
-text_key = "生成2个发射粒子光束的流浪机器人，造成{0}（{1}）伤害，原版流浪机器人会降低浮游炮塔的攻速"
+text_key = "生成2个浮游炮，造成{0}（{1}）伤害"
 value = 2
 custom_key = ""
 storage_method = 0
@@ -53,7 +15,7 @@ effect_sign = 3
 custom_args = [  ]
 spawn_cooldown = -1
 scene = ExtResource( 1 )
-stats = SubResource( 1 )
+stats = ExtResource( 3 )
 effects = [  ]
 spawn_in_center = -1
 spawn_around_player = 200.0

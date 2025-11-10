@@ -1,7 +1,6 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/浮游炮塔/浮游炮塔_icon.png" type="Texture" id=1]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/浮游炮塔/浮游炮塔_effect_1.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/浮游炮塔/浮游炮塔_effect_0.tres" type="Resource" id=3]
 [ext_resource path="res://items/global/item_data.gd" type="Script" id=8]
 
@@ -14,7 +13,7 @@ icon = ExtResource( 1 )
 name = "浮游炮塔"
 tier = 3
 value = 105.0
-effects = [ ExtResource( 3 ), ExtResource( 2 ) ]
+effects = [ ExtResource( 3 ) ]
 tracking_text = "DAMAGE_DEALT"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

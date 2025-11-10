@@ -1,10 +1,9 @@
-[gd_resource type="Resource" load_steps=10 format=2]
+[gd_resource type="Resource" load_steps=9 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_effect_2.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_effect_3.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_effect_4.tres" type="Resource" id=4]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_effect_0.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_effect_6.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_effect_1.tres" type="Resource" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/铁砧难知如阴_effect_5.tres" type="Resource" id=8]
@@ -19,7 +18,7 @@ icon = ExtResource( 1 )
 name = "铁砧‧难知如阴"
 tier = 3
 value = 1.0
-effects = [ ExtResource( 5 ), ExtResource( 7 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 6 ) ]
+effects = [ ExtResource( 7 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 6 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

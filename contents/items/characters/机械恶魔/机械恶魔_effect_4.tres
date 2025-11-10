@@ -42,7 +42,7 @@ increase_projectile_speed_with_range = false
 [resource]
 script = ExtResource( 3 )
 key = ""
-text_key = "初始拥有3个发射粒子光束的流浪机器人，之后每{1}秒召唤一个，造成{2}（{3}）伤害"
+text_key = "初始拥有3个浮游炮，之后每{1}秒召唤一个，造成{2}（{3}）伤害"
 value = 0
 custom_key = ""
 storage_method = 0

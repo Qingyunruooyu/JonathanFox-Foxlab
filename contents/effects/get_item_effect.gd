@@ -7,7 +7,13 @@ static func get_id() -> String:
 	return "foxlab_effect_get_item"
 
 func apply(player_index: int) -> void:
-	var item_to_add  = ItemService.get_element(ItemService.items, key)
+	var item_to_add  = null
+	if key.begins_with("item_builder_turret"):
+		var struct_range = RunData.get_player_effect("structure_range", player_index)
+		var new_level = BuilderTurret.get_level(struct_range)
+		item_to_add = ItemService.foxlab_get_builder_turret_at_level(new_level, player_index)
+	else:
+		item_to_add = ItemService.get_element(ItemService.items, key)
 	if item_to_add != null:
 		for i in range(value):
 			RunData.add_item(item_to_add, player_index)

@@ -1,5 +1,6 @@
 extends "res://singletons/item_service.gd"
 
+######### 面具相关 ############
 var foxlab_transform_characters:Array=[]
 var foxlab_vanilla_characters:Array=[]
 
@@ -72,3 +73,25 @@ func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():
 		_init_foxlab_transform_characters()
 	return foxlab_transform_characters
+
+
+######## 建造者的炮塔相关 ###############
+
+const foxlab_builder_turret_names : Array = ["item_builder_turret_0", "item_builder_turret_1", "item_builder_turret_2", "item_builder_turret_3"]
+
+var foxlab_builder_turret_scatter : Array = [null, null, null, null]
+
+# 玩家第一个建造者的炮塔会居中，其他炮塔除非有group_structure，不然是随机分布的
+func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> ItemData:
+	if RunData.get_nb_item(foxlab_builder_turret_names[new_level], player_index) == 0:
+		return get_element(items, foxlab_builder_turret_names[new_level]) as ItemData
+	if  foxlab_builder_turret_scatter[new_level] == null:
+		foxlab_builder_turret_scatter[new_level] = get_element(items, foxlab_builder_turret_names[new_level]).duplicate()
+		for i in range(foxlab_builder_turret_scatter[new_level].effects.size()):
+			var effect = foxlab_builder_turret_scatter[new_level].effects[i]
+			if effect is BuilderTurretEffect:
+				effect = effect.duplicate()
+				effect.spawn_in_center = -1
+				foxlab_builder_turret_scatter[new_level].effects[i] = effect
+				break
+	return foxlab_builder_turret_scatter[new_level]

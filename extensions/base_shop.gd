@@ -1,6 +1,15 @@
 extends "res://ui/menus/shop/base_shop.gd"
 
-const builder_turret_names : Array = ["item_builder_turret_0", "item_builder_turret_1", "item_builder_turret_2", "item_builder_turret_3"]
+func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: int) -> void :
+	var player_items = RunData.get_player_items(p_player_index)
+
+	for item in player_items:
+		if item.my_id == ItemService.foxlab_builder_turret_names[old_level]:
+			RunData.remove_item(item, p_player_index)
+			break
+
+	var new_item:ItemData = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
+	RunData.add_item(new_item, p_player_index)
 
 func _ready() -> void :
 	for player_index in RunData.get_player_count():
@@ -8,9 +17,9 @@ func _ready() -> void :
 		var new_level = BuilderTurret.get_level(struct_range)
 		var update_item = false
 		for level in range(new_level):
-			var number = RunData.get_nb_item(builder_turret_names[level], player_index)
+			var number = RunData.get_nb_item(ItemService.foxlab_builder_turret_names[level], player_index)
 			for i in range(number):
-				BuilderTurret.switch_turret_item(level, new_level, player_index)
+				foxlab_switch_turret_item(level, new_level, player_index)
 				update_item = true
 		if update_item:
 			var player_gear_container = _get_gear_container(player_index)

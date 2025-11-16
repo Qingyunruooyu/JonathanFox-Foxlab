@@ -20,5 +20,5 @@ custom_key = "gain_stats_on_reroll"
 storage_method = 1
 effect_sign = 1
 custom_args = [ SubResource( 1 ) ]
-value2 = 85.0
+value2 = 85
 sum_strategy = 0

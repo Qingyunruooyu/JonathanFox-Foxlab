@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = ""
-text_key = "此医疗炮塔会叛变并召唤同伙"
+text_key = "EFFECT_FOXLAB_HEALING_BETRAY"
 value = 0
 custom_key = ""
 storage_method = 0

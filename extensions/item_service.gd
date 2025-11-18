@@ -95,3 +95,77 @@ func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> Ite
 				foxlab_builder_turret_scatter[new_level].effects[i] = effect
 				break
 	return foxlab_builder_turret_scatter[new_level]
+
+
+####### 变异相关 ##############
+const FOXLAB_BOSS_CHANCE := 3
+var FOXLAB_IS_NEW_DAWN = "1.1.13" in CrashReporter.VERSION
+var foxlab_enemies = []
+
+func foxlab_has_node_with_name(packed_scene: PackedScene, node_name: String) -> bool:
+	var state = packed_scene.get_state()
+	for i in range(state.get_node_count()):
+		if state.get_node_name(i) == node_name:
+			return true
+	return false
+
+func foxlab_random_enemies() -> Array:
+	if not foxlab_enemies.empty():
+		return foxlab_enemies
+
+	if FOXLAB_IS_NEW_DAWN:
+		for enemy in ItemService.enemies:
+			var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
+			var scene_path:String = enemy_path + ".tscn"
+			var scene:PackedScene = load(scene_path)
+			if scene == null:
+				#DebugService.log_data("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
+				continue
+			if not foxlab_has_node_with_name(scene, "Boss"):
+				foxlab_enemies.append(scene)
+				#DebugService.log_data(scene_path)
+	else:
+		for zone_data in ZoneService.zones:
+#			DebugService.log_data(zone_data.resource_path)
+			var waves_data:Array = zone_data.waves_data
+			for wave_data in waves_data:
+#				DebugService.log_data(wave_data.resource_path)
+				var groups_data:Array = wave_data.groups_data
+				for group_data in groups_data:
+					if group_data.is_boss or group_data.is_neutral:
+						continue
+#					DebugService.log_data(group_data.resource_path)
+					var wave_units_data:Array = group_data.wave_units_data
+					for unit_data in wave_units_data:
+#						DebugService.log_data(unit_data.resource_path)
+						if not unit_data.unit_scene in foxlab_enemies:
+							foxlab_enemies.append(unit_data.unit_scene)
+	return foxlab_enemies
+
+func foxlab_spawn_random_enemy(enemy: Enemy, player_index: int):
+	var enemy_scene: PackedScene = null
+	if enemy is Boss or Utils.get_chance_success(FOXLAB_BOSS_CHANCE / 100.0):
+		# 最终BOSS不能被变异
+		if enemy.enemy_id in ["predator", "invoker", "eel", "dead_whale"]:
+			return
+		var enemy_data: EnemyData = null
+		if Utils.get_chance_success(FOXLAB_BOSS_CHANCE / 100.0):
+			enemy_data = Utils.get_rand_element(ItemService.bosses)
+		else:
+			enemy_data = Utils.get_rand_element(ItemService.elites)
+		enemy_scene = enemy_data.scene
+		var main = Utils.get_scene_node()
+		if main.has_node("FloatingTextManager"):
+			var floating_text_manager:FloatingTextManager = main.get_node("FloatingTextManager")
+			if not enemy is Boss:
+				var icon = ItemService.get_element(ItemService.icons, "icon_elite").icon
+				var player_position = floating_text_manager.players[player_index].global_position
+				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
+			else:
+				floating_text_manager.display("MUTATION", enemy.global_position)
+	else:
+		enemy_scene = Utils.get_rand_element(foxlab_random_enemies())
+
+	enemy._on_AttackBehavior_wanted_to_spawn_an_enemy(enemy_scene, ZoneService.get_rand_pos_in_area(Vector2(enemy.global_position.x, enemy.global_position.y), 200))
+	enemy.can_drop_loot = false
+	enemy.die()

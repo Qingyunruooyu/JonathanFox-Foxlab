@@ -11,5 +11,5 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-stat_displayed = "工程学和近战/远程/元素伤害"
+stat_displayed = "STAT_FOXLAB_BASE_DAMAGE"
 stats_modified = [ "stat_engineering", "stat_ranged_damage", "stat_melee_damage", "stat_elemental_damage" ]

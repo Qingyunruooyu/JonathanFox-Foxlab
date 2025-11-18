@@ -36,11 +36,11 @@
 
 [resource]
 script = ExtResource( 7 )
-my_id = "character_brolab_老狙神_413"
+my_id = "character_foxlab_older_sniper"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 32 )
-name = "老狙神"
+name = "CHARACTER_FOXLAB_OLDER_SNIPER"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 33 ), ExtResource( 28 ), ExtResource( 26 ), ExtResource( 25 ), ExtResource( 4 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 27 ), ExtResource( 29 ) ]

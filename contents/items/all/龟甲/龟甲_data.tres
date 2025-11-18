@@ -8,11 +8,11 @@
 
 [resource]
 script = ExtResource( 3 )
-my_id = "item_brolab_龟甲_245"
+my_id = "item_foxlab_tortoise_shell"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "龟甲"
+name = "ITEM_FOXLAB_TORTOISE_SHELL"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ) ]

@@ -75,11 +75,11 @@
 
 [resource]
 script = ExtResource( 7 )
-my_id = "character_brolab_暴走流浪汉_314"
+my_id = "character_foxlab_rampaging_vagabond"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "暴走流浪汉"
+name = "CHARACTER_FOXLAB_RAMPAGING_VAGABOND"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 39 ), ExtResource( 42 ), ExtResource( 33 ), ExtResource( 27 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 30 ), ExtResource( 3 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 37 ), ExtResource( 45 ), ExtResource( 21 ), ExtResource( 26 ), ExtResource( 46 ), ExtResource( 34 ), ExtResource( 40 ), ExtResource( 22 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 38 ), ExtResource( 41 ), ExtResource( 20 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 23 ), ExtResource( 51 ), ExtResource( 24 ), ExtResource( 52 ), ExtResource( 25 ), ExtResource( 62 ), ExtResource( 60 ), ExtResource( 61 ), ExtResource( 58 ), ExtResource( 66 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 55 ), ExtResource( 56 ), ExtResource( 65 ), ExtResource( 57 ), ExtResource( 59 ), ExtResource( 63 ), ExtResource( 64 ), ExtResource( 69 ), ExtResource( 72 ), ExtResource( 70 ), ExtResource( 68 ), ExtResource( 67 ), ExtResource( 71 ) ]

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "item_coffee"
-text_key = "{0}%部分食物类道具价格"
+text_key = "EFFECT_FOXLAB_FOOD_PRICE"
 value = -100
 custom_key = "specific_items_price"
 storage_method = 1

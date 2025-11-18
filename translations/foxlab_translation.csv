@@ -4,5 +4,36 @@ FOXLAB_TRANSFORM_VANILLA_ONLY,仅变身原版角色,Vannilla characters only
 FOXLAB_CURSED_TEXT,被诅咒,Cursed
 FOXLAB_RANDOM,随机,random
 FOXLAB_WEAPON_DUPLICATED,已复制的武器：{0},Weapons duplicated: {0}
+FOXLAB_TRANSFORM_TIMES,已成功变身次数：{0}, Successfully transformed: {0}
 FOXLAB_CONST_WEAPON_GET,已获得的坚固武器：{0},Solid weapons got: {0}
 FOXLAB_EFFECT_GET_ITEM,你将获得{0}{1},You will get {0} {1}
+CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
+EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，造成{0}（{1}）伤害；未杀死的目标有{5}几率异变（关底头目不异变，其他头目异变几率是基础几率的10%）,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage; if a target is still alive, {5} chance for it to mutate(Final-wave Bosses do not mutate; chance for other Bosses is 10% of base chance)"
+ITEM_FOXLAB_REACTOR,反应堆,Reactor
+EFFECT_FOXLAB_MUTATE_ALIVE_ENEMY,你击中但未杀死的目标有{0}几率异变（关底头目不异变，其他头目异变几率是基础几率的10%）,"{0} chance to mutate an alive target you hit(Final-wave Bosses do not mutate; chance for other Bosses is 10% of base chance)"
+CHARACTER_FOXLAB_JELLYFISH,水母,Jellyfish
+STAT_FOXLAB_ARMOR_DODGE_HARVESTING,护甲/闪避/收获,Armor/Dodge/Harvesting
+CHARACTER_FOXLAB_PROGRAMMER,程序员,Programmer
+EFFECT_FOXLAB_PROGRAMMER,{0}{1}敌袭结束后用于增强构筑物,{0} {1} are used for enhancing structures at the end of a wave
+EFFECT_FOXLAB_SPECIFIC_WEAPON_CLASS_PRICE,{0} {1}类武器价格,{0} price of {1} weapons
+EFFECT_FOXLAB_GAIN_STAT_END_OF_WAVE_DIFF,敌袭结束后{0}{1}（{2}波开始{3}）,{0} {1} at the end of a wave({3} since Wave {2})
+EFFECT_FOXLAB_KEEP_LAST_TWO,{1}低于负{3}时，敌袭结束后保留低2位,Keep the last 2 digits if {1} goes below minus {3}
+CHARACTER_FOXLAB_TURTLE,海龟,Turtle
+ITEM_FOXLAB_TORTOISE_SHELL,龟甲,Tortoise shell
+STAT_FOXLAB_BASE_DAMAGE,工程学和近战/远程/元素伤害,Engineering and Melee/Ranged/Elemental Damage
+EFFECT_FOXLAB_ON_HIT_DOUBLE,受到攻击时，{0}{1}、{2}{3}直至敌袭结束,"{0} {1}, {2} {3} when you take damage until the end of the wave"
+CHARACTER_FOXLAB_RAMPAGING_VAGABOND,暴走流浪汉,Rampaging Vagabond
+EFFECT_FOXLAB_VAGABOND_FRUIT_POS,捡起水果时有{2}概率增强自己,{2} chance to enhance youself when you pick up a fruit
+EFFECT_FOXLAB_VAGABOND_FRUIT_NEG,捡起水果时有{2}概率增强敌人、使刷新和物品变贵,{2} chance to enhance enemies or make reroll and items more expensive when you pick up a fruit
+EFFECT_FOXLAB_FOOD_PRICE,{0}部分食物类道具价格,{0} price of some food item
+CHARACTER_FOXLAB_MOM,鬼妈,Mom
+EFFECT_FOXLAB_MOM_LANDMINE_SPAWN,每{1}秒生成3个地雷（其中{0}个在你附近），造成{2}（{3}）伤害,3 landmines({0} near you) spawn every {1} seconds dealing {2} ({3}) damage in an area
+EFFECT_FOXLAB_MOM_LANDMINE_CRIT,此地雷可以暴击，初始伤害为x{2}（{3}概率）,"These lamdmines can crit with base damage x{2}({3} chance)"
+CHARACTER_FOXLAB_POISONOUS_HEALER,毒奶,Poisonous Healer
+EFFECT_FOXLAB_HEALING_BETRAY,此医疗炮塔会叛变并召唤同伙,The medical turret betrays you and spawns its copy
+CHARACTER_FOXLAB_OLDER_SNIPER,老狙神,Old Sniper
+EFFECT_FOXLAB_IGNORE_NEARBY_ENEMY,你无法直接攻击附近的敌人,You can't attack enemies nearby directly
+CHARACTER_FOXLAB_CLAW_DRUID,利爪德鲁伊, Druid of Claw
+EFFECT_FOXLAB_INCREASE_DAMAGE_RECEIVED,敌人受伤后在{2}秒内额外承受{0}伤害（上限：{3}）,Enemies hit take {0} more damage for {2} seconds (max: {3})
+CHARACTER_FOXLAB_ANTIMATTER,反物质,Anti-Matter
+STAT_FOXLAB_PRIMARY_EXCEPT_CURSE,主属性（除[color=#ca61ff]诅咒[/color]）,Primary Stats(Except [color=#ca61ff]Curse[/color])

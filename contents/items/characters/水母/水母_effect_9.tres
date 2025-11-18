@@ -11,5 +11,5 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-stat_displayed = "收获/护甲/闪避"
+stat_displayed = "STAT_FOXLAB_ARMOR_DODGE_HARVESTING"
 stats_modified = [ "stat_armor", "stat_harvesting", "stat_dodge" ]

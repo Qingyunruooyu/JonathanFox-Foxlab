@@ -1,13 +1,30 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+arg_index = 2
+arg_sign = 1
+arg_value = 2
+arg_format = 0
+arg_key = "3"
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 3
+arg_sign = 1
+arg_value = 2
+arg_format = 0
+arg_key = "enemy_speed"
 
 [resource]
 script = ExtResource( 1 )
 key = "stat_curse"
-text_key = "受到攻击时，+1诅咒、+3%敌人速度直至敌袭结束"
+text_key = "EFFECT_FOXLAB_ON_HIT_DOUBLE"
 value = 1
 custom_key = "temp_stats_on_hit"
 storage_method = 1
 effect_sign = 5
-custom_args = [  ]
+custom_args = [ SubResource( 2 ), SubResource( 1 ) ]

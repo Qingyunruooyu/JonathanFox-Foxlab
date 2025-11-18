@@ -53,6 +53,12 @@ func initialize_mod():
 
 	if not mod_data.tracked_items.empty():
 		RunData.init_tracked_items.merge(mod_data.tracked_items)
+		
+	if not mod_data.translation_keys_needing_operator.empty():
+		Text.keys_needing_operator.merge(mod_data.translation_keys_needing_operator)
+	
+	if  not mod_data.translation_keys_needing_percent.empty():
+		Text.keys_needing_percent.merge(mod_data.translation_keys_needing_percent)
 
 	ItemService.init_unlocked_pool()
 	RunData.reset()
@@ -63,9 +69,11 @@ func initialize_mod():
 
 	var translation: Translation = Translation.new()
 	for c in mod_data.characters:
-		translation.add_message(c.my_id.to_upper(), tr(c.name))
+		if not "FOXLAB" in c.name:
+			translation.add_message(c.my_id.to_upper(), tr(c.name))
 	for i in mod_data.items:
-		translation.add_message(i.my_id.to_upper(), tr(i.name))
+		if not "FOXLAB" in i.name:
+			translation.add_message(i.my_id.to_upper(), tr(i.name))
 	TranslationServer.add_translation(translation)
 
 	# remove legacy files

@@ -1,13 +1,13 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/weapon_class_price_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "wrench"
-text_key = "{0}%工具类武器价格"
+key = "set_tool"
+text_key = "EFFECT_FOXLAB_SPECIFIC_WEAPON_CLASS_PRICE"
 value = -60
-custom_key = "specific_items_price"
-storage_method = 1
+custom_key = ""
+storage_method = 0
 effect_sign = 0
 custom_args = [  ]

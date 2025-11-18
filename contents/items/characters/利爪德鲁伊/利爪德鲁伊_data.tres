@@ -31,11 +31,11 @@
 
 [resource]
 script = ExtResource( 8 )
-my_id = "character_brolab_利爪德鲁伊_149"
+my_id = "character_foxlab_claw_druid"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 28 )
-name = "利爪德鲁伊"
+name = "CHARACTER_FOXLAB_CLAW_DRUID"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 22 ), ExtResource( 1 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 2 ) ]

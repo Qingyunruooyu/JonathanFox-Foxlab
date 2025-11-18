@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource( 1 )
 key = "stat_all"
-text_key = "敌人受伤后在{2}秒内额外承受{0}%伤害（上限：{3}%）"
+text_key = "EFFECT_FOXLAB_INCREASE_DAMAGE_RECEIVED"
 value = 30
 custom_key = "enemy_percent_damage_taken"
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-source_id = "item_ice_cube"
+source_id = "character_foxlab_claw_druid"
 duration_secs = 8.0
 max_stacks = 100.0
 max_procs = -1.0
-outline_color = Color( 0.74902, 0.921569, 1, 1 )
+outline_color = Color( 0.121569, 0.690196, 0.360784, 1 )

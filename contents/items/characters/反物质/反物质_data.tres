@@ -30,14 +30,14 @@
 
 [resource]
 script = ExtResource( 6 )
-my_id = "character_brolab_反物质_64"
+my_id = "character_foxlab_antimatter"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 27 )
-name = "反物质"
+name = "CHARACTER_FOXLAB_ANTIMATTER"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 1 ), ExtResource( 26 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 24 ), ExtResource( 25 ) ]
+effects = [ ExtResource( 25 ), ExtResource( 1 ), ExtResource( 26 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 24 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

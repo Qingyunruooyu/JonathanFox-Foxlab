@@ -38,11 +38,11 @@
 
 [resource]
 script = ExtResource( 8 )
-my_id = "character_brolab_海龟_134"
+my_id = "character_foxlab_turtle"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "海龟"
+name = "CHARACTER_FOXLAB_TURTLE"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 31 ), ExtResource( 3 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 35 ) ]

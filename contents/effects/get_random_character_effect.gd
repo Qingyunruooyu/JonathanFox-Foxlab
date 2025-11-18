@@ -122,6 +122,7 @@ func apply(player_index: int) -> void:
 			DebugService.log_data("add weapon " + weapon.my_id)
 
 	starting_items[player_index].clear()
+	RunData.add_tracked_value(player_index, "item_brolab_面具_422", 1)
 
 	if RunData.players_data[player_index].weapons.size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
 		_duplicate_weapon(player_index)

@@ -17,4 +17,6 @@ export (Array, Resource) var challenges = []
 # RunData
 export (Dictionary) var tracked_items = {}
 
-
+# Text
+export (Dictionary) var translation_keys_needing_operator = {}
+export (Dictionary) var translation_keys_needing_percent = {}

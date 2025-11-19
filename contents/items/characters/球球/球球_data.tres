@@ -21,11 +21,11 @@
 
 [resource]
 script = ExtResource( 7 )
-my_id = "character_brolab_球球_130"
+my_id = "character_foxlab_ball"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "球球"
+name = "CHARACTER_FOXLAB_BALL"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 18 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 12 ), ExtResource( 9 ), ExtResource( 16 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 2 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 20 ), ExtResource( 21 ) ]

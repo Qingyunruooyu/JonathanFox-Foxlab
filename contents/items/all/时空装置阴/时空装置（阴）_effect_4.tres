@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_时空阴_253"
+key = "item_foxlab_spacetime_machine_yin"
 text_key = "EFFECT_EXTRA_ITEM_IN_CRATE"
 value = 5
 custom_key = "extra_item_in_crate"

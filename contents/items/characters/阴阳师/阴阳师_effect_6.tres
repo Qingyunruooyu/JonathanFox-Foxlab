@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "res://dlcs/dlc_1/zones/abyss/000_loot/group_loot.tres"
-text_key = "当前状态(小于1的状态无效)："
+text_key = "[EMPTY]"
 value = 2
 custom_key = "extra_enemies_next_wave"
 storage_method = 1

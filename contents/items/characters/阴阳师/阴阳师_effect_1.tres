@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "extra_loot_aliens"
-text_key = "初始生成4战利品外星人，每波额外生成{0}个"
+text_key = "effect_extra_loot_aliens"
 value = 1
 custom_key = ""
 storage_method = 0

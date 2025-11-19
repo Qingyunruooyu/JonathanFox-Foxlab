@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=21 format=2]
+[gd_resource type="Resource" load_steps=27 format=2]
 
 [ext_resource path="res://items/characters/well_rounded/well_rounded_icon.png" type="Texture" id=1]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/brick/1/brick_data.tres" type="Resource" id=2]
@@ -18,8 +18,14 @@
 [ext_resource path="res://weapons/ranged/revolver/1/revolver_data.tres" type="Resource" id=16]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_0.tres" type="Resource" id=17]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_1.tres" type="Resource" id=18]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_enemy_damage.tres" type="Resource" id=19]
 [ext_resource path="res://weapons/ranged/icicle/1/icicle_data.tres" type="Resource" id=20]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=21]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_enemy_health.tres" type="Resource" id=22]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_2.tres" type="Resource" id=23]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_3.tres" type="Resource" id=24]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_4.tres" type="Resource" id=25]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_5.tres" type="Resource" id=26]
 
 [resource]
 script = ExtResource( 13 )
@@ -30,8 +36,8 @@ icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_REFACTOR"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 17 ), ExtResource( 18 ) ]
-tracking_text = ""
+effects = [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 19 ), ExtResource( 22 ) ]
+tracking_text = "stats_gained"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
 is_cursed = false

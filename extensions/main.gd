@@ -16,11 +16,11 @@ func _ready():
 		if not receive_item_effects.empty():
 			# Cache
 			var _item = ItemService.get_item_from_id("item_acid")
-			
+
 			var remove_array: Array = []
 			for receive_item_effect in receive_item_effects:
 				if receive_item_effect[2] <= RunData.current_wave:
-					var end_wave = -1 
+					var end_wave = -1
 					if receive_item_effect.size() > 5:
 						end_wave = receive_item_effect[5]
 					if end_wave <= 0:
@@ -28,16 +28,16 @@ func _ready():
 					elif end_wave < RunData.current_wave:
 						remove_array.push_back(receive_item_effect)
 						continue
-					
+
 					var item_data = ItemService.get_element(ItemService.items, receive_item_effect[1])
 					if not item_data == null:
 						var is_cursed: bool = receive_item_effect[4]
 						var dlc = null
 						var actual_item_data = item_data
-						
+
 						if is_cursed:
-							dlc = ProgressData.get_dlc_data("abyssal_terrors")	
-						
+							dlc = ProgressData.get_dlc_data("abyssal_terrors")
+
 						for i in receive_item_effect[0]:
 							if dlc:
 								actual_item_data = dlc.curse_item(item_data, player_index, false)
@@ -46,11 +46,11 @@ func _ready():
 									if effect is SwapMaxMinStatEffect:
 										effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
 							RunData.add_item(actual_item_data, player_index)
-							
+
 						_floating_text_manager.display_icon(receive_item_effect[0], item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, player.global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)
-						
+
 						need_reset_player = true
-			
+
 			for remove_entry in remove_array:
 				receive_item_effects.erase(remove_entry)
 
@@ -69,7 +69,7 @@ func _ready():
 							has_effect = true
 							break
 					if not has_effect:
-						effect_items.append([eff[0], int(eff[1])]) 
+						effect_items.append([eff[0], int(eff[1])])
 				if RunData.current_wave == (int(eff[3]) + 1):
 					var effect_items: Array = RunData.get_player_effect("stats_end_of_wave", player_index)
 					for i in effect_items.size():
@@ -79,10 +79,10 @@ func _ready():
 							if effect_item[1] == 0:
 								effect_items.remove(i)
 							break
-					
+
 					remove_array.push_back(eff)
 			for j in remove_array:
 				stats_end_of_wave_after_wave.erase(j)
-		
+
 		if need_reset_player:
 			player.update_player_stats(true)

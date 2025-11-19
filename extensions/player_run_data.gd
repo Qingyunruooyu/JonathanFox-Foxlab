@@ -53,7 +53,8 @@ static func init_effects()->Dictionary:
 			"temp_stats_on_structure_crit": [], # 被删掉的原版词条
 			"foxlab_effect_receive_item_at_wave": [], # 改自brolab的两个特殊机制词条
 			"foxlab_stats_end_of_wave_after_wave": [],
-			"foxlab_mutate_alive_enemy": 0,
+			"foxlab_mutate_alive_enemy": 0, #变异几率
+			"foxlab_gain_stat_on_mutate":0 #变异后可获得属性
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

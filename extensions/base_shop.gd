@@ -41,9 +41,9 @@ func buy_item(item_data: ItemData, player_index: int) -> void :
 			update_weapon = true
 			update_item = true
 			update_go_next = true
-	if RunData.get_player_effect("weapon_slot", player_index) != prev_weapon_slot: 
+	if RunData.get_player_effect("weapon_slot", player_index) != prev_weapon_slot:
 		update_weapon = true
-		
+
 	var player_gear_container = _get_gear_container(player_index)
 	if update_weapon:
 		var weapons = RunData.get_player_weapons(player_index)
@@ -61,4 +61,4 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 		var player_gear_container = _get_gear_container(player_index)
 		var weapons = RunData.get_player_weapons(player_index)
 		player_gear_container.set_weapons_data(weapons)
-	
+

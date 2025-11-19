@@ -40,7 +40,7 @@ func _ready():
 	call_deferred("initialize_mod")
 
 func initialize_mod():
-	var mod_data = load("res://mods-unpacked/%s/content_data/content_data.tres" % [MOD_NAME])	
+	var mod_data = load("res://mods-unpacked/%s/content_data/content_data.tres" % [MOD_NAME])
 
 	if IS_NEW_DAWN:
 		for i in mod_data.items:
@@ -53,10 +53,10 @@ func initialize_mod():
 
 	if not mod_data.tracked_items.empty():
 		RunData.init_tracked_items.merge(mod_data.tracked_items)
-		
+
 	if not mod_data.translation_keys_needing_operator.empty():
 		Text.keys_needing_operator.merge(mod_data.translation_keys_needing_operator)
-	
+
 	if  not mod_data.translation_keys_needing_percent.empty():
 		Text.keys_needing_percent.merge(mod_data.translation_keys_needing_percent)
 
@@ -77,10 +77,10 @@ func initialize_mod():
 	TranslationServer.add_translation(translation)
 
 	# remove legacy files
-	ProgressData.init_save_paths()    
-	var save_path: String = ProgressData.SAVE_PATH    
+	ProgressData.init_save_paths()
+	var save_path: String = ProgressData.SAVE_PATH
 	var last_splitter: = save_path.find_last("/")
-	var base_save_path: = save_path.left(last_splitter).get_base_dir()    
+	var base_save_path: = save_path.left(last_splitter).get_base_dir()
 	LEGACY_DIR = base_save_path.plus_file("brolab")
 	delete_files_from_txt(FOXLAB_REMOVE_LIST_FILE)
 

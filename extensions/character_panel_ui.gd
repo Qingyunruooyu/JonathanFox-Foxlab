@@ -18,5 +18,5 @@ func apply_items_appearance(all_items: Array) -> void :
 	potato.texture = potato_texture
 	var legs = $"%Character"/Legs
 	legs.visible = true
-	
+
 

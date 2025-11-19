@@ -6,11 +6,11 @@
 
 [resource]
 script = ExtResource( 8 )
-my_id = "item_brolab_浮游炮塔_322"
+my_id = "item_foxlab_funnel"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "浮游炮塔"
+name = "ITEM_FOXLAB_FUNNEL"
 tier = 3
 value = 105.0
 effects = [ ExtResource( 3 ) ]

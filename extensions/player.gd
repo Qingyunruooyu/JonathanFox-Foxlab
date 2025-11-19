@@ -3,7 +3,7 @@ extends "res://entities/units/player/player.gd"
 var potato_texture = load("res://entities/units/player/potato.png")
 var transparent_texture = load("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
 
-var ball_lightings = ["item_brolab_球状闪电_3", "item_brolab_球状闪电_2", "item_brolab_球状闪电_1", "item_brolab_球状闪电_0"]
+var ball_lightings = ["item_foxlab_ball_lightning_3", "item_foxlab_ball_lightning_2", "item_foxlab_ball_lightning_1", "item_foxlab_ball_lightning_0"]
 
 func on_alien_eyes_timeout() -> void :
 	.on_alien_eyes_timeout()

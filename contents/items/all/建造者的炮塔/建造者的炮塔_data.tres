@@ -12,11 +12,11 @@
 
 [resource]
 script = ExtResource( 9 )
-my_id = "item_brolab_建造者的炮塔_129"
+my_id = "item_foxlab_architecture_diagram"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "建造者的炮塔"
+name = "ITEM_FOXLAB_ARCHITECTURE_DIAGRAM"
 tier = 3
 value = 20.0
 effects = [ ExtResource( 8 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 4 ) ]

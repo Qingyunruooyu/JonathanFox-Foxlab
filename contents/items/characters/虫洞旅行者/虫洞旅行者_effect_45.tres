@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "negative_knockback"
-text_key = "[EMPTY]"
+text_key = "EFFECT_FOXLAB_NEGATIVE_KNOCKBACK"
 value = 1
 custom_key = ""
 storage_method = 0

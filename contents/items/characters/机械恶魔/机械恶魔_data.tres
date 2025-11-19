@@ -17,11 +17,11 @@
 
 [resource]
 script = ExtResource( 18 )
-my_id = "character_brolab_机械恶魔_43"
+my_id = "character_foxlab_infernal_machine"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "机械恶魔"
+name = "CHARACTER_FOXLAB_INFERNAL_MACHINE"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 8 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 2 ), ExtResource( 6 ), ExtResource( 11 ), ExtResource( 4 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 12 ) ]

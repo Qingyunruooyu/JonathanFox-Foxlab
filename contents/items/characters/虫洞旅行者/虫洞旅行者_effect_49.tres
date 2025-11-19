@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "stat_speed"
-text_key = "击退改为抓取；敌袭结束后若击退成功减半，每{3}点{1}转换为{4}窃取次数并清空击退"
+text_key = "EFFECT_FOXLAB_WORMHOLE_UPGRADE"
 value = 20
 custom_key = "convert_stats_end_of_wave"
 storage_method = 1

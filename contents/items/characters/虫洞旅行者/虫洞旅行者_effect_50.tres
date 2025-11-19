@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "item_steals"
-text_key = "每次以此法提升窃取次数时，{0}%的次数会{3}比{4}转换为头目和精英怪的击杀增幅"
+text_key = "EFFECT_FOXLAB_WORMHOLE_UPGRADE_NEG"
 value = 1
 custom_key = "convert_stats_end_of_wave"
 storage_method = 1

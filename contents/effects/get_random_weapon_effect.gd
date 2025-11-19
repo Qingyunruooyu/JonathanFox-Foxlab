@@ -8,7 +8,7 @@ const CHANCE_LEGENDARY_ITEM: float = 0.05
 const CHANCE_BOOST_MELEE: float = 0.20
 const CHANCE_CONST_WEAPON: float = 0.01
 # item_axolotl, item_goldfish, item_mirror, item_anvil， weapon_captains_sword_3, weapon_stick_1
-# item_brolab_佛手_422, item_brolab_面具_422, "item_hourglass"
+# item_foxlab_buddhas_hand, item_foxlab_mask, "item_hourglass"
 var debug_item_name: Array = []
 
 var weapon_to_get: Array = [null, null, null, null]
@@ -41,7 +41,7 @@ func get_args(player_index: int) -> Array:
 		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
 	if weapon_id[player_index].empty():
 		weapon_to_get[player_index] = _get_rand_weapon(player_index)
-	
+
 	return [weapon_id[player_index], extra_item_id[player_index]]
 
 func _get_chance_success(base_chance: float, luck_chance: float)->bool:
@@ -71,8 +71,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args).duplicate() as WeaponData
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
 		var melee_stats:MeleeWeaponStats  = weapon.stats as MeleeWeaponStats
-		melee_stats.deal_dmg_on_return = true	
-	
+		melee_stats.deal_dmg_on_return = true
+
 	var item_for_effect :ItemParentData = null
 
 	if !debug_item_name.empty():
@@ -84,7 +84,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			item_for_effect = ItemService.get_element(ItemService.items, debug_item)
 			debug_item_name.pop_front()
 	if item_for_effect == null:
-		item_for_effect = Utils.get_rand_element(ItemService.weapons)	
+		item_for_effect = Utils.get_rand_element(ItemService.weapons)
 	if item_for_effect.effects.empty():
 		if _get_chance_success(CHANCE_LEGENDARY_ITEM, luck_chance):
 			args.increase_tier = 3
@@ -114,21 +114,21 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			effect.source_id = weapon.weapon_id
 		elif effect.custom_key == "yztato_destory_weapons":
 			effect.key = weapon.weapon_id
-			effect.text_key = "每波结束时，只保留%s" % [tr(weapon.name)]
+			effect.text_key = tr("EFFECT_FOXLAB_WEAPON_TEXT_ONLY") % [tr(weapon.name)]
 		elif effect.get_id() == get_id():
 			effect.weapon_id = ["","","",""]
 			effect.debug_item_name = []
 
 
 	item_for_effect.effects = new_effects
-	
+
 	if item_to_get[player_index] == null:
 		weapon.effects.append_array(item_for_effect.effects)
-		
+
 	weapon_id[player_index] = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 	if weapon.is_cursed:
 		weapon_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
-	
+
 	if item_for_effect is WeaponData:
 		extra_item_id[player_index] = "%s %s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
 	else:
@@ -154,10 +154,10 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			current.upgrades_into = upgrade_into
 			current = upgrade_into
 			upgrade_into = current.upgrades_into
-	RunData.add_tracked_value(player_index, "item_brolab_佛手_422", tracked_value)
+	RunData.add_tracked_value(player_index, "item_foxlab_buddhas_hand", tracked_value)
 
 	return weapon
-	
+
 func serialize() -> Dictionary:
 	var serialized =.serialize()
 

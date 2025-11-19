@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_面具_422"
-text_key = "护甲会降低{1}变身几率、增加变身数量"
+key = "item_foxlab_mask"
+text_key = "EFFECT_FOXLAB_TRANSFORM_GAIN"
 value = 1
 custom_key = ""
 storage_method = 0

@@ -11,7 +11,7 @@ static func get_id() -> String:
 func apply(player_index: int) -> void:
 	var left_stat_key = stats_swapped[0]
 	var right_stat_key = stats_swapped[1]
-		
+
 	var left_stat_gain = RunData.get_stat_gain(left_stat_key, player_index)
 	if left_stat_gain == 0:
 		return

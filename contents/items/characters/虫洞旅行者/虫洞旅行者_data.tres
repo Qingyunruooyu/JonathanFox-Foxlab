@@ -81,14 +81,14 @@
 
 [resource]
 script = ExtResource( 7 )
-my_id = "character_brolab_虫洞旅行者_253"
+my_id = "character_foxlab_wormhole_traveler"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 78 )
-name = "虫洞旅行者"
+name = "CHARACTER_FOXLAB_WORMHOLE_TRAVELER"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 37 ), ExtResource( 24 ), ExtResource( 38 ), ExtResource( 30 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 32 ), ExtResource( 31 ), ExtResource( 4 ), ExtResource( 41 ), ExtResource( 29 ), ExtResource( 33 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 42 ), ExtResource( 34 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 43 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 28 ), ExtResource( 44 ), ExtResource( 45 ), ExtResource( 2 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 51 ), ExtResource( 52 ), ExtResource( 53 ), ExtResource( 27 ), ExtResource( 54 ), ExtResource( 55 ), ExtResource( 56 ), ExtResource( 57 ), ExtResource( 65 ), ExtResource( 58 ), ExtResource( 59 ), ExtResource( 60 ), ExtResource( 61 ), ExtResource( 64 ), ExtResource( 62 ), ExtResource( 63 ), ExtResource( 75 ), ExtResource( 72 ), ExtResource( 69 ), ExtResource( 73 ), ExtResource( 67 ), ExtResource( 66 ), ExtResource( 74 ), ExtResource( 76 ), ExtResource( 70 ), ExtResource( 77 ), ExtResource( 68 ), ExtResource( 71 ) ]
+effects = [ ExtResource( 74 ), ExtResource( 76 ), ExtResource( 70 ), ExtResource( 37 ), ExtResource( 24 ), ExtResource( 38 ), ExtResource( 30 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 32 ), ExtResource( 31 ), ExtResource( 4 ), ExtResource( 41 ), ExtResource( 29 ), ExtResource( 33 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 42 ), ExtResource( 34 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 43 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 28 ), ExtResource( 44 ), ExtResource( 45 ), ExtResource( 2 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 51 ), ExtResource( 52 ), ExtResource( 53 ), ExtResource( 27 ), ExtResource( 54 ), ExtResource( 55 ), ExtResource( 56 ), ExtResource( 57 ), ExtResource( 65 ), ExtResource( 58 ), ExtResource( 59 ), ExtResource( 60 ), ExtResource( 61 ), ExtResource( 64 ), ExtResource( 62 ), ExtResource( 63 ), ExtResource( 75 ), ExtResource( 72 ), ExtResource( 69 ), ExtResource( 73 ), ExtResource( 66 ), ExtResource( 67 ), ExtResource( 77 ), ExtResource( 68 ), ExtResource( 71 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

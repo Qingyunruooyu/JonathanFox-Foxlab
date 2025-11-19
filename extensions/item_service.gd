@@ -169,3 +169,5 @@ func foxlab_spawn_random_enemy(enemy: Enemy, player_index: int):
 	enemy._on_AttackBehavior_wanted_to_spawn_an_enemy(enemy_scene, ZoneService.get_rand_pos_in_area(Vector2(enemy.global_position.x, enemy.global_position.y), 200))
 	enemy.can_drop_loot = false
 	enemy.die()
+
+

@@ -5,7 +5,7 @@ const SAME_CHAR_CHANCE = 0.33
 const MIN_TRANSFORM_CHANCE = 10.0
 const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
-# character_builder, character_druid, character_technomage, character_engineer, character_brolab_僧侣_493, character_brolab_砺练者_422, character_brolab_机械恶魔_43
+# character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_brolab_砺练者_422, character_foxlab_infernal_machine
 var debug_item_name: Array = []
 var curse_character: bool = false
 
@@ -122,7 +122,7 @@ func apply(player_index: int) -> void:
 			DebugService.log_data("add weapon " + weapon.my_id)
 
 	starting_items[player_index].clear()
-	RunData.add_tracked_value(player_index, "item_brolab_面具_422", 1)
+	RunData.add_tracked_value(player_index, "item_foxlab_mask", 1)
 
 	if RunData.players_data[player_index].weapons.size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
 		_duplicate_weapon(player_index)
@@ -175,10 +175,8 @@ func _duplicate_weapon(player_index: int):
 	weapon_for_effect = weapon_for_effect.duplicate()
 	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
 	var null_effect = NullEffect.new()
-	if weapon_for_effect.is_cursed:
-		null_effect.text_key += tr("FOXLAB_CURSED_TEXT")
-	null_effect.text_key += " %s %s: " % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
-
+	null_effect.key = " %s %s" % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
+	null_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED" if weapon_for_effect.is_cursed else "EFFECT_FOXLAB_WEAPON_TEXT"
 	var new_effects := [null_effect]
 	for effect in weapon_for_effect.effects:
 		effect = effect.duplicate()
@@ -190,7 +188,7 @@ func _duplicate_weapon(player_index: int):
 			effect.source_id = weapon.weapon_id
 		elif effect.custom_key == "yztato_destory_weapons":
 			effect.key = weapon.weapon_id #保留的是武器大名，不是带等级的my_id
-			effect.text_key = "每波结束时，只保留%s" % [tr(weapon.name)]
+			effect.text_key = tr("EFFECT_FOXLAB_WEAPON_TEXT_ONLY") % [tr(weapon.name)]
 	DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
 	weapon_for_effect.effects = new_effects
 	weapon.effects.append_array(new_effects)
@@ -204,7 +202,7 @@ func _duplicate_weapon(player_index: int):
 		upgrade_into = current.upgrades_into
 	RunData.add_weapon(weapon, player_index)
 	DebugService.log_data("duplicate weapon " + weapon.my_id)
-	RunData.add_tracked_value(player_index, "character_brolab_无面_294", 1)
+	RunData.add_tracked_value(player_index, "character_foxlab_faceless", 1)
 
 func cleanup(player_index: int) -> void:
 	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）
@@ -263,7 +261,7 @@ func get_args(player_index: int) -> Array:
 		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
 	if chars_to_get[player_index].empty():
 		chars_to_get[player_index] = _get_rand_chars(player_index)
-	return [str(chars_to_get[player_index].size()), chars_name[player_index], "%s%%" % [stepify(_get_transform_chance(player_index), 0.01)]]
+	return [str(chars_to_get[player_index].size()), chars_name[player_index], str(stepify(_get_transform_chance(player_index), 0.01))]
 
 func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictionary):
 	if not character.my_id in convert_stat_dict:

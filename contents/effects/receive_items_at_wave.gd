@@ -23,25 +23,25 @@ func unapply(player_index: int) -> void:
 		if entry[3] == curse_factor and entry[4] == foxlab_cursed_item and entry[5] == foxlab_receive_item_end_wave:
 			index = i
 			break
-	
+
 	if not index == -1:
 		effect.remove(index)
 
 
 func serialize() -> Dictionary:
 	var serialized = .serialize()
-	
+
 	serialized["foxlab_receive_item_id"] = foxlab_receive_item_id
 	serialized["foxlab_receive_item_wave"] = foxlab_receive_item_wave
 	serialized["foxlab_cursed_item"] = foxlab_cursed_item
 	serialized["foxlab_receive_item_end_wave"] = foxlab_receive_item_end_wave
-	
+
 	return serialized
 
 
 func deserialize_and_merge(effect: Dictionary) -> void:
 	.deserialize_and_merge(effect)
-	
+
 	foxlab_receive_item_id = effect.get("foxlab_receive_item_id", "item_acid")
 	foxlab_receive_item_wave = effect.get("foxlab_receive_item_wave", 5)
 	foxlab_cursed_item = effect.get("foxlab_cursed_item", false)
@@ -50,7 +50,7 @@ func deserialize_and_merge(effect: Dictionary) -> void:
 
 func get_args(_player_index: int) -> Array:
 	var item_data = ItemService.get_element(ItemService.items, foxlab_receive_item_id)
-	
+
 	var item_name: String = ""
 	if not item_data == null:
 		item_name = tr(item_data.name)
@@ -58,7 +58,7 @@ func get_args(_player_index: int) -> Array:
 		item_name = foxlab_receive_item_id.to_upper()
 	if foxlab_cursed_item:
 		item_name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
-	
+
 	return [
 		str(foxlab_receive_item_wave) if foxlab_receive_item_end_wave <= 0 else "%d ~ %d" % [foxlab_receive_item_wave, foxlab_receive_item_end_wave],
 		item_name,

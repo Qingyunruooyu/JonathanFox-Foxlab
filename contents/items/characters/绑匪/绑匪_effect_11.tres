@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "max_ranged_weapons"
-text_key = "最多可装备{0}把远战武器"
+text_key = "EFFECT_FOXLAB_MAX_RANGED_WEAPONS"
 value = 2
 custom_key = ""
 storage_method = 2

@@ -10,11 +10,11 @@
 
 [resource]
 script = ExtResource( 4 )
-my_id = "item_brolab_佛手_422"
+my_id = "item_foxlab_buddhas_hand"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 7 )
-name = "佛手"
+name = "ITEM_FOXLAB_BUDDHAS_HAND"
 tier = 1
 value = 30
 effects = [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 6 ) ]

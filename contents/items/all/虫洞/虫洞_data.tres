@@ -51,11 +51,11 @@
 
 [resource]
 script = ExtResource( 2 )
-my_id = "item_虫洞_253"
+my_id = "item_foxlab_wormhole"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "虫洞"
+name = "ITEM_FOXLAB_WORMHOLE"
 tier = 3
 value = 100.0
 effects = [ ExtResource( 40 ), ExtResource( 9 ), ExtResource( 42 ), ExtResource( 35 ), ExtResource( 46 ), ExtResource( 29 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 16 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 14 ), ExtResource( 41 ), ExtResource( 43 ), ExtResource( 17 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 19 ), ExtResource( 38 ), ExtResource( 12 ), ExtResource( 44 ), ExtResource( 13 ), ExtResource( 37 ), ExtResource( 27 ), ExtResource( 15 ), ExtResource( 21 ), ExtResource( 45 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 18 ), ExtResource( 39 ), ExtResource( 24 ), ExtResource( 3 ), ExtResource( 47 ), ExtResource( 32 ), ExtResource( 48 ), ExtResource( 34 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 4 ), ExtResource( 20 ), ExtResource( 26 ), ExtResource( 6 ), ExtResource( 28 ) ]

@@ -2,15 +2,7 @@
 FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP,面具道具仅变身成为原版角色，适合新手（立即生效）,"Item Mask transforms into vannilla characters only, better for greenhand (take effect immediately)"
 FOXLAB_TRANSFORM_VANILLA_ONLY,仅变身原版角色,Vannilla characters only
 FOXLAB_CURSED_TEXT,被诅咒,Cursed
-FOXLAB_RANDOM,随机,random
-FOXLAB_WEAPON_DUPLICATED,已复制的武器：{0},Weapons duplicated: {0}
-FOXLAB_TRANSFORM_TIMES,已成功变身次数：{0}, Successfully transformed: {0}
-FOXLAB_CONST_WEAPON_GET,已获得的坚固武器：{0},Solid weapons got: {0}
 FOXLAB_EFFECT_GET_ITEM,你将获得{0}{1},You will get {0} {1}
-CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
-EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，造成{0}（{1}）伤害；未杀死的目标有{5}几率异变（关底头目不异变，其他头目异变几率是基础几率的10%）,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage; if a target is still alive, {5} chance for it to mutate(Final-wave Bosses do not mutate; chance for other Bosses is 10% of base chance)"
-ITEM_FOXLAB_REACTOR,反应堆,Reactor
-EFFECT_FOXLAB_MUTATE_ALIVE_ENEMY,你击中但未杀死的目标有{0}几率异变（关底头目不异变，其他头目异变几率是基础几率的10%）,"{0} chance to mutate an alive target you hit(Final-wave Bosses do not mutate; chance for other Bosses is 10% of base chance)"
 CHARACTER_FOXLAB_JELLYFISH,水母,Jellyfish
 STAT_FOXLAB_ARMOR_DODGE_HARVESTING,护甲/闪避/收获,Armor/Dodge/Harvesting
 CHARACTER_FOXLAB_PROGRAMMER,程序员,Programmer
@@ -29,11 +21,79 @@ EFFECT_FOXLAB_FOOD_PRICE,{0}部分食物类道具价格,{0} price of some food i
 CHARACTER_FOXLAB_MOM,鬼妈,Mom
 EFFECT_FOXLAB_MOM_LANDMINE_SPAWN,每{1}秒生成3个地雷（其中{0}个在你附近），造成{2}（{3}）伤害,3 landmines({0} near you) spawn every {1} seconds dealing {2} ({3}) damage in an area
 EFFECT_FOXLAB_MOM_LANDMINE_CRIT,此地雷可以暴击，初始伤害为x{2}（{3}概率）,"These lamdmines can crit with base damage x{2}({3} chance)"
-CHARACTER_FOXLAB_POISONOUS_HEALER,毒奶,Poisonous Healer
+CHARACTER_FOXLAB_POISONOUS_HEALER,毒奶,Toxic Healer
 EFFECT_FOXLAB_HEALING_BETRAY,此医疗炮塔会叛变并召唤同伙,The medical turret betrays you and spawns its copy
 CHARACTER_FOXLAB_OLDER_SNIPER,老狙神,Old Sniper
 EFFECT_FOXLAB_IGNORE_NEARBY_ENEMY,你无法直接攻击附近的敌人,You can't attack enemies nearby directly
 CHARACTER_FOXLAB_CLAW_DRUID,利爪德鲁伊, Druid of Claw
 EFFECT_FOXLAB_INCREASE_DAMAGE_RECEIVED,敌人受伤后在{2}秒内额外承受{0}伤害（上限：{3}）,Enemies hit take {0} more damage for {2} seconds (max: {3})
-CHARACTER_FOXLAB_ANTIMATTER,反物质,Anti-Matter
+CHARACTER_FOXLAB_ANTIMATTER,反物质,Antimatter
 STAT_FOXLAB_PRIMARY_EXCEPT_CURSE,主属性（除[color=#ca61ff]诅咒[/color]）,Primary Stats(Except [color=#ca61ff]Curse[/color])
+CHARACTER_FOXLAB_ARCHITECT,架构师,Architect
+ITEM_FOXLAB_ARCHITECTURE_DIAGRAM,架构图,Architecture Diagram
+CHARACTER_FOXLAB_INFERNAL_MACHINE,机械恶魔,Infernal Machine
+ITEM_FOXLAB_FUNNEL,浮游炮塔,Funnel
+EFFECT_FOXLAB_STARTING_ITEM,初始拥有{2}{1},You start with {2} {1}
+EFFECT_FOXLAB_FUNNEL_SPAWN,初始拥有3个浮游炮，之后每{1}秒召唤一个，造成{2}（{3}）伤害,"You start with 3 Funnels and one more spawns every {1} seconds dealing {2} ({3}) damage"
+EFFECT_FOXLAB_FUNNEL,生成2个浮游炮，造成{0}（{1}）伤害,Spawns 2 Funnels dealing {0} ({1}) damage
+EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_EQUAL,{0}的{1}在敌袭结束后等量转化为{2},{0} of your {1} are equivalently converted into {2} at the end of a wave
+CHARACTER_FOXLAB_BALL,球球,Ball
+ITEM_FOXLAB_BALL_LIGHTNING_3,球状闪电（天）,Ball Lightning (Ace)
+ITEM_FOXLAB_BALL_LIGHTNING_2,球状闪电（地）,Ball Lightning (King)
+ITEM_FOXLAB_BALL_LIGHTNING_1,球状闪电（玄）,Ball Lightning (Queen)
+ITEM_FOXLAB_BALL_LIGHTNING_0,球状闪电（黄）,Ball Lightning (Jack)
+EFFECT_FOXLAB_EXTRA_LIGHTNING,在箱子中分别有{4}/{3}/{2}/{0}概率发现从低到高四级[color=#F9C571]球状闪电[/color],{4}/{3}/{2}/{0} chance (from lower to higher rank) of finding extra [color=#F9C571]Ball Lightning[/color] in a crate
+EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_ALL,敌袭结束后每{3}{1}转换为{4}{2},Every {3} {1} are converted into {4} {2} at the end of a wave
+EFFECT_FOXLAB_BALL_LIGHTNING,每{4}秒向周围发射{0}枚追踪雷电投射物，每枚投射物贯通4个目标，初始范围300，造成{1}({3})伤害,"Shoots {0} ball lightnings around you (base range 300) every {4} seconds piercing 4 targets and dealing {1} ({3}) damage each"
+CHARACTER_FOXLAB_KIDNAPPER,绑匪,Kidnapper
+EFFECT_FOXLAB_REMOVE_ENEMY_SPEEDS,{0}{1}，敌人受击会被定身,"{0} {1}; Enemy you hit stands still"
+EFFECT_FOXLAB_MAX_RANGED_WEAPONS,最多可装备{0}把远战武器,You can only equip {0} ranged weapons at a time
+CHARACTER_FOXLAB_WORMHOLE_TRAVELER,虫洞旅行者,Wormhole Traveler
+ITEM_FOXLAB_WORMHOLE,虫洞,Wormhole
+ITEM_STEALS,窃取次数,Item Steals
+EFFECT_FOXLAB_ITEM_STEAL_WARMHOLE_SPAWN,偷窃会生成精英怪和随机敌人,Stealing from the shop can spawn an elite and random enemies
+EFFECT_FOXLAB_ITEM_STEAL_WARMHOLE,下个商店起，每个商店可窃取{0}个道具,Can steal {0} item per shop since the next shop
+STRONGER_ELITES_ON_KILL,%头目击杀增幅,% Stronger Boss on Kill
+EFFECT_FOXLAB_NEGATIVE_KNOCKBACK,击退改为[color=#F9C571]抓取[/color],Knockback is [color=#F9C571]Pull[/color]
+EFFECT_FOXLAB_WORMHOLE_UPGRADE,上项执行后，每{3}{1}转换为{4}{2}并清零击退,"When above works, every {3} {1} are converted into {4} {2} and reset Knockback"
+EFFECT_FOXLAB_WORMHOLE_UPGRADE_NEG,上项执行后，{0}{1}会{3}：{4}转换为{2},"When above works, {0} {1} are converted into {2}({3}:{4})"
+EFFECT_FOXLAB_WEAPON_STRUCT_BONUS,武器和构筑物有{0}{1},{0} {1} for weapons and structures
+CHARACTER_FOXLAB_YINYANG,阴阳师,Yin-Yang Master
+FOXLAB_ENABLE,生效,Enabled
+FOXLAB_DISABLE,无效,Disabled
+NO_HEAL,无法治疗,No Heal
+LOSE_HP_PER_SECOND,每秒固定受伤,Lose HP per second
+POISONED_FRUIT,%毒水果,% Poisoned Fruit
+ENEMY_FRUIT_DROPS,%水果概率,% Fruit Drops
+ITEM_FOXLAB_SPACETIME_MACHINE_YIN,时空装置（阴）,Spacetime Machine(Yin)
+ITEM_FOXLAB_SPACETIME_MACHINE_YANG,时空装置（阳）,Spacetime Machine(Yang)
+STRONGER_LOOT_ALIENS_ON_KILL,%战利品外星人击杀增幅,% Stronger Loot Aliens on Kill
+FOXLAB_ABYSS_ENEMY_NAME,深渊敌人,Abyss Enemies
+FOXLAB_CRASH_ENEMY_NAME,碰撞区域敌人,Crash Zone Enemies
+CHARACTER_FOXLAB_MONK,僧侣,Monk
+ITEM_FOXLAB_BUDDHAS_HAND,佛手,Buddha's Hand
+EFFECT_FOXLAB_BUDDHAS_HAND,获得此道具时，你会装备{0}并赋予其{1}效果,"You equip a {0} with effect of {1} when you get this item"
+EFFECT_FOXLAB_BUDDHAS_HAND_BRICK,赋予的效果若有{3}{1}，武器升级后失去此效果,"If the effect has {3}{1}, it is lost when you upgrade the weapon"
+EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME,下场敌袭会出现额外的[color=#F9C571]{2}[/color],Extra [color=#F9C571]{2}[/color] appears during the next wave
+SLASHER_EGG_NAME,斩击者之卵,Slasher Egg
+FOXLAB_RANDOM,随机,random
+EXTRA_LOOT_ALIENS_NEXT_WAVE,下波战利品外星人,Loot Aliens Next Wave
+EFFECT_FOXLAB_STAT_PERCENT_DEC_END_OF_WAVE,敌袭结束后{1}减少{0},Decrease {0} of {1} at the end of a wave
+EFFECT_FOXLAB_STAT_QUERY,[color=#eae2b0]{1}：{0}[/color],[color=#eae2b0]{1}: {0}[/color]
+FOXLAB_CONST_WEAPON_GET,已获得的坚固武器：{0},Solid weapons got: {0}
+EFFECT_FOXLAB_WEAPON_TEXT_ONLY,每波结束时，只保留%s,"At the end of each wave, only the %s remains"
+CHARACTER_FOXLAB_FACELESS,无面,Faceless
+FOXLAB_WEAPON_DUPLICATED,已复制的武器：{0},Weapons duplicated: {0}
+FOXLAB_TRANSFORM_TIMES,已成功变身次数：{0}, Successfully transformed: {0}
+EFFECT_FOXLAB_FACELESS_DUPLICATE_WEAPON,变身成功后，你以此次变身成功的几率复制并改造你的一把武器（不会与上一次成功复制的波次相同）,"Same chance of transformation to duplicate and modify one of your weapon (not at the same wave as previous weapon duplication)"
+EFFECT_FOXLAB_TRANSFORM,获得此道具时，你有{2}几率变身为{0}个角色：{1},"{2} chance to transform into {0} characters({1}) when you get this item"
+EFFECT_FOXLAB_TRANSFORM_GAIN,[color=#F9C571]护甲[/color]会降低{1}变身几率、增加变身数量,[color=#F9C571]Armor[/color] decreases transform chance but increases transform character number of {1}
+EFFECT_FOXLAB_LOSE_ON_REROLL,刷新按钮显示{1}时，刷新失去1{1},Lose 1 {1} when reroll botton shows {1}
+EFFECT_FOXLAB_WEAPON_TEXT,[color=#F9C571]{1}：[/color],[color=#F9C571]{1}:[/color]
+EFFECT_FOXLAB_WEAPON_TEXT_CURSED,[color=#ca61ff]诅咒[/color][color=#F9C571]{1}：[/color],[color=#ca61ff]Cursed [/color][color=#F9C571]{1}:[/color]
+ITEM_FOXLAB_MASK,面具,Mask
+CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
+EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，造成{0}（{1}）伤害；未杀死的目标有{5}几率异变（关底头目不异变，其他头目异变几率是基础几率的8%）,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage; if a target is still alive, {5} chance for it to mutate(Final-wave Bosses do not mutate; chance for other Bosses is 8% of base chance)"
+ITEM_FOXLAB_REACTOR,反应堆,Reactor
+EFFECT_FOXLAB_MUTATE_ALIVE_ENEMY,你击中但未杀死的目标有{0}几率异变（关底头目不异变，其他头目异变几率是基础几率的8%）,"{0} chance to mutate an alive target you hit(Final-wave Bosses do not mutate; chance for other Bosses is 8% of base chance)"
+EFFECT_FOXLAB_GAIN_STAT_ON_MUTATE,敌人异变时，你有相同几率提升随机主属性的修改和敌人属性,"Same chance to increase Primary Stat Modifications and Enemy Stats when an ememy mutates"

@@ -116,31 +116,45 @@ difficulties = [  ]
 effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 7 ) ]
 challenges = [  ]
 tracked_items = {
-"character_brolab_无面_294": 0,
 "character_brolab_河鲀_33": 0,
+"character_foxlab_faceless": 0,
 "character_foxlab_mom": 0,
 "character_foxlab_poisonous_healer": 0,
+"character_foxlab_refactor": 0,
 "character_foxlab_turtle": 0,
-"item_brolab_佛手_422": 0,
-"item_brolab_浮游炮塔_322": 0,
-"item_brolab_球状闪电_0": 0,
-"item_brolab_球状闪电_1": 0,
-"item_brolab_球状闪电_2": 0,
-"item_brolab_球状闪电_3": 0,
-"item_brolab_面具_422": 0,
+"item_foxlab_ball_lightning_0": 0,
+"item_foxlab_ball_lightning_1": 0,
+"item_foxlab_ball_lightning_2": 0,
+"item_foxlab_ball_lightning_3": 0,
+"item_foxlab_buddhas_hand": 0,
+"item_foxlab_funnel": 0,
+"item_foxlab_mask": 0,
 "item_foxlab_reactor": 0
 }
 translation_keys_needing_operator = {
+"effect_foxlab_extra_lightning": [ 0, 2, 3, 4 ],
 "effect_foxlab_food_price": [ 0 ],
 "effect_foxlab_gain_stat_end_of_wave_diff": [ 0 ],
+"effect_foxlab_item_steal_warmhole": [ 0 ],
 "effect_foxlab_mutate_alive_enemy": [ 0 ],
 "effect_foxlab_on_hit_double": [ 0, 2 ],
 "effect_foxlab_reactor": [ 5 ],
 "effect_foxlab_specific_weapon_class_price": [ 0 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
-"effect_foxlab_vagabond_fruit_pos": [ 2 ]
+"effect_foxlab_vagabond_fruit_pos": [ 2 ],
+"effect_foxlab_weapon_struct_bonus": [ 0 ],
+"item_steals": [ 0 ],
+"stronger_elites_on_kill": [ 0 ],
+"poisoned_fruit":[0],
+"no_heal":[0],
+"lose_hp_per_second":[0],
+"stronger_loot_aliens_on_kill":[0],
+"stronger_elites_on_kill":[0],
+"enemy_fruit_drops":[0]
 }
 translation_keys_needing_percent = {
+"effect_foxlab_convert_stat_end_of_wave_equal": [ 0 ],
+"effect_foxlab_extra_lightning": [ 0, 2, 3, 4 ],
 "effect_foxlab_food_price": [ 0 ],
 "effect_foxlab_increase_damage_received": [ 0, 3 ],
 "effect_foxlab_mom_landmine_crit": [ 2, 3 ],
@@ -148,6 +162,9 @@ translation_keys_needing_percent = {
 "effect_foxlab_programmer": [ 0 ],
 "effect_foxlab_reactor": [ 5 ],
 "effect_foxlab_specific_weapon_class_price": [ 0 ],
+"effect_foxlab_stat_percent_dec_end_of_wave": [ 0 ],
+"effect_foxlab_transform": [ 2 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
-"effect_foxlab_vagabond_fruit_pos": [ 2 ]
+"effect_foxlab_vagabond_fruit_pos": [ 2 ],
+"effect_foxlab_wormhole_upgrade_neg": [ 0 ]
 }

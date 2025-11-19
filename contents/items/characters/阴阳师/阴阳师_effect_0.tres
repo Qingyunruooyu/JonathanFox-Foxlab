@@ -1,13 +1,22 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 0
+arg_sign = 4
+arg_value = 2
+arg_format = 0
+arg_key = "4"
 
 [resource]
 script = ExtResource( 1 )
 key = "res://zones/zone_1/000_loot/group_loot.tres"
-text_key = "[EMPTY]"
+text_key = "effect_extra_loot_aliens_next_wave"
 value = 2
 custom_key = "extra_enemies_next_wave"
 storage_method = 1
 effect_sign = 2
-custom_args = [  ]
+custom_args = [ SubResource( 1 ) ]

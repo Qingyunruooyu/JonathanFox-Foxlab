@@ -10,7 +10,7 @@
 
 [resource]
 script = ExtResource( 7 )
-my_id = "item_brolab_球状闪电_2"
+my_id = "item_foxlab_ball_lightning_2"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )

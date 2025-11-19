@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = ""
-text_key = "获得此道具时，你有{2}几率变身为{0}个角色：{1}"
+text_key = "EFFECT_FOXLAB_TRANSFORM"
 value = 2
 custom_key = "fox_无面_prev_items"
 storage_method = 1

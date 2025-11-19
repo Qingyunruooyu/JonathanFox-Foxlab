@@ -27,7 +27,7 @@ func apply(player_index: int) -> void:
 	if not applied[1]:
 		effects.append([key2, value2])
 		key_index = 1
-	
+
 	# 这两个在upapply的时候不会擦除
 	effects.append([key if key_index else key2, 0]) #最后一个元素是key，先append key2；反之亦然
 	effects.append([key2 if key_index else key, 0]) #append另一个

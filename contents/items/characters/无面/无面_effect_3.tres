@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "fox_无面_enable_upgrade_on_transform"
-text_key = "变身成功后，你以此次变身成功的几率复制并改造你的一把武器（不会与上一次成功复制的波次相同）"
+text_key = "EFFECT_FOXLAB_FACELESS_DUPLICATE_WEAPON"
 value = 1
 custom_key = ""
 storage_method = 0

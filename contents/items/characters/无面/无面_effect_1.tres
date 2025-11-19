@@ -13,7 +13,7 @@ arg_key = ""
 
 [resource]
 script = ExtResource( 2 )
-key = "item_brolab_面具_422"
+key = "item_foxlab_mask"
 text_key = "effect_guaranteed_shop_item"
 value = 1
 custom_key = "guaranteed_shop_items"

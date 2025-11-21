@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = ""
-text_key = "武器和构筑物有+{0}{1}"
+text_key = "EFFECT_FOXLAB_WEAPON_STRUCT_BONUS"
 value = 10
 custom_key = ""
 storage_method = 0

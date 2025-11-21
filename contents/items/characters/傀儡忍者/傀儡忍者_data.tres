@@ -35,11 +35,11 @@
 
 [resource]
 script = ExtResource( 12 )
-my_id = "character_brolab_傀儡忍者_180"
+my_id = "character_foxlab_golem_ninja"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "傀儡忍者"
+name = "CHARACTER_FOXLAB_GOLEM_NINJA"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 26 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 8 ), ExtResource( 28 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 27 ), ExtResource( 9 ), ExtResource( 3 ) ]

@@ -22,7 +22,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "stat_harvesting"
-text_key = "每持有{2}异种{3}有+{0}{1}[{4}]"
+text_key = "EFFECT_FOXLAB_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT"
 value = 3
 custom_key = ""
 storage_method = 0

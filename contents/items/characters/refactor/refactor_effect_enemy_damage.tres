@@ -9,5 +9,5 @@ text_key = "EFFECT_FOXLAB_STAT_QUERY"
 value = 0
 custom_key = ""
 storage_method = 0
-effect_sign = 4
+effect_sign = 2
 custom_args = [  ]

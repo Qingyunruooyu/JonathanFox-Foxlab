@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "enemy_health"
-text_key = "窃取大概率出精英怪，敌袭结束后+{0}%敌人伤害、+{0}%敌人生命值"
+text_key = "EFFECT_FOXLAB_MAGICIAN_NEG"
 value = 2
 custom_key = "stats_end_of_wave"
 storage_method = 1

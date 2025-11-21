@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "disable_item_locking"
-text_key = "＞2，无法锁定，购买被锁物品后能刷出复制品(全锁无法刷新！)；"
+text_key = "[EMPTY]"
 value = -2
 custom_key = ""
 storage_method = 0

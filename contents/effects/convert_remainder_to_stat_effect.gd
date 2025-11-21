@@ -36,7 +36,7 @@ func to_array() -> Array:
 
 func get_args(_player_index: int) -> Array:
 	return [str(pct_converted), tr(key.to_upper()), tr(to_stat.to_upper()),
-	 str(value), str(offset) if offset < 0 else "+" + str(offset), str(to_stat_scaling)]
+	 str(value), str(offset), str(to_stat_scaling)]
 
 
 func serialize() -> Dictionary:

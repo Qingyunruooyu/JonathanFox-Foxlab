@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "stat_attack_speed"
-text_key = "构筑物以暴击杀死敌人会+{0}{1}直至敌袭结束"
+text_key = "EFFECT_FOXLAB_TEMP_STATS_ON_STRUCTURE_CRIT"
 value = 8
 custom_key = "temp_stats_on_structure_crit"
 storage_method = 1

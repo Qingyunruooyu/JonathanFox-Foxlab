@@ -7,11 +7,11 @@
 
 [resource]
 script = ExtResource( 1 )
-my_id = "item_brolab_巨型虫_2"
+my_id = "item_foxlab_wanted_giant_isopod"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 4 )
-name = "通缉令"
+name = "ITEM_FOXLAB_WANTED"
 tier = 3
 value = 1.0
 effects = [ ExtResource( 2 ), ExtResource( 3 ) ]

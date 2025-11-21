@@ -6,7 +6,7 @@ export(bool) var hide_vanilla_potato = false
 
 func serialize() -> Dictionary:
 	var serialized = .serialize()
-	serialized.hide_vanilla_potato = hide_vanilla_potato	
+	serialized.hide_vanilla_potato = hide_vanilla_potato
 	return serialized
 
 

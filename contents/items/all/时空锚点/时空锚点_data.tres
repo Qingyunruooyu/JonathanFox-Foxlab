@@ -25,11 +25,11 @@
 
 [resource]
 script = ExtResource( 3 )
-my_id = "item_时空锚点_253"
+my_id = "item_foxlab_spacetime_anchor"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "时空锚点"
+name = "ITEM_FOXLAB_SPACETIME_ANCHOR"
 tier = 1
 value = 50
 effects = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 10 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 17 ), ExtResource( 21 ), ExtResource( 18 ), ExtResource( 22 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 20 ) ]

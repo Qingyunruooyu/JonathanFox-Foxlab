@@ -8,11 +8,11 @@
 
 [resource]
 script = ExtResource( 2 )
-my_id = "item_brolab_智械危机_11"
+my_id = "item_foxlab_omnic_crisis"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 5 )
-name = "智械危机"
+name = "ITEM_FOXLAB_OMNIC_CRISIS"
 tier = 2
 value = 110.0
 effects = [ ExtResource( 4 ), ExtResource( 1 ), ExtResource( 3 ) ]

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_蜘蛛蟹_2"
+key = "item_foxlab_wanted_spider_crab"
 text_key = "[EMPTY]"
 value = 1
 custom_key = "starting_item"

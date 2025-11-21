@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "stat_percent_damage"
-text_key = "每{2}重复物品会{0}{1}[{4}]"
+text_key = "EFFECT_GAIN_STAT_FOR_DUPLICATE_ITEMS"
 value = -6
 custom_key = ""
 storage_method = 0

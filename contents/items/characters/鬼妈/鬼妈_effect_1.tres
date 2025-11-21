@@ -2,7 +2,7 @@
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/landmine_exploding_effect.tres" type="Resource" id=1]
 [ext_resource path="res://entities/structures/landmine/landmine.tscn" type="PackedScene" id=2]
-[ext_resource path="res://effects/items/structure_effect.gd" type="Script" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_structure_effect.gd" type="Script" id=3]
 [ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=4]
 
 [sub_resource type="Resource" id=1]

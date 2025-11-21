@@ -3,9 +3,11 @@ extends "res://main.gd"
 var foxlab_mutate_chance:Array = [0, 0, 0, 0]
 var should_check_mutation:Array = [false, false, false, false]
 var primary_stat_keys:Array = []
+var bosses_this_wave = 0
 const enemy_stat_keys:Array = ["enemy_damage", "enemy_damage",  "enemy_damage", "enemy_health", "enemy_health", "enemy_speed"]
 
 func _ready():
+	bosses_this_wave = 0
 	for i in RunData.get_player_count():
 		foxlab_mutate_chance[i] = max(0, RunData.get_player_effect("foxlab_mutate_alive_enemy", i))
 		if foxlab_mutate_chance[i]:
@@ -29,6 +31,7 @@ func _ready():
 		if check:
 			for key in Utils.get_primary_stat_keys():
 				primary_stat_keys.append("gain_" + key)
+				primary_stat_keys.append(key)
 			break
 
 func _on_enemy_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int) -> void :
@@ -48,13 +51,15 @@ func _on_enemy_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vect
 	if enemy is Boss:
 		chance = chance * 0.08
 	if Utils.get_chance_success(chance):
-		ItemService.foxlab_spawn_random_enemy(enemy, args.from_player_index)
+		bosses_this_wave += ItemService.foxlab_spawn_random_enemy(enemy, bosses_this_wave, args.from_player_index)
 		if RunData.get_player_effect_bool("foxlab_gain_stat_on_mutate", args.from_player_index) and Utils.get_chance_success(chance):
 			for i in range(1 + RunData.current_wave / 5):
 				RunData.add_stat(Utils.get_rand_element(enemy_stat_keys), 1, args.from_player_index)
-				var value = Utils.randi_range(3, 3 + RunData.current_wave / 5)
-				RunData.add_stat(Utils.get_rand_element(primary_stat_keys), value, args.from_player_index)
+				var stat = Utils.get_rand_element(primary_stat_keys)
+				var value = Utils.randi_range(3, 3 + RunData.current_wave / 5) if stat.begins_with("gain_") else 1
+				RunData.add_stat(stat, value, args.from_player_index)
 				RunData.add_tracked_value(args.from_player_index, "character_foxlab_refactor", value)
+
 
 
 

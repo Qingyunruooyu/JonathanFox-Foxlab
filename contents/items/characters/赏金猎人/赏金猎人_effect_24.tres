@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "stronger_elites_on_kill"
-text_key = "每击杀一个头目或精英怪，敌袭结束后未来头目和精英怪额外增强{0}%"
+text_key = "EFFECT_GAIN_STAT_END_OF_WAVE"
 value = 1
 custom_key = "stats_end_of_wave"
 storage_method = 1

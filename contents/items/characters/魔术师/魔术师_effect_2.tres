@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_魔术帽_287"
-text_key = "有{0}%几率开出{1}，其数量："
+key = "item_foxlab_magical_hat"
+text_key = "EFFECT_EXTRA_ITEM_IN_CRATE"
 value = 95
 custom_key = "extra_item_in_crate"
 storage_method = 1

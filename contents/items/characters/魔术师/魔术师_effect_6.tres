@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "hp_shop"
-text_key = "＞0，用最大生命值购买物品；"
+text_key = "[EMPTY]"
 value = 0
 custom_key = ""
 storage_method = 0

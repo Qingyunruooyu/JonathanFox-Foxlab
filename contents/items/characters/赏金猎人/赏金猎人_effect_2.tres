@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_蝙蝠_2"
-text_key = "初始拥有2{1}，每个箱子中有29%几率发现至少1额外{1}"
+key = "item_foxlab_wanted_bat"
+text_key = "EFFECT_FOXLAB_WANTED_ITEM_WITH_STARTING"
 value = 2
 custom_key = "extra_item_in_crate"
 storage_method = 1

@@ -23,7 +23,7 @@
 
 [resource]
 script = ExtResource( 2 )
-my_id = "item_brolab_天眼_2"
+my_id = "item_foxlab_enchanted_eyes"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )

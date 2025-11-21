@@ -48,11 +48,11 @@
 
 [resource]
 script = ExtResource( 7 )
-my_id = "character_brolab_赏金猎人_89"
+my_id = "character_foxlab_bounty_hunter"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 45 )
-name = "赏金猎人"
+name = "CHARACTER_FOXLAB_BOUNTY_HUNTER"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 25 ), ExtResource( 23 ), ExtResource( 40 ), ExtResource( 33 ), ExtResource( 32 ), ExtResource( 44 ), ExtResource( 28 ), ExtResource( 41 ), ExtResource( 37 ), ExtResource( 26 ), ExtResource( 38 ), ExtResource( 27 ), ExtResource( 24 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 22 ) ]

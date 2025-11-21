@@ -1,8 +1,74 @@
-﻿,zh_Hans_CN,en
+﻿key,zh_Hans_CN,en
 FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP,面具道具仅变身成为原版角色，适合新手（立即生效）,"Item Mask transforms into vannilla characters only, better for greenhand (take effect immediately)"
 FOXLAB_TRANSFORM_VANILLA_ONLY,仅变身原版角色,Vannilla characters only
 FOXLAB_CURSED_TEXT,被诅咒,Cursed
 FOXLAB_EFFECT_GET_ITEM,你将获得{0}{1},You will get {0} {1}
+IRON_LUNG_NAME,铁肺,Iron Lung
+COLOSSAL_SQUID_NAME,巨乌贼,Colossal Squid
+PRISONER_NAME,囚徒,Prisoner
+CRAB_NAME,螃蟹,Crab
+ANGLERFISH_NAME,鮟鱇鱼,Anglerfish
+IMPALED_WORN_NAME,穿刺蠕虫,Impaled Worm
+JELLYFISH_NAME,水母,Jellyfish
+GOBLIN_SHARK_NAME,尖吻鲛,Goblin Shark
+GIANT_NAME,巨人,Giant
+WALRUS_NAME,海象,Walrus
+STONEFISH_NAME,石头鱼,Stonefish
+VIPERFISH_NAME,蝰鱼,Viperfish
+BLOBFISH_NAME,水滴鱼,Blobfish
+PUFFERFISH_NAME,河鲀,Pufferfish
+ANEMONE_NAME,海葵,Anemone
+MEGALODON_NAME,巨齿鲨,Megalodon
+DEAD_WHALE_NAME,尸变鲸鱼,Dead Whale
+PLANKTON_NAME,浮游生物,Plankton
+SEA_PIG_NAME,海猪,Sea Pig
+VAMPIRE_SQUID_NAME,吸血乌贼,Vampire Squid
+LOBSTER_NAME,龙虾,Lobster
+CLAM_NAME,蛤蜊,Clam
+BAT_NAME,蝙蝠,Bat
+HERMIT_NAME,隐者,Hermit
+SHRIMP_NAME,虾,Shrimp
+DIPLOCAULUS_NAME,笠头螈,Diplocaulus
+NARWHAL_NAME,独角鲸,Narwhal
+DRAGONFISH_NAME,深海龙鱼,Dragonfish
+GIANT_ISOPOD_NAME,大王具足虫,Giant Isopod
+EVIL_MOB_SWIMMER_NAME,吞吞怪,Gobbler
+TURTLE_NAME,海龟,Turtle
+LOOTING_PIG_NAME,搜刮猪,Looting Pig
+STARGAZER_NAME,瞻星鱼,Stargazer
+EEL_NAME,鳗鱼,Eel
+SPIDER_CRAB_NAME,蜘蛛蟹,Spider Crab
+COLOSSUS_NAME,巨像,Colossus
+GARGOYLE_NAME,石像鬼,Gargoyle
+EVIL_MOB_NAME,吞吞怪,Gobbler
+INVOKER_NAME,唤魔者,Invoker
+BUTCHER_NAME,屠夫,Butcher
+SLASHER_NAME,斩击者,Slasher
+BRUISER_NAME,壮怪,Bruiser
+CHASER_NAME,追击怪,Chaser
+LAMPREY_NAME,七鳃鳗,Lamprey
+MONK_NAME,僧侣,Monk
+PREDATOR_NAME,猎杀者,Predator
+HEALER_NAME,治疗者,Healer
+FLY_NAME,苍蝇,Fly
+FIN_ALIEN_NAME,带鳍外星人,Fin Alien
+TENTACLE_NAME,触手,Tentacle
+LOOTER_NAME,搜刮者,Looter
+SPITTER_NAME,喷吐怪,Spitter
+HORNED_CHARGER_NAME,角盔冲刺怪,Horned Charger
+MANTIS_NAME,螳螂,Mantis
+HELMET_ALIEN_NAME,头盔外星人,Helmet Alien
+BUFFER_NAME,强化怪,Buffer
+SLASHER_EGG_NAME,斩击者之卵,Slasher Egg
+PURSUER_NAME,追猎怪,Pursuer
+CHARGER_NAME,冲刺怪,Charger
+SPAWNER_NAME,生成者,Spawner
+CROC_NAME,鳄鱼,Croc
+RHINO_NAME,犀牛,Rhino
+HORNED_BRUISER_NAME,角盔壮怪,Horned Bruiser
+BABY_ALIEN_NAME,外星人宝宝,Baby Alien
+MOM_NAME,鬼妈,Mother
+JUNKIE_NAME,成瘾怪,Junkie
 CHARACTER_FOXLAB_JELLYFISH,水母,Jellyfish
 STAT_FOXLAB_ARMOR_DODGE_HARVESTING,护甲/闪避/收获,Armor/Dodge/Harvesting
 CHARACTER_FOXLAB_PROGRAMMER,程序员,Programmer
@@ -17,11 +83,11 @@ EFFECT_FOXLAB_ON_HIT_DOUBLE,受到攻击时，{0}{1}、{2}{3}直至敌袭结束,
 CHARACTER_FOXLAB_RAMPAGING_VAGABOND,暴走流浪汉,Rampaging Vagabond
 EFFECT_FOXLAB_VAGABOND_FRUIT_POS,捡起水果时有{2}概率增强自己,{2} chance to enhance youself when you pick up a fruit
 EFFECT_FOXLAB_VAGABOND_FRUIT_NEG,捡起水果时有{2}概率增强敌人、使刷新和物品变贵,{2} chance to enhance enemies or make reroll and items more expensive when you pick up a fruit
-EFFECT_FOXLAB_FOOD_PRICE,{0}部分食物类道具价格,{0} price of some food item
+EFFECT_FOXLAB_FOOD_PRICE,{0}部分[color=#F9C571]食物类[/color]道具价格,{0} price of some [color=#F9C571]Food[/color] item
 CHARACTER_FOXLAB_MOM,鬼妈,Mom
 EFFECT_FOXLAB_MOM_LANDMINE_SPAWN,每{1}秒生成3个地雷（其中{0}个在你附近），造成{2}（{3}）伤害,3 landmines({0} near you) spawn every {1} seconds dealing {2} ({3}) damage in an area
 EFFECT_FOXLAB_MOM_LANDMINE_CRIT,此地雷可以暴击，初始伤害为x{2}（{3}概率）,"These lamdmines can crit with base damage x{2}({3} chance)"
-CHARACTER_FOXLAB_POISONOUS_HEALER,毒奶,Toxic Healer
+CHARACTER_FOXLAB_TOXIC_HEALER,毒奶,Toxic Healer
 EFFECT_FOXLAB_HEALING_BETRAY,此医疗炮塔会叛变并召唤同伙,The medical turret betrays you and spawns its copy
 CHARACTER_FOXLAB_OLDER_SNIPER,老狙神,Old Sniper
 EFFECT_FOXLAB_IGNORE_NEARBY_ENEMY,你无法直接攻击附近的敌人,You can't attack enemies nearby directly
@@ -43,7 +109,7 @@ ITEM_FOXLAB_BALL_LIGHTNING_2,球状闪电（地）,Ball Lightning (King)
 ITEM_FOXLAB_BALL_LIGHTNING_1,球状闪电（玄）,Ball Lightning (Queen)
 ITEM_FOXLAB_BALL_LIGHTNING_0,球状闪电（黄）,Ball Lightning (Jack)
 EFFECT_FOXLAB_EXTRA_LIGHTNING,在箱子中分别有{4}/{3}/{2}/{0}概率发现从低到高四级[color=#F9C571]球状闪电[/color],{4}/{3}/{2}/{0} chance (from lower to higher rank) of finding extra [color=#F9C571]Ball Lightning[/color] in a crate
-EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_ALL,敌袭结束后每{3}{1}转换为{4}{2},Every {3} {1} are converted into {4} {2} at the end of a wave
+EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_ALL,敌袭结束后每{3}永久{1}转换为{4}{2},Every {3} permanent {1} are converted into {4} {2} at the end of a wave
 EFFECT_FOXLAB_BALL_LIGHTNING,每{4}秒向周围发射{0}枚追踪雷电投射物，每枚投射物贯通4个目标，初始范围300，造成{1}({3})伤害,"Shoots {0} ball lightnings around you (base range 300) every {4} seconds piercing 4 targets and dealing {1} ({3}) damage each"
 CHARACTER_FOXLAB_KIDNAPPER,绑匪,Kidnapper
 EFFECT_FOXLAB_REMOVE_ENEMY_SPEEDS,{0}{1}，敌人受击会被定身,"{0} {1}; Enemy you hit stands still"
@@ -62,7 +128,7 @@ CHARACTER_FOXLAB_YINYANG,阴阳师,Yin-Yang Master
 FOXLAB_ENABLE,生效,Enabled
 FOXLAB_DISABLE,无效,Disabled
 NO_HEAL,无法治疗,No Heal
-LOSE_HP_PER_SECOND,每秒固定受伤,Lose HP per second
+LOSE_HP_PER_SECOND,每秒固定受伤,HP Lose per Second
 POISONED_FRUIT,%毒水果,% Poisoned Fruit
 ENEMY_FRUIT_DROPS,%水果概率,% Fruit Drops
 ITEM_FOXLAB_SPACETIME_MACHINE_YIN,时空装置（阴）,Spacetime Machine(Yin)
@@ -70,12 +136,37 @@ ITEM_FOXLAB_SPACETIME_MACHINE_YANG,时空装置（阳）,Spacetime Machine(Yang)
 STRONGER_LOOT_ALIENS_ON_KILL,%战利品外星人击杀增幅,% Stronger Loot Aliens on Kill
 FOXLAB_ABYSS_ENEMY_NAME,深渊敌人,Abyss Enemies
 FOXLAB_CRASH_ENEMY_NAME,碰撞区域敌人,Crash Zone Enemies
+CHARACTER_FOXLAB_LOONG_RIDER,驭龙者,Loong Rider
+EFFECT_FOXLAB_STAT_FIRST_WAVES,前{2}波商店{0}{1},{0} {1} for first {2} waves
+ITEM_FOXLAB_SPACETIME_ANCHOR,时空锚点,Spacetime Anchor
+FOXLAB_RANDOM_ENEMY_NAME,随机时空敌人,Enemies of Random Spacetime
+CHARACTER_FOXLAB_BOUNTY_HUNTER,赏金猎人,Bounty Hunter
+EFFECT_FOXLAB_EXTRA_BOSS,下场敌袭额外出现{0}[color=#F9C571]{2}[/color],Extra {0} [color=#F9C571]{2}[/color] appear during the next wave
+EFFECT_FOXLAB_WANTED_ITEM,每个箱子中有16%几率发现至少1{1},16% chance of finding at least 1 {1} in a crate
+EFFECT_FOXLAB_WANTED_ITEM_WITH_STARTING,初始拥有2{1}，每个箱子中有29%几率发现至少1{1},"You start with 2 {1}, 16% chance of finding at least 1 {1} in a crate"
+ITEM_FOXLAB_WANTED,通缉令,Wanted
+ITEM_FOXLAB_WANTED_BAT,通缉令,Wanted
+ITEM_FOXLAB_ENCHANTED_EYES,天眼,Enchanted Eyes
+ENEMY_GOLD_DROPS,%敌人掉落材料,% Enemy Gold Grops
+EFFECT_FOXLAB_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT,每持有{2}异种{3}有{0}{1}[{4}],{0} {1} for every {2} different {3} you have [{4}]
+CHARACTER_FOXLAB_GOLEM_NINJA,傀儡忍者,Golem Ninja
+ITEM_FOXLAB_OMNIC_CRISIS,智械危机,Omnic Crisis
+EFFECT_FOXLAB_TEMP_STATS_ON_STRUCTURE_CRIT,构筑物以暴击杀死敌人会{0}{1}直至敌袭结束,{0} {1} until the end of the wave when structure kills an enemy with a critical hit
+EFFECT_FOXLAB_STATS_BELOW_HALF_HEALTH_EXPLODE,生命值低于50%时有{0}{1}，每波首次达到时会爆炸,{0} {1} when you have less than 50% health; explode for the first time each wave
+CRIT_CHANCE_CAP,%暴击率上限,% Crit Chance Cap
+EFFECT_FOXLAB_GOLEM_NINJA,上项{3}次执行都有{2}＞{4}，可解除[color=#F9C571]{5}[/color]负面（余[color=#F9C571]{0}[/color]）,"When above works for {3} times with {2} > {4}, penalty of [color=#F9C571]{5}[/color] gone ([color=#F9C571]{0}[/color] to go)"
+CHARACTER_FOXLAB_MAGICIAN,魔术师,Magician
+ITEM_FOXLAB_MAGICAL_HAT,魔术帽,Magical Hat
+EFFECT_FOXLAB_MAGICIAN,[color=#F9C571]魔术帽[/color]数量影响你的能力：,[color=#F9C571]Magical Hat[/color] count relates to your abilities:
+EFFECT_FOXLAB_MAGICIAN_NEG,窃取易出精英怪，敌袭结束后敌人增强{0},"Stealing from the shop tends to spawn an elite, enemies get {0} stronger at the end of a wave"
+EFFECT_FOXLAB_MAGICIAN_TREE,敌袭结束时{2}设为{1}/{3}余数再{4},{2} becomes remainder of {1}/{3} {4}
+EFFECT_FOXLAB_TIER_X_WEAPON,只能装备{0}级别武器,Can equip tier {0} weapon only
+EFFECT_FOXLAB_TIER_XY_WEAPON,能装备{0}~{1}级别武器,Can equip tier {0}~{1} weapon
 CHARACTER_FOXLAB_MONK,僧侣,Monk
 ITEM_FOXLAB_BUDDHAS_HAND,佛手,Buddha's Hand
 EFFECT_FOXLAB_BUDDHAS_HAND,获得此道具时，你会装备{0}并赋予其{1}效果,"You equip a {0} with effect of {1} when you get this item"
 EFFECT_FOXLAB_BUDDHAS_HAND_BRICK,赋予的效果若有{3}{1}，武器升级后失去此效果,"If the effect has {3}{1}, it is lost when you upgrade the weapon"
 EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME,下场敌袭会出现额外的[color=#F9C571]{2}[/color],Extra [color=#F9C571]{2}[/color] appears during the next wave
-SLASHER_EGG_NAME,斩击者之卵,Slasher Egg
 FOXLAB_RANDOM,随机,random
 EXTRA_LOOT_ALIENS_NEXT_WAVE,下波战利品外星人,Loot Aliens Next Wave
 EFFECT_FOXLAB_STAT_PERCENT_DEC_END_OF_WAVE,敌袭结束后{1}减少{0},Decrease {0} of {1} at the end of a wave
@@ -92,8 +183,8 @@ EFFECT_FOXLAB_LOSE_ON_REROLL,刷新按钮显示{1}时，刷新失去1{1},Lose 1 
 EFFECT_FOXLAB_WEAPON_TEXT,[color=#F9C571]{1}：[/color],[color=#F9C571]{1}:[/color]
 EFFECT_FOXLAB_WEAPON_TEXT_CURSED,[color=#ca61ff]诅咒[/color][color=#F9C571]{1}：[/color],[color=#ca61ff]Cursed [/color][color=#F9C571]{1}:[/color]
 ITEM_FOXLAB_MASK,面具,Mask
-CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
+CHARACTER_FOXLAB_REFACTOR,重构师（测试中）,Refactor(Testing)
 EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，造成{0}（{1}）伤害；未杀死的目标有{5}几率异变（关底头目不异变，其他头目异变几率是基础几率的8%）,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage; if a target is still alive, {5} chance for it to mutate(Final-wave Bosses do not mutate; chance for other Bosses is 8% of base chance)"
 ITEM_FOXLAB_REACTOR,反应堆,Reactor
 EFFECT_FOXLAB_MUTATE_ALIVE_ENEMY,你击中但未杀死的目标有{0}几率异变（关底头目不异变，其他头目异变几率是基础几率的8%）,"{0} chance to mutate an alive target you hit(Final-wave Bosses do not mutate; chance for other Bosses is 8% of base chance)"
-EFFECT_FOXLAB_GAIN_STAT_ON_MUTATE,敌人异变时，你有相同几率提升随机主属性的修改和敌人属性,"Same chance to increase Primary Stat Modifications and Enemy Stats when an ememy mutates"
+EFFECT_FOXLAB_GAIN_STAT_ON_MUTATE,敌人异变时，你有相同几率提升随机[color=#F9C571]主属性或修改[/color]和[color=#F9C571]敌人属性[/color],"Same chance to increase [color=#F9C571]Primary Stat or Modifications[/color] and [color=#F9C571]Enemy Stat[/color] when an ememy mutates"

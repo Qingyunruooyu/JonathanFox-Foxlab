@@ -30,14 +30,14 @@
 
 [resource]
 script = ExtResource( 9 )
-my_id = "character_brolab_驭龙者_294"
+my_id = "character_foxlab_loong_rider"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 27 )
-name = "驭龙者"
+name = "CHARACTER_FOXLAB_LOONG_RIDER"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 6 ), ExtResource( 1 ), ExtResource( 19 ), ExtResource( 3 ), ExtResource( 23 ), ExtResource( 4 ), ExtResource( 24 ), ExtResource( 2 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 5 ), ExtResource( 20 ), ExtResource( 21 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 1 ), ExtResource( 19 ), ExtResource( 3 ), ExtResource( 23 ), ExtResource( 4 ), ExtResource( 24 ), ExtResource( 2 ), ExtResource( 22 ), ExtResource( 5 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 20 ), ExtResource( 21 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

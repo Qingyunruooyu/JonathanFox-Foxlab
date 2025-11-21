@@ -15,14 +15,14 @@
 
 [resource]
 script = ExtResource( 3 )
-my_id = "item_brolab_魔术帽_287"
+my_id = "item_foxlab_magical_hat"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "魔术帽"
+name = "ITEM_FOXLAB_MAGICAL_HAT"
 tier = 1
 value = 1.0
-effects = [ ExtResource( 8 ), ExtResource( 11 ), ExtResource( 2 ), ExtResource( 9 ), ExtResource( 12 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 10 ), ExtResource( 6 ) ]
+effects = [ ExtResource( 11 ), ExtResource( 2 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 12 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 10 ), ExtResource( 6 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

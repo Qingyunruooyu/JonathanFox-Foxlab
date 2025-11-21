@@ -142,12 +142,13 @@ func foxlab_random_enemies() -> Array:
 							foxlab_enemies.append(unit_data.unit_scene)
 	return foxlab_enemies
 
-func foxlab_spawn_random_enemy(enemy: Enemy, player_index: int):
+func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:
 	var enemy_scene: PackedScene = null
-	if enemy is Boss or Utils.get_chance_success(FOXLAB_BOSS_CHANCE / 100.0):
+	var new_boss_num = 0
+	if enemy is Boss or Utils.get_chance_success(FOXLAB_BOSS_CHANCE / 100.0 / (1 + boss_spawned_this_wave)):
 		# 最终BOSS不能被变异
 		if enemy.enemy_id in ["predator", "invoker", "eel", "dead_whale"]:
-			return
+			return new_boss_num
 		var enemy_data: EnemyData = null
 		if Utils.get_chance_success(FOXLAB_BOSS_CHANCE / 100.0):
 			enemy_data = Utils.get_rand_element(ItemService.bosses)
@@ -161,6 +162,7 @@ func foxlab_spawn_random_enemy(enemy: Enemy, player_index: int):
 				var icon = ItemService.get_element(ItemService.icons, "icon_elite").icon
 				var player_position = floating_text_manager.players[player_index].global_position
 				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
+				new_boss_num = 1
 			else:
 				floating_text_manager.display("MUTATION", enemy.global_position)
 	else:
@@ -169,5 +171,6 @@ func foxlab_spawn_random_enemy(enemy: Enemy, player_index: int):
 	enemy._on_AttackBehavior_wanted_to_spawn_an_enemy(enemy_scene, ZoneService.get_rand_pos_in_area(Vector2(enemy.global_position.x, enemy.global_position.y), 200))
 	enemy.can_drop_loot = false
 	enemy.die()
+	return new_boss_num
 
 

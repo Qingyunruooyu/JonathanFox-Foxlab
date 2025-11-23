@@ -9,7 +9,7 @@ func get_args(_player_index: int) -> Array:
 		0: # 一般的
 			return [str(Utils.get_stat(key, _player_index)), tr(key.to_upper())]
 		1: # 永久的
-			return [str(RunData.get_stat(key, _player_index)), tr(key.to_upper())]
+			return [str(RunData.get_stat(key, _player_index)), tr("EFFECT_FOXLAB_PERMANENT") + tr(key.to_upper())]
 		2: # 效果而非属性，布尔
 			return [tr("FOXLAB_ENABLE") if RunData.get_player_effect_bool(key, _player_index) \
 					else tr("FOXLAB_DISABLE"), tr(key.to_upper())]

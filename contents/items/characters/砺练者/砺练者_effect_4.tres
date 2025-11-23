@@ -5,13 +5,13 @@
 [resource]
 script = ExtResource( 1 )
 key = "foxlab_effect_receive_item_at_wave"
-text_key = "初始和敌袭开始时获得{2}{1}"
+text_key = "EFFECT_FOXLAB_ITEM_START_WAVE"
 value = 1
 custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-foxlab_receive_item_id = "item_brolab_水滴石穿_81"
+foxlab_receive_item_id = "item_foxlab_slow_and_steady_wins"
 foxlab_receive_item_wave = 1
 foxlab_receive_item_end_wave = 99999999
 foxlab_cursed_item = false

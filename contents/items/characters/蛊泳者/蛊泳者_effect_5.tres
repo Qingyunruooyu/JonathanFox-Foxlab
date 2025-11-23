@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "enemy_damage"
-text_key = "每{2}存活敌人+{0}{1}[{4}]"
+text_key = "EFFECT_GAIN_STAT_FOR_EVERY_ENEMY"
 value = 5
 custom_key = ""
 storage_method = 0

@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "stat_levels"
-text_key = "武器伤害会随着{0}%等级增加"
+text_key = "effect_weapon_scaling_stats"
 value = 50
 custom_key = "weapon_scaling_stats"
 storage_method = 1

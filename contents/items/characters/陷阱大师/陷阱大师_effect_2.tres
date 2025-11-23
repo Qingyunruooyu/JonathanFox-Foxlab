@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "stat_engineering"
-text_key = "敌人受{1}伤害会暂时减速{0}%"
+text_key = "EFFECT_FOXLAB_SLOW_ON_HIT"
 value = 20
 custom_key = "slow_on_hit"
 storage_method = 1

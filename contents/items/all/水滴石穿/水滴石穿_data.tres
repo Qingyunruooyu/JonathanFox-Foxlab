@@ -11,11 +11,11 @@
 
 [resource]
 script = ExtResource( 3 )
-my_id = "item_brolab_水滴石穿_81"
+my_id = "item_foxlab_slow_and_steady_wins"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "水滴石穿"
+name = "ITEM_FOXLAB_SLOW_AND_STEADY_WINS"
 tier = 3
 value = 110.0
 effects = [ ExtResource( 7 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 8 ) ]

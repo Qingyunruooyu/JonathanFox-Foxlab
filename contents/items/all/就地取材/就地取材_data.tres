@@ -10,11 +10,11 @@
 
 [resource]
 script = ExtResource( 3 )
-my_id = "item_brolab_就地取材_253"
+my_id = "item_foxlab_inplace_operation"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "就地取材"
+name = "ITEM_FOXLAB_INPLACE_OPERATION"
 tier = 2
 value = 80.0
 effects = [ ExtResource( 2 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ) ]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=112 format=2]
+[gd_resource type="Resource" load_steps=114 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
@@ -111,6 +111,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_item_exploding_effect.gd" type="Script" id=109]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_turret_effect.gd" type="Script" id=110]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_structure_effect.gd" type="Script" id=111]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/magician_effect.gd" type="Script" id=112]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/cursed_starting_weapon.gd" type="Script" id=113]
 
 [resource]
 script = ExtResource( 1 )
@@ -122,14 +124,14 @@ upgrades = [  ]
 consumables = [  ]
 elites = [  ]
 difficulties = [  ]
-effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 106 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 106 ) ]
 challenges = [  ]
 tracked_items = {
 "character_brolab_河鲀_33": 0,
 "character_foxlab_faceless": 0,
 "character_foxlab_mom": 0,
-"character_foxlab_toxic_healer": 0,
 "character_foxlab_refactor": 0,
+"character_foxlab_toxic_healer": 0,
 "character_foxlab_turtle": 0,
 "item_foxlab_ball_lightning_0": 0,
 "item_foxlab_ball_lightning_1": 0,
@@ -141,15 +143,22 @@ tracked_items = {
 "item_foxlab_reactor": 0
 }
 translation_keys_needing_operator = {
+"bounce_damage": [ 0 ],
+"effect_foxlab_bonus_damage_via_health": [ 0, 2 ],
 "effect_foxlab_extra_lightning": [ 0, 2, 3, 4 ],
 "effect_foxlab_food_price": [ 0 ],
 "effect_foxlab_gain_stat_end_of_wave_diff": [ 0 ],
 "effect_foxlab_gain_stat_for_every_different_stat": [ 0, 4 ],
 "effect_foxlab_item_steal_warmhole": [ 0 ],
+"effect_foxlab_magician_tree": [ 4 ],
 "effect_foxlab_mutate_alive_enemy": [ 0 ],
 "effect_foxlab_on_hit_double": [ 0, 2 ],
 "effect_foxlab_reactor": [ 5 ],
+"effect_foxlab_spawn_landmine_chance": [ 0 ],
 "effect_foxlab_specific_weapon_class_price": [ 0 ],
+"effect_foxlab_stats_below_half_health_explode": [ 0 ],
+"effect_foxlab_temp_stats_on_structure_crit": [ 0 ],
+"effect_foxlab_temp_stats_per_interval_limited": [ 0 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
 "effect_foxlab_vagabond_fruit_pos": [ 2 ],
 "effect_foxlab_weapon_struct_bonus": [ 0 ],
@@ -160,26 +169,28 @@ translation_keys_needing_operator = {
 "no_heal": [ 0 ],
 "poisoned_fruit": [ 0 ],
 "stronger_elites_on_kill": [ 0 ],
-"stronger_loot_aliens_on_kill": [ 0 ],
-"effect_foxlab_temp_stats_on_structure_crit":[0],
-"effect_foxlab_stats_below_half_health_explode":[0],
-"effect_foxlab_magician_tree":[4]
+"stronger_loot_aliens_on_kill": [ 0 ]
 }
 translation_keys_needing_percent = {
+"effect_foxlab_bonus_damage_via_health": [ 0, 2 ],
 "effect_foxlab_convert_stat_end_of_wave_equal": [ 0 ],
+"effect_foxlab_extra_bosses_with_chance": [ 2 ],
 "effect_foxlab_extra_lightning": [ 0, 2, 3, 4 ],
+"effect_foxlab_fast_on_hit": [ 0 ],
 "effect_foxlab_food_price": [ 0 ],
 "effect_foxlab_increase_damage_received": [ 0, 3 ],
+"effect_foxlab_magician_neg": [ 0 ],
 "effect_foxlab_mom_landmine_crit": [ 2, 3 ],
 "effect_foxlab_mutate_alive_enemy": [ 0 ],
 "effect_foxlab_programmer": [ 0 ],
 "effect_foxlab_reactor": [ 5 ],
+"effect_foxlab_slow_on_hit": [ 0 ],
+"effect_foxlab_spawn_landmine_chance": [ 0 ],
 "effect_foxlab_specific_weapon_class_price": [ 0 ],
 "effect_foxlab_stat_first_waves": [ 0 ],
 "effect_foxlab_stat_percent_dec_end_of_wave": [ 0 ],
 "effect_foxlab_transform": [ 2 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
 "effect_foxlab_vagabond_fruit_pos": [ 2 ],
-"effect_foxlab_wormhole_upgrade_neg": [ 0 ],
-"effect_foxlab_magician_neg":[0]
+"effect_foxlab_wormhole_upgrade_neg": [ 0 ]
 }

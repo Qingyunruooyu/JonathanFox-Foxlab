@@ -18,12 +18,14 @@ func get_text(player_index: int, colored: bool = true) -> String:
 		text += Text.text(tr("EFFECT_FOXLAB_TIER_XY_WEAPON"), [weapon_tier_str, weapon_tier_str1], [Sign.NEGATIVE, Sign.NEGATIVE])
 
 	if RunData.get_player_effect_bool("hp_shop", player_index):
-		text += ';\n' + tr("EFFECT_HP_SHOP")
+		text += tr("EFFECT_FOXLAB_SEMICOLON") + '\n' + tr("EFFECT_HP_SHOP")
 
 	if RunData.get_player_effect_bool("disable_item_locking", player_index):
-		text += ';\n' + tr("EFFECT_DISABLE_ITEM_LOCKING")
+		text += tr("EFFECT_FOXLAB_SEMICOLON") + '\n' + tr("EFFECT_DISABLE_ITEM_LOCKING")
 
 	if RunData.get_player_effect_bool("item_steals", player_index):
-		text += ';\n' + Text.text(tr("EFFECT_ITEM_STEALS"), [str(RunData.get_player_effect("item_steals", player_index))], [Sign.POSITIVE])
+		text += tr("EFFECT_FOXLAB_SEMICOLON") + '\n' + Text.text(tr("EFFECT_ITEM_STEALS"), [str(RunData.get_player_effect("item_steals", player_index))], [Sign.POSITIVE]) + tr("EFFECT_FOXLAB_STEAL_INIT")
+
+	text += tr("EFFECT_FOXLAB_PERIOD")
 
 	return text

@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id=1]
 script = ExtResource( 1 )
 arg_index = 1
-arg_sign = 0
+arg_sign = 1
 arg_value = 2
 arg_format = 0
 arg_key = ""
@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "enemy_damage"
-text_key = "武器伤害随{0}%的{1}增加"
+text_key = "EFFECT_WEAPON_SCALING_STATS"
 value = 20
 custom_key = "weapon_scaling_stats"
 storage_method = 1

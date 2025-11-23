@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "res://dlcs/dlc_1/zones/abyss/000_all/group_3.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/group_evil_mob.tres"
 text_key = "[EMPTY]"
-value = 2
+value = 1
 custom_key = "extra_enemies_next_wave"
 storage_method = 1
 effect_sign = 3

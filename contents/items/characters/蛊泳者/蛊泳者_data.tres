@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=42 format=2]
+[gd_resource type="Resource" load_steps=41 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/蛊泳者/蛊泳者_effect_0.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/蛊泳者/蛊泳者_effect_2.tres" type="Resource" id=2]
@@ -29,7 +29,6 @@
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/flute/1/flute_data.tres" type="Resource" id=27]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=28]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/蛊泳者/蛊泳者_effect_11.tres" type="Resource" id=29]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/蛊泳者/蛊泳者_effect_10.tres" type="Resource" id=30]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/蛊泳者/蛊泳者_effect_13.tres" type="Resource" id=31]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/蛊泳者/蛊泳者_effect_14.tres" type="Resource" id=32]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/蛊泳者/蛊泳者_effect_15.tres" type="Resource" id=33]
@@ -44,14 +43,14 @@
 
 [resource]
 script = ExtResource( 11 )
-my_id = "character_brolab_蛊泳者_68"
+my_id = "character_foxlab_venom"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 41 )
-name = "蛊泳者"
+name = "CHARACTER_FOXLAB_VENOM"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 40 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ) ]
+effects = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 29 ), ExtResource( 40 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

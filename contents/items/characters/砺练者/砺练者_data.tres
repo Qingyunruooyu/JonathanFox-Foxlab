@@ -30,11 +30,11 @@
 
 [resource]
 script = ExtResource( 9 )
-my_id = "character_brolab_砺练者_422"
+my_id = "character_foxlab_survivor"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "砺练者"
+name = "CHARACTER_FOXLAB_SURVIVOR"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 24 ), ExtResource( 27 ) ]

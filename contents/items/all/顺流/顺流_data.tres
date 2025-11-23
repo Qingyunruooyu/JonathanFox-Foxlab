@@ -43,11 +43,11 @@
 
 [resource]
 script = ExtResource( 3 )
-my_id = "item_brolab_顺流_274"
+my_id = "item_foxlab_tick_tock"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "顺流"
+name = "ITEM_FOXLAB_TICK_TOCK"
 tier = 1
 value = 1.0
 effects = [ ExtResource( 13 ), ExtResource( 2 ), ExtResource( 12 ), ExtResource( 20 ), ExtResource( 27 ), ExtResource( 4 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 16 ), ExtResource( 23 ), ExtResource( 8 ), ExtResource( 17 ), ExtResource( 28 ), ExtResource( 18 ), ExtResource( 5 ), ExtResource( 19 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 9 ), ExtResource( 24 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 35 ), ExtResource( 34 ), ExtResource( 38 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 31 ), ExtResource( 37 ), ExtResource( 40 ), ExtResource( 33 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 32 ) ]

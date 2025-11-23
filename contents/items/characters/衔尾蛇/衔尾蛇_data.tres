@@ -29,11 +29,11 @@
 
 [resource]
 script = ExtResource( 11 )
-my_id = "character_brolab_流体_274"
+my_id = "character_foxlab_ouroboros"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 27 )
-name = "衔尾蛇"
+name = "CHARACTER_FOXLAB_OUROBOROS"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 6 ) ]

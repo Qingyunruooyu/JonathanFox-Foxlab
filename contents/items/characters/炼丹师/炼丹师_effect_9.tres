@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "weapon_class_elemental"
-text_key = "以{1}武器直接命中被诅咒敌人的伤害{0}%"
+text_key = "effect_bonus_weapon_class_damage_against_cursed_enemies"
 value = -99
 custom_key = "bonus_weapon_class_damage_against_cursed_enemies"
 storage_method = 1

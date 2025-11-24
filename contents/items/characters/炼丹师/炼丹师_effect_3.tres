@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "burning_enemy_speed"
-text_key = "每获得{2}提升燃烧蔓延的物品使燃烧敌人{0}%速度"
+text_key = "EFFECT_GAIN_STAT_FOR_EQUIPPED_ITEM_WITH_STAT"
 value = -20
 custom_key = "gain_stat_for_equipped_item_with_stat"
 storage_method = 1

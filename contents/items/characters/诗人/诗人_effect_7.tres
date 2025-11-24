@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_诗人_next_curse_chance"
+key = "fox_poet_next_curse_chance"
 text_key = "[EMPTY]"
 value = 100
 custom_key = "fox_convert_remainder_end_of_wave"

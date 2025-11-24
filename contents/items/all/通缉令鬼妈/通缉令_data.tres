@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://items/global/item_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/mom_icon.png" type="Texture" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/通缉令鬼妈/通缉令_effect_0.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/通缉令鬼妈/通缉令_effect_1.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/通缉令鬼妈/通缉令_effect_2.tres" type="Resource" id=5]
 
 [resource]
 script = ExtResource( 1 )
@@ -14,7 +15,7 @@ icon = ExtResource( 2 )
 name = "ITEM_FOXLAB_WANTED"
 tier = 3
 value = 1.0
-effects = [ ExtResource( 3 ), ExtResource( 4 ) ]
+effects = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

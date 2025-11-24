@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "materials"
-text_key = "敌袭结束时{2}设为{1}低2位，未收集的{1}不会保留"
+text_key = "EFFECT_FOXLAB_SET_AS_LAST_TWO"
 value = 100
 custom_key = "fox_convert_remainder_end_of_wave"
 storage_method = 2

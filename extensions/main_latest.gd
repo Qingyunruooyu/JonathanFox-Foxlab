@@ -49,7 +49,7 @@ func _on_enemy_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vect
 			if effect.key == "foxlab_mutate_alive_enemy":
 				chance += effect.value / 100.0
 	if enemy is Boss:
-		chance = chance * 0.08
+		chance = chance * 0.08 / (1 + bosses_this_wave)
 	if Utils.get_chance_success(chance):
 		bosses_this_wave += ItemService.foxlab_spawn_random_enemy(enemy, bosses_this_wave, args.from_player_index)
 		if RunData.get_player_effect_bool("foxlab_gain_stat_on_mutate", args.from_player_index) and Utils.get_chance_success(chance):

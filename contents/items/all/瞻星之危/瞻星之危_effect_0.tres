@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_瞻星之危_253"
-text_key = "刷新按钮显示{1}时，刷新失去1{1}和1次对应效果"
+key = "item_foxlab_stargazer"
+text_key = "EFFECT_FOXLAB_LOSE_ON_REROLL"
 value = 0
 custom_key = "increase_tier_on_reroll"
 storage_method = 4

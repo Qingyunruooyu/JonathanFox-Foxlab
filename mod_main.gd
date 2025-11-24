@@ -20,6 +20,7 @@ const EXTENSION_SCRIPTS: =[
 	"item_description.gd",
 	"shop_item.gd",
 	"floating_text_manager.gd",
+	"entity_spawner.gd"
 ]
 
 func _init():
@@ -30,6 +31,7 @@ func _init():
 	if IS_NEW_DAWN:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_latest.gd")
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "character_panel_ui.gd")
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "sort_inventory_button.gd")
 	else:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_legacy.gd")
 

@@ -1,15 +1,48 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=7 format=2]
 
 [ext_resource path="res://effects/items/double_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 3
+arg_sign = 1
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_ODD"
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+arg_index = 4
+arg_sign = 0
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_EVEN"
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 2 )
+arg_index = 5
+arg_sign = 1
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_LOSE"
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 2 )
+arg_index = 6
+arg_sign = 0
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_GAIN"
 
 [resource]
 script = ExtResource( 1 )
 key = "stat_percent_damage"
-text_key = "若X为偶数，可获得+X{1}"
+text_key = "EFFECT_FOXLAB_ALL_OR_NOTHING"
 value = 199
 custom_key = "gain_stat_when_attack_killed_enemies"
 storage_method = 1
 effect_sign = 3
-custom_args = [  ]
+custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ]
 value2 = 100.0
 sum_strategy = 0

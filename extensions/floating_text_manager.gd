@@ -5,7 +5,7 @@ func get_stat_modified(stat: String):
 		stat.erase(0, 5)
 	if stat.begins_with("structure"):
 		return "stat_" + stat
-	if stat.begins_with("fox_诗人"):
+	if stat.begins_with("fox_poet"):
 		stat = "stat_curse"
 	return stat
 

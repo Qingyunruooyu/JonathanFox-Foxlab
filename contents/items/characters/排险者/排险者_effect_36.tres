@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "xp_gain"
-text_key = "每一IV级别武器+{0}{1}[{2}]"
+text_key = "EFFECT_TIER_IV_WEAPON_BONUS"
 value = 25
 custom_key = "tier_iv_weapon_effects"
 storage_method = 1

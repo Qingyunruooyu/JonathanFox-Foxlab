@@ -66,8 +66,8 @@ func get_args(player_index: int) -> Array:
 	text_key = "effect_gain_stat_end_of_wave"
 	var text_raw = get_text_raw(player_index)
 	var args: = [
-		"[color=#00ff00]%s[/color]" % [str(starting_wave)],
-		text_raw if end_wave < 1 else text_raw + ", " + tr("foxlab_EFFECT_STATS_END_OF_WAVE_BEFORE_WAVE").replace("{0}", str(end_wave)),
+		str(starting_wave),
+		text_raw if end_wave < 1 else text_raw + ", " + tr("EFFECT_FOXLAB_STATS_END_OF_WAVE_BEFORE_WAVE").replace("{0}", str(end_wave)),
 	]
 	text_key = text_key_cache
 

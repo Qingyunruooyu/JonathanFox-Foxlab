@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "stat_percent_damage"
-text_key = "武器一次直接杀死X个敌人时："
+text_key = "[EMPTY]"
 value = 195
 custom_key = "gain_stat_when_attack_killed_enemies"
 storage_method = 1

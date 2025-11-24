@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_累卵之危_253"
+key = "item_foxlab_eggs"
 text_key = "[EMPTY]"
 value = 56
 custom_key = "extra_item_in_crate"

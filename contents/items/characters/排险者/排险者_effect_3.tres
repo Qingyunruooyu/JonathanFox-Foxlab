@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "extra_loot_aliens"
-text_key = "异变前每次敌袭多{0}战利品外星人"
+text_key = "effect_extra_loot_aliens"
 value = 2
 custom_key = ""
 storage_method = 0

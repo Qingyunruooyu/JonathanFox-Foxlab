@@ -15,14 +15,14 @@
 
 [resource]
 script = ExtResource( 2 )
-my_id = "item_brolab_瞻星之危_253"
+my_id = "item_foxlab_stargazer"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "瞻星之危"
+name = "ITEM_FOXLAB_STARGAZER"
 tier = 1
 value = 1.0
-effects = [ ExtResource( 3 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 6 ) ]
+effects = [ ExtResource( 3 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 6 ), ExtResource( 5 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

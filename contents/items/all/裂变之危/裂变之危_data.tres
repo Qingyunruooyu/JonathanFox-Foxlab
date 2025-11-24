@@ -15,14 +15,14 @@
 
 [resource]
 script = ExtResource( 2 )
-my_id = "item_brolab_裂变之危_253"
+my_id = "item_foxlab_split"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 12 )
-name = "裂变之危"
+name = "ITEM_FOXLAB_SPLIT"
 tier = 1
 value = 1.0
-effects = [ ExtResource( 11 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 1 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 4 ) ]
+effects = [ ExtResource( 11 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 1 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 8 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

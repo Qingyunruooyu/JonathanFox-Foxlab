@@ -21,6 +21,7 @@ func is_transform_vanilla_only():
 
 func _ready() -> void :
 	call_deferred("_init_configs")
+	call_deferred("_init_enemies")
 
 func _init_configs():
 	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
@@ -98,9 +99,14 @@ func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> Ite
 
 
 ####### 变异相关 ##############
-const FOXLAB_BOSS_CHANCE := 3
+const FOXLAB_BOSS_CHANCE := 12
 var FOXLAB_IS_NEW_DAWN = "1.1.13" in CrashReporter.VERSION
 var foxlab_enemies = []
+var foxlab_die_args = Entity.DieArgs.new()
+func _init_enemies():
+	foxlab_die_args.cleaning_up = true
+	foxlab_die_args.enemy_killed_by_player = false
+	foxlab_die_args.killed_by_player_index = - 1
 
 func foxlab_has_node_with_name(packed_scene: PackedScene, node_name: String) -> bool:
 	var state = packed_scene.get_state()
@@ -170,7 +176,13 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 
 	enemy._on_AttackBehavior_wanted_to_spawn_an_enemy(enemy_scene, ZoneService.get_rand_pos_in_area(Vector2(enemy.global_position.x, enemy.global_position.y), 200))
 	enemy.can_drop_loot = false
-	enemy.die()
+	enemy.die(foxlab_die_args)
 	return new_boss_num
 
+
+####### 扩展 ###########
+func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapon: bool = false, affected_by_items_price_stat: bool = true) -> int:
+	# 游戏本身bug，回收带有 specific_items_price 的武器时，如果道具价格低于-100%，导致负负得正，原因是没有乘以 specific_items_price/100
+	# ui/menus/shop/item_popup.gd ui/menus/shop/base_shop.gd
+	return .get_recycling_value(wave, max(1, from_value), player_index, is_weapon, affected_by_items_price_stat)
 

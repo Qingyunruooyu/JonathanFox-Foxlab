@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_诗人_next_curse_chance"
-text_key = "每在一波敌袭中前进{2}步，下个商店+{0}%几率诅咒被锁定物品（%几率仅低2位有效）"
+key = "fox_poet_next_curse_chance"
+text_key = "effect_stat_on_every_step_valid_lowest_two"
 value = 14
 custom_key = "gain_stat_for_every_step_after_equip"
 storage_method = 1

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "stat_luck"
-text_key = "每{2}秒+{0}{1}直至敌袭结束，受到伤害时失去这些{1}"
+text_key = "EFFECT_FOXLAB_TEMP_STATS_PER_INTERVAL_LIMITED"
 value = 49
 custom_key = "temp_stats_per_interval"
 storage_method = 1

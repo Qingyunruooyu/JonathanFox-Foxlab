@@ -1,11 +1,11 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/cursed_starting_weapon.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
 key = "weapon_fireball_2"
-text_key = "初始拥有{0}被诅咒的火球"
+text_key = "effect_cursed_starting_item"
 value = 1
 custom_key = "cursed_starting_weapon"
 storage_method = 1

@@ -2,10 +2,9 @@
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_convert_stat_effect.gd" type="Script" id=1]
 
-
 [resource]
 script = ExtResource( 1 )
-key = "materials_per_living_enemy"
+key = "fox_troubleshooter_temp"
 text_key = "[EMPTY]"
 value = 1
 custom_key = "convert_stats_end_of_wave"
@@ -13,5 +12,5 @@ storage_method = 1
 effect_sign = 2
 custom_args = [  ]
 pct_converted = 100.0
-to_stat = "materials_per_living_enemy"
+to_stat = "fox_troubleshooter_temp"
 to_value = 0.0

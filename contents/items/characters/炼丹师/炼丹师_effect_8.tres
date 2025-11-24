@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "poisoned_fruit"
-text_key = "[EMPTY]"
+text_key = ""
 value = 100
 custom_key = ""
 storage_method = 0

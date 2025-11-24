@@ -17,6 +17,15 @@ func get_args(_player_index: int) -> Array:
 			return [str(RunData.get_player_effect(key, _player_index)), tr(key.to_upper())]
 		4: # 效果而非属性，负数置为0
 			return [str(max(0, RunData.get_player_effect(key, _player_index))), tr(key.to_upper())]
+		5: # 效果而非属性，反向布尔，排险者的异变
+			var state_crisis = ""
+			if RunData.get_player_effect(key, _player_index) < 0:
+				var pos_color = ("#" + ProgressData.settings.color_positive) if ProgressData.settings.has("color_positive") else Utils.POS_COLOR_STR
+				state_crisis = "[color=%s]%s[/color]" % [pos_color, tr("FOXLAB_ENABLE")]
+			else:
+				var neg_color = ("#" + ProgressData.settings.color_negative) if ProgressData.settings.has("color_negative") else Utils.NEG_COLOR_STR
+				state_crisis = "[color=%s]%s[/color]" % [neg_color, tr("FOXLAB_DISABLE")]
+			return [state_crisis]
 		_:
 			return []
 

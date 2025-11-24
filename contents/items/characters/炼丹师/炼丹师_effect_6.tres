@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "trees"
-text_key = "+20%敌人，无法生成树木"
-value = -9999
+key = "foxlab_no_trees"
+text_key = "effect_foxlab_no_trees"
+value = 1
 custom_key = ""
 storage_method = 0
 effect_sign = 3

@@ -67,7 +67,7 @@ func unapply(player_index: int) -> void:
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
 	# [变身堆栈数，正在变身否]
-	var stack_effect:Array = effects["fox_无面_transform_stack"]
+	var stack_effect:Array = effects["fox_faceless_transform_stack"]
 	if stack_effect[1]:
 		stack_effect[0] += 1
 		DebugService.log_data("add transform stack: %d" % [stack_effect[0]])
@@ -161,13 +161,13 @@ func _revert_negative_curse(player_index: int):
 
 func _duplicate_weapon(player_index: int):
 	var effects =  RunData.get_player_effects(player_index)
-	var upgrade_enabled = effects["fox_无面_enable_upgrade_on_transform"]
-	var upgrade_wave = effects["fox_无面_upgrade_on_transform_wave"]
+	var upgrade_enabled = effects["fox_faceless_enable_upgrade_on_transform"]
+	var upgrade_wave = effects["fox_faceless_upgrade_on_transform_wave"]
 	if  not upgrade_enabled or RunData.current_wave == upgrade_wave:
 		return
 
 	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
-	effects["fox_无面_upgrade_on_transform_wave"] = RunData.current_wave if _is_wave_started(player_index) else 1
+	effects["fox_faceless_upgrade_on_transform_wave"] = RunData.current_wave if _is_wave_started(player_index) else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons(player_index)).duplicate()
 	var weapon_for_effect:WeaponData = Utils.get_rand_element(ItemService.weapons)
 	while weapon_for_effect.effects.empty():
@@ -274,7 +274,7 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
 	if ItemService.characters.size() != ItemService.get_foxlab_transform_characters().size():
 		return true
-	var convert_stat_dict = RunData.get_player_effect("fox_无面_convert_stat_characters", 0)
+	var convert_stat_dict = RunData.get_player_effect("fox_faceless_convert_stat_characters", 0)
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
 	_get_convert_stat_result(candidate, convert_stat_dict)

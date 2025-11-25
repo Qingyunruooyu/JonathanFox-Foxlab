@@ -8,11 +8,11 @@
 
 [resource]
 script = ExtResource( 5 )
-my_id = "item_brolab_铁砧风_4"
+my_id = "item_foxlab_wind"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "铁砧‧其疾如风"
+name = "ITEM_FOXLAB_WIND"
 tier = 3
 value = 1.0
 effects = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ) ]

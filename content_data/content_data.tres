@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=114 format=2]
+[gd_resource type="Resource" load_steps=117 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
@@ -113,23 +113,26 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_structure_effect.gd" type="Script" id=111]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/magician_effect.gd" type="Script" id=112]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/cursed_starting_weapon.gd" type="Script" id=113]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/gain_stat_query_effect.gd" type="Script" id=114]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/refactor_mutation/refactor_mutation_data.tres" type="Resource" id=115]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/apply_only_effect.gd" type="Script" id=116]
 
 [resource]
 script = ExtResource( 1 )
 characters = [ ExtResource( 37 ), ExtResource( 35 ), ExtResource( 39 ), ExtResource( 44 ), ExtResource( 15 ), ExtResource( 47 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 46 ), ExtResource( 45 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 21 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 26 ), ExtResource( 31 ), ExtResource( 17 ), ExtResource( 32 ), ExtResource( 28 ), ExtResource( 24 ), ExtResource( 42 ), ExtResource( 19 ), ExtResource( 38 ), ExtResource( 12 ), ExtResource( 18 ), ExtResource( 41 ), ExtResource( 29 ), ExtResource( 10 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 20 ), ExtResource( 40 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 34 ), ExtResource( 14 ), ExtResource( 27 ), ExtResource( 43 ), ExtResource( 102 ) ]
-items = [ ExtResource( 100 ), ExtResource( 54 ), ExtResource( 61 ), ExtResource( 62 ), ExtResource( 64 ), ExtResource( 63 ), ExtResource( 67 ), ExtResource( 70 ), ExtResource( 57 ), ExtResource( 56 ), ExtResource( 58 ), ExtResource( 72 ), ExtResource( 73 ), ExtResource( 76 ), ExtResource( 77 ), ExtResource( 78 ), ExtResource( 79 ), ExtResource( 74 ), ExtResource( 91 ), ExtResource( 93 ), ExtResource( 87 ), ExtResource( 85 ), ExtResource( 82 ), ExtResource( 89 ), ExtResource( 88 ), ExtResource( 90 ), ExtResource( 80 ), ExtResource( 81 ), ExtResource( 50 ), ExtResource( 59 ), ExtResource( 99 ), ExtResource( 52 ), ExtResource( 66 ), ExtResource( 71 ), ExtResource( 68 ), ExtResource( 55 ), ExtResource( 69 ), ExtResource( 83 ), ExtResource( 94 ), ExtResource( 84 ), ExtResource( 92 ), ExtResource( 86 ), ExtResource( 95 ), ExtResource( 65 ), ExtResource( 48 ), ExtResource( 53 ), ExtResource( 98 ), ExtResource( 96 ), ExtResource( 75 ), ExtResource( 60 ), ExtResource( 51 ), ExtResource( 49 ), ExtResource( 97 ), ExtResource( 101 ) ]
+items = [ ExtResource( 100 ), ExtResource( 54 ), ExtResource( 61 ), ExtResource( 62 ), ExtResource( 64 ), ExtResource( 63 ), ExtResource( 67 ), ExtResource( 70 ), ExtResource( 57 ), ExtResource( 56 ), ExtResource( 58 ), ExtResource( 72 ), ExtResource( 73 ), ExtResource( 76 ), ExtResource( 77 ), ExtResource( 78 ), ExtResource( 79 ), ExtResource( 74 ), ExtResource( 91 ), ExtResource( 93 ), ExtResource( 87 ), ExtResource( 85 ), ExtResource( 82 ), ExtResource( 89 ), ExtResource( 88 ), ExtResource( 90 ), ExtResource( 80 ), ExtResource( 81 ), ExtResource( 50 ), ExtResource( 59 ), ExtResource( 99 ), ExtResource( 52 ), ExtResource( 66 ), ExtResource( 71 ), ExtResource( 68 ), ExtResource( 55 ), ExtResource( 69 ), ExtResource( 83 ), ExtResource( 94 ), ExtResource( 84 ), ExtResource( 92 ), ExtResource( 86 ), ExtResource( 95 ), ExtResource( 65 ), ExtResource( 48 ), ExtResource( 53 ), ExtResource( 98 ), ExtResource( 96 ), ExtResource( 75 ), ExtResource( 60 ), ExtResource( 51 ), ExtResource( 49 ), ExtResource( 97 ), ExtResource( 101 ), ExtResource( 115 ) ]
 weapons = [  ]
 sets = [  ]
 upgrades = [  ]
 consumables = [  ]
 elites = [  ]
 difficulties = [  ]
-effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 106 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 106 ), ExtResource( 116 ) ]
 challenges = [  ]
 tracked_items = {
-"character_brolab_河鲀_33": 0,
 "character_foxlab_faceless": 0,
 "character_foxlab_mom": 0,
+"character_foxlab_pufferfish": 0,
 "character_foxlab_refactor": 0,
 "character_foxlab_toxic_healer": 0,
 "character_foxlab_turtle": 0,
@@ -143,8 +146,13 @@ tracked_items = {
 "item_foxlab_reactor": 0
 }
 translation_keys_needing_operator = {
+"bounce": [ 0 ],
 "bounce_damage": [ 0 ],
+"effect_bounce_on_crit_item": [ 0 ],
+"effect_foxlab_apply_only": [ 0 ],
 "effect_foxlab_bonus_damage_via_health": [ 0, 2 ],
+"effect_foxlab_crisis": [ 0 ],
+"effect_foxlab_extra_item_in_crate_dual": [ 0 ],
 "effect_foxlab_extra_lightning": [ 0, 2, 3, 4 ],
 "effect_foxlab_food_price": [ 0 ],
 "effect_foxlab_gain_stat_end_of_wave_diff": [ 0 ],
@@ -162,25 +170,25 @@ translation_keys_needing_operator = {
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
 "effect_foxlab_vagabond_fruit_pos": [ 2 ],
 "effect_foxlab_weapon_struct_bonus": [ 0 ],
+"effect_stat_on_every_step_valid_lowest_two": [ 0 ],
 "enemy_fruit_drops": [ 0 ],
 "enemy_gold_drops": [ 0 ],
+"extra_loot_aliens": [ 0 ],
 "item_steals": [ 0 ],
 "lose_hp_per_second": [ 0 ],
 "no_heal": [ 0 ],
+"piercing": [ 0 ],
 "poisoned_fruit": [ 0 ],
 "stronger_elites_on_kill": [ 0 ],
-"stronger_loot_aliens_on_kill": [ 0 ],
-"piercing":[0],
-"bounce":[0],
-"effect_bounce_on_crit_item":[0],
-"effect_stat_on_every_step_valid_lowest_two":[0],
-"effect_foxlab_crisis":[0],
-"extra_loot_aliens":[0]
+"stronger_loot_aliens_on_kill": [ 0 ]
 }
 translation_keys_needing_percent = {
 "effect_foxlab_bonus_damage_via_health": [ 0, 2 ],
 "effect_foxlab_convert_stat_end_of_wave_equal": [ 0 ],
+"effect_foxlab_crisis": [ 0 ],
+"effect_foxlab_explode_on_overkill": [ 3 ],
 "effect_foxlab_extra_bosses_with_chance": [ 2 ],
+"effect_foxlab_extra_item_in_crate_dual": [ 0 ],
 "effect_foxlab_extra_lightning": [ 0, 2, 3, 4 ],
 "effect_foxlab_fast_on_hit": [ 0 ],
 "effect_foxlab_food_price": [ 0 ],
@@ -193,11 +201,11 @@ translation_keys_needing_percent = {
 "effect_foxlab_slow_on_hit": [ 0 ],
 "effect_foxlab_spawn_landmine_chance": [ 0 ],
 "effect_foxlab_specific_weapon_class_price": [ 0 ],
+"effect_foxlab_staff_officer": [ 0 ],
 "effect_foxlab_stat_first_waves": [ 0 ],
 "effect_foxlab_stat_percent_dec_end_of_wave": [ 0 ],
 "effect_foxlab_transform": [ 2 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
 "effect_foxlab_vagabond_fruit_pos": [ 2 ],
-"effect_foxlab_wormhole_upgrade_neg": [ 0 ],
-"effect_foxlab_crisis":[0]
+"effect_foxlab_wormhole_upgrade_neg": [ 0 ]
 }

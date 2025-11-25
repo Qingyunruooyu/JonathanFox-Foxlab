@@ -5,7 +5,7 @@ const SAME_CHAR_CHANCE = 0.33
 const MIN_TRANSFORM_CHANCE = 10.0
 const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
-# character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_brolab_砺练者_422, character_foxlab_infernal_machine
+# character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_foxlab_survivor, character_foxlab_infernal_machine
 var debug_item_name: Array = []
 var curse_character: bool = false
 

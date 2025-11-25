@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_sos_0"
+key = "item_foxlab_demon"
 text_key = "开箱必获得{3}和{1}形态"
 value = 50
 custom_key = ""
@@ -12,6 +12,6 @@ storage_method = 0
 effect_sign = 0
 custom_args = [  ]
 nb_stat_scaled = 1
-stat_scaled = "item_brolab_soa_0"
+stat_scaled = "item_foxlab_angel"
 perm_stats_only = false
 increased_stat_name = "damage"

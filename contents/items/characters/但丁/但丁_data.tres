@@ -45,11 +45,11 @@
 
 [resource]
 script = ExtResource( 9 )
-my_id = "character_brolab_但丁_477"
+my_id = "character_foxlab_dante"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "但丁"
+name = "CHARACTER_FOXLAB_DANTE"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 33 ), ExtResource( 35 ), ExtResource( 4 ), ExtResource( 37 ), ExtResource( 27 ), ExtResource( 32 ), ExtResource( 40 ), ExtResource( 28 ), ExtResource( 26 ), ExtResource( 3 ), ExtResource( 34 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 25 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 5 ), ExtResource( 41 ), ExtResource( 36 ), ExtResource( 31 ), ExtResource( 42 ), ExtResource( 2 ), ExtResource( 6 ) ]

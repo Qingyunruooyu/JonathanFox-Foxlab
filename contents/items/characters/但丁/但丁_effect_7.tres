@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_sos_0"
+key = "item_foxlab_demon"
 text_key = "没有双形态时，刷新后{0}物品等级"
 value = -2
 custom_key = ""

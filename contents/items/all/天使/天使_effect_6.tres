@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_soa_0"
+key = "item_foxlab_angel"
 text_key = "若你本局只拿取过{1}形态，免除刷新-2等级的效果"
 value = 0
 custom_key = "increase_tier_on_reroll"

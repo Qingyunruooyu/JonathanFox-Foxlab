@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "item_padding"
-text_key = "商店只上新1{1}"
+text_key = "EFFECT_FOXLAB_GUARANTEED_SHOP_ITEM"
 value = 1
 custom_key = "guaranteed_shop_items"
 storage_method = 4.0

@@ -18,11 +18,11 @@
 
 [resource]
 script = ExtResource( 9 )
-my_id = "item_brolab_魔人化_280"
+my_id = "item_foxlab_devil_trigger"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "魔人化"
+name = "ITEM_FOXLAB_DEVIL_TRIGGER"
 tier = 3
 value = 1.0
 effects = [ ExtResource( 2 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 14 ), ExtResource( 11 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 15 ), ExtResource( 5 ) ]

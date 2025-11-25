@@ -1,9 +1,9 @@
-[gd_resource type="Resource" load_steps=57 format=2]
+[gd_resource type="Resource" load_steps=56 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_1.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_2.tres" type="Resource" id=3]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_3.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_38.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_0.tres" type="Resource" id=5]
 [ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=6]
 [ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=7]
@@ -24,7 +24,6 @@
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_33.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_27.tres" type="Resource" id=24]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_4.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_9.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_11.tres" type="Resource" id=27]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/异瞳/异瞳_effect_5.tres" type="Resource" id=28]
@@ -59,14 +58,14 @@
 
 [resource]
 script = ExtResource( 8 )
-my_id = "character_brolab_异瞳_64"
+my_id = "character_foxlab_odd_eyed"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
-name = "异瞳"
+name = "CHARACTER_FOXLAB_ODD_EYED"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 5 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 51 ), ExtResource( 49 ), ExtResource( 55 ), ExtResource( 26 ), ExtResource( 32 ), ExtResource( 27 ), ExtResource( 45 ), ExtResource( 29 ), ExtResource( 50 ), ExtResource( 43 ), ExtResource( 48 ), ExtResource( 46 ), ExtResource( 52 ), ExtResource( 30 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 31 ), ExtResource( 47 ), ExtResource( 41 ), ExtResource( 24 ), ExtResource( 35 ), ExtResource( 44 ), ExtResource( 42 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 23 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 56 ), ExtResource( 40 ) ]
+effects = [ ExtResource( 5 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 51 ), ExtResource( 49 ), ExtResource( 55 ), ExtResource( 26 ), ExtResource( 32 ), ExtResource( 27 ), ExtResource( 45 ), ExtResource( 29 ), ExtResource( 50 ), ExtResource( 43 ), ExtResource( 48 ), ExtResource( 46 ), ExtResource( 52 ), ExtResource( 30 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 31 ), ExtResource( 47 ), ExtResource( 41 ), ExtResource( 24 ), ExtResource( 35 ), ExtResource( 44 ), ExtResource( 42 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 23 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 56 ), ExtResource( 40 ), ExtResource( 28 ), ExtResource( 4 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

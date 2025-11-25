@@ -63,11 +63,11 @@
 
 [resource]
 script = ExtResource( 11 )
-my_id = "character_brolab_购物狂_54"
+my_id = "character_foxlab_shopaholic"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 60 )
-name = "购物狂"
+name = "CHARACTER_FOXLAB_SHOPAHOLIC"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 29 ), ExtResource( 36 ), ExtResource( 37 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 31 ), ExtResource( 4 ), ExtResource( 30 ), ExtResource( 34 ), ExtResource( 32 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 33 ), ExtResource( 1 ), ExtResource( 38 ), ExtResource( 41 ), ExtResource( 46 ), ExtResource( 52 ), ExtResource( 35 ), ExtResource( 42 ), ExtResource( 45 ), ExtResource( 39 ), ExtResource( 53 ), ExtResource( 40 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 51 ), ExtResource( 57 ), ExtResource( 58 ), ExtResource( 55 ), ExtResource( 54 ), ExtResource( 56 ), ExtResource( 59 ) ]

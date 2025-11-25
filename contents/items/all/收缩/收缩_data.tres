@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=10 format=2]
+[gd_resource type="Resource" load_steps=11 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_effect_3.tres" type="Resource" id=2]
@@ -9,17 +9,18 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_effect_1.tres" type="Resource" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_effect_6.tres" type="Resource" id=8]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_effect_5.tres" type="Resource" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_effect_7.tres" type="Resource" id=10]
 
 [resource]
 script = ExtResource( 4 )
-my_id = "item_brolab_收缩_253"
+my_id = "item_foxlab_shrink"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "收缩"
+name = "ITEM_FOXLAB_SHRINK"
 tier = 2
 value = 1.0
-effects = [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 8 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 8 ), ExtResource( 10 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

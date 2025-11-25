@@ -4,12 +4,12 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_sos_0"
+key = "item_foxlab_demon"
 text_key = "[EMPTY]"
 value = 1
 custom_key = "increase_tier_on_reroll"
 storage_method = 0
 effect_sign = 2
 custom_args = [  ]
-key2 = "item_brolab_soa_0"
+key2 = "item_foxlab_angel"
 value2 = 1

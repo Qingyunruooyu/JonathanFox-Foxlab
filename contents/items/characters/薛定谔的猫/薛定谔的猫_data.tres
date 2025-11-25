@@ -42,11 +42,11 @@
 
 [resource]
 script = ExtResource( 9 )
-my_id = "character_brolab_薛定谔的猫_130"
+my_id = "character_foxlab_schrodingers_cat"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 39 )
-name = "薛定谔的猫"
+name = "CHARACTER_FOXLAB_SCHRODINGERS_CAT"
 tier = 0
 value = 1.0
 effects = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 22 ), ExtResource( 37 ), ExtResource( 23 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 24 ), ExtResource( 32 ), ExtResource( 30 ), ExtResource( 25 ), ExtResource( 31 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 28 ) ]

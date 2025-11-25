@@ -15,11 +15,11 @@
 
 [resource]
 script = ExtResource( 4 )
-my_id = "item_brolab_百鬼夜行_274"
+my_id = "item_foxlab_haunted_night"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "百鬼夜行"
+name = "ITEM_FOXLAB_HAUNTED_NIGHT"
 tier = 1
 value = 1.0
 effects = [ ExtResource( 11 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 8 ) ]

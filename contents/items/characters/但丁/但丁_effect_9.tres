@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_魔人化_280"
+key = "item_foxlab_devil_trigger"
 text_key = "未{1}时，首次以双形态完成敌袭会{2}%{3}的修改"
 value = 50
 custom_key = ""

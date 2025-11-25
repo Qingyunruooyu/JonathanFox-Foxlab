@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_百鬼夜行_274"
+key = "item_foxlab_haunted_night"
 text_key = "在箱子中有{0}%几率发现{1}"
 value = 33
 custom_key = "extra_item_in_crate"

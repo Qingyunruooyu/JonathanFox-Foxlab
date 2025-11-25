@@ -36,7 +36,7 @@ alternate_attack_type = false
 [resource]
 script = ExtResource( 2 )
 key = "explode_on_overkill"
-text_key = "敌人受到{3}%其最大生命值伤害会爆炸，造成{1}（{2}）伤害"
+text_key = "EFFECT_FOXLAB_EXPLODE_ON_OVERKILL"
 value = 300
 custom_key = ""
 storage_method = 0
@@ -48,5 +48,5 @@ scale = 1.0
 base_smoke_amount = 1
 sound_db_mod = -10
 stats = SubResource( 1 )
-tracking_key = "character_brolab_河鲀_33"
+tracking_key = "character_foxlab_pufferfish"
 scale_with_missing_health = false

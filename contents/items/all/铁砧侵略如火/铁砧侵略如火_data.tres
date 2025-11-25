@@ -10,11 +10,11 @@
 
 [resource]
 script = ExtResource( 7 )
-my_id = "item_brolab_铁砧火_4"
+my_id = "item_foxlab_fire"
 unlocked_by_default = false
 can_be_looted = false
 icon = ExtResource( 1 )
-name = "铁砧‧侵略如火"
+name = "ITEM_FOXLAB_FIRE"
 tier = 3
 value = 1.0
 effects = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 6 ) ]

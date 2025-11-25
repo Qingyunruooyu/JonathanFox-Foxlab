@@ -14,9 +14,9 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "item_black_flag"
-text_key = "商店只上新1{1}"
+text_key = "EFFECT_FOXLAB_GUARANTEED_SHOP_ITEM"
 value = 1
 custom_key = "guaranteed_shop_items"
 storage_method = 4.0
-effect_sign = 0
+effect_sign = 5
 custom_args = [ SubResource( 11 ) ]

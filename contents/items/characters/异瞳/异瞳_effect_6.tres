@@ -1,15 +1,56 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=8 format=2]
 
 [ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 4
+arg_sign = 0
+arg_value = 2
+arg_format = 0
+arg_key = "STAT_FOXLAB_PRIMARY"
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+arg_index = 5
+arg_sign = 0
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_ABOVE_LINE"
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 2 )
+arg_index = 6
+arg_sign = 1
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_BELOW_LINE"
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 2 )
+arg_index = 7
+arg_sign = 0
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_GAIN"
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 2 )
+arg_index = 8
+arg_sign = 1
+arg_value = 2
+arg_format = 0
+arg_key = "EFFECT_FOXLAB_LOSE"
 
 [resource]
 script = ExtResource( 1 )
 key = "stat_max_hp"
-text_key = "[EMPTY]"
+text_key = "EFFECT_FOXLAB_ODD_EYED"
 value = -3
 custom_key = "gain_stat_for_equipped_item_with_stat"
 storage_method = 1
 effect_sign = 3
-custom_args = [  ]
+custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ]
 key2 = "stat_curse"
 value2 = 0

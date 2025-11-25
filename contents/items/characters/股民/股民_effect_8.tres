@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "gain_stat_max_hp"
-text_key = "在商店刷新时有{2}%概率获得{0}%最大生命值的修改"
+text_key = "EFFECT_GAIN_STATS_ON_REROLL"
 value = -5
 custom_key = "gain_stats_on_reroll"
 storage_method = 1

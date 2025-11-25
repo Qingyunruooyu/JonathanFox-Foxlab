@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_brolab_魔人化_280"
+key = "item_foxlab_devil_trigger"
 text_key = "双形态时开箱有{0}%几率{1}"
 value = 33
 custom_key = ""

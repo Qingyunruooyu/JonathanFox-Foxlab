@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/stat_query_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "stronger_elites_on_kill"
+text_key = "EFFECT_FOXLAB_STAT_QUERY"
+value = 3
+custom_key = ""
+storage_method = 0
+effect_sign = 2
+custom_args = [  ]

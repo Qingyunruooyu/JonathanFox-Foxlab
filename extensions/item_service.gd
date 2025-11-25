@@ -103,10 +103,14 @@ const FOXLAB_BOSS_CHANCE := 12
 var FOXLAB_IS_NEW_DAWN = "1.1.13" in CrashReporter.VERSION
 var foxlab_enemies = []
 var foxlab_die_args = Entity.DieArgs.new()
+var foxlab_boost_args = BoostArgs.new()
 func _init_enemies():
 	foxlab_die_args.cleaning_up = true
 	foxlab_die_args.enemy_killed_by_player = false
 	foxlab_die_args.killed_by_player_index = - 1
+	foxlab_boost_args.hp_boost = 20
+	foxlab_boost_args.speed_boost = 20
+	foxlab_boost_args.attack_speed_boost = 20
 
 func foxlab_has_node_with_name(packed_scene: PackedScene, node_name: String) -> bool:
 	var state = packed_scene.get_state()
@@ -156,12 +160,26 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 		if enemy.enemy_id in ["predator", "invoker", "eel", "dead_whale"]:
 			return new_boss_num
 		var enemy_data: EnemyData = null
-		if Utils.get_chance_success(FOXLAB_BOSS_CHANCE / 100.0):
+		if RunData.current_wave >= 13 and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / 100.0):
 			enemy_data = Utils.get_rand_element(ItemService.bosses)
 		else:
 			enemy_data = Utils.get_rand_element(ItemService.elites)
 		enemy_scene = enemy_data.scene
-		var main = Utils.get_scene_node()
+		var main:Main = Utils.get_scene_node()
+		for player_index in RunData.get_player_count():
+			var player: Player =  main._players[player_index]
+			if is_instance_valid(player) and not player.dead:
+				var boost_args = BoostArgs.new()
+				boost_args.speed_boost = foxlab_boost_args.speed_boost
+				boost_args.attack_speed_boost = foxlab_boost_args.attack_speed_boost
+				var max_hp = player.max_stats.health as float
+				# 最少增加20点血量
+				if max_hp > 0 and max_hp * (foxlab_boost_args.hp_boost / 100.0) < foxlab_boost_args.hp_boost:
+					boost_args.hp_boost = ((max_hp + foxlab_boost_args.hp_boost) / max_hp - 1) * 100
+				else:
+					boost_args.hp_boost = foxlab_boost_args.hp_boost
+				player.boost(boost_args)
+				player.emit_signal("stats_boosted", player)
 		if main.has_node("FloatingTextManager"):
 			var floating_text_manager:FloatingTextManager = main.get_node("FloatingTextManager")
 			if not enemy is Boss:

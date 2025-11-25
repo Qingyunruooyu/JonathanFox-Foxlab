@@ -35,7 +35,7 @@ alternate_attack_type = false
 [resource]
 script = ExtResource( 2 )
 key = "explode_on_hit"
-text_key = "受到伤害会爆炸，造成{1}（{2}）附加{3}倍你已损失生命值的伤害"
+text_key = "EFFECT_FOXLAB_EXPLODE_ON_HIT_MISSING_HEALTH"
 value = 5
 custom_key = ""
 storage_method = 0
@@ -47,5 +47,5 @@ scale = 1.0
 base_smoke_amount = 20
 sound_db_mod = -15
 stats = SubResource( 1 )
-tracking_key = "character_brolab_河鲀_33"
+tracking_key = "character_foxlab_pufferfish"
 scale_with_missing_health = true

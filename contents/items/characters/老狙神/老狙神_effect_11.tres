@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "stat_speed"
-text_key = "EFFECT_GAIN_STAT_FOR_EVERY_ENEMY"
+text_key = "EFFECT_GAIN_STAT_FOR_EVERY_STAT"
 value = -2
 custom_key = ""
 storage_method = 0

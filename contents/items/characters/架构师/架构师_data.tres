@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=25 format=2]
+[gd_resource type="Resource" load_steps=26 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_effect_0.tres" type="Resource" id=2]
@@ -6,8 +6,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_effect_2.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_effect_5.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_effect_6.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/archietct_beard_appearance.tres" type="Resource" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/architect_hat_appearance.tres" type="Resource" id=8]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=9]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/blunderbuss/2/blunderbuss_2_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=11]
@@ -24,6 +24,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_effect_4.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_effect_3.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/架构师/架构师_effect_8.tres" type="Resource" id=24]
+[ext_resource path="res://items/characters/hunter/hunter_eyes_appearance.tres" type="Resource" id=25]
 
 [resource]
 script = ExtResource( 9 )
@@ -41,7 +42,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 7 ), ExtResource( 8 ) ]
+item_appearances = [ ExtResource( 25 ), ExtResource( 7 ), ExtResource( 8 ) ]
 tags = [  ]
 wanted_tags = [ "exploration", "stat_engineering", "stat_curse" ]
 banned_item_groups = [  ]

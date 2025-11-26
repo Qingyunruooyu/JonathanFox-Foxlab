@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=40 format=2]
+[gd_resource type="Resource" load_steps=43 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_0.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_1.tres" type="Resource" id=2]
@@ -39,6 +39,9 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_7.tres" type="Resource" id=37]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_9.tres" type="Resource" id=38]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_icon.png" type="Texture" id=39]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_23.tres" type="Resource" id=40]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_24.tres" type="Resource" id=41]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_25.tres" type="Resource" id=42]
 
 [resource]
 script = ExtResource( 9 )
@@ -49,7 +52,7 @@ icon = ExtResource( 39 )
 name = "CHARACTER_FOXLAB_SCHRODINGERS_CAT"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 22 ), ExtResource( 37 ), ExtResource( 23 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 24 ), ExtResource( 32 ), ExtResource( 30 ), ExtResource( 25 ), ExtResource( 31 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 28 ) ]
+effects = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 22 ), ExtResource( 37 ), ExtResource( 23 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 24 ), ExtResource( 32 ), ExtResource( 30 ), ExtResource( 25 ), ExtResource( 31 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 28 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

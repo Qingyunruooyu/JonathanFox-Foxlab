@@ -1,17 +1,13 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/weapons/weapon_gain_stat_for_every_stat_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/stat_query_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "战利品外星人"
-text_key = "下场敌袭{1}：{4}"
-value = 1
+key = "extra_loot_aliens_next_wave"
+text_key = "EFFECT_FOXLAB_STAT_QUERY"
+value = 3
 custom_key = ""
 storage_method = 0
-effect_sign = 0
+effect_sign = 2
 custom_args = [  ]
-nb_stat_scaled = 1.0
-stat_scaled = "extra_loot_aliens_next_wave"
-perm_stats_only = false
-increased_stat_name = "damage"

@@ -2,8 +2,13 @@ extends "res://singletons/utils.gd"
 
 func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
 	# 敌袭结束时，在恶魔转换执行之前执行尾数转换
-	if permanent:
+	if permanent: #敌袭结束
 		convert_remainder(RunData.get_player_effect("fox_convert_remainder_end_of_wave", player_index), player_index)
+		for effect in RunData.get_player_effect("foxlab_always_convert_stats_end_of_wave", player_index):
+			.convert_stats([effect], player_index, permanent)
+	else: #敌袭中途
+		for effect in RunData.get_player_effect("foxlab_always_convert_stats_half_wave", player_index):
+			.convert_stats([effect], player_index, permanent)
 	.convert_stats(stats, player_index, permanent)
 
 func convert_remainder(stats: Array, player_index:int):

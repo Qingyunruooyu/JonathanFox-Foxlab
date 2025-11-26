@@ -36,12 +36,6 @@ func _can_character_be_modified(character: CharacterData) -> bool:
 			# ghost, cryptid, sailor
 			if effect.key == "dodge_cap" and not "1.1.13" in ProgressData.VERSION:
 				return false
-			# sailor, wild, knight
-#			if effect.key == "min_weapon_tier" or effect.key == "max_weapon_tier":
-#				return false
-			# generalist
-#			if effect.key == "max_melee_weapons" or effect.key == "max_ranged_weapons":
-#				return false
 		return true
 	return false
 
@@ -64,6 +58,16 @@ func _update_character_bg(character: CharacterData, player_index: int) -> Charac
 func unapply(player_index: int) -> void:
 	pass
 
+func try_generate(player_index: int):
+	var first_generate = RunData.get_player_effect_bool("foxlab_mask_first_generate", player_index)
+	if chars_to_get[player_index].empty() or first_generate:
+		if first_generate:
+			chars_name[player_index] = ""
+			starting_items[player_index].clear()
+			RunData.get_player_effects(player_index)["foxlab_mask_first_generate"] = 0
+			DebugService.log_data("first generate mask")
+		chars_to_get[player_index] = _get_rand_chars(player_index)
+
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
 	# [变身堆栈数，正在变身否]
@@ -74,15 +78,11 @@ func apply(player_index: int) -> void:
 		return
 	stack_effect[1] = true
 	DebugService.log_data("start transform, stack: %d" % [stack_effect[0]])
-	var wave_started = _is_wave_started(player_index)
-	if chars_to_get[player_index].empty() or not wave_started: # 防止上一局游戏结束时候的显示的结果就是这一局开始的结果
-		if not wave_started:
-			chars_name[player_index] = ""
-			starting_items[player_index].clear()
-		chars_to_get[player_index] = _get_rand_chars(player_index)
 
+	try_generate(player_index)
 	var transform_chance = _get_transform_chance(player_index)
 	DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
+	var wave_started = _is_wave_started(player_index)
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
 		DebugService.log_data("transform failed")
 		_after_transform(player_index, stack_effect)
@@ -259,14 +259,13 @@ func cleanup(player_index: int) -> void:
 func get_args(player_index: int) -> Array:
 	if RunData.get_player_character(player_index) == null:
 		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
-	if chars_to_get[player_index].empty():
-		chars_to_get[player_index] = _get_rand_chars(player_index)
+	try_generate(player_index)
 	return [str(chars_to_get[player_index].size()), chars_name[player_index], str(stepify(_get_transform_chance(player_index), 0.01))]
 
 func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictionary):
 	if not character.my_id in convert_stat_dict:
 		for effect in character.effects:
-			if effect is ConvertStatEffect:
+			if effect is ConvertStatEffect and not effect.custom_key.begins_with("foxlab_always"):
 				convert_stat_dict[character.my_id] = 1
 				return
 		convert_stat_dict[character.my_id] = 0

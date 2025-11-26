@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=117 format=2]
+[gd_resource type="Resource" load_steps=118 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
@@ -116,6 +116,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/gain_stat_query_effect.gd" type="Script" id=114]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/refactor_mutation/refactor_mutation_data.tres" type="Resource" id=115]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/apply_only_effect.gd" type="Script" id=116]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/stat_recover_effect.gd" type="Script" id=117]
 
 [resource]
 script = ExtResource( 1 )
@@ -127,7 +128,7 @@ upgrades = [  ]
 consumables = [  ]
 elites = [  ]
 difficulties = [  ]
-effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 106 ), ExtResource( 116 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 106 ), ExtResource( 116 ), ExtResource( 117 ) ]
 challenges = [  ]
 tracked_items = {
 "character_foxlab_faceless": 0,
@@ -148,7 +149,9 @@ tracked_items = {
 translation_keys_needing_operator = {
 "bounce": [ 0 ],
 "bounce_damage": [ 0 ],
+"dodge_cap": [ 0 ],
 "effect_bounce_on_crit_item": [ 0 ],
+"effect_foxlab_anvil": [ 0 ],
 "effect_foxlab_apply_only": [ 0 ],
 "effect_foxlab_bonus_damage_via_health": [ 0, 2 ],
 "effect_foxlab_crisis": [ 0 ],
@@ -167,6 +170,7 @@ translation_keys_needing_operator = {
 "effect_foxlab_stats_below_half_health_explode": [ 0 ],
 "effect_foxlab_temp_stats_on_structure_crit": [ 0 ],
 "effect_foxlab_temp_stats_per_interval_limited": [ 0 ],
+"effect_foxlab_upgrade_random_weapon": [ 0 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
 "effect_foxlab_vagabond_fruit_pos": [ 2 ],
 "effect_foxlab_weapon_struct_bonus": [ 0 ],
@@ -179,10 +183,12 @@ translation_keys_needing_operator = {
 "no_heal": [ 0 ],
 "piercing": [ 0 ],
 "poisoned_fruit": [ 0 ],
+"recycling_gains": [ 0 ],
 "stronger_elites_on_kill": [ 0 ],
 "stronger_loot_aliens_on_kill": [ 0 ]
 }
 translation_keys_needing_percent = {
+"effect_foxlab_anvil": [ 0 ],
 "effect_foxlab_bonus_damage_via_health": [ 0, 2 ],
 "effect_foxlab_convert_stat_end_of_wave_equal": [ 0 ],
 "effect_foxlab_crisis": [ 0 ],

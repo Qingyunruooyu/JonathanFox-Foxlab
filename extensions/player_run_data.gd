@@ -44,6 +44,8 @@ static func init_effects()->Dictionary:
 			"fox_独狼_enemy_damage_1er": 0,
 			"fox_独狼_enemy_health_1er": 0,
 			"fox_wave_started": 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
+			"foxlab_mask_first_generate": 1, # 如果是第一次生成，则清除前一次运行的数据
+			"foxlab_buddhas_hand_first_generate": 1,
 			"fox_faceless_prev_items":[],  # 所有面具效果的道具在获得的时候，都会清理已有的变身
 			"fox_faceless_enable_upgrade_on_transform":0,
 			"fox_faceless_upgrade_on_transform_wave":Utils.LARGE_NUMBER,
@@ -56,7 +58,9 @@ static func init_effects()->Dictionary:
 			"foxlab_stats_end_of_wave_after_wave": [],
 			"foxlab_mutate_alive_enemy": 0, #变异几率
 			"foxlab_gain_stat_on_mutate":0, #变异后可获得属性,
-			"foxlab_no_trees":0 #无法生成树木
+			"foxlab_no_trees":0 ,#无法生成树木,
+			"foxlab_always_convert_stats_end_of_wave": [], #不会被其他convert 短路
+			"foxlab_always_convert_stats_half_wave": []
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

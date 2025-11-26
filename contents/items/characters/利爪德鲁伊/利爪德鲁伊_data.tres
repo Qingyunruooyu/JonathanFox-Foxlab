@@ -1,12 +1,12 @@
-[gd_resource type="Resource" load_steps=29 format=2]
+[gd_resource type="Resource" load_steps=30 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_effect_7.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_effect_10.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_effect_4.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_effect_3.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_effect_5.tres" type="Resource" id=5]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=7]
+[ext_resource path="res://items/characters/lich/lich_eyes_appearance.tres" type="Resource" id=6]
+[ext_resource path="res://dlcs/dlc_1/characters/creature/appearances/creature_app_1.tres" type="Resource" id=7]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=8]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/melee/torch/1/torch_data.tres" type="Resource" id=10]
@@ -28,6 +28,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_effect_2.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_effect_8.tres" type="Resource" id=27]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/利爪德鲁伊/利爪德鲁伊_icon.png" type="Texture" id=28]
+[ext_resource path="res://dlcs/dlc_1/characters/druid/appearances/druid_app_2.tres" type="Resource" id=29]
 
 [resource]
 script = ExtResource( 8 )
@@ -45,7 +46,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 6 ), ExtResource( 7 ) ]
+item_appearances = [ ExtResource( 29 ), ExtResource( 6 ), ExtResource( 7 ) ]
 tags = [  ]
 wanted_tags = [ "stat_percent_damage" ]
 banned_item_groups = [  ]

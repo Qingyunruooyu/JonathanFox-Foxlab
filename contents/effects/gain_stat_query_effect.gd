@@ -17,7 +17,7 @@ func get_text(player_index: int, colored: bool = true) -> String:
 		if stat == "stat_curse":
 			text += "\n" + Text.text(tr("EFFECT_FOXLAB_STAT_QUERY"), [value_str,
 				"[color=#%s]%s[/color]" % [Utils.CURSE_COLOR.to_html(), tr(stat.to_upper())]],
-				 [Sign.NEGATIVE if gain_value < 0 else Sign.OVERRIDE, Sign.NEUTRAL])
+				 [Sign.OVERRIDE, Sign.NEUTRAL])
 		else:
 			text += "\n" + Text.text(tr("EFFECT_FOXLAB_STAT_QUERY"), [value_str,
 				 str(tr(stat.to_upper()))],

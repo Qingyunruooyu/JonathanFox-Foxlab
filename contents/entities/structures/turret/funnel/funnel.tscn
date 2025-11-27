@@ -16,9 +16,8 @@ radius = 171.0
 [node name="Funnel" instance=ExtResource( 3 )]
 collision_layer = 0
 collision_mask = 0
-can_be_boosted = true
-to_be_removed_in_priority = false
 script = ExtResource( 2 )
+can_be_boosted = true
 slow_sound = ExtResource( 6 )
 
 [node name="Sprite" parent="Animation" index="0"]

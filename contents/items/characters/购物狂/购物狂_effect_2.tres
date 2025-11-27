@@ -1,15 +1,40 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 0
+arg_sign = 0
+arg_value = 0
+arg_format = 0
+arg_key = ""
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+arg_index = 1
+arg_sign = 0
+arg_value = 0
+arg_format = 0
+arg_key = ""
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 2 )
+arg_index = 3
+arg_sign = 0
+arg_value = 2
+arg_format = 0
+arg_key = "STAT_FOXLAB_PRIMARY"
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_购物狂_item_entries"
-text_key = "[EMPTY]"
+key = "foxlab_shop_point"
+text_key = "EFFECT_FOXLAB_GAIN_STAT_FOR_EQUIPPED_ITEM_WITH_STAT"
 value = 1
 custom_key = "gain_stat_for_equipped_item_with_stat"
 storage_method = 1
 effect_sign = 2
-custom_args = [  ]
+custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ]
 key2 = "stat_curse"
 value2 = 0

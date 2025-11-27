@@ -1,14 +1,15 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://effects/items/double_value_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "pct_number_of_enemies"
-text_key = "{0}斩杀，敌袭结束获得+{2}{1}；"
-value = 40
-custom_key = ""
-storage_method = 0
-effect_sign = 3
+key = "enemy_damage"
+text_key = "EFFECT_FOXLAB_GAIN_STAT_EVERY_KILLED_ENEMIES"
+value = 1
+custom_key = "foxlab_gain_stat_every_killed_enemies"
+storage_method = 1
+effect_sign = 1
 custom_args = [  ]
-value2 = 1.0
+value2 = 100
+sum_strategy = 0

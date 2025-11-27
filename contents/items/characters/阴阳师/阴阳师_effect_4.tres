@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "item_box_gold"
-text_key = "EFFECT_GAIN_STAT_FOR_EQUIPPED_ITEM_WITH_STAT"
+text_key = "EFFECT_FOXLAB_GAIN_STAT_FOR_EQUIPPED_ITEM_WITH_STAT"
 value = -8
 custom_key = "gain_stat_for_equipped_item_with_stat"
 storage_method = 1

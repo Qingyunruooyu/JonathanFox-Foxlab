@@ -1,14 +1,13 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/weapons/null_double_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/multiply_stat_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "11%"
-text_key = "敌袭结束后敌人额外增强{1}"
-value = 1
-custom_key = ""
+key = "enemy_damage"
+text_key = "EFFECT_FOXLAB_MULTIPLY_STATS_END_OF_WAVE"
+value = 110
+custom_key = "foxlab_multiply_stats_end_of_wave"
 storage_method = 0
 effect_sign = 1
 custom_args = [  ]
-value2 = 10.0

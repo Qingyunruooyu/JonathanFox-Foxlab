@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "EFFECT_WEAPON_CLASS_BONUS"
-text_key = "{2}和近战武器取消大冷却，并在快速与普通攻击间交替"
+text_key = "EFFECT_FOXLAB_NO_BIG_COOLDOWN"
 value = 4
 custom_key = ""
 storage_method = 0

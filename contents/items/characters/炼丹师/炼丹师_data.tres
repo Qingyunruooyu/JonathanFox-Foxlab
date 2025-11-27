@@ -1,11 +1,11 @@
-[gd_resource type="Resource" load_steps=22 format=2]
+[gd_resource type="Resource" load_steps=23 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/炼丹师/炼丹师_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/炼丹师/炼丹师_effect_0.tres" type="Resource" id=2]
 [ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=3]
 [ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=4]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=5]
-[ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=6]
+[ext_resource path="res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_data.tres" type="Resource" id=6]
 [ext_resource path="res://weapons/melee/torch/1/torch_data.tres" type="Resource" id=7]
 [ext_resource path="res://weapons/ranged/taser/1/taser_data.tres" type="Resource" id=8]
 [ext_resource path="res://weapons/ranged/wand/1/wand_data.tres" type="Resource" id=9]
@@ -21,6 +21,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/炼丹师/炼丹师_effect_5.tres" type="Resource" id=19]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/炼丹师/炼丹师_effect_4.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/炼丹师/炼丹师_effect_0a.tres" type="Resource" id=21]
+[ext_resource path="res://weapons/ranged/fireball/2/fireball_2_data.tres" type="Resource" id=22]
 
 [resource]
 script = ExtResource( 5 )
@@ -43,4 +44,4 @@ tags = [  ]
 wanted_tags = [ "more_enemies", "stat_elemental_damage" ]
 banned_item_groups = [ "consumable_heal" ]
 banned_items = [ "item_tree", "item_yztato_ghost_tree", "item_garden", "item_pocket_factory" ]
-starting_weapons = [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ]
+starting_weapons = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 22 ), ExtResource( 6 ) ]

@@ -14,7 +14,7 @@ arg_key = ""
 [resource]
 script = ExtResource( 2 )
 key = "items_price"
-text_key = "商店刷新有{2}%概率+{0}{1}"
+text_key = "EFFECT_GAIN_STATS_ON_REROLL"
 value = 5
 custom_key = "gain_stats_on_reroll"
 storage_method = 1

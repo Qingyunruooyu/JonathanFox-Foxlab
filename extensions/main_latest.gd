@@ -42,7 +42,7 @@ func _on_enemy_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vect
 		for effect in RunData.get_player_effect("temp_stats_on_structure_crit", args.from_player_index):
 			TempStats.add_stat(effect[0], effect[1], args.from_player_index)
 
-	if enemy.dead or args.from_player_index >= RunData.get_player_count() or not should_check_mutation[args.from_player_index]:
+	if enemy.dead or args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count() or not should_check_mutation[args.from_player_index]:
 		return
 
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0

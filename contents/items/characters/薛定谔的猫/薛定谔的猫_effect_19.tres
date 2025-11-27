@@ -13,7 +13,7 @@ arg_key = ""
 
 [resource]
 script = ExtResource( 2 )
-key = "fox_猫_duplicate_item"
+key = "foxlab_cat_duplicate_item"
 text_key = "[EMPTY]"
 value = 1
 custom_key = ""

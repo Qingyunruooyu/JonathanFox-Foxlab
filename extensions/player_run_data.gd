@@ -3,7 +3,7 @@ extends "res://singletons/player_run_data.gd"
 static func init_foxlab_stats() -> Dictionary:
 	return {
 			"stat_levels": 0,
-			"fox_猫_duplicate_item": 0
+			"foxlab_cat_duplicate_item": 0
 		}
 
 static func init_stats(all_null_values: bool = false)->Dictionary:
@@ -28,21 +28,11 @@ static func init_effects()->Dictionary:
 			"foxlab_troubleshooter_crisis_num": 0,
 			"foxlab_troubleshooter_temp":0,
 			"foxlab_dante_states": 0,
-			"fox_购物狂_item_entries": 0,
-			"fox_购物狂_item_entries_upgrade": 0,
-			"fox_购物狂_vip_level": 0,
+			"foxlab_shop_point": 0,
+			"foxlab_shop_point_upgrade": 0,
+			"foxlab_shop_vip": 0,
 			"foxlab_cultivator_level": 0,
 			"foxlab_cultivator_reset": 0,
-			"fox_独狼_kills": 0,
-			"gain_fox_独狼_kills": 0,
-			"de_gain_fox_独狼_kills":0,
-			"fox_独狼_total_kills": 0,
-			"fox_独狼_total_kills_for_gain": 0,
-			"fox_独狼_convert_temp": 0,
-			"fox_独狼_number_of_enemies_1er": 0,
-			"fox_独狼_stat_attack_speed_1er": 0,
-			"fox_独狼_enemy_damage_1er": 0,
-			"fox_独狼_enemy_health_1er": 0,
 			"fox_wave_started": 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
 			"foxlab_mask_first_generate": 1, # 如果是第一次生成，则清除前一次运行的数据
 			"foxlab_buddhas_hand_first_generate": 1,
@@ -63,6 +53,7 @@ static func init_effects()->Dictionary:
 			"foxlab_always_convert_stats_half_wave": [],
 			"foxlab_multiply_stats_half_wave":[],
 			"foxlab_multiply_stats_end_of_wave":[],
+			"foxlab_gain_stat_every_killed_enemies":[]
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

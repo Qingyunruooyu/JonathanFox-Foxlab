@@ -19,8 +19,18 @@ func multiply_stats(stats: Array, player_index: int, permanent: bool = true) -> 
 				var actual_gain = gold * abs(mul) - gold
 				RunData.add_tracked_value(player_index, "character_foxlab_ghost_envoy", actual_gain)
 		else:
-			# TODO
-			pass
+			var value = RunData.get_stat(stat, player_index)
+			var value_delta = value * mul - value
+			var stat_gain = RunData.get_stat_gain(stat, player_index)
+			var actual_value_delta = value_delta
+			if stat_gain > 0.0:
+				actual_value_delta = round(value_delta / stat_gain) as int
+			if actual_value_delta != 0:
+				if permanent:
+					RunData.add_stat(stat, actual_value_delta, player_index)
+				else:
+					TempStats.add_stat(stat, actual_value_delta, player_index)
+					RunData.emit_signal("stat_added", stat, value_delta, 0.0, player_index)
 
 func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
 	# 敌袭结束时，在恶魔转换执行之前执行尾数转换

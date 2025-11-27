@@ -1,25 +1,15 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=1]
-[ext_resource path="res://effects/items/gain_stat_for_every_stat_effect.gd" type="Script" id=2]
-
-[sub_resource type="Resource" id=13]
-script = ExtResource( 1 )
-arg_index = 4
-arg_sign = 4
-arg_value = 0
-arg_format = 0
-arg_key = ""
+[ext_resource path="res://effects/items/double_value_effect.gd" type="Script" id=1]
 
 [resource]
-script = ExtResource( 2 )
-key = "enemy_damage"
-text_key = "{2}斩杀导致+{0}{1}；"
+script = ExtResource( 1 )
+key = "enemy_health"
+text_key = "EFFECT_FOXLAB_GAIN_STAT_EVERY_KILLED_ENEMIES"
 value = 1
-custom_key = ""
-storage_method = 0
+custom_key = "foxlab_gain_stat_every_killed_enemies"
+storage_method = 1
 effect_sign = 1
-custom_args = [ SubResource( 13 ) ]
-nb_stat_scaled = 100.0
-stat_scaled = "fox_独狼_kills"
-perm_stats_only = false
+custom_args = [  ]
+value2 = 200
+sum_strategy = 0

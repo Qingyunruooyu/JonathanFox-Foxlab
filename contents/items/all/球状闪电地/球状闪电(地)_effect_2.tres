@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "item_foxlab_ball_lightning_2"
-text_key = "EFFECT_EXTRA_ITEM_IN_CRATE"
+text_key = "EFFECT_FOXLAB_EXTRA_ITEM_IN_CRATE"
 value = -10
 custom_key = "extra_item_in_crate"
 storage_method = 1

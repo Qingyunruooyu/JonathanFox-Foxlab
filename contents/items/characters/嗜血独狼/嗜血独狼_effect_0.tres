@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource( 1 )
 key = "lose_hp_per_second"
-text_key = "免疫每秒的定额伤害"
-value = -99999999
+text_key = ""
+value = -99
 custom_key = ""
 storage_method = 0
-effect_sign = 1
+effect_sign = 0
 custom_args = [  ]

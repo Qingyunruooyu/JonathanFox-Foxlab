@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=9 format=2]
 
-[ext_resource path="res://entities/structures/turret/tyler/tyler.tscn" type="PackedScene" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/demon_pull/demon_pull.tscn" type="PackedScene" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_turret_effect.gd" type="Script" id=2]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/harpoon_gun/harpoon_gun_reloading.png" type="Texture" id=3]
 [ext_resource path="res://dlcs/dlc_1/projectiles/bullet_harpoon/bullet_harpoon.tscn" type="PackedScene" id=4]
@@ -47,7 +47,7 @@ projectile_scene = ExtResource( 4 )
 [resource]
 script = ExtResource( 2 )
 key = ""
-text_key = "召唤一个泰勒抓取敌人，无伤害"
+text_key = "EFFECT_FOXLAB_DEMON_PULL"
 value = 1
 custom_key = ""
 storage_method = 0
@@ -63,4 +63,4 @@ can_be_grouped = true
 shooting_animation_speed = 1.0
 is_burning = false
 is_spawning = false
-tracking_key = "item_tyler"
+tracking_key = "item_foxlab_demon"

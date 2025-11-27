@@ -9,5 +9,5 @@ text_key = "EFFECT_DUPLICATE_ITEM"
 value = 1
 custom_key = "duplicate_item"
 storage_method = 1
-effect_sign = 3
+effect_sign = 2
 custom_args = [  ]

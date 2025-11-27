@@ -1,5 +1,6 @@
 extends "res://main.gd"
 
+var enemy_killed_this_wave := [0, 0, 0, 0]
 
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)
@@ -99,3 +100,17 @@ func _on_HalfWaveTimer_timeout() -> void :
 			break
 
 	EntityService.reset_cache()
+
+func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
+	._on_enemy_died(enemy, args)
+	if not _cleaning_up and args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
+		var player_index = args.killed_by_player_index
+		var effects = RunData.get_player_effect("foxlab_gain_stat_every_killed_enemies", player_index)
+		if not effects.empty():
+			enemy_killed_this_wave[player_index] += 1
+			RunData.add_tracked_value(player_index, "character_foxlab_bloody_wolf", 1)
+			for effect in effects:
+				if enemy_killed_this_wave[player_index] % effect[2] == 0:
+					RunData.add_stat(effect[0], effect[1], player_index)
+
+

@@ -36,6 +36,6 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ]
-nb_stat_scaled = 2.0
+nb_stat_scaled = 1
 stat_scaled = "item_foxlab_spacetime_anchor"
 perm_stats_only = false

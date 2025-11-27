@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_购物狂_item_entries"
+key = "foxlab_shop_point"
 text_key = "[EMPTY]"
 value = 1
 custom_key = "gain_stat_for_equipped_item_with_stat"

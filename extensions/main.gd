@@ -86,3 +86,16 @@ func _ready():
 
 		if need_reset_player:
 			player.update_player_stats(true)
+
+func _on_HalfWaveTimer_timeout() -> void :
+	._on_HalfWaveTimer_timeout()
+
+	for i in range(RunData.get_player_count()):
+		if not RunData.get_player_effect("foxlab_multiply_stats_half_wave", i).empty():
+			_wave_timer_label.change_color(Utils.CURSE_COLOR)
+			for j in range(RunData.get_player_count()):
+				_floating_text_manager.display("FOXLAB_MIDNIGHT",
+							 _floating_text_manager.players[j].global_position, Utils.CURSE_COLOR)
+			break
+
+	EntityService.reset_cache()

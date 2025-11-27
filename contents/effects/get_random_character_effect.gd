@@ -127,8 +127,6 @@ func apply(player_index: int) -> void:
 	if RunData.players_data[player_index].weapons.size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
 		_duplicate_weapon(player_index)
 
-	_revert_negative_curse(player_index)
-
 	var is_vagabond_on1 = RunData.get_player_effect_bool("all_weapons_count_for_sets", player_index)
 	if is_vagabond_on0 != is_vagabond_on1:
 		RunData.update_sets(player_index)
@@ -144,20 +142,6 @@ func _after_transform(player_index: int, stack_effect: Array) -> void:
 	if stack_effect[0] > 0:
 		stack_effect[0] -= 1
 		apply(player_index)
-
-func _revert_negative_curse(player_index: int):
-	#诅咒小于0会秒杀敌人，如果变身后诅咒小于零并且诅咒的修改大于-100%，说明不是玩负诅咒的特殊角色
-	var curse_value = Utils.get_stat("stat_curse", player_index)
-	var curse_gain = RunData.get_stat_gain("stat_curse", player_index)
-	if curse_value >= 0 or curse_gain < 0:
-		return
-
-	var effects = RunData.get_player_effects(player_index)
-	var curse_temp = TempStats.get_stat("stat_curse", player_index)
-	var curse_linked = LinkedStats.get_stat("stat_curse", player_index)
-	var new_curse_permanent = (-curse_value - curse_temp - curse_linked) / curse_gain
-	effects["stat_curse"] = new_curse_permanent
-	Utils.reset_stat_cache(player_index)
 
 func _duplicate_weapon(player_index: int):
 	var effects =  RunData.get_player_effects(player_index)

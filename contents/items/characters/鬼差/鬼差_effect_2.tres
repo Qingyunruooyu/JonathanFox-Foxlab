@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "item_foxlab_haunted_night"
-text_key = "在箱子中有{0}%几率发现{1}"
+text_key = "effect_extra_item_in_crate"
 value = 33
 custom_key = "extra_item_in_crate"
 storage_method = 1

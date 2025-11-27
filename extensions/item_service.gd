@@ -188,7 +188,7 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
 				new_boss_num = 1
 			else:
-				floating_text_manager.display("MUTATION", enemy.global_position)
+				floating_text_manager.display("FOXLAB_RESURRECT", enemy.global_position)
 	else:
 		enemy_scene = Utils.get_rand_element(foxlab_random_enemies())
 

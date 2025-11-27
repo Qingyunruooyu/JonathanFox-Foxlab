@@ -1,8 +1,8 @@
-[gd_resource type="Resource" load_steps=32 format=2]
+[gd_resource type="Resource" load_steps=25 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_7.tres" type="Resource" id=1]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_9.tres" type="Resource" id=2]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_13.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_3a.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_8.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_2.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_3.tres" type="Resource" id=5]
 [ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=6]
@@ -21,15 +21,8 @@
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=19]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_1.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_4.tres" type="Resource" id=21]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_0.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_5.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_6.tres" type="Resource" id=24]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_8.tres" type="Resource" id=25]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_10.tres" type="Resource" id=26]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_11.tres" type="Resource" id=27]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_12.tres" type="Resource" id=28]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_14.tres" type="Resource" id=29]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_15.tres" type="Resource" id=30]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_icon.png" type="Texture" id=31]
 
 [resource]
@@ -41,8 +34,8 @@ icon = ExtResource( 31 )
 name = "CHARACTER_FOXLAB_GHOST_ENVOY"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 22 ), ExtResource( 20 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 1 ), ExtResource( 25 ), ExtResource( 2 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 3 ), ExtResource( 29 ), ExtResource( 30 ) ]
-tracking_text = ""
+effects = [ ExtResource( 20 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 1 ), ExtResource( 3 ) ]
+tracking_text = "FOXLAB_GHOST_MATERIALS_GAINED"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
 is_cursed = false
@@ -52,5 +45,5 @@ item_appearances = [ ExtResource( 6 ), ExtResource( 7 ) ]
 tags = [  ]
 wanted_tags = [ "stat_attack_speed" ]
 banned_item_groups = [  ]
-banned_items = [  ]
+banned_items = [ "item_baby_gecko", "item_sifds_relic" ]
 starting_weapons = [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ) ]

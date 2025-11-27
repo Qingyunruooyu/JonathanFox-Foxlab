@@ -70,6 +70,7 @@ BABY_ALIEN_NAME,外星人宝宝,Baby Alien
 MOM_NAME,鬼妈,Mother
 JUNKIE_NAME,成瘾怪,Junkie
 CORRUPTED_TREE_NAME,被腐蚀的树,Corrupted Tree
+HORDES_NAME,怪潮,Enemy Hordes
 CHARACTER_FOXLAB_JELLYFISH,水母,Jellyfish
 STAT_FOXLAB_ARMOR_DODGE_HARVESTING,护甲/闪避/收获,Armor/Dodge/Harvesting
 CHARACTER_FOXLAB_PROGRAMMER,程序员,Programmer
@@ -226,9 +227,16 @@ CHARACTER_FOXLAB_ODD_EYED,异瞳,Odd-Eyed
 CRATE_CHANCE,%箱子率,% Crate Chance
 EFFECT_FOXLAB_ABOVE_LINE,上一行,Line Above
 EFFECT_FOXLAB_BELOW_LINE,下一行,Line Below
-EFFECT_FOXLAB_ODD_EYED,每获得提升{4}的道具，面板里该属性{5}/{6}分别{7}/{8}[color=#FF8C00]I级升级属性[/color],"Every time you get an item that increases {4}, {5}/{6} them in panel will {7}/{8} [color=#FF8C00]Tier I Upgrade[/color]"
+EFFECT_FOXLAB_ODD_EYED,每获得提升{4}的道具，面板里该属性{5}/{6}分别{7}/{8}[color=#FF8C00]Ⅰ级升级属性[/color],"Every time you get an item that increases {4}, {5}/{6} them in panel will {7}/{8} [color=#FF8C00]Tier I Upgrade[/color]"
 CHARACTER_FOXLAB_GHOST_ENVOY,鬼差,Ghost Envoy
 ITEM_FOXLAB_HAUNTED_NIGHT,百鬼夜行,Haunted Night
+FOXLAB_GHOST_MATERIALS_GAINED,获得的冥币：{0},Ghost Materials Gained: {0}
+EFFECT_FOXLAB_MULTIPLY_MATERIAL_HALF_WAVE,敌袭中途{1}乘以{0},{1} x{0} halfway through a wave
+EFFECT_FOXLAB_MULTIPLY_STATS_HALF_WAVE,敌袭中途{1}暂时乘以{0},{1} x{0} temporarily halfway through a wave
+EFFECT_FOXLAB_MULTIPLY_STATS_END_OF_WAVE,敌袭结束后{1}乘以{0},{1} x{0} at the end of a wave
+EFFECT_FOXLAB_GHOST_ENVOY_NEG,敌袭结束时，每1存活敌人{0}{3}、每1存活树木{2}{3},"At the end of a wave: {0} {3} for every living enemy, {2} {3} for every living tree"
+EFFECT_FOXLAB_GHOST_ENVOY_GAIN,%冥币倍率,% Ghost Materials Ratio
+FOXLAB_MIDNIGHT,午夜降临！,Midnight!
 CHARACTER_FOXLAB_DANTE,但丁,Dante
 ITEM_FOXLAB_ANGEL,天使,Angel
 ITEM_FOXLAB_DEMON,恶魔,Demon
@@ -236,6 +244,11 @@ ITEM_FOXLAB_DEVIL_TRIGGER,魔人化,Devil Trigger
 CHARACTER_FOXLAB_STAFF_OFFICER,参谋,Staff Officer
 EFFECT_FOXLAB_STAFF_OFFICER,{1}每达到{5}，其中{0}转换为{4}{2},"Every time {1} reaches {5}, {0} is converted into {4} {2}"
 CHARACTER_FOXLAB_CULTIVATOR,修仙者,Cultivator
+EFFECT_FOXLAB_CULTIVATOR_UGRADE,敌袭结束后若{1}＜0，[color=#FF8C00]修仙升级[/color],[color=#FF8C00]Cultivation Levels Up[/color] if {1} < 0 at the end of a wave
+EFFECT_FOXLAB_CULTIVATOR_UGRADE_STATS,修仙升级时，{4} [color=#FF8C00]伤害[/color]/[color=#FF8C00]获得%经验[/color]/[color=#FF8C00]敌人属性[/color]的修改,"{4} [color=#FF8C00]Damage[/color]/[color=#FF8C00]% XP Gain[/color]/[color=#FF8C00]Enemy Stat[/color] modifications when cultivation levels up"
+EFFECT_FOXLAB_CULTIVATOR_UGRADE_WEAPON,修仙等级4级之后，修仙升级时有{0} {1},"When cultivation level > 4, {0} {1} when cultivation levels up"
+FOXLAB_CULTIVATOR_LEVEL,修仙等级,Cultivation Level
+EFFECT_FOXLAB_REVERSE_NEG_CURSE,敌袭中途若{1}＜0则暂时乘以{4},{1} x{4} if it's negative halfway through a wave
 CHARACTER_FOXLAB_SHOPAHOLIC,购物狂,Shopaholic
 CHARACTER_FOXLAB_SCHRODINGERS_CAT,薛定谔的猫,Schrödinger's Cat
 CHARACTER_FOXLAB_BLOODY_WOLF,嗜血独狼,Bloody Wolf
@@ -251,7 +264,6 @@ ITEM_FOXLAB_TICK_TOCK,往复,Tick Tock
 ITEM_FOXLAB_TOCK_TICK,复往,Tock Tick
 EFFECT_FOXLAB_ITEM_START_WAVE,敌袭开始时获得{2}{1},Get {2} {1} at the start of waves
 STAT_LEVELS,目前等级,Current Level
-EFFECT_FOXLAB_REVERSE_NEG_CURSE,敌袭中途若{1}为负则暂时乘以{3},{1} x{3} if it's negative halfway through a wave
 EFFECT_FOXLAB_STARTING_ITEM_LIMITED,初始拥有{0}{1}（第{2}波结束后失效）,You start with {0} {1} (stop working at wave {2})
 EFFECT_FOXLAB_TICK_TOCK,获得此道具后，[color=#FF8C00]主要[/color]和[color=#FF8C00]次要[/color]属性面板的数值会分别整体[color=#FF8C00]上移[/color]一行（顶行属性会转到底行）,Move upward digits in [color=#FF8C00]Primary[/color] and [color=#FF8C00]Secondary[/color] stat panel when you get this item (Top row goes to bottom)
 EFFECT_FOXLAB_TOCK_TICK,获得此道具后，[color=#FF8C00]主要[/color]和[color=#FF8C00]次要[/color]属性面板的数值会分别整体[color=#FF8C00]下移[/color]一行（底行属性会转到顶行）,Move downward digits in [color=#FF8C00]Primary[/color] and [color=#FF8C00]Secondary[/color] stat panel when you get this item (Bottom row goes to top)
@@ -284,7 +296,7 @@ EFFECT_FOXLAB_LOSE_ON_REROLL,刷新按钮显示{1}时，刷新失去1{1},Lose 1 
 EFFECT_FOXLAB_WEAPON_TEXT,[color=#FF8C00]{1}：[/color],[color=#FF8C00]{1}:[/color]
 EFFECT_FOXLAB_WEAPON_TEXT_CURSED,[color=#ca61ff]诅咒[/color][color=#FF8C00]{1}：[/color],[color=#ca61ff]Cursed [/color][color=#FF8C00]{1}:[/color]
 ITEM_FOXLAB_MASK,面具,Mask
-CHARACTER_FOXLAB_REFACTOR,重构师（测试中）,Refactor(Testing)
+CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
 EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，造成{0}（{1}）伤害；其未击杀的目标有{5}几率异变（精英怪异变是基础几率的8%）,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage; {5} chance to mutate an alive target it hits (8% of base chance for Elites)"
 ITEM_FOXLAB_REACTOR,反应堆,Reactor
 EFFECT_FOXLAB_MUTATE_ALIVE_ENEMY,击中后存活的目标有{0}几率异变（精英怪异变是基础几率的8%）,"{0} chance to mutate an alive target you hit (8% of base chance for Elites)"

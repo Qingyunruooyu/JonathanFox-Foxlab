@@ -9,5 +9,5 @@ text_key = "[EMPTY]"
 value = -18
 custom_key = ""
 storage_method = 0
-effect_sign = 2
+effect_sign = 1
 custom_args = [  ]

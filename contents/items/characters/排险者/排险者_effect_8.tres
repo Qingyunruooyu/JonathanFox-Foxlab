@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_排险者_crisis_num"
+key = "foxlab_troubleshooter_crisis_num"
 text_key = "[EMPTY]"
 value = 9
 custom_key = "convert_stats_end_of_wave"
@@ -12,5 +12,5 @@ storage_method = 1
 effect_sign = 3
 custom_args = [  ]
 pct_converted = 100.0
-to_stat = "fox_troubleshooter_temp"
+to_stat = "foxlab_troubleshooter_temp"
 to_value = 33554432

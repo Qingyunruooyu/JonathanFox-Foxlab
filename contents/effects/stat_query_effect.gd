@@ -7,9 +7,9 @@ static func get_id() -> String:
 func get_args(_player_index: int) -> Array:
 	match value:
 		0: # 一般的
-			return [str(Utils.get_stat(key, _player_index)), tr(key.to_upper())]
+			return [str(stepify(Utils.get_stat(key, _player_index), 0.1)), tr(key.to_upper())]
 		1: # 永久的
-			return [str(RunData.get_stat(key, _player_index)), tr("EFFECT_FOXLAB_PERMANENT") + tr(key.to_upper())]
+			return [str(stepify(RunData.get_stat(key, _player_index), 0.1)), tr("EFFECT_FOXLAB_PERMANENT") + tr(key.to_upper())]
 		2: # 效果而非属性，布尔
 			return [tr("FOXLAB_ENABLE") if RunData.get_player_effect_bool(key, _player_index) \
 					else tr("FOXLAB_DISABLE"), tr(key.to_upper())]
@@ -26,6 +26,15 @@ func get_args(_player_index: int) -> Array:
 				var neg_color = ("#" + ProgressData.settings.color_negative) if ProgressData.settings.has("color_negative") else Utils.NEG_COLOR_STR
 				state_crisis = "[color=%s]%s[/color]" % [neg_color, tr("FOXLAB_DISABLE")]
 			return [state_crisis]
+		6: # 乘法，比如百鬼夜行
+			var effects = RunData.get_player_effects(_player_index)
+			var stat_value = 0.0
+			var effect_items: Array = effects[custom_key]
+			for existing_item in effect_items:
+				if existing_item[0] == key:
+					stat_value  = existing_item[1]
+					break
+			return [str(stepify(stat_value, 0.1)), tr(key.to_upper())]
 		_:
 			return []
 

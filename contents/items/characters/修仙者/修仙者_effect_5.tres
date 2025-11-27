@@ -2,11 +2,10 @@
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_convert_stat_effect.gd" type="Script" id=1]
 
-
 [resource]
 script = ExtResource( 1 )
 key = "stat_curse"
-text_key = "敌袭结束后负{1}会使修仙升级"
+text_key = "EFFECT_FOXLAB_CULTIVATOR_UGRADE"
 value = -1
 custom_key = "convert_stats_end_of_wave"
 storage_method = 1

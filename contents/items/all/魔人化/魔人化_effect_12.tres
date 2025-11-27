@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_但丁_states"
+key = "foxlab_dante_states"
 text_key = "[EMPTY]"
 value = -2
 custom_key = ""

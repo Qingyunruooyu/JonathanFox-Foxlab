@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_修仙者_reset"
+key = "foxlab_cultivator_reset"
 text_key = "[EMPTY]"
 value = 1
 custom_key = ""

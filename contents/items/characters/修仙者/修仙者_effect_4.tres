@@ -2,12 +2,10 @@
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_convert_stat_effect.gd" type="Script" id=1]
 
-
 [resource]
 script = ExtResource( 1 )
 key = "stat_curse"
-text_key = "负{1}时秒杀之后生成的敌人
-敌袭中途负{1}临时回正并激增"
+text_key = "EFFECT_FOXLAB_REVERSE_NEG_CURSE"
 value = -1
 custom_key = "convert_stats_half_wave"
 storage_method = 1

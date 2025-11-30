@@ -4,7 +4,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/老狙神/老狙神_effect_0.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/老狙神/老狙神_effect_2.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/老狙神/老狙神_effect_7.tres" type="Resource" id=4]
-[ext_resource path="res://items/characters/old/old_eyes_appearance.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/老狙神/old_snipper_eyes.tres" type="Resource" id=5]
 [ext_resource path="res://items/characters/old/old_mouth_appearance.tres" type="Resource" id=6]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=7]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=8]
@@ -51,7 +51,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 34 ) ]
+item_appearances = [ ExtResource( 6 ), ExtResource( 34 ), ExtResource( 5 ) ]
 tags = [  ]
 wanted_tags = [ "stat_range,stat_attack_speed" ]
 banned_item_groups = [  ]

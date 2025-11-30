@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=28 format=2]
+[gd_resource type="Resource" load_steps=29 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_effect_0.tres" type="Resource" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_effect_2.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_effect_3.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_effect_4.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=8]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=9]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=11]
@@ -27,6 +25,9 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_effect_7.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_effect_8.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/砺练者_effect_10.tres" type="Resource" id=27]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/survivor_mouth.tres" type="Resource" id=28]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/survivor_eyes.tres" type="Resource" id=29]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/砺练者/survivor_hat.tres" type="Resource" id=30]
 
 [resource]
 script = ExtResource( 9 )
@@ -44,7 +45,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 7 ), ExtResource( 8 ) ]
+item_appearances = [ ExtResource( 29 ), ExtResource( 30 ), ExtResource( 28 ) ]
 tags = [  ]
 wanted_tags = [ "stat_percent_damage" ]
 banned_item_groups = [  ]

@@ -15,7 +15,7 @@ func get_text(player_index: int, colored: bool = true) -> String:
 		text += Text.text(tr("EFFECT_FOXLAB_TIER_X_WEAPON"), [weapon_tier_str], [Sign.NEGATIVE])
 	else:
 		var weapon_tier_str1 = ItemService.get_tier_number(max_tier) if max_tier else "I"
-		text += Text.text(tr("EFFECT_FOXLAB_TIER_XY_WEAPON"), [weapon_tier_str, weapon_tier_str1], [Sign.NEGATIVE, Sign.NEGATIVE])
+		text += Text.text(tr("EFFECT_FOXLAB_TIER_XY_WEAPON"), [weapon_tier_str, weapon_tier_str1], [Sign.NEGATIVE, Sign.POSITIVE])
 
 	if RunData.get_player_effect_bool("hp_shop", player_index):
 		text += tr("EFFECT_FOXLAB_SEMICOLON") + '\n' + tr("EFFECT_HP_SHOP")

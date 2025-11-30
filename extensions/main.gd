@@ -92,12 +92,11 @@ func _on_HalfWaveTimer_timeout() -> void :
 	._on_HalfWaveTimer_timeout()
 
 	for i in range(RunData.get_player_count()):
-		if not RunData.get_player_effect("foxlab_multiply_stats_half_wave", i).empty():
+		if RunData.get_player_gold(i) < 0:
 			_wave_timer_label.change_color(Utils.CURSE_COLOR)
-			for j in range(RunData.get_player_count()):
-				_floating_text_manager.display("FOXLAB_MIDNIGHT",
-							 _floating_text_manager.players[j].global_position, Utils.CURSE_COLOR)
-			break
+			_floating_text_manager.display("FOXLAB_MIDNIGHT", _floating_text_manager.players[i].global_position, Utils.CURSE_COLOR)
+			var player_ui: PlayerUIElements = _players_ui[i]
+			player_ui.gold.gold_label.add_color_override("font_color", Utils.CURSE_COLOR)
 
 	EntityService.reset_cache()
 

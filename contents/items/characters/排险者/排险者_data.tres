@@ -1,11 +1,11 @@
-[gd_resource type="Resource" load_steps=64 format=2]
+[gd_resource type="Resource" load_steps=65 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_3.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_16.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_15.tres" type="Resource" id=4]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=5]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/troubleshooter_eyes.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/troubleshooter_mouth.tres" type="Resource" id=6]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=7]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=8]
 [ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=9]
@@ -56,6 +56,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_35.tres" type="Resource" id=54]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_36.tres" type="Resource" id=55]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_37.tres" type="Resource" id=56]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/troubleshooter_scar.tres" type="Resource" id=57]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_39.tres" type="Resource" id=58]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_40.tres" type="Resource" id=59]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_41.tres" type="Resource" id=60]
@@ -80,7 +81,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 5 ), ExtResource( 6 ) ]
+item_appearances = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 57 ) ]
 tags = [  ]
 wanted_tags = [ "more_enemies", "exploration", "xp_gain" ]
 banned_item_groups = [  ]

@@ -112,7 +112,7 @@ ITEM_FOXLAB_BALL_LIGHTNING_3,球状闪电・天,Ball Lightning (Ace)
 ITEM_FOXLAB_BALL_LIGHTNING_2,球状闪电・地,Ball Lightning (King)
 ITEM_FOXLAB_BALL_LIGHTNING_1,球状闪电・玄,Ball Lightning (Queen)
 ITEM_FOXLAB_BALL_LIGHTNING_0,球状闪电・黄,Ball Lightning (Jack)
-EFFECT_FOXLAB_EXTRA_LIGHTNING,在箱子中分别有{4}/{3}/{2}/{0}概率发现从低到高四级[color=#FF8C00]球状闪电[/color],{4}/{3}/{2}/{0} chance (from lower to higher rank) of finding extra [color=#FF8C00]Ball Lightning[/color] in a crate
+EFFECT_FOXLAB_EXTRA_LIGHTNING,箱子中分别有{4}/{3}/{2}/{0}概率发现从低到高四级[color=#FF8C00]球状闪电[/color],{4}/{3}/{2}/{0} chance (from lower to higher rank) of finding extra [color=#FF8C00]Ball Lightning[/color] in a crate
 EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_ALL,敌袭结束后每{3}永久{1}转换为{4}{2},Every {3} permanent {1} are converted into {4} {2} at the end of a wave
 EFFECT_FOXLAB_BALL_LIGHTNING,每{4}秒向周围发射{0}枚追踪雷电投射物，每枚投射物贯通4个目标，初始范围300，造成{1}({3})伤害,"Shoots {0} ball lightnings around you (base range 300) every {4} seconds piercing 4 targets and dealing {1} ({3}) damage each"
 CHARACTER_FOXLAB_KIDNAPPER,绑匪,Kidnapper
@@ -185,15 +185,15 @@ EFFECT_FOXLAB_LOSE,失去,Lose
 EFFECT_FOXLAB_GAIN,获得,Gain
 EFFECT_FOXLAB_ALL_OR_NOTHING,武器单次攻击直接杀死{3}/{4}敌人，分别{5}/{6}等量{1},{5}/{6} equivalent {1} for killing {3}/{4} enemies by a direct weapon attack
 CHARACTER_FOXLAB_POET,诗人,Poet
-FOX_POET_NEXT_CURSE_CHANCE,%下波锁定物诅咒率,% Curse Locked Chance Next Wave
-CURSE_LOCKED_ITEMS,%锁定物诅咒率,% Curse Locked Chance
+FOX_POET_NEXT_CURSE_CHANCE,%下波的锁定物诅咒率,% Chance to Curse Locked Next Wave
+CURSE_LOCKED_ITEMS,%锁定物诅咒率,% Chance to Curse Locked
 EFFECT_STAT_ON_EVERY_STEP_VALID_LOWEST_TWO,每在一波袭击中前进{2}步，{0}{1}（仅取低2位）,{0} {1} (take the last two digits) for every {2} steps you take during a wave
 CHARACTER_FOXLAB_TROUBLESHOOTER,排险者,Troubleshooter
 ITEM_FOXLAB_TROUBLE_MUTATION,排险者的异变,Troubleshooter Mutation
 ITEM_FOXLAB_STARGAZER,瞻星之危,Crisis Stargazer
-ITEM_FOXLAB_SPLIT,裂变之危,Crisis Split
+ITEM_FOXLAB_SPLIT,裂变之危,Crisis Fission
 ITEM_FOXLAB_EGGS,累卵之危,Crisis Eggs
-EFFECT_FOXLAB_CRISIS,在箱子中各有{0}几率发现3种[color=#FF8C00]危机[/color],{0} chance of finding [color=#FF8C00]Crisis[/color] of 3 kinds in a crate
+EFFECT_FOXLAB_CRISIS,箱子中各有{0}几率发现3种[color=#FF8C00]危机[/color],{0} chance of finding [color=#FF8C00]Crisis[/color] of 3 kinds in a crate
 EXTRA_LOOT_ALIENS,每波战利品外星人{0},{0} Loot Aliens Each Wave
 EFFECT_FOXLAB_MUTATION,首次持有9危机完成敌袭，激活以下效果（当前{0}）：,You'll active the effects when you survive a wave with 9 crises (currently {0}):
 EFFECT_FOXLAB_MUTATION_DESTROY_WEAPONS,[color=#FF8C00]首次[/color]进入商店时销毁所有武器,Destroy all weapons the [color=#FF8C00]first time [/color]you enter the shop
@@ -237,11 +237,11 @@ EFFECT_FOXLAB_MULTIPLY_MATERIAL_HALF_WAVE,敌袭中途{1}乘以{0},{1} x{0} half
 EFFECT_FOXLAB_MULTIPLY_STATS_HALF_WAVE,敌袭中途{1}暂时乘以{0},{1} x{0} temporarily halfway through a wave
 EFFECT_FOXLAB_MULTIPLY_STATS_END_OF_WAVE,敌袭结束后{1}乘以{0},{1} x{0} at the end of a wave
 EFFECT_FOXLAB_GHOST_ENVOY_NEG,敌袭结束时，每1存活敌人{0}{3}、每1存活树木{2}{3},"At the end of a wave: {0} {3} for every living enemy, {2} {3} for every living tree"
-EFFECT_FOXLAB_GHOST_ENVOY_GAIN,%冥币倍率,% Ghost Materials Ratio
+EFFECT_FOXLAB_GHOST_ENVOY_GAIN,冥币倍率,Ghost Materials Ratio
 FOXLAB_MIDNIGHT,午夜降临！,Midnight!
 CHARACTER_FOXLAB_DANTE,但丁,Dante
 EFFECT_FOXLAB_DANTE,"开箱必出{3}/{4}两种[color=#FF8C00]形态[/color]
-拥有[color=#FF8C00]双形态[/color]时，有{5}几率找到{1}
+拥有[color=#FF8C00]双形态[/color]时，箱子中有{5}几率找到{1}
 没有[color=#FF8C00]双形态[/color]时，商店刷新后{6}物品等级
 未拥有{1}时不能以[color=#FF8C00]双形态[/color]作战，否则遭受反噬，商店刷新后保留一个[color=#FF8C00]形态[/color]","Definitely find [color=#FF8C00]Modes[/color] {3}/{4} in a crate
 {5} chance of finding {1} in a crate in [color=#FF8C00]Dual Mode[/color]
@@ -252,9 +252,9 @@ EFFECT_FOXLAB_AQUILA,持续召唤[color=#FF8C00]阿奎拉之镖[/color]，拥有
 ITEM_FOXLAB_DEMON,恶魔,Demon
 EFFECT_FOXLAB_DEMON_PULL,持续使用[color=#FF8C00]恶魔牵引[/color],[color=#FF8C00]Demon Pull[/color] constantly
 ITEM_FOXLAB_DEVIL_TRIGGER,魔人化,Devil Trigger
-EFFECT_FOXLAB_NO_BIG_COOLDOWN,{2}和[color=#FF8C00]近战[/color]武器提速,Accelerate {2} and [color=#FF8C00]Melee[/color] weapons
+EFFECT_FOXLAB_NO_BIG_COOLDOWN,{2}和[color=#FF8C00]近战[/color]武器获得提速,Accelerate {2} and [color=#FF8C00]Melee[/color] weapons
 HIT_PROTECTION,伤害免疫次数,Hit Protection
-EFFECT_FOXLAB_INCREASE_TIER_ON_EVERY_REROLL,商店刷新后提升{0}个级别,Items will be {0} tier higher after rerolls
+EFFECT_FOXLAB_INCREASE_TIER_ON_EVERY_REROLL,商店刷新后物品提升{0}个等级,Items will be {0} tier higher after rerolls
 CHARACTER_FOXLAB_STAFF_OFFICER,参谋,Staff Officer
 EFFECT_FOXLAB_STAFF_OFFICER,{1}每达到{5}，其中{0}转换为{4}{2},"Every time {1} reaches {5}, {0} is converted into {4} {2}"
 CHARACTER_FOXLAB_CULTIVATOR,修仙者,Cultivator

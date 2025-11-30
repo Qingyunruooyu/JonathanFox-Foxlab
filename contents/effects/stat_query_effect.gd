@@ -26,7 +26,7 @@ func get_args(_player_index: int) -> Array:
 				var neg_color = ("#" + ProgressData.settings.color_negative) if ProgressData.settings.has("color_negative") else Utils.NEG_COLOR_STR
 				state_crisis = "[color=%s]%s[/color]" % [neg_color, tr("FOXLAB_DISABLE")]
 			return [state_crisis]
-		6: # 乘法，比如百鬼夜行
+		6: # key-value类型的数值，如百鬼夜行
 			var effects = RunData.get_player_effects(_player_index)
 			var stat_value = 0.0
 			var effect_items: Array = effects[custom_key]
@@ -34,7 +34,7 @@ func get_args(_player_index: int) -> Array:
 				if existing_item[0] == key:
 					stat_value  = existing_item[1]
 					break
-			return [str(stepify(stat_value, 0.1)), tr(key.to_upper())]
+			return [str(stepify(stat_value, 0.001)), tr(key.to_upper())]
 		_:
 			return []
 

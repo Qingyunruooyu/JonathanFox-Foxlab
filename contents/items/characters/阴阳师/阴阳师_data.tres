@@ -1,11 +1,11 @@
-[gd_resource type="Resource" load_steps=27 format=2]
+[gd_resource type="Resource" load_steps=29 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_4.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_3.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_7.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_8.tres" type="Resource" id=4]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=5]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_yang_app.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_ying_app.tres" type="Resource" id=6]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=7]
 [ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=8]
 [ext_resource path="res://weapons/melee/stick/1/stick_data.tres" type="Resource" id=9]
@@ -26,6 +26,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_5.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_9.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_icon.png" type="Texture" id=26]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_mouth_app.tres" type="Resource" id=27]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_eyes_app.tres" type="Resource" id=28]
 
 [resource]
 script = ExtResource( 7 )
@@ -43,7 +45,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 5 ), ExtResource( 6 ) ]
+item_appearances = [ ExtResource( 28 ), ExtResource( 27 ), ExtResource( 5 ), ExtResource( 6 ) ]
 tags = [  ]
 wanted_tags = [  ]
 banned_item_groups = [  ]

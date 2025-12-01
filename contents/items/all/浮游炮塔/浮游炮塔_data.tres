@@ -21,4 +21,4 @@ is_cursed = false
 curse_factor = 0.0
 max_nb = 4.0
 item_appearances = [  ]
-tags = [ "structure", "xp_gain" ]
+tags = [ "structure", "xp_gain", "stat_engineering" ]

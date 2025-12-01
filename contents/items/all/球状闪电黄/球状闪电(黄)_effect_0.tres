@@ -1,44 +1,7 @@
-[gd_resource type="Resource" load_steps=6 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://projectiles/bullet_lightning/delayed_lightning_projectile.tscn" type="PackedScene" id=1]
-[ext_resource path="res://weapons/ranged/taser/taser.wav" type="AudioStream" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/球状闪电天/球状闪电_stats.tres" type="Resource" id=1]
 [ext_resource path="res://effects/items/projectile_effect.gd" type="Script" id=3]
-[ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=4]
-
-[sub_resource type="Resource" id=1]
-script = ExtResource( 4 )
-cooldown = 120
-damage = 5
-accuracy = 1.0
-crit_chance = 0.3
-crit_damage = 2.0
-min_range = 0
-max_range = 300
-knockback = 10
-knockback_piercing = 0.0
-can_have_positive_knockback = true
-can_have_negative_knockback = false
-effect_scale = 1.0
-scaling_stats = [ [ "stat_elemental_damage", 0.5 ], [ "stat_max_hp", -0.5 ] ]
-lifesteal = 0.0
-shooting_sounds = [ ExtResource( 2 ) ]
-sound_db_mod = -5
-is_healing = false
-recoil = 25
-recoil_duration = 0.1
-additional_cooldown_every_x_shots = -1
-additional_cooldown_multiplier = -1.0
-speed_percent_modifier = 0
-nb_projectiles = 10
-projectile_spread = 3.142
-piercing = 4
-piercing_dmg_reduction = 0.0
-bounce = 0
-bounce_dmg_reduction = 0.0
-can_bounce = true
-projectile_speed = 2000
-increase_projectile_speed_with_range = true
-projectile_scene = ExtResource( 1 )
 
 [resource]
 script = ExtResource( 3 )
@@ -49,6 +12,6 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-weapon_stats = SubResource( 1 )
+weapon_stats = ExtResource( 1 )
 auto_target_enemy = true
 cooldown = 0.8

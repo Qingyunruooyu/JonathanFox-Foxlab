@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=27 format=2]
+[gd_resource type="Resource" load_steps=29 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_12.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_7.tres" type="Resource" id=2]
@@ -6,8 +6,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_11.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_9.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_13.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/kidnapper_left.tres" type="Resource" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/kidnapper_right.tres" type="Resource" id=8]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=9]
 [ext_resource path="res://weapons/melee/stick/1/stick_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=11]
@@ -26,6 +26,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_4.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_5.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/绑匪_effect_6.tres" type="Resource" id=26]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/kidnapper_eyes.tres" type="Resource" id=27]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/绑匪/kidnapper_mouth.tres" type="Resource" id=28]
 
 [resource]
 script = ExtResource( 9 )
@@ -43,7 +45,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 7 ), ExtResource( 8 ) ]
+item_appearances = [ ExtResource( 27 ), ExtResource( 7 ), ExtResource( 28 ), ExtResource( 8 ) ]
 tags = [  ]
 wanted_tags = [ "stat_attack_speed" ]
 banned_item_groups = [  ]

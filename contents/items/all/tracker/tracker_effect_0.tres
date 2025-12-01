@@ -1,0 +1,27 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/tracker/tracker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/tracker_effect.gd" type="Script" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/tracker/tracker_effect_0.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/tracker/tracker_stats.tres" type="Resource" id=5]
+
+[resource]
+script = ExtResource( 2 )
+key = ""
+text_key = "EFFECT_FOXLAB_TRACKER"
+value = 1
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+spawn_cooldown = -1
+scene = ExtResource( 1 )
+stats = ExtResource( 5 )
+effects = [ ExtResource( 3 ) ]
+spawn_in_center = 200
+spawn_around_player = -1
+can_be_grouped = true
+shooting_animation_speed = 1.0
+is_burning = false
+is_spawning = false
+tracking_key = "item_foxlab_tracker"

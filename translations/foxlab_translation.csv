@@ -320,7 +320,8 @@ FOXLAB_TRANSFORM_TIMES,已成功变身：{0}, Successfully transformed: {0}
 EFFECT_FOXLAB_FACELESS_DUPLICATE_WEAPON,变身成功后，你以此次变身成功的几率[color=#FF8C00]复制并改造[/color]你的一把武器（不会与上一次成功复制的波次相同）,"Same chance as transformation to [color=#FF8C00]duplicate and modify[/color] one of your weapon when you transform successfully (not at the same wave as previous weapon duplication)"
 EFFECT_FOXLAB_TRANSFORM,获得此道具时，你有{2}几率变身为{0}个角色：{1},"{2} chance to transform into {0} characters ({1}) when you get this item"
 EFFECT_FOXLAB_TRANSFORM_GAIN,[color=#FF8C00]护甲[/color]会降低{1}变身几率、增加变身数量,[color=#FF8C00]Armor[/color] decreases transform chance but increases transform character number of {1}
-EFFECT_FOXLAB_LOSE_ON_REROLL,刷新按钮显示{1}时，刷新失去1{1},Lose 1 {1} when reroll botton shows {1}
+EFFECT_FOXLAB_LOSE_ON_REROLL,刷新按钮显示{1}时，刷新失去1{1},Lose 1 {1} on reroll when reroll botton shows {1}
+EFFECT_FOXLAB_FORCE_REMOVE_ON_REROLL,刷新后失去{1},Lose all {1} on reroll
 EFFECT_FOXLAB_WEAPON_TEXT,[color=#FF8C00]{1}：[/color],[color=#FF8C00]{1}:[/color]
 EFFECT_FOXLAB_WEAPON_TEXT_CURSED,[color=#ca61ff]诅咒[/color][color=#FF8C00]{1}：[/color],[color=#ca61ff]Cursed [/color][color=#FF8C00]{1}:[/color]
 ITEM_FOXLAB_MASK,面具,Mask

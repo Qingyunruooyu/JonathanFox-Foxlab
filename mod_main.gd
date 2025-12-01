@@ -18,7 +18,8 @@ const EXTENSION_SCRIPTS: =[
 	"item_description.gd",
 	"shop_item.gd",
 	"floating_text_manager.gd",
-	"entity_spawner.gd"
+	"entity_spawner.gd",
+	"linked_stats.gd",
 ]
 
 func _init():

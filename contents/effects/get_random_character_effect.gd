@@ -222,8 +222,13 @@ func cleanup(player_index: int) -> void:
 		prev_items.remove(i)
 
 	var items_to_remove:Dictionary={}
+	var items_to_remove_order:Array = []
 	var player_items_raw = RunData.players_data[player_index].items
-	 #要移除的往往是新获得的物品
+	# 要移除的往往是新获得的物品，而且先加入的应该后退出才能保证REPLACE类型的数据正确地恢复
+	# 1. 比如宝宝+多面手，宝宝-5武器栏，多面手是置1为12，进场的时候12武器栏，离场的时候，应该是多面手把武器栏恢复成1，然后宝宝+5恢复成6
+	# 如果顺序弄反了，先宝宝离场武器栏变17然后多面手离场，武器变1了
+	# 2. 如果是多面手+宝宝，则进场的时候多面手6->12，宝宝是12-5=7，离场的时候多面手把武器栏直接置为6
+	# 如果顺序弄反了，先多面手离场武器栏恢复6，然后宝宝离场武器栏+5变11
 	for index in range(player_items_raw.size(), 0, -1):
 		var item_data: ItemData = player_items_raw[index - 1]
 		for i in range(prev_items.size()):
@@ -231,10 +236,12 @@ func cleanup(player_index: int) -> void:
 				continue
 			if [item_data.my_id, item_data.curse_factor] == prev_items[i] :
 				items_to_remove[i] = item_data
+				items_to_remove_order.push_back(item_data)
 			elif (item_data.my_id.begins_with("item_builder_turret") and prev_items[i][0].begins_with("item_builder_turret"))\
 				and (item_data.curse_factor == prev_items[i][1]):
 				items_to_remove[i] = item_data
-	for item_data in items_to_remove.values():
+				items_to_remove_order.push_back(item_data)
+	for item_data in items_to_remove_order:
 		DebugService.log_data("remove " + item_data.my_id)
 		RunData.remove_item(item_data, player_index)
 	prev_items.clear()

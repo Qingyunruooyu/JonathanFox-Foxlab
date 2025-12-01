@@ -33,7 +33,7 @@ arg_index = 6
 arg_sign = 1
 arg_value = 2
 arg_format = 0
-arg_key = "-2"
+arg_key = "-1"
 
 [sub_resource type="Resource" id=5]
 script = ExtResource( 2 )

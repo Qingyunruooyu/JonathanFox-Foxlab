@@ -13,10 +13,10 @@ arg_key = ""
 
 [resource]
 script = ExtResource( 1 )
-key = "item_goldfish_used"
+key = "foxlab_increase_tier_on_rerolls"
 text_key = "EFFECT_FOXLAB_DECREASE_TIER_ON_EVERY_REROLL"
 value = -1
-custom_key = "increase_tier_on_reroll"
-storage_method = 4
+custom_key = ""
+storage_method = 0
 effect_sign = 1
 custom_args = [ SubResource( 1 ) ]

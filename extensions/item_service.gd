@@ -204,3 +204,8 @@ func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapo
 	# ui/menus/shop/item_popup.gd ui/menus/shop/base_shop.gd
 	return .get_recycling_value(wave, max(1, from_value), player_index, is_weapon, affected_by_items_price_stat)
 
+var foxlab_just_enter_shop = [true, true, true, true]
+func get_player_shop_items(wave: int, player_index: int, args: ItemServiceGetShopItemsArgs) -> Array:
+	if not foxlab_just_enter_shop[player_index]:
+		args.increase_tier += RunData.get_player_effect("foxlab_increase_tier_on_rerolls", player_index)
+	return .get_player_shop_items(wave, player_index, args)

@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_foxlab_mask"
-text_key = "EFFECT_FOXLAB_FORCE_REMOVE_ON_REROLL"
-value = 0
-custom_key = "foxlab_force_remove_on_reroll"
-storage_method = 4
-effect_sign = 2
+key = "foxlab_increase_tier_on_rerolls"
+text_key = "[EMPTY]"
+value = -1
+custom_key = ""
+storage_method = 0
+effect_sign = 3
 custom_args = [  ]

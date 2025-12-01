@@ -42,7 +42,7 @@ projectile_scene = ExtResource( 1 )
 
 [resource]
 script = ExtResource( 3 )
-key = "alien_eyes"
+key = "foxlab_ball_lightning"
 text_key = "EFFECT_FOXLAB_BALL_LIGHTNING"
 value = 2
 custom_key = ""

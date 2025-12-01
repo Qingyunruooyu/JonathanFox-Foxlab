@@ -12,6 +12,7 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 	RunData.add_item(new_item, p_player_index)
 
 func _ready() -> void :
+	ItemService.foxlab_just_enter_shop = [true, true, true, true]
 	for player_index in RunData.get_player_count():
 		var struct_range = RunData.get_player_effect("structure_range", player_index)
 		var new_level = BuilderTurret.get_level(struct_range)
@@ -55,10 +56,38 @@ func buy_item(item_data: ItemData, player_index: int) -> void :
 		call_deferred("update_go_next_button_text")
 
 func _on_RerollButton_pressed(player_index: int) -> void :
+	ItemService.foxlab_just_enter_shop[player_index] = false
+
+	var player_locked_items = RunData.get_player_locked_shop_items(player_index)
+	# 买完了但还是全锁：失去锁定但是之前锁定过物品的时候会出现
+	if player_locked_items.size() >= ItemService.NB_SHOP_ITEMS:
+		var remove_random_locked = true
+		for item in _get_shop_items_container(player_index)._shop_items:
+			if item.active:
+				remove_random_locked = false
+				break
+		if remove_random_locked:
+			RunData.unlock_player_shop_item(Utils.get_rand_element(player_locked_items)[0], player_index)
+
 	var prev_weapon_slot = RunData.get_player_effect("weapon_slot", player_index)
 	._on_RerollButton_pressed(player_index)
 	if RunData.get_player_effect("weapon_slot", player_index) != prev_weapon_slot:
 		var player_gear_container = _get_gear_container(player_index)
 		var weapons = RunData.get_player_weapons(player_index)
 		player_gear_container.set_weapons_data(weapons)
+	var effects:Array = RunData.get_player_effects(player_index)["foxlab_force_remove_on_reroll"]
+	var update_item = false
+	while not effects.empty():
+		var item_id = effects.front()[0]
+		var item = RunData.get_player_item(item_id, player_index)
+		if item != null:
+			RunData.remove_item(item, player_index)
+			update_item = true
+		else:
+			DebugService.log_data("item not exist: " + item_id)
+			break
+	if update_item:
+		var player_gear_container = _get_gear_container(player_index)
+		var items = RunData.get_player_items(player_index)
+		player_gear_container.set_items_data(items)
 

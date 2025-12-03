@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=48 format=2]
+[gd_resource type="Resource" load_steps=50 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_0.tres" type="Resource" id=2]
@@ -6,8 +6,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_1.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_16.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_19.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/cultivator_back.tres" type="Resource" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/cultivator_eyes.tres" type="Resource" id=8]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=9]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=11]
@@ -44,6 +44,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_4.tres" type="Resource" id=42]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_12.tres" type="Resource" id=43]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_23.tres" type="Resource" id=44]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/cultivator_nose.tres" type="Resource" id=45]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/cultivator_skin.tres" type="Resource" id=46]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_25.tres" type="Resource" id=47]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_11.tres" type="Resource" id=48]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/修仙者/修仙者_effect_10.tres" type="Resource" id=49]
@@ -64,7 +66,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 7 ), ExtResource( 8 ) ]
+item_appearances = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 45 ), ExtResource( 46 ) ]
 tags = [  ]
 wanted_tags = [ "stat_curse", "xp_gain" ]
 banned_item_groups = [  ]

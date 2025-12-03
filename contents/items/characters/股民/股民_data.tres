@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=25 format=2]
+[gd_resource type="Resource" load_steps=26 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_5.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_0.tres" type="Resource" id=2]
@@ -7,8 +7,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_8.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_4.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_6.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=8]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/investor_back.tres" type="Resource" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/investor_mouth.tres" type="Resource" id=9]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=10]
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=11]
 [ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=12]
@@ -23,6 +23,7 @@
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/flute/1/flute_data.tres" type="Resource" id=21]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_1.tres" type="Resource" id=23]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/investor_eyes.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_icon.png" type="Texture" id=25]
 
 [resource]
@@ -41,7 +42,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 8 ), ExtResource( 9 ) ]
+item_appearances = [ ExtResource( 8 ), ExtResource( 24 ), ExtResource( 9 ) ]
 tags = [  ]
 wanted_tags = [  ]
 banned_item_groups = [  ]

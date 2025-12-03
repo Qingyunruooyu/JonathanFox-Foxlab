@@ -1,0 +1,52 @@
+[gd_resource type="Resource" load_steps=28 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_mouth.tres" type="Resource" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_0.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_1.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_eyes.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_nose.tres" type="Resource" id=5]
+[ext_resource path="res://items/characters/character_data.gd" type="Script" id=6]
+[ext_resource path="res://weapons/melee/cactus_mace/1/cactus_mace_data.tres" type="Resource" id=7]
+[ext_resource path="res://weapons/melee/ghost_axe/1/ghost_axe_data.tres" type="Resource" id=8]
+[ext_resource path="res://weapons/melee/screwdriver/1/screwdriver_data.tres" type="Resource" id=9]
+[ext_resource path="res://weapons/melee/wrench/1/wrench_data.tres" type="Resource" id=10]
+[ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=11]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_4.tres" type="Resource" id=12]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_2.tres" type="Resource" id=13]
+[ext_resource path="res://weapons/melee/stick/1/stick_data.tres" type="Resource" id=14]
+[ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=15]
+[ext_resource path="res://weapons/ranged/shuriken/1/shuriken_data.tres" type="Resource" id=16]
+[ext_resource path="res://weapons/melee/fighting_stick/1/fighting_stick_data.tres" type="Resource" id=17]
+[ext_resource path="res://weapons/melee/jousting_lance/1/jousting_lance_data.tres" type="Resource" id=18]
+[ext_resource path="res://weapons/ranged/revolver/1/revolver_data.tres" type="Resource" id=19]
+[ext_resource path="res://weapons/ranged/laser_gun/1/laser_gun_data.tres" type="Resource" id=20]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_3.tres" type="Resource" id=21]
+[ext_resource path="res://dlcs/dlc_1/weapons/ranged/harpoon_gun/2/harpoon_gun_2_data.tres" type="Resource" id=22]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/hiking_stick/1/hiking_stick_data.tres" type="Resource" id=23]
+[ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=24]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_5.tres" type="Resource" id=25]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_6.tres" type="Resource" id=26]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_icon.png" type="Texture" id=27]
+
+[resource]
+script = ExtResource( 6 )
+my_id = "character_foxlab_geek"
+unlocked_by_default = true
+can_be_looted = true
+icon = ExtResource( 27 )
+name = "CHARACTER_FOXLAB_GEEK"
+tier = 0
+value = 1.0
+effects = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 13 ), ExtResource( 21 ), ExtResource( 12 ), ExtResource( 25 ), ExtResource( 26 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = -1
+item_appearances = [ ExtResource( 4 ), ExtResource( 1 ), ExtResource( 5 ) ]
+tags = [  ]
+wanted_tags = [ "stat_engineering" ]
+banned_item_groups = [  ]
+banned_items = [  ]
+starting_weapons = [ ExtResource( 11 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 16 ), ExtResource( 8 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 22 ) ]

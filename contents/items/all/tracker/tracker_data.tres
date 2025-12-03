@@ -9,11 +9,11 @@
 script = ExtResource( 8 )
 my_id = "item_foxlab_tracker"
 unlocked_by_default = true
-can_be_looted = false
+can_be_looted = true
 icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_TRACKER"
 tier = 0
-value = 20
+value = 30
 effects = [ ExtResource( 2 ), ExtResource( 3 ) ]
 tracking_text = "DAMAGE_DEALT"
 is_lockable = true

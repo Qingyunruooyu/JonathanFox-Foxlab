@@ -57,6 +57,7 @@ static func init_effects()->Dictionary:
 			"foxlab_increase_tier_on_rerolls":0,
 			"foxlab_force_remove_on_reroll":[],
 			"foxlab_ball_lightning":[],
+			"foxlab_assemble_tracker_on_hurt":0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

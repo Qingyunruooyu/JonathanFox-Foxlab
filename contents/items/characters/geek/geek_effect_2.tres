@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 key = "item_foxlab_tracker"
 text_key = "EFFECT_FOXLAB_EXTRA_ITEM_IN_CRATE"
-value = 11
+value = 15
 custom_key = "extra_item_in_crate"
 storage_method = 1
 effect_sign = 3

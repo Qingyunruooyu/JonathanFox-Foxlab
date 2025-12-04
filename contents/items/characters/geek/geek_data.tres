@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=28 format=2]
+[gd_resource type="Resource" load_steps=31 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_mouth.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_0.tres" type="Resource" id=2]
@@ -27,6 +27,9 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_5.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_6.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_icon.png" type="Texture" id=27]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_2a.tres" type="Resource" id=28]
+[ext_resource path="res://weapons/melee/plank/1/plank_data.tres" type="Resource" id=29]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/brick/1/brick_data.tres" type="Resource" id=30]
 
 [resource]
 script = ExtResource( 6 )
@@ -37,7 +40,7 @@ icon = ExtResource( 27 )
 name = "CHARACTER_FOXLAB_GEEK"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 13 ), ExtResource( 21 ), ExtResource( 12 ), ExtResource( 25 ), ExtResource( 26 ) ]
+effects = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 13 ), ExtResource( 28 ), ExtResource( 21 ), ExtResource( 12 ), ExtResource( 25 ), ExtResource( 26 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
@@ -49,4 +52,4 @@ tags = [  ]
 wanted_tags = [ "stat_engineering" ]
 banned_item_groups = [  ]
 banned_items = [  ]
-starting_weapons = [ ExtResource( 11 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 16 ), ExtResource( 8 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 22 ) ]
+starting_weapons = [ ExtResource( 11 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 16 ), ExtResource( 8 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 29 ) ]

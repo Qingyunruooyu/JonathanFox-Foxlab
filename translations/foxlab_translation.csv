@@ -335,8 +335,10 @@ ITEM_FOXLAB_REFACTOR_MUTATION,重构师的异变,Refactor Mutation
 FOXLAB_RESURRECT,满血复活！,Resurrect!
 CHARACTER_FOXLAB_GEEK,技术宅（测试中）,Geek(Testing)
 ITEM_FOXLAB_TRACKER,追踪器,Tracker
+EFFECT_FOXLAB_ASSEMBLE_TRACKER_ON_HURT,受伤时集结空闲{2},Assemble idle {2} when you take damage
 EFFECT_FOXLAB_TRACKER,"生成一个追踪器锁定敌人，造成{0}（{1}）伤害
 追踪和攻击范围（{5}）均基于你初始范围最长的[color=#FF8C00]近战[/color]武器
-没有目标时你可以贴近引导它","Spawns a tracker that tracks a target, dealing {0} ({1}) damage
+它空闲时，你可贴近引导","Spawns a tracker that tracks a target, dealing {0} ({1}) damage
 Tracking and attacking range ({5}) is derived from your best-base-range [color=#FF8C00]Melee[/color] weapon
 You can get close to guide it when it's idle"
+STAT_FOXLAB_PRIMARY_DAMAGE,近战/远程/元素伤害,Melee/Ranged/Elemental Damage

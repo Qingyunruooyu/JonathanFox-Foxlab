@@ -28,11 +28,8 @@ func _init():
 	for script in EXTENSION_SCRIPTS:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 	if IS_NEW_DAWN:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_latest.gd")
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "character_panel_ui.gd")
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "sort_inventory_button.gd")
-	else:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "main_legacy.gd")
 
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.en.translation")
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")

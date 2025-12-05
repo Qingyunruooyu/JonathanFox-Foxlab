@@ -15,8 +15,6 @@ var _angle = rand_range(0, 2 * PI)
 var _players: = []
 const _PLAYER_TRACKING_DISTANCE = 100.0
 
-export (Resource) var slow_sound
-
 func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [], _entity_spawner_ref = null) -> void :
 	.init(zone_min_pos, zone_max_pos, players_ref, _entity_spawner_ref)
 	_players = players_ref
@@ -131,7 +129,3 @@ func _physics_process(delta: float) -> void :
 	# 平滑移动到新位置
 	global_position = global_position.move_toward(desired_position, move_speed * delta)
 
-
-func _on_SlowHitbox_hit_something(thing_hit: Node, _damage_dealt: int) -> void :
-	SoundManager2D.play(slow_sound, thing_hit.global_position, - 5, 0.2)
-	thing_hit.add_decaying_speed( - 100)

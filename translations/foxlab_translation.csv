@@ -328,8 +328,9 @@ ITEM_FOXLAB_MASK,面具,Mask
 CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
 EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，造成{0}（{1}）伤害；其未击杀的目标有{5}几率异变（精英怪异变是基础几率的8%）,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage; {5} chance to mutate an alive target it hits (8% of base chance for Elites)"
 ITEM_FOXLAB_REACTOR,反应堆,Reactor
+FOXLAB_MODIFICATION_GAINED,已获得修改：{0},Modifications gained: {0}
 EFFECT_FOXLAB_MUTATE_ALIVE_ENEMY,击中后存活的目标有{0}几率异变（精英怪异变是基础几率的8%）,"{0} chance to mutate an alive target you hit (8% of base chance for Elites)"
-EFFECT_FOXLAB_GAIN_STAT_ON_MUTATE,敌人异变时，你有相同几率提升随机[color=#FF8C00]主属性或修改[/color]和[color=#FF8C00]敌人属性[/color],"Same chance to increase [color=#FF8C00]Primary Stat or Modification[/color] and [color=#FF8C00]Enemy Stat[/color] when an ememy mutates"
+EFFECT_FOXLAB_GAIN_STAT_ON_MUTATE,敌人异变时，你有相同几率提升随机[color=#FF8C00]主属性或修改[/color]或增强一个随机敌人,"Same chance to increase [color=#FF8C00]Primary Stat or Modification[/color] or boost a random enemy when an ememy mutates"
 EFFECT_FOXLAB_GAIN_STAT_QUERY,[color=#FF8C00]属性[/color]的修改：,[color=#FF8C00]Stat[/color] Modifications:
 ITEM_FOXLAB_REFACTOR_MUTATION,重构师的异变,Refactor Mutation
 FOXLAB_RESURRECT,满血复活！,Resurrect!

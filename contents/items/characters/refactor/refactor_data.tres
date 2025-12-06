@@ -11,22 +11,22 @@
 [ext_resource path="res://weapons/melee/plank/1/plank_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/melee/fighting_stick/1/fighting_stick_data.tres" type="Resource" id=10]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_eyes_mouth_app.tres" type="Resource" id=11]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=13]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_6.tres" type="Resource" id=12]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=13]
 [ext_resource path="res://weapons/melee/ghost_axe/1/ghost_axe_data.tres" type="Resource" id=14]
 [ext_resource path="res://weapons/ranged/laser_gun/1/laser_gun_data.tres" type="Resource" id=15]
 [ext_resource path="res://weapons/ranged/revolver/1/revolver_data.tres" type="Resource" id=16]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_0.tres" type="Resource" id=17]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_1.tres" type="Resource" id=18]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_enemy_damage.tres" type="Resource" id=19]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_0c.tres" type="Resource" id=19]
 [ext_resource path="res://weapons/ranged/icicle/1/icicle_data.tres" type="Resource" id=20]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=21]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_enemy_health.tres" type="Resource" id=22]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_0b.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_2.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_3.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_4.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_5.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_0a.tres" type="Resource" id=27]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_effect_stronger_boss.tres" type="Resource" id=28]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/lute/1/lute_data.tres" type="Resource" id=29]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/flute/1/flute_data.tres" type="Resource" id=30]
 
@@ -38,8 +38,8 @@ can_be_looted = true
 icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_REFACTOR"
 tier = 0
-value = 1.0
-effects = [ ExtResource( 17 ), ExtResource( 27 ), ExtResource( 18 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 19 ), ExtResource( 22 ), ExtResource( 28 ) ]
+value = 1
+effects = [ ExtResource( 17 ), ExtResource( 27 ), ExtResource( 22 ), ExtResource( 19 ), ExtResource( 18 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 12 ) ]
 tracking_text = "stats_gained"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

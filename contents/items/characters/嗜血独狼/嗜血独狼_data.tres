@@ -8,8 +8,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/嗜血独狼/嗜血独狼_effect_2.tres" type="Resource" id=6]
 [ext_resource path="res://weapons/melee/plank/1/plank_data.tres" type="Resource" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/嗜血独狼/嗜血独狼_effect_4.tres" type="Resource" id=8]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=9]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=10]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/嗜血独狼/bloody_wolf_mouth.tres" type="Resource" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/嗜血独狼/bloody_wolf_eyes.tres" type="Resource" id=10]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=11]
 [ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=12]
 [ext_resource path="res://weapons/melee/stick/1/stick_data.tres" type="Resource" id=13]
@@ -53,7 +53,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 9 ), ExtResource( 10 ) ]
+item_appearances = [ ExtResource( 10 ), ExtResource( 9 ) ]
 tags = [  ]
 wanted_tags = [ "stat_percent_damage" ]
 banned_item_groups = [ "dodge" ]

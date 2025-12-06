@@ -8,13 +8,13 @@
 [resource]
 script = ExtResource( 3 )
 cooldown = 10
-damage = 1
-accuracy = 0.7
+damage = -4
+accuracy = 0.65
 crit_chance = 0.03
 crit_damage = 2.0
 min_range = 0
 max_range = 100
-knockback = 8
+knockback = 0
 knockback_piercing = 0.0
 can_have_positive_knockback = true
 can_have_negative_knockback = false

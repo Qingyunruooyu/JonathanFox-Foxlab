@@ -9,7 +9,6 @@ var foxlab_should_check_mutation:Array = [false, false, false, false]
 var primary_stat_keys:Array = []
 var primary_mod_keys:Array = []
 var bosses_this_wave = 0
-const ENEMY_STAT_KEYS:Array = ["enemy_damage", "enemy_damage",  "enemy_damage", "enemy_health", "enemy_health", "stronger_elites_on_kill", "stronger_elites_on_kill", "enemy_speed"]
 const STAT_MOD_CHANCE:float = 0.2
 
 func _ready():
@@ -148,16 +147,27 @@ func _process_when_enemy_take_damage(enemy: Enemy, _is_crit: bool, args: TakeDam
 			if effect.key == "foxlab_mutate_alive_enemy":
 				chance += effect.value / 100.0
 	if enemy is Boss:
-		chance = chance * 0.08 / (1 + bosses_this_wave / 1.2)
+		chance = chance * 0.08 / (1 + bosses_this_wave)
 	if Utils.get_chance_success(chance):
 		bosses_this_wave += ItemService.foxlab_spawn_random_enemy(enemy, bosses_this_wave, args.from_player_index)
 		if RunData.get_player_effect_bool("foxlab_gain_stat_on_mutate", args.from_player_index) and Utils.get_chance_success(chance):
 			for i in range(1 + RunData.current_wave / 5):
-				RunData.add_stat(Utils.get_rand_element(ENEMY_STAT_KEYS), Utils.randi_range(1, 1 + RunData.current_wave / 13), args.from_player_index)
-				var stat = Utils.get_rand_element(primary_mod_keys) if Utils.get_chance_success(STAT_MOD_CHANCE) else Utils.get_rand_element(primary_stat_keys)
-				var value = Utils.randi_range(3, 3 + RunData.current_wave / 5) if stat.begins_with("gain_") else Utils.randi_range(1,2)
+				var add_mod :bool = Utils.get_chance_success(STAT_MOD_CHANCE)
+				var stat = Utils.get_rand_element(primary_mod_keys) if add_mod else Utils.get_rand_element(primary_stat_keys)
+				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
 				RunData.add_stat(stat, value, args.from_player_index)
-				RunData.add_tracked_value(args.from_player_index, "character_foxlab_refactor", value)
+				RunData.add_tracked_value(args.from_player_index, "character_foxlab_refactor", value, add_mod)
+			var boost_enemy :Enemy = Utils.get_rand_element(_entity_spawner.get_all_enemies(false))
+			if not is_instance_valid(boost_enemy) or boost_enemy.dead:
+				return
+			var boost_args = BoostArgs.new()
+			boost_args.speed_boost = ItemService.foxlab_enemy_boost_args.speed_boost
+			boost_args.attack_speed_boost = ItemService.foxlab_enemy_boost_args.attack_speed_boost
+			boost_args.speed_boost =  0 if boost_enemy is Boss else ItemService.foxlab_enemy_boost_args.attack_speed_boost
+			var pre_state = boost_enemy.can_be_boosted
+			boost_enemy.can_be_boosted = true
+			boost_enemy.boost(boost_args)
+			boost_enemy.can_be_boosted = pre_state
 
 ##############扩展################
 func on_levelled_up(player_index: int) -> void :

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=59 format=2]
+[gd_resource type="Resource" load_steps=62 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_15.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_12.tres" type="Resource" id=2]
@@ -8,8 +8,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_4.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_5.tres" type="Resource" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_3.tres" type="Resource" id=8]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=9]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=10]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_clothes.tres" type="Resource" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_feather.tres" type="Resource" id=10]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=11]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=12]
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=13]
@@ -48,6 +48,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_18.tres" type="Resource" id=46]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_26.tres" type="Resource" id=47]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_27.tres" type="Resource" id=48]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_eyes.tres" type="Resource" id=49]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_hat.tres" type="Resource" id=50]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_32.tres" type="Resource" id=51]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_19.tres" type="Resource" id=52]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_24.tres" type="Resource" id=53]
@@ -58,6 +60,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_34.tres" type="Resource" id=58]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_38.tres" type="Resource" id=59]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_icon.png" type="Texture" id=60]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_nose.tres" type="Resource" id=61]
 
 [resource]
 script = ExtResource( 11 )
@@ -75,7 +78,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 9 ), ExtResource( 10 ) ]
+item_appearances = [ ExtResource( 9 ), ExtResource( 49 ), ExtResource( 10 ), ExtResource( 50 ), ExtResource( 61 ) ]
 tags = [  ]
 wanted_tags = [ "economy" ]
 banned_item_groups = [  ]

@@ -1,16 +1,15 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_convert_stat_effect.gd" type="Script" id=1]
+[ext_resource path="res://effects/items/stat_gains_modification_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "stat_luck"
-text_key = "effect_convert_stat_end_of_wave"
-value = 15
-custom_key = "foxlab_always_convert_stats_end_of_wave"
-storage_method = 1
-effect_sign = 1
+key = "effect_reduce_stat_gains"
+text_key = ""
+value = -25
+custom_key = ""
+storage_method = 0
+effect_sign = 3
 custom_args = [  ]
-pct_converted = 90.0
-to_stat = "trees"
-to_value = 1.0
+stat_displayed = "stat_max_hp"
+stats_modified = [ "stat_max_hp" ]

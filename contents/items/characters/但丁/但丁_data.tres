@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=37 format=2]
+[gd_resource type="Resource" load_steps=38 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_21.tres" type="Resource" id=2]
@@ -6,8 +6,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_2.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_16.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_22.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_eyes_appearance.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/well_rounded/well_rounded_mouth_appearance.tres" type="Resource" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/dante_mouth.tres" type="Resource" id=8]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=9]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=11]
@@ -25,7 +24,9 @@
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/hiking_stick/1/hiking_stick_data.tres" type="Resource" id=23]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/sickle/1/sickle_data.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_13.tres" type="Resource" id=25]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/dante_rebellion.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_4.tres" type="Resource" id=27]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/dante_eyes.tres" type="Resource" id=28]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_14.tres" type="Resource" id=29]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_15.tres" type="Resource" id=30]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_19.tres" type="Resource" id=31]
@@ -53,7 +54,7 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = -1
-item_appearances = [ ExtResource( 7 ), ExtResource( 8 ) ]
+item_appearances = [ ExtResource( 28 ), ExtResource( 8 ), ExtResource( 26 ) ]
 tags = [  ]
 wanted_tags = [ "exploration", "stat_attack_speed" ]
 banned_item_groups = [  ]

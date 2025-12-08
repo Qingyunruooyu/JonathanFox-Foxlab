@@ -160,9 +160,9 @@ func foxlab_random_enemies() -> Array:
 func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:
 	var enemy_scene: PackedScene = null
 	var new_boss_num = 0
-	if enemy is Boss or (boss_spawned_this_wave < (1 + (RunData.current_wave -3 ) / 10) and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / (1 + boss_spawned_this_wave))):
+	if enemy is Boss or (boss_spawned_this_wave < (1 + max(0, (RunData.current_wave -3 ) / 10)) and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / (1 + boss_spawned_this_wave))):
 		# 最终BOSS不能被变异
-		if enemy.enemy_id in ["predator", "invoker", "eel", "dead_whale"]:
+		if enemy is Boss and not enemy.is_elite:
 			return new_boss_num
 		var enemy_data: EnemyData = null
 		if RunData.current_wave >= 13 and Utils.get_chance_success(FOXLAB_BOSS_CHANCE):

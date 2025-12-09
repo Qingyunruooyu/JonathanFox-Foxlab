@@ -27,4 +27,4 @@ is_cursed = false
 curse_factor = 0.0
 max_nb = 7.0
 item_appearances = [  ]
-tags = [ "struccture" ]
+tags = [ "structure" ]

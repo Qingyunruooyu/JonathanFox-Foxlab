@@ -5,7 +5,7 @@ const MOD_NAME:="JonathanFox-FoxLab"
 const MOD_PATH:="res://mods-unpacked/" + MOD_NAME + "/"
 const FOXLAB_EXTENSION_DIR: = MOD_PATH + "extensions/"
 
-# =========================== Extention =========================== #
+# =========================== Extension =========================== #
 func _ready() -> void:
 	DebugService.log_data("_ready")
 	if not "1.1.13" in VERSION:

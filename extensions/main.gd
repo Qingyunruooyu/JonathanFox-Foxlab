@@ -178,12 +178,19 @@ func on_levelled_up(player_index: int) -> void :
 func _on_HalfWaveTimer_timeout() -> void :
 	._on_HalfWaveTimer_timeout()
 
+	var bg_changed: =false
 	for i in range(RunData.get_player_count()):
 		if RunData.get_player_gold(i) < 0:
 			_wave_timer_label.change_color(Utils.CURSE_COLOR)
 			_floating_text_manager.display("FOXLAB_MIDNIGHT", _floating_text_manager.players[i].global_position, Utils.CURSE_COLOR)
 			var player_ui: PlayerUIElements = _players_ui[i]
 			player_ui.gold.gold_label.add_color_override("font_color", Utils.CURSE_COLOR)
+			if not bg_changed:
+				RunData.reset_background()
+				_tile_map.tile_set.tile_set_texture(0, RunData.get_background().get_tiles_sprite())
+				_tile_map.outline.modulate = RunData.get_background().outline_color
+				MusicManager.play(0)
+				bg_changed = true
 
 	EntityService.reset_cache()
 

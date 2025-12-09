@@ -155,6 +155,7 @@ func foxlab_random_enemies() -> Array:
 #						DebugService.log_data(unit_data.resource_path)
 						if not unit_data.unit_scene in foxlab_enemies:
 							foxlab_enemies.append(unit_data.unit_scene)
+	foxlab_enemies.append(preload("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
 	return foxlab_enemies
 
 func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:

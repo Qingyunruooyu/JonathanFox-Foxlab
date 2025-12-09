@@ -62,39 +62,10 @@ func unapply(player_index: int) -> void:
 
 
 func get_args(player_index: int) -> Array:
-	var text_key_cache = text_key
-	text_key = "effect_gain_stat_end_of_wave"
-	var text_raw = get_text_raw(player_index)
+	var text_raw = Text.text("EFFECT_GAIN_STAT_END_OF_WAVE", [str(value), tr(key.to_upper())], [effect_sign, effect_sign])
 	var args: = [
 		str(starting_wave),
-		text_raw if end_wave < 1 else text_raw + ", " + tr("EFFECT_FOXLAB_STATS_END_OF_WAVE_BEFORE_WAVE").replace("{0}", str(end_wave)),
+		text_raw if end_wave < 1 else text_raw + \
+		Text.text("EFFECT_FOXLAB_STATS_END_OF_WAVE_BEFORE_WAVE", [str(end_wave)], [effect_sign])
 	]
-	text_key = text_key_cache
-
 	return args
-
-
-func get_text_raw(player_index: int, colored: bool = true) -> String:
-	var key_text = key.to_upper() if text_key.length() == 0 else text_key.to_upper()
-	var args = .get_args(player_index)
-	var signs = []
-
-	for i in args:
-		signs.push_back(get_sign(effect_sign, value))
-
-	if not _custom_args_added:
-		_add_custom_args()
-		_custom_args_added = true
-
-	for custom_arg in custom_args:
-		var i = custom_arg.arg_index
-		if i >= args.size():
-			for j in (i - args.size()) + 1:
-				args.push_back("")
-				signs.push_back(Sign.NEUTRAL)
-
-		args[i] = get_arg_value(custom_arg, args[i], player_index)
-		signs[i] = get_sign(custom_arg.arg_sign, int(args[i]))
-		args[i] = get_formatted(custom_arg.arg_format, args[i], custom_arg.arg_value)
-
-	return Text.text(key_text, args, [] if !colored else signs)

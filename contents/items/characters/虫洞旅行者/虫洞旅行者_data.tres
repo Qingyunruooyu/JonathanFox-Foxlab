@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=81 format=2]
+[gd_resource type="Resource" load_steps=78 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_13.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_24.tres" type="Resource" id=2]
@@ -66,11 +66,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_43.tres" type="Resource" id=64]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_38.tres" type="Resource" id=65]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_51.tres" type="Resource" id=66]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_50.tres" type="Resource" id=67]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_56.tres" type="Resource" id=68]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_48.tres" type="Resource" id=69]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_54.tres" type="Resource" id=70]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_57.tres" type="Resource" id=71]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_47.tres" type="Resource" id=72]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_49.tres" type="Resource" id=73]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/虫洞旅行者/虫洞旅行者_effect_52.tres" type="Resource" id=74]
@@ -89,8 +86,8 @@ can_be_looted = true
 icon = ExtResource( 78 )
 name = "CHARACTER_FOXLAB_WORMHOLE_TRAVELER"
 tier = 0
-value = 1.0
-effects = [ ExtResource( 74 ), ExtResource( 76 ), ExtResource( 70 ), ExtResource( 37 ), ExtResource( 24 ), ExtResource( 38 ), ExtResource( 30 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 32 ), ExtResource( 31 ), ExtResource( 4 ), ExtResource( 41 ), ExtResource( 29 ), ExtResource( 33 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 42 ), ExtResource( 34 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 43 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 28 ), ExtResource( 44 ), ExtResource( 45 ), ExtResource( 2 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 51 ), ExtResource( 52 ), ExtResource( 53 ), ExtResource( 27 ), ExtResource( 54 ), ExtResource( 55 ), ExtResource( 56 ), ExtResource( 57 ), ExtResource( 65 ), ExtResource( 58 ), ExtResource( 59 ), ExtResource( 60 ), ExtResource( 61 ), ExtResource( 64 ), ExtResource( 62 ), ExtResource( 63 ), ExtResource( 75 ), ExtResource( 72 ), ExtResource( 69 ), ExtResource( 73 ), ExtResource( 66 ), ExtResource( 67 ), ExtResource( 77 ), ExtResource( 68 ), ExtResource( 71 ), ExtResource( 79 ) ]
+value = 1
+effects = [ ExtResource( 74 ), ExtResource( 76 ), ExtResource( 37 ), ExtResource( 24 ), ExtResource( 38 ), ExtResource( 30 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 32 ), ExtResource( 31 ), ExtResource( 4 ), ExtResource( 41 ), ExtResource( 29 ), ExtResource( 33 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 42 ), ExtResource( 34 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 43 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 28 ), ExtResource( 44 ), ExtResource( 45 ), ExtResource( 2 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 50 ), ExtResource( 51 ), ExtResource( 52 ), ExtResource( 53 ), ExtResource( 27 ), ExtResource( 54 ), ExtResource( 55 ), ExtResource( 56 ), ExtResource( 57 ), ExtResource( 65 ), ExtResource( 58 ), ExtResource( 59 ), ExtResource( 60 ), ExtResource( 61 ), ExtResource( 64 ), ExtResource( 62 ), ExtResource( 63 ), ExtResource( 75 ), ExtResource( 72 ), ExtResource( 69 ), ExtResource( 73 ), ExtResource( 66 ), ExtResource( 77 ), ExtResource( 68 ), ExtResource( 79 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

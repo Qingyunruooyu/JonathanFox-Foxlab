@@ -15,3 +15,16 @@ func add_starting_items_and_weapons() -> void :
 
 func is_wave_started() -> bool:
 	return get_player_effect_bool("fox_wave_started", 0)
+
+const FOXLAB_ELITE_CHARS = ["character_foxlab_war_master", "character_foxlab_survivor", "character_foxlab_kidnapper", "character_foxlab_wormhole_traveler", "character_foxlab_venom", "character_foxlab_bounty_hunter"]
+const FOXLAB_HORDE_CHARS = ["character_foxlab_pufferfish"]
+
+func init_elites_spawn(base_wave: int = 10, horde_chance: float = 0.4) -> void :
+	for player_index in get_player_count():
+		var current_character = get_player_character(player_index)
+		if current_character != null:
+			if current_character.my_id in FOXLAB_ELITE_CHARS:
+				horde_chance = 0.0
+			elif get_player_count() == 1 and current_character.my_id in FOXLAB_HORDE_CHARS:
+				horde_chance = 1.0
+	.init_elites_spawn(base_wave, horde_chance)

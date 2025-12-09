@@ -61,14 +61,14 @@ func _on_setting_changed(setting_name, value, mod_name)->void :
 func _init_foxlab_transform_characters():
 	if not is_transform_vanilla_only():
 		foxlab_transform_characters = characters
-		DebugService.log_data("item service _init_foxlab_transform_characters done, all")
+		#DebugService.log_data("item service _init_foxlab_transform_characters done, all")
 		return
 	if foxlab_vanilla_characters.empty():
 		for character in characters:
 			if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
 				foxlab_vanilla_characters.append(character)
 	foxlab_transform_characters = foxlab_vanilla_characters
-	DebugService.log_data("_init_foxlab_transform_characters done, vanilla only")
+	#DebugService.log_data("_init_foxlab_transform_characters done, vanilla only")
 
 func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():
@@ -218,3 +218,13 @@ func get_player_shop_items(wave: int, player_index: int, args: ItemServiceGetSho
 	if not foxlab_just_enter_shop[player_index]:
 		args.increase_tier += RunData.get_player_effect("foxlab_increase_tier_on_rerolls", player_index)
 	return .get_player_shop_items(wave, player_index, args)
+
+const BANNED_ITEM_NAMES_EARLIER = ["item_foxlab_slow_and_steady_wins", "item_foxlab_spacetime_anchor"]
+var banned_items_earlier = []
+func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetRandItemForWaveArgs) -> ItemParentData:
+	if wave < 13 and type == TierData.ITEMS:
+		if banned_items_earlier.empty():
+			for item_name in BANNED_ITEM_NAMES_EARLIER:
+				banned_items_earlier.push_back([get_item_from_id(item_name), 0])
+		args.excluded_items.append_array(banned_items_earlier)
+	return ._get_rand_item_for_wave(wave, player_index, type, args)

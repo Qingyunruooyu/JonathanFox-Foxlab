@@ -8,7 +8,7 @@ func on_group_spawn_timing_reached(group_data: WaveGroupData) -> void :
 
 func on_enemy_charmed(enemy: Entity) -> void :
 	.on_enemy_charmed(enemy)
-	if enemy is Boss:
+	if ItemService.FOXLAB_IS_NEW_DAWN and enemy is Boss:
 		for effect_behavior in enemy.effect_behaviors.get_children():
 			if "charmed" in effect_behavior:
 				effect_behavior._charm_timer.start(max(_wave_timer.time_left - 5, Utils.CHARM_DURATION))

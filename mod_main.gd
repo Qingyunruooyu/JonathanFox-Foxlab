@@ -30,34 +30,18 @@ func _init():
 	if IS_NEW_DAWN:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "character_panel_ui.gd")
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "sort_inventory_button.gd")
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "progress_data.gd")
 
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.en.translation")
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")
 
 func _ready():
-	call_deferred("initialize_mod")
+	if not IS_NEW_DAWN:
+		call_deferred("initialize_mod")
 
 func initialize_mod():
 	var mod_data = load("res://mods-unpacked/%s/content_data/content_data.tres" % [MOD_NAME])
-
-	if IS_NEW_DAWN:
-		for i in mod_data.items:
-			if  not ProgressData.items_unlocked.has(i.my_id):
-				ProgressData.items_unlocked.append(i.my_id)
-
-	ProgressData._append_without_duplicates(ItemService.characters, mod_data.characters)
-	ProgressData._append_without_duplicates(ItemService.items, mod_data.items)
-	ProgressData._append_without_duplicates(ItemService.effects, mod_data.effects)
-
-	if not mod_data.tracked_items.empty():
-		RunData.init_tracked_items.merge(mod_data.tracked_items)
-
-	if not mod_data.translation_keys_needing_operator.empty():
-		Text.keys_needing_operator.merge(mod_data.translation_keys_needing_operator)
-
-	if  not mod_data.translation_keys_needing_percent.empty():
-		Text.keys_needing_percent.merge(mod_data.translation_keys_needing_percent)
-
+	mod_data.add_resources()
 	ItemService.init_unlocked_pool()
 	RunData.reset()
 	ProgressData.load_game_file()

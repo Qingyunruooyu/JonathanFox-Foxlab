@@ -6,6 +6,7 @@ const MIN_TRANSFORM_CHANCE = 10.0
 const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
 # character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_foxlab_survivor, character_foxlab_infernal_machine
+# character_foxlab_architect
 var debug_item_name: Array = []
 var curse_character: bool = false
 
@@ -203,7 +204,7 @@ func cleanup(player_index: int) -> void:
 		if weapon_data is Dictionary:
 			var weapon = WeaponData.new()
 			weapon.deserialize_and_merge(weapon_data)
-			DebugService.log_data("remove " + weapon.my_id)
+			DebugService.log_data("remove " + weapon.my_id + str(weapon))
 			var player_weapons_raw: Array = RunData.players_data[player_index].weapons
 			var weapon_count_before = player_weapons_raw.size()
 			RunData.remove_weapon(weapon, player_index)
@@ -237,12 +238,14 @@ func cleanup(player_index: int) -> void:
 			if [item_data.my_id, item_data.curse_factor] == prev_items[i] :
 				items_to_remove[i] = item_data
 				items_to_remove_order.push_back(item_data)
+				break
 			elif (item_data.my_id.begins_with("item_builder_turret") and prev_items[i][0].begins_with("item_builder_turret"))\
 				and (item_data.curse_factor == prev_items[i][1]):
 				items_to_remove[i] = item_data
 				items_to_remove_order.push_back(item_data)
+				break
 	for item_data in items_to_remove_order:
-		DebugService.log_data("remove " + item_data.my_id)
+		DebugService.log_data("remove " + item_data.my_id + str(item_data))
 		RunData.remove_item(item_data, player_index)
 	prev_items.clear()
 

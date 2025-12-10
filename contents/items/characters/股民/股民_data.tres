@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=26 format=2]
+[gd_resource type="Resource" load_steps=27 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_5.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_0.tres" type="Resource" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_1.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/investor_eyes.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_icon.png" type="Texture" id=25]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/股民/股民_effect_9a.tres" type="Resource" id=26]
 
 [resource]
 script = ExtResource( 10 )
@@ -35,7 +36,7 @@ icon = ExtResource( 25 )
 name = "CHARACTER_FOXLAB_INVESTOR"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 2 ), ExtResource( 23 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 4 ) ]
+effects = [ ExtResource( 2 ), ExtResource( 23 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 26 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

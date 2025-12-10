@@ -50,7 +50,10 @@ func set_data(data: Resource) -> void :
 	var updated_data = data.duplicate()
 	var player_weapons = RunData.get_player_weapons(player_index)
 	var max_range = get_max_range_melee_weapon_range(data.stats, player_index)
-	updated_data.stats.max_range = max_range
+	if max_range != updated_data.stats.max_range:
+		var stats = updated_data.stats.duplicate()
+		stats.max_range = max_range
+		updated_data.stats = stats
 	.set_data(updated_data)
 	reload_data()
 

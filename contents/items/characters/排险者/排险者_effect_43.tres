@@ -1,13 +1,24 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
-[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/stats_end_of_wave_after_wave.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 1
+arg_sign = 2
+arg_value = 0
+arg_format = 0
+arg_key = ""
 
 [resource]
 script = ExtResource( 1 )
-key = "gold_drops"
-text_key = "effect_gold_drops"
-value = -50
-custom_key = ""
-storage_method = 0
-effect_sign = 3
-custom_args = [  ]
+key = "enemy_gold_drops"
+text_key = "EFFECT_FOXLAB_STATS_END_OF_WAVE_AFTER_WAVE"
+value = -5
+custom_key = "stats_end_of_wave"
+storage_method = 1
+effect_sign = 1
+custom_args = [ SubResource( 1 ) ]
+starting_wave = 5
+end_wave = 20

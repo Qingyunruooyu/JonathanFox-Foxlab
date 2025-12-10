@@ -6,20 +6,20 @@
 [sub_resource type="Resource" id=26]
 script = ExtResource( 1 )
 arg_index = 4
-arg_sign = 1
+arg_sign = 4
 arg_value = 0
 arg_format = 0
 arg_key = ""
 
 [resource]
 script = ExtResource( 2 )
-key = "enemy_health"
+key = "stat_range"
 text_key = "EFFECT_GAIN_STAT_FOR_EVERY_STAT"
-value = 1
+value = -5
 custom_key = ""
 storage_method = 0
 effect_sign = 1
 custom_args = [ SubResource( 26 ) ]
-nb_stat_scaled = 2.0
+nb_stat_scaled = 2
 stat_scaled = "living_enemy"
 perm_stats_only = false

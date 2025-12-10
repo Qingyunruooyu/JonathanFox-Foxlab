@@ -172,9 +172,10 @@ EFFECT_FOXLAB_PERIOD,。,.
 EFFECT_FOXLAB_STEAL_INIT,（以刚进商店状态为准）, (based on when you just enter a shop)
 CHARACTER_FOXLAB_ALCHEMIST,炼丹师,Alchemist
 EFFECT_FOXLAB_ELEMENTAL_LANDMINE,直接来自武器或燃烧的{1}杀死敌人会生成1地雷,Spawn a landmine if enemy is kill by {1} from burning or weapon directly
-BURNING_ENEMY_SPEED,%被烧敌人的速度,% Speed of Burning Enemy
+BURNING_ENEMY_SPEED,%被烧敌人的移速,% Speed of Burning Enemy
 EFFECT_FOXLAB_NO_TREES,无法生成树木,No tree to spawn
 CHARACTER_FOXLAB_ALL_OR_NOTHING,二极管,All or Nothing
+EFFECT_FOXLAB_PIERCING_IS_BOUNCE,贯通改为[color=#FF8C00]反弹[/color],Piercing is [color=#FF8C00]bounce[/color]
 EFFECT_FOXLAB_STATS_END_OF_WAVE_AFTER_WAVE,从第{0}波开始，{1},"Starting at wave {0}, {1}"
 EFFECT_FOXLAB_STATS_END_OF_WAVE_BEFORE_WAVE,，截止到第{0}波结束,", until the end of wave {0}"
 EFFECT_FOXLAB_SET_AS_LAST_TWO,敌袭结束时置{2}为{1}低2位,{2} is the last 2 digits of {1} at the end of a wave
@@ -184,7 +185,7 @@ EFFECT_FOXLAB_LOSE,失去,Lose
 EFFECT_FOXLAB_GAIN,获得,Gain
 EFFECT_FOXLAB_ALL_OR_NOTHING,武器单次攻击直接杀死{3}/{4}敌人，分别{5}/{6}等量{1},{5}/{6} equivalent {1} for killing {3}/{4} enemies by a direct weapon attack
 CHARACTER_FOXLAB_POET,诗人,Poet
-FOX_POET_NEXT_CURSE_CHANCE,%下波的锁定物诅咒率,% Chance to Curse Locked Next Wave
+FOX_POET_NEXT_CURSE_CHANCE,%下个商店锁定物诅咒率,% Chance to Curse Locked Next Wave
 CURSE_LOCKED_ITEMS,%锁定物诅咒率,% Chance to Curse Locked
 EFFECT_STAT_ON_EVERY_STEP_VALID_LOWEST_TWO,每在一波袭击中前进{2}步，{0}{1}（仅取低2位）,{0} {1} (take the last two digits) for every {2} steps you take during a wave
 CHARACTER_FOXLAB_TROUBLESHOOTER,排险者,Troubleshooter
@@ -192,11 +193,13 @@ ITEM_FOXLAB_TROUBLE_MUTATION,排险者的异变,Troubleshooter Mutation
 ITEM_FOXLAB_STARGAZER,瞻星之危,Crisis Stargazer
 ITEM_FOXLAB_SPLIT,裂变之危,Crisis Fission
 ITEM_FOXLAB_EGGS,累卵之危,Crisis Eggs
+EFFECT_FOXLAB_NEXT_WAVE,下波,"Next wave "
 EFFECT_FOXLAB_CRISIS,箱子中各有{0}几率发现3种[color=#FF8C00]危机[/color],{0} chance of finding [color=#FF8C00]Crisis[/color] of 3 kinds in a crate
 EXTRA_LOOT_ALIENS,每波战利品外星人{0},{0} Loot Aliens Each Wave
 EFFECT_FOXLAB_MUTATION,首次持有9危机完成敌袭，激活以下效果（当前{0}）：,You'll active the effects when you survive a wave with 9 crises (currently {0}):
 EFFECT_FOXLAB_MUTATION_DESTROY_WEAPONS,[color=#FF8C00]首次[/color]进入商店时销毁所有武器,Destroy all weapons the [color=#FF8C00]first time [/color]you enter the shop
 CHARACTER_FOXLAB_INVESTOR,股民,Investor
+EFFECT_FOXLAB_PURCHASING_POWER,购买力,Purchasing power
 GAIN_STAT_MAX_HP,% [color=#FF8C00]最大生命值[/color]的修改,% [color=#FF8C00]Max HP[/color] Modification
 EFFECT_FOXLAB_INVESTOR_MAX_HP,材料[color=#FF8C00]末位[/color]在敌袭结束后会转换为{2}（末位0转换为-50%，末位每+1，修改+10%）,[color=#FF8C00]Last digit[/color] of Materials is converted into {2} at the end of a wave（digit 0 into -50%; +10% for each digit increment）
 EFFECT_FOXLAB_INVESTOR_INVEST,{5}的{1}在敌袭中途会10：1转换为临时{2}和{6},{5} of your {1} are converted into temporal {2} and {6} (10:1) halfway through a wave
@@ -259,7 +262,7 @@ EFFECT_FOXLAB_STAFF_OFFICER,{1}每达到{5}，其中{0}转换为{4}{2},"Every ti
 CHARACTER_FOXLAB_CULTIVATOR,修仙者,Cultivator
 EFFECT_FOXLAB_CULTIVATOR_UGRADE,敌袭结束后若{1}＜0，[color=#FF8C00]修仙升级[/color],[color=#FF8C00]Cultivation Levels Up[/color] if {1} < 0 at the end of a wave
 EFFECT_FOXLAB_CULTIVATOR_UGRADE_STATS,修仙升级时，{4} [color=#FF8C00]伤害[/color]/[color=#FF8C00]获得%经验[/color]/[color=#FF8C00]敌人属性[/color]的修改,"{4} [color=#FF8C00]Damage[/color]/[color=#FF8C00]% XP Gain[/color]/[color=#FF8C00]Enemy Stat[/color] modifications when cultivation levels up"
-EFFECT_FOXLAB_CULTIVATOR_UGRADE_WEAPON,修仙等级4级之后，修仙升级时有{0} {1},"When cultivation level > 4, {0} {1} when cultivation levels up"
+EFFECT_FOXLAB_CULTIVATOR_UGRADE_WEAPON,修仙等级3级之后，修仙升级时有{0} {1},"When cultivation level > 3, {0} {1} when cultivation levels up"
 FOXLAB_CULTIVATOR_LEVEL,修仙等级,Cultivation Level
 EFFECT_FOXLAB_REVERSE_NEG_CURSE,敌袭中途若{1}＜0则暂时乘以{4},{1} x{4} if it's negative halfway through a wave
 CHARACTER_FOXLAB_SHOPAHOLIC,购物狂,Shopaholic
@@ -279,6 +282,9 @@ EFFECT_FOXLAB_CAT_WAVE_EFFECT,当你前进时有{0}概率切换{1}或{2},{0} cha
 EFFECT_FOXLAB_CAT_ITEMS_PRICE,负{1}敌袭结束后置为0,Negative {1} is reset to 0 at the and of a wave
 FOXLAB_CAT_DUPLICATE_ITEM,复制品,Duplicates
 CHARACTER_FOXLAB_BLOODY_WOLF,嗜血独狼,Bloody Wolf
+ITEM_FOXLAB_INNER_INDOMITABLE,狂骨,Inner Indomitable
+EFFECT_FOXLAB_INCREASE_MATERIAL_VALUE,捡起的材料有{0}价值（向上取整）,Picked up materials have {0} value (rounded up)
+EFFECT_FOXLAB_HEAL_WHEN_KILL_NEARBY,当你杀死与你距离不大于{3}{0}（{1}）的敌人，你有{2}概率恢复一点生命值，如果无法恢复则改为获得一个材料,{2} chance to heal 1 HP when killing an enemy whose proximity to you <= {3}{0}({1})"," if the healing fails"," you gain 1 material instead
 EFFECT_FOXLAB_NO_DODGE,你无法闪避,You can't dodge
 FOXLAB_ENEMIES_KILLED,已杀敌：{0},Enemies killed: {0}
 EFFECT_FOXLAB_GAIN_STAT_EVERY_KILLED_ENEMIES,每波每{2}击杀有{0}{1},{0} {1} every {2} kills each wave

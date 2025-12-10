@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "items_price"
-text_key = ""
-value = 25
+key = "foxlab_piercing_is_bounce"
+text_key = "effect_foxlab_piercing_is_bounce"
+value = 1
 custom_key = ""
 storage_method = 0
-effect_sign = 1
+effect_sign = 0
 custom_args = [  ]

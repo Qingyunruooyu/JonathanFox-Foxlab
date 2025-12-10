@@ -1,5 +1,8 @@
 extends "res://singletons/item_service.gd"
 
+######## 全局杀敌 ######
+var foxlab_kill_nearby_icon;
+
 ######### 面具相关 ############
 var foxlab_transform_characters:Array=[]
 var foxlab_vanilla_characters:Array=[]
@@ -20,8 +23,13 @@ func is_transform_vanilla_only():
 	return foxlab_current_settings["FOXLAB_TRANSFORM_VANILLA_ONLY"]
 
 func _ready() -> void :
+	call_deferred("_init_resources")
 	call_deferred("_init_configs")
 	call_deferred("_init_enemies")
+
+
+func _init_resources():
+	foxlab_kill_nearby_icon = ItemService.get_element(ItemService.items, "item_foxlab_inner_indomitable").icon
 
 func _init_configs():
 	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")

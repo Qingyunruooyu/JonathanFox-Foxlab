@@ -58,6 +58,11 @@ static func init_effects()->Dictionary:
 			"foxlab_force_remove_on_reroll":[],
 			"foxlab_ball_lightning":[],
 			"foxlab_assemble_tracker_on_hurt":0,
+			"foxlab_heal_when_kill_nearby":[],  #受益属性，受益倍率，受益概率
+			"foxlab_piercing_is_bounce":0, #贯通视为反弹
+			"item_foxlab_stargazer":0,
+			"item_foxlab_split":0,
+			"item_foxlab_eggs":0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

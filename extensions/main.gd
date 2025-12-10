@@ -2,6 +2,7 @@ extends "res://main.gd"
 
 #全局杀敌获得属性
 var foxlab_enemy_killed_this_wave := [0, 0, 0, 0]
+const BASE_NEARBY_KILL_DIST = 150
 
 #异变相关
 var foxlab_mutate_chance:Array = [0, 0, 0, 0]
@@ -11,15 +12,20 @@ var primary_mod_keys:Array = []
 var bosses_this_wave = 0
 const STAT_MOD_CHANCE:float = 0.2
 
+#贯通改为反弹相关
+var foxlab_original_piercing = [0, 0, 0, 0]
+
 func _ready():
 	foxlab_receive_item_stat_ready()
 	foxlab_mutation_ready()
+	foxlab_piercing_is_bounce_ready()
 
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
 	for player_index in _players.size():
-		var player = _players[player_index]
-
+		var player :Player= _players[player_index]
+		var full_health = (player.current_stats.health == player.max_stats.health)
+		var pre_health = player.current_stats.health
 		var need_reset_player: bool = false
 		# value, foxlab_receive_item_id, foxlab_receive_item_wave, curse_factor, is_cursed, end_wave
 		var receive_item_effects: Array = RunData.get_player_effect("foxlab_effect_receive_item_at_wave", player_index)
@@ -95,8 +101,12 @@ func foxlab_receive_item_stat_ready():
 				stats_end_of_wave_after_wave.erase(j)
 
 		if need_reset_player:
+			# 重置cache用，不然武器伤害之类的不会更新
+			RunData.add_stat("enemy_health", 0, player_index)
 			player.update_player_stats(true)
-
+			if not full_health:
+				player.current_stats.health = min(pre_health, player.current_stats.health)
+			player.emit_signal("health_updated", player, player.current_stats.health, player.max_stats.health)
 
 ########### 异变相关 ###############
 func foxlab_mutation_ready():
@@ -169,6 +179,25 @@ func _process_when_enemy_take_damage(enemy: Enemy, _is_crit: bool, args: TakeDam
 			boost_enemy.boost(boost_args)
 			boost_enemy.can_be_boosted = pre_state
 
+##########贯通改为反弹相关########
+func foxlab_piercing_is_bounce_ready():
+	for player_index in range(RunData.get_player_count()):
+		if not RunData.get_player_effect_bool("foxlab_piercing_is_bounce", player_index):
+			continue
+		var effects = RunData.get_player_effects(player_index)
+		foxlab_original_piercing[player_index] = effects["pierce_on_crit"]
+		if foxlab_original_piercing[player_index]:
+			effects["pierce_on_crit"] = 0
+			effects["bounce_on_crit"] += foxlab_original_piercing[player_index]
+
+func _on_WaveTimer_timeout() -> void :
+	._on_WaveTimer_timeout()
+	for player_index in range(RunData.get_player_count()):
+		if foxlab_original_piercing[player_index]:
+			var effects = RunData.get_player_effects(player_index)
+			effects["pierce_on_crit"] = foxlab_original_piercing[player_index]
+			effects["bounce_on_crit"] -= foxlab_original_piercing[player_index]
+
 ##############扩展################
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)
@@ -177,6 +206,9 @@ func on_levelled_up(player_index: int) -> void :
 
 func _on_HalfWaveTimer_timeout() -> void :
 	._on_HalfWaveTimer_timeout()
+
+	if RunData.concat_all_player_effects("foxlab_always_convert_stats_half_wave").size() > 0 or RunData.concat_all_player_effects("foxlab_multiply_stats_half_wave").size():
+		_wave_timer_label.change_color(Color.deepskyblue)
 
 	var bg_changed: =false
 	for i in range(RunData.get_player_count()):
@@ -198,12 +230,25 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, args)
 	if not _cleaning_up and args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
 		var player_index = args.killed_by_player_index
+		for near_effect in RunData.get_player_effect("foxlab_heal_when_kill_nearby", player_index):
+			if not Utils.get_chance_success(near_effect[2] / 100.0):
+				continue
+			var player:Player = _players[player_index]
+			var dist_to_player: = enemy.global_position.distance_to(player.global_position)
+			if dist_to_player <= BASE_NEARBY_KILL_DIST + WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index):
+				if player.max_stats.health <= player.current_stats.health or RunData.get_player_effect_bool("torture", player_index):
+					RunData.add_gold(1, player_index)
+					RunData.add_tracked_value(player_index, "item_foxlab_inner_indomitable", 1, 1)
+					_floating_text_manager.display("", enemy.global_position, Color.white, ItemService.foxlab_kill_nearby_icon, _floating_text_manager.duration, false, _floating_text_manager.direction, false)
+				else:
+					RunData.emit_signal("healing_effect", 1, player_index, "item_foxlab_inner_indomitable")
+
 		var effects = RunData.get_player_effect("foxlab_gain_stat_every_killed_enemies", player_index)
 		if not effects.empty():
 			foxlab_enemy_killed_this_wave[player_index] += 1
 			RunData.add_tracked_value(player_index, "character_foxlab_bloody_wolf", 1)
 			for effect in effects:
-				if foxlab_enemy_killed_this_wave[player_index] % effect[2] == 0:
+				if foxlab_enemy_killed_this_wave[player_index] % (effect[2] as int) == 0:
 					RunData.add_stat(effect[0], effect[1], player_index)
 
 func _on_EntitySpawner_enemy_spawned(enemy: Enemy) -> void :

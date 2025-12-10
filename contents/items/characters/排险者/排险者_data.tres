@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=65 format=2]
+[gd_resource type="Resource" load_steps=66 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_3.tres" type="Resource" id=2]
@@ -37,7 +37,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_7.tres" type="Resource" id=35]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_9.tres" type="Resource" id=36]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_8.tres" type="Resource" id=37]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_0.tres" type="Resource" id=38]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_43a.tres" type="Resource" id=38]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_12.tres" type="Resource" id=39]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_6.tres" type="Resource" id=40]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_13.tres" type="Resource" id=41]
@@ -54,16 +54,17 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_30.tres" type="Resource" id=52]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_34.tres" type="Resource" id=53]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_35.tres" type="Resource" id=54]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_36.tres" type="Resource" id=55]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_0.tres" type="Resource" id=55]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_37.tres" type="Resource" id=56]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/troubleshooter_scar.tres" type="Resource" id=57]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_39.tres" type="Resource" id=58]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_44b.tres" type="Resource" id=58]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_40.tres" type="Resource" id=59]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_41.tres" type="Resource" id=60]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_44a.tres" type="Resource" id=60]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_42.tres" type="Resource" id=61]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_32.tres" type="Resource" id=62]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_43.tres" type="Resource" id=63]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_44.tres" type="Resource" id=64]
+[ext_resource path="res://weapons/melee/cactus_mace/1/cactus_mace_data.tres" type="Resource" id=65]
 
 [resource]
 script = ExtResource( 7 )
@@ -74,7 +75,7 @@ icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_TROUBLESHOOTER"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 38 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 2 ), ExtResource( 34 ), ExtResource( 32 ), ExtResource( 40 ), ExtResource( 35 ), ExtResource( 37 ), ExtResource( 36 ), ExtResource( 33 ), ExtResource( 31 ), ExtResource( 39 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 23 ), ExtResource( 45 ), ExtResource( 28 ), ExtResource( 25 ), ExtResource( 24 ), ExtResource( 27 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 26 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 52 ), ExtResource( 50 ), ExtResource( 62 ), ExtResource( 51 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 55 ), ExtResource( 56 ), ExtResource( 58 ), ExtResource( 64 ), ExtResource( 59 ), ExtResource( 60 ), ExtResource( 61 ), ExtResource( 63 ) ]
+effects = [ ExtResource( 55 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 2 ), ExtResource( 34 ), ExtResource( 32 ), ExtResource( 40 ), ExtResource( 35 ), ExtResource( 37 ), ExtResource( 36 ), ExtResource( 33 ), ExtResource( 31 ), ExtResource( 39 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 23 ), ExtResource( 45 ), ExtResource( 28 ), ExtResource( 25 ), ExtResource( 24 ), ExtResource( 27 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 26 ), ExtResource( 48 ), ExtResource( 49 ), ExtResource( 52 ), ExtResource( 50 ), ExtResource( 62 ), ExtResource( 51 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 56 ), ExtResource( 59 ), ExtResource( 61 ), ExtResource( 63 ), ExtResource( 38 ), ExtResource( 64 ), ExtResource( 60 ), ExtResource( 58 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
@@ -83,7 +84,7 @@ curse_factor = 0.0
 max_nb = -1
 item_appearances = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 57 ) ]
 tags = [  ]
-wanted_tags = [ "more_enemies", "exploration", "xp_gain" ]
+wanted_tags = [ "xp_gain", "exploration" ]
 banned_item_groups = [  ]
 banned_items = [  ]
-starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ) ]
+starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 65 ) ]

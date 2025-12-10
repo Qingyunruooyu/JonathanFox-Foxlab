@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_foxlab_split"
+key = "gain_stat_max_hp"
 text_key = "EFFECT_FOXLAB_STAT_QUERY"
-value = 8
+value = 7
 custom_key = ""
 storage_method = 0
 effect_sign = 2

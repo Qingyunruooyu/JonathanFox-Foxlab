@@ -20,6 +20,8 @@ const EXTENSION_SCRIPTS: =[
 	"floating_text_manager.gd",
 	"entity_spawner.gd",
 	"linked_stats.gd",
+	"upgrades_ui.gd",
+	"weapon_service.gd",
 ]
 
 func _init():

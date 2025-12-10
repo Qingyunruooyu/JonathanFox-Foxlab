@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=13 format=2]
+[gd_resource type="Resource" load_steps=14 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/裂变之危/裂变之危_effect_5.tres" type="Resource" id=1]
 [ext_resource path="res://items/global/item_data.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/裂变之危/裂变之危_effect_3.tres" type="Resource" id=10]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/裂变之危/裂变之危_effect_0.tres" type="Resource" id=11]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/spawner_icon.png" type="Texture" id=12]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/裂变之危/裂变之危_effect_3a.tres" type="Resource" id=13]
 
 [resource]
 script = ExtResource( 2 )
@@ -22,7 +23,7 @@ icon = ExtResource( 12 )
 name = "ITEM_FOXLAB_SPLIT"
 tier = 1
 value = 1.0
-effects = [ ExtResource( 11 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 1 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 8 ) ]
+effects = [ ExtResource( 11 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 1 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 8 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

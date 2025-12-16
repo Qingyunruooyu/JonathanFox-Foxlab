@@ -20,10 +20,10 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_10.tres" type="Resource" id=18]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_16.tres" type="Resource" id=19]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_20.tres" type="Resource" id=20]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_21.tres" type="Resource" id=21]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_1.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_0.tres" type="Resource" id=22]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_23.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_5.tres" type="Resource" id=24]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_7.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_14.tres" type="Resource" id=28]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_12.tres" type="Resource" id=29]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/参谋/参谋_effect_15.tres" type="Resource" id=30]
@@ -38,7 +38,7 @@ icon = ExtResource( 31 )
 name = "CHARACTER_FOXLAB_STAFF_OFFICER"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 22 ), ExtResource( 5 ), ExtResource( 24 ), ExtResource( 10 ), ExtResource( 26 ), ExtResource( 6 ), ExtResource( 18 ), ExtResource( 2 ), ExtResource( 29 ), ExtResource( 7 ), ExtResource( 28 ), ExtResource( 30 ), ExtResource( 19 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 3 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 1 ) ]
+effects = [ ExtResource( 22 ), ExtResource( 21 ), ExtResource( 5 ), ExtResource( 24 ), ExtResource( 10 ), ExtResource( 6 ), ExtResource( 18 ), ExtResource( 2 ), ExtResource( 29 ), ExtResource( 7 ), ExtResource( 28 ), ExtResource( 30 ), ExtResource( 19 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 3 ), ExtResource( 20 ), ExtResource( 1 ), ExtResource( 23 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
@@ -47,7 +47,7 @@ curse_factor = 0.0
 max_nb = -1
 item_appearances = [ ExtResource( 12 ), ExtResource( 11 ) ]
 tags = [  ]
-wanted_tags = [ "stat_percent_damage", "stat_ranged_damage", "stat_elemental_damage" ]
+wanted_tags = [ "stat_percent_damage", "stat_ranged_damage" ]
 banned_item_groups = [  ]
-banned_items = [ "item_toolbox", "item_book", "item_pencil", "item_cog", "item_lighthouse" ]
+banned_items = [  ]
 starting_weapons = [ ExtResource( 14 ), ExtResource( 9 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 16 ) ]

@@ -27,6 +27,13 @@ func _ready() -> void :
 			var items = RunData.get_player_items(player_index)
 			player_gear_container.set_items_data(items)
 
+func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
+	.on_shop_item_bought(shop_item, player_index)
+	var item_data = shop_item.item_data
+	if item_data.get_category() == Category.WEAPON and\
+		item_data.tier >= RunData.get_player_effect("foxlab_bonus_reroll_weapon_tier", player_index):
+		_has_bonus_free_reroll[player_index] = true
+		set_reroll_button_price(player_index)
 
 func buy_item(item_data: ItemData, player_index: int) -> void :
 	var prev_weapon_slot = RunData.get_player_effect("weapon_slot", player_index)

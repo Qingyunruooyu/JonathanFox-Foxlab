@@ -195,7 +195,7 @@ func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
 		if foxlab_original_piercing[player_index]:
 			var effects = RunData.get_player_effects(player_index)
-			effects["pierce_on_crit"] = foxlab_original_piercing[player_index]
+			effects["pierce_on_crit"] += foxlab_original_piercing[player_index]
 			effects["bounce_on_crit"] -= foxlab_original_piercing[player_index]
 
 ##############扩展################

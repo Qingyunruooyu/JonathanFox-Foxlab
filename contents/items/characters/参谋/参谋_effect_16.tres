@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "stat_engineering"
+key = "structure_percent_damage"
 text_key = "[EMPTY]"
-value = 20
+value = 2
 custom_key = "gain_stat_for_equipped_item_with_stat"
 storage_method = 1
 effect_sign = 2

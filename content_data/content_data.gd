@@ -16,6 +16,8 @@ export (Array, Resource) var challenges = []
 
 # RunData
 export (Dictionary) var tracked_items = {}
+export (Array, String) var effect_keys_with_weapon_stats = []
+export (Array, String) var effect_keys_full_serialization = []
 
 # Text
 export (Dictionary) var translation_keys_needing_operator = {}
@@ -33,9 +35,11 @@ func add_resources():
 
 	if not tracked_items.empty():
 		RunData.init_tracked_items.merge(tracked_items)
+	ProgressData._append_without_duplicates(RunData.effect_keys_with_weapon_stats, effect_keys_with_weapon_stats)
+	ProgressData._append_without_duplicates(RunData.effect_keys_full_serialization, effect_keys_full_serialization)
 
 	if not translation_keys_needing_operator.empty():
 		Text.keys_needing_operator.merge(translation_keys_needing_operator)
 
-	if  not translation_keys_needing_percent.empty():
+	if not translation_keys_needing_percent.empty():
 		Text.keys_needing_percent.merge(translation_keys_needing_percent)

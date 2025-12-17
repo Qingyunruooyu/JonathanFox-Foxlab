@@ -22,4 +22,4 @@ effect_sign = 3
 custom_args = [ SubResource( 1 ) ]
 pct_converted = 40.0
 to_stat = "projectiles"
-to_value = 1.0
+to_value = 1

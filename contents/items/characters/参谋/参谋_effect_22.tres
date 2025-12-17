@@ -11,5 +11,5 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-stat_displayed = "stat_percent_damage"
-stats_modified = [ "stat_percent_damage", "explosion_damage", "structure_percent_damage" ]
+stat_displayed = "stat_luck"
+stats_modified = [ "stat_luck" ]

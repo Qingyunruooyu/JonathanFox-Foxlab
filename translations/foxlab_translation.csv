@@ -258,7 +258,7 @@ EFFECT_FOXLAB_NO_BIG_COOLDOWN,{2}和[color=#FF8C00]近战[/color]武器获得提
 HIT_PROTECTION,伤害免疫次数,Hit Protection
 EFFECT_FOXLAB_INCREASE_TIER_ON_EVERY_REROLL,商店刷新后物品提升{0}个等级,Items will be {0} tier higher after rerolls
 CHARACTER_FOXLAB_STAFF_OFFICER,参谋,Staff Officer
-EFFECT_FOXLAB_BONUS_REROLL_WEAPON_TIER,购买≧{0}级武器时奖励一次刷新（奖励不叠加）,Gain 1 bonus reroll on buying a weapon of tier ≧ {0} (bonus doesn't stack)
+EFFECT_FOXLAB_BONUS_REROLL_WEAPON_TIER,购买≧{0}级武器奖励一次刷新（奖励不叠加）,Gain 1 bonus reroll on buying weapon of tier ≧ {0} (bonus doesn't stack)
 EFFECT_FOXLAB_STAFF_OFFICER,{1}每达到{5}，其中{0}转换为{4}{2},"Every time {1} reaches {5}, {0} is converted into {4} {2}"
 CHARACTER_FOXLAB_CULTIVATOR,修仙者,Cultivator
 EFFECT_FOXLAB_CULTIVATOR_UGRADE,敌袭结束后若{1}＜0，[color=#FF8C00]修仙升级[/color],[color=#FF8C00]Cultivation Levels Up[/color] if {1} < 0 at the end of a wave

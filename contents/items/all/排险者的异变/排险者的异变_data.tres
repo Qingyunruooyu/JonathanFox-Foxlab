@@ -16,7 +16,7 @@
 [resource]
 script = ExtResource( 5 )
 my_id = "item_foxlab_trouble_mutation"
-unlocked_by_default = false
+unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_TROUBLE_MUTATION"

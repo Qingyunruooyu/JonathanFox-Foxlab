@@ -140,9 +140,6 @@ func foxlab_mutation_ready():
 func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	_process_when_enemy_take_damage(enemy, _is_crit, args)
 
-func _on_enemy_took_damage_foxlab_legacy(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int) -> void :
-	_process_when_enemy_take_damage(enemy, _is_crit, args)
-
 func _process_when_enemy_take_damage(enemy: Enemy, _is_crit: bool, args: TakeDamageArgs):
 	if enemy.dead and _is_crit and args.hitbox.from is Structure :
 		for effect in RunData.get_player_effect("temp_stats_on_structure_crit", args.from_player_index):
@@ -253,9 +250,6 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 
 func _on_EntitySpawner_enemy_spawned(enemy: Enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)
-	if ItemService.FOXLAB_IS_NEW_DAWN:
-		var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
-	else:
-		var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab_legacy")
+	var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
 
 

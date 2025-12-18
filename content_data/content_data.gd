@@ -24,11 +24,6 @@ export (Dictionary) var translation_keys_needing_operator = {}
 export (Dictionary) var translation_keys_needing_percent = {}
 
 func add_resources():
-	if "1.1.13" in CrashReporter.VERSION:
-		for i in items:
-			if  not ProgressData.items_unlocked.has(i.my_id):
-				ProgressData.items_unlocked.append(i.my_id)
-
 	ProgressData._append_without_duplicates(ItemService.characters, characters)
 	ProgressData._append_without_duplicates(ItemService.items, items)
 	ProgressData._append_without_duplicates(ItemService.effects, effects)

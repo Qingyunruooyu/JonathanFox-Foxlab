@@ -11,7 +11,7 @@
 [resource]
 script = ExtResource( 7 )
 my_id = "item_foxlab_fire"
-unlocked_by_default = false
+unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_FIRE"

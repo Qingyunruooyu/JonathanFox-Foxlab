@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource( 1 )
 my_id = "item_foxlab_wanted_turtle"
-unlocked_by_default = false
+unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 2 )
 name = "ITEM_FOXLAB_WANTED"

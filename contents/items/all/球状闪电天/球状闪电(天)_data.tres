@@ -9,7 +9,7 @@
 [resource]
 script = ExtResource( 7 )
 my_id = "item_foxlab_ball_lightning_3"
-unlocked_by_default = false
+unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )
 name = "球状闪电(天)"

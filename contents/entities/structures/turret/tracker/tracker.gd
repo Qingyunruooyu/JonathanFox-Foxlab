@@ -21,11 +21,7 @@ func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [],
 	if Utils.get_chance_success(0.5):
 		_orbit_speed = -_orbit_speed
 	if RunData.get_player_effect_bool("foxlab_assemble_tracker_on_hurt", player_index):
-		var player:Player = players_ref[player_index]
-		if ItemService.FOXLAB_IS_NEW_DAWN:
-			player.connect("took_damage", self, "_on_player_took_damage")
-		else:
-			player.connect("took_damage", self, "_on_player_took_damage_legacy")
+		players_ref[player_index].connect("took_damage", self, "_on_player_took_damage")
 
 static func get_max_range_melee_weapon_range(stats: Resource, player_index:int) -> int:
 	var player_weapons = RunData.get_player_weapons(player_index)
@@ -63,9 +59,6 @@ func _on_tracking_enemy_died(target: Node, _args: Entity.DieArgs) -> void :
 	_current_tracking_enemy = null
 
 func _on_player_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
-	_assemble_if_idle()
-
-func _on_player_took_damage_legacy(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int) -> void :
 	_assemble_if_idle()
 
 func _is_idle() -> bool:

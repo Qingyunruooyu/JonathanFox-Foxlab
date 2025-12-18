@@ -9,7 +9,7 @@
 [resource]
 script = ExtResource( 3 )
 my_id = "item_foxlab_tortoise_shell"
-unlocked_by_default = false
+unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_TORTOISE_SHELL"

@@ -7,10 +7,6 @@ const FOXLAB_EXTENSION_DIR: = MOD_PATH + "extensions/"
 
 # =========================== Extension =========================== #
 func _ready() -> void:
-	DebugService.log_data("_ready")
-	if not "1.1.13" in VERSION:
-		._ready()
-		foxlab_install_extensions()
 	_foxlab_ready()
 
 func load_dlc_pcks()->void :
@@ -19,7 +15,6 @@ func load_dlc_pcks()->void :
 
 # =========================== Custom =========================== #
 func _foxlab_ready() -> void:
-	DebugService.log_data("%s/content_data/content_data.tres" % [MOD_PATH])
 	foxlab_data = load("%s/content_data/content_data.tres" % [MOD_PATH])
 	foxlab_data.add_resources()
 	DebugService.log_data("add_resources")

@@ -34,9 +34,6 @@ func _can_character_be_modified(character: CharacterData) -> bool:
 			# cyborg, demon
 			if effect is ConvertStatEffect and effect.custom_key == "convert_stats_end_of_wave":
 				return false
-			# ghost, cryptid, sailor
-			if effect.key == "dodge_cap" and not "1.1.13" in ProgressData.VERSION:
-				return false
 		return true
 	return false
 

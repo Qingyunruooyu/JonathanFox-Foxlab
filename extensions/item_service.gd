@@ -8,6 +8,7 @@ var foxlab_transform_characters:Array=[]
 var foxlab_vanilla_characters:Array=[]
 
 const FOXLAB_MOD_NAME = "JonathanFox-FoxLab"
+var foxlab_is_android = false
 
 var ModsConfigInterface = null
 
@@ -33,6 +34,8 @@ func _init_resources():
 
 func _init_configs():
 	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
+	foxlab_is_android = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME).IS_ANDROID
+	DebugService.log_data("run on andriod: " + str(foxlab_is_android))
 	var CONFIG_NAME = "foxlab_config"
 	var configs = ModLoaderConfig.get_configs(FOXLAB_MOD_NAME)
 	if configs.has(CONFIG_NAME):
@@ -109,7 +112,6 @@ func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> Ite
 ####### 变异相关 ##############
 const FOXLAB_BOSS_CHANCE := 0.06
 const FOXLAB_CHARM_CHANCE := 0.03
-var FOXLAB_IS_NEW_DAWN = "1.1.13" in CrashReporter.VERSION
 var foxlab_enemies = []
 var foxlab_die_args = Entity.DieArgs.new()
 var foxlab_player_boost_args = BoostArgs.new()
@@ -136,34 +138,18 @@ func foxlab_random_enemies() -> Array:
 	if not foxlab_enemies.empty():
 		return foxlab_enemies
 
-	if FOXLAB_IS_NEW_DAWN:
-		for enemy in ItemService.enemies:
-			var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
-			var scene_path:String = enemy_path + ".tscn"
-			var scene:PackedScene = load(scene_path)
-			if scene == null:
-				#DebugService.log_data("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
-				continue
-			if not foxlab_has_node_with_name(scene, "Boss"):
-				foxlab_enemies.append(scene)
-				#DebugService.log_data(scene_path)
-	else:
-		for zone_data in ZoneService.zones:
-#			DebugService.log_data(zone_data.resource_path)
-			var waves_data:Array = zone_data.waves_data
-			for wave_data in waves_data:
-#				DebugService.log_data(wave_data.resource_path)
-				var groups_data:Array = wave_data.groups_data
-				for group_data in groups_data:
-					if group_data.is_boss or group_data.is_neutral:
-						continue
-#					DebugService.log_data(group_data.resource_path)
-					var wave_units_data:Array = group_data.wave_units_data
-					for unit_data in wave_units_data:
-#						DebugService.log_data(unit_data.resource_path)
-						if not unit_data.unit_scene in foxlab_enemies:
-							foxlab_enemies.append(unit_data.unit_scene)
+	for enemy in ItemService.enemies:
+		var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
+		var scene_path:String = enemy_path + ".tscn"
+		var scene:PackedScene = load(scene_path)
+		if scene == null:
+			#DebugService.log_data("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
+			continue
+		if not foxlab_has_node_with_name(scene, "Boss"):
+			foxlab_enemies.append(scene)
+			#DebugService.log_data(scene_path)
 	foxlab_enemies.append(preload("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
+
 	return foxlab_enemies
 
 func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:

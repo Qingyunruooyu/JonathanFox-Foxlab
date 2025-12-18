@@ -22,7 +22,7 @@
 [resource]
 script = ExtResource( 12 )
 my_id = "item_foxlab_demon"
-unlocked_by_default = false
+unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_DEMON"

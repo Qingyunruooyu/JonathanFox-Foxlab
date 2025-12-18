@@ -13,7 +13,7 @@
 [resource]
 script = ExtResource( 9 )
 my_id = "item_foxlab_architecture_diagram"
-unlocked_by_default = false
+unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_ARCHITECTURE_DIAGRAM"

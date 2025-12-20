@@ -201,6 +201,23 @@ func on_levelled_up(player_index: int) -> void :
 	var effects = RunData.get_player_effects(player_index)
 	effects["stat_levels"] = RunData.get_player_level(player_index)
 
+	var bonus_crate = RunData.get_player_effect("foxlab_level_up_bonus_crate", player_index)
+	if bonus_crate < 1:
+		return
+
+	var upgrade:UpgradesUI.UpgradeToProcess = _upgrades_to_process[player_index].back()
+	var consumable_tier = Tier.UNCOMMON
+	if upgrade.level % 5 == 0:
+		consumable_tier = Tier.LEGENDARY
+	var consumable_to_drop: ConsumableData = ItemService.get_consumable_for_tier(consumable_tier).duplicate()
+	consumable_to_drop.icon = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/cursed_chest.png")
+	for i in range(bonus_crate):
+		var consumable_to_process = UpgradesUI.ConsumableToProcess.new()
+		consumable_to_process.consumable_data = consumable_to_drop
+		consumable_to_process.player_index = player_index
+		_consumables_to_process[player_index].push_back(consumable_to_process)
+		_things_to_process_player_containers[player_index].consumables.add_element(consumable_to_drop)
+
 func _on_HalfWaveTimer_timeout() -> void :
 	._on_HalfWaveTimer_timeout()
 

@@ -78,6 +78,7 @@ EFFECT_FOXLAB_STAT_FIRST_WAVES,前{2}波商店{0}{1},{0} {1} for first {2} waves
 ITEM_FOXLAB_SPACETIME_ANCHOR,时空锚点,Spacetime Anchor
 FOXLAB_RANDOM_ENEMY_NAME,随机时空敌人,Enemies of Random Spacetime
 CHARACTER_FOXLAB_BOUNTY_HUNTER,赏金猎人,Bounty Hunter
+EFFECT_FOXLAB_LEVEL_UP_BONUS_CRATE,升级有{0}宝箱,{0} crate when you level up
 EFFECT_FOXLAB_EXTRA_BOSS,下场敌袭额外出现{0}个[color=#FF8C00]{2}[/color],Extra {0} [color=#FF8C00]{2}[/color] appear during the next wave
 EFFECT_FOXLAB_WANTED_ITEM,每个箱子中有16%几率发现至少1{1},16% chance of finding at least 1 {1} in a crate
 EFFECT_FOXLAB_WANTED_ITEM_WITH_STARTING,初始拥有2{1}，每个箱子中有29%几率发现至少1{1},"You start with 2 {1}, 16% chance of finding at least 1 {1} in a crate"

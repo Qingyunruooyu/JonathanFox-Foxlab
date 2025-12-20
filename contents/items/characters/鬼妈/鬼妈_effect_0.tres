@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/landmine_exploding_effect.tres" type="Resource" id=1]
-[ext_resource path="res://entities/structures/landmine/landmine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/mom_landmine/mom_landmine.tscn" type="PackedScene" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_structure_effect.gd" type="Script" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/mom_landmine_stats.tres" type="Resource" id=4]
 
@@ -14,10 +14,10 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-spawn_cooldown = 1.0
+spawn_cooldown = 1
 scene = ExtResource( 2 )
 stats = ExtResource( 4 )
 effects = [ ExtResource( 1 ) ]
 spawn_in_center = -1
-spawn_around_player = 10.0
+spawn_around_player = 10
 can_be_grouped = true

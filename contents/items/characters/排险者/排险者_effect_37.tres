@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 key = "weapon_slot"
 text_key = "effect_max_weapons"
-value = 33
+value = 12
 custom_key = ""
 storage_method = 2
 effect_sign = 3

@@ -242,5 +242,6 @@ translation_keys_needing_percent = {
 "effect_foxlab_stat_percent_dec_end_of_wave": [ 0 ],
 "effect_foxlab_transform": [ 2 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
-"effect_foxlab_vagabond_fruit_pos": [ 2 ]
+"effect_foxlab_vagabond_fruit_pos": [ 2 ],
+"effect_foxlab_spacetime_machine": [ 0 ],
 }

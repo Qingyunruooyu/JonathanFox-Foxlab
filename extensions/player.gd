@@ -7,6 +7,8 @@ var foxlab_ball_lighting_names = ["item_foxlab_ball_lightning_3", "item_foxlab_b
 
 var _foxlab_ball_lightning_timer: Timer
 
+var enemy_stats_on_hit = []
+
 func _ready() -> void :
 	var ball_lightning_effect = RunData.get_player_effect("foxlab_ball_lightning", player_index)
 	if ball_lightning_effect.size() > 0 and ball_lightning_effect[0] > 0:
@@ -15,6 +17,16 @@ func _ready() -> void :
 		var _foxlab_ball_lightning = _foxlab_ball_lightning_timer.connect("timeout", self, "on_foxlab_ball_lightning_timeout")
 		add_child(_foxlab_ball_lightning_timer)
 		_foxlab_ball_lightning_timer.start()
+
+	var temp_stats_on_hit_effect = RunData.get_player_effect("temp_stats_on_hit", player_index)
+	for temp_stat_on_hit in temp_stats_on_hit_effect:
+			if "enemy" in temp_stat_on_hit[0]:
+				if "speed" in temp_stat_on_hit[0]:
+					enemy_stats_on_hit.push_back("enemy_speed")
+				elif "damage" in temp_stat_on_hit[0]:
+					enemy_stats_on_hit.push_back("enemy_damage")
+				elif "health" in temp_stat_on_hit[0]:
+					enemy_stats_on_hit.push_back("enemy_health")
 
 func on_foxlab_ball_lightning_timeout() -> void :
 	var ball_lightning_effect = RunData.get_player_effect("foxlab_ball_lightning", player_index)
@@ -82,3 +94,10 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	weapon.disable_hitbox()
 	weapon.disable_target_tracking()
 	.on_weapon_wanted_to_break(weapon, gold_dropped)
+
+func take_damage(value: int, args: TakeDamageArgs) -> Array:
+	var ret = .take_damage(value, args)
+	if ret[1] > 0:
+		for stats in enemy_stats_on_hit:
+			EntityService.factor_cache.erase(stats)
+	return ret

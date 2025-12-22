@@ -1,6 +1,5 @@
-[gd_resource type="Resource" load_steps=41 format=2]
+[gd_resource type="Resource" load_steps=40 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_0.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_1.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_21a.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_3.tres" type="Resource" id=4]
@@ -50,7 +49,7 @@ icon = ExtResource( 39 )
 name = "CHARACTER_FOXLAB_SCHRODINGERS_CAT"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 37 ), ExtResource( 23 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 24 ), ExtResource( 32 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 3 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ) ]
+effects = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 37 ), ExtResource( 23 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 24 ), ExtResource( 32 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 3 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

@@ -19,6 +19,7 @@ const EXTENSION_SCRIPTS: =[
 	"shop_item.gd",
 	"floating_text_manager.gd",
 	"entity_spawner.gd",
+	"entity_service.gd",
 	"linked_stats.gd",
 	"upgrades_ui.gd",
 	"weapon_service.gd",

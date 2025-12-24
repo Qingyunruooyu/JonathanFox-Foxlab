@@ -2,15 +2,15 @@ extends "res://main.gd"
 
 #全局杀敌获得属性
 var foxlab_enemy_killed_this_wave := [0, 0, 0, 0]
-const BASE_NEARBY_KILL_DIST = 150
+const FOXLAB_BASE_NEARBY_KILL_DIST = 150
 
 #异变相关
 var foxlab_mutate_chance:Array = [0, 0, 0, 0]
 var foxlab_should_check_mutation:Array = [false, false, false, false]
-var primary_stat_keys:Array = []
-var primary_mod_keys:Array = []
-var bosses_this_wave = 0
-const STAT_MOD_CHANCE:float = 0.2
+var foxlab_primary_stat_keys:Array = []
+var foxlab_primary_mod_keys:Array = []
+var foxlab_bosses_this_wave = 0
+const FOXLAB_STAT_MOD_CHANCE:float = 0.2
 
 #贯通改为反弹相关
 var foxlab_original_piercing = [0, 0, 0, 0]
@@ -110,7 +110,7 @@ func foxlab_receive_item_stat_ready():
 
 ########### 异变相关 ###############
 func foxlab_mutation_ready():
-	bosses_this_wave = 0
+	foxlab_bosses_this_wave = 0
 	for i in RunData.get_player_count():
 		foxlab_mutate_chance[i] = max(0, RunData.get_player_effect("foxlab_mutate_alive_enemy", i))
 		if foxlab_mutate_chance[i]:
@@ -132,9 +132,9 @@ func foxlab_mutation_ready():
 					break
 	for check in foxlab_should_check_mutation:
 		if check:
-			for key in Utils.get_primary_stat_keys():
-				primary_mod_keys.append("gain_" + key)
-				primary_stat_keys.append(key)
+			for key in Utils.get_foxlab_primary_stat_keys():
+				foxlab_primary_mod_keys.append("gain_" + key)
+				foxlab_primary_stat_keys.append(key)
 			break
 
 func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
@@ -154,13 +154,13 @@ func _process_when_enemy_take_damage(enemy: Enemy, _is_crit: bool, args: TakeDam
 			if effect.key == "foxlab_mutate_alive_enemy":
 				chance += effect.value / 100.0
 	if enemy is Boss:
-		chance = chance * 0.08 / (1 + bosses_this_wave)
+		chance = chance * 0.08 / (1 + foxlab_bosses_this_wave)
 	if Utils.get_chance_success(chance):
-		bosses_this_wave += ItemService.foxlab_spawn_random_enemy(enemy, bosses_this_wave, args.from_player_index)
+		foxlab_bosses_this_wave += ItemService.foxlab_spawn_random_enemy(enemy, foxlab_bosses_this_wave, args.from_player_index)
 		if RunData.get_player_effect_bool("foxlab_gain_stat_on_mutate", args.from_player_index) and Utils.get_chance_success(chance):
 			for i in range(1 + RunData.current_wave / 5):
-				var add_mod :bool = Utils.get_chance_success(STAT_MOD_CHANCE)
-				var stat = Utils.get_rand_element(primary_mod_keys) if add_mod else Utils.get_rand_element(primary_stat_keys)
+				var add_mod :bool = Utils.get_chance_success(FOXLAB_STAT_MOD_CHANCE)
+				var stat = Utils.get_rand_element(foxlab_primary_mod_keys) if add_mod else Utils.get_rand_element(foxlab_primary_stat_keys)
 				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
 				RunData.add_stat(stat, value, args.from_player_index)
 				RunData.add_tracked_value(args.from_player_index, "character_foxlab_refactor", value, add_mod)
@@ -249,7 +249,7 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 			if not Utils.get_chance_success(near_effect[2] / 100.0):
 				continue
 			var dist_to_player = enemy.global_position.distance_to(player.global_position)
-			if dist_to_player <= BASE_NEARBY_KILL_DIST + WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index):
+			if dist_to_player <= FOXLAB_BASE_NEARBY_KILL_DIST + WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index):
 				if player.on_healing_effect(1, "item_foxlab_inner_indomitable") <= 0:
 					RunData.add_gold(1, player_index)
 					RunData.add_tracked_value(player_index, "item_foxlab_inner_indomitable", 1, 1)

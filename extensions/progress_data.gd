@@ -1,9 +1,9 @@
 extends "res://singletons/progress_data.gd"
 
 var foxlab_data
-const MOD_NAME:="JonathanFox-FoxLab"
-const MOD_PATH:="res://mods-unpacked/" + MOD_NAME + "/"
-const FOXLAB_EXTENSION_DIR: = MOD_PATH + "extensions/"
+const FOXLAB_MOD_NAME:="JonathanFox-FoxLab"
+const FOXLAB_MOD_PATH:="res://mods-unpacked/" + FOXLAB_MOD_NAME + "/"
+const FOXLAB_EXTENSION_DIR: = FOXLAB_MOD_PATH + "extensions/"
 
 # =========================== Extension =========================== #
 func _ready() -> void:
@@ -15,7 +15,7 @@ func load_dlc_pcks()->void :
 
 # =========================== Custom =========================== #
 func _foxlab_ready() -> void:
-	foxlab_data = load("%s/content_data/content_data.tres" % [MOD_PATH])
+	foxlab_data = load("%s/content_data/content_data.tres" % [FOXLAB_MOD_PATH])
 	foxlab_data.add_resources()
 	DebugService.log_data("add_resources")
 

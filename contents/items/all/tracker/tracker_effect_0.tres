@@ -9,7 +9,7 @@
 [resource]
 script = ExtResource( 2 )
 key = ""
-text_key = "EFFECT_FOXLAB_TRACKER"
+text_key = "effect_foxlab_tracker"
 value = 1
 custom_key = ""
 storage_method = 0

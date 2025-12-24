@@ -9,5 +9,5 @@ func _sort_inventory_button(index: int = - 10, _inventory: Inventory = null):
 			break
 	if push_character_ahead:
 		for element_instance in inventory_to_sort.get_children():
-			if element_instance.item is CharacterData:
+			if element_instance.item is CharacterData or element_instance.item.my_id == "item_foxlab_mask" or  "item_builder_turret" in element_instance.item.my_id:
 				inventory_to_sort.move_child(element_instance, 0)

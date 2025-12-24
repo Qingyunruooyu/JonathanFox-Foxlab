@@ -49,7 +49,7 @@ projectile_scene = ExtResource( 4 )
 [resource]
 script = ExtResource( 2 )
 key = ""
-text_key = "EFFECT_FOXLAB_AQUILA"
+text_key = "effect_foxlab_aquila"
 value = 1
 custom_key = ""
 storage_method = 0

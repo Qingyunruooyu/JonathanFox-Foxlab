@@ -24,15 +24,15 @@ func is_transform_vanilla_only():
 	return foxlab_current_settings["FOXLAB_TRANSFORM_VANILLA_ONLY"]
 
 func _ready() -> void :
-	call_deferred("_init_resources")
-	call_deferred("_init_configs")
-	call_deferred("_init_enemies")
+	call_deferred("_foxlab_init_resources")
+	call_deferred("_foxlab_init_configs")
+	call_deferred("_foxlab_init_enemies")
 
 
-func _init_resources():
+func _foxlab_init_resources():
 	foxlab_kill_nearby_icon = ItemService.get_element(ItemService.items, "item_foxlab_inner_indomitable").icon
 
-func _init_configs():
+func _foxlab_init_configs():
 	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
 	foxlab_is_android = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME).IS_ANDROID
 	DebugService.log_data("run on andriod: " + str(foxlab_is_android))
@@ -52,12 +52,12 @@ func _init_configs():
 
 	if ModsConfigInterface:
 		ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
-		call_deferred("_init_settings")
+		call_deferred("_foxlab_init_settings")
 
-func _init_settings() -> void:
+func _foxlab_init_settings() -> void:
 	for key in foxlab_current_settings.keys():
 		ModsConfigInterface.on_setting_changed(key, foxlab_current_settings[key], FOXLAB_MOD_NAME)
-	_init_foxlab_transform_characters()
+	_foxlab_init_transform_characters()
 
 func _on_setting_changed(setting_name, value, mod_name)->void :
 	if mod_name == FOXLAB_MOD_NAME:
@@ -67,23 +67,23 @@ func _on_setting_changed(setting_name, value, mod_name)->void :
 			foxlab_config.data[setting_name] = value
 			var _error_config = ModLoaderConfig.update_config(foxlab_config)
 		if setting_name == "FOXLAB_TRANSFORM_VANILLA_ONLY":
-			_init_foxlab_transform_characters()
+			_foxlab_init_transform_characters()
 
-func _init_foxlab_transform_characters():
+func _foxlab_init_transform_characters():
 	if not is_transform_vanilla_only():
 		foxlab_transform_characters = characters
-		#DebugService.log_data("item service _init_foxlab_transform_characters done, all")
+		#DebugService.log_data("item service _foxlab_init_transform_characters done, all")
 		return
 	if foxlab_vanilla_characters.empty():
 		for character in characters:
 			if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
 				foxlab_vanilla_characters.append(character)
 	foxlab_transform_characters = foxlab_vanilla_characters
-	#DebugService.log_data("_init_foxlab_transform_characters done, vanilla only")
+	#DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
 
 func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():
-		_init_foxlab_transform_characters()
+		_foxlab_init_transform_characters()
 	return foxlab_transform_characters
 
 
@@ -116,7 +116,7 @@ var foxlab_enemies = []
 var foxlab_die_args = Entity.DieArgs.new()
 var foxlab_player_boost_args = BoostArgs.new()
 var foxlab_enemy_boost_args = BoostArgs.new()
-func _init_enemies():
+func _foxlab_init_enemies():
 	foxlab_die_args.cleaning_up = true
 	foxlab_die_args.enemy_killed_by_player = false
 	foxlab_die_args.killed_by_player_index = - 1

@@ -5,7 +5,7 @@ func average_all_player_stats(stat_name: String) -> float:
 	# 负诅咒导致敌人生命值和伤害变成1
 	return max(0, value) if stat_name == "stat_curse" else value
 
-func multiply_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
+func foxlab_multiply_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
 	if stats.empty():
 		return
 	for stat_to_mul in stats:
@@ -35,12 +35,12 @@ func multiply_stats(stats: Array, player_index: int, permanent: bool = true) -> 
 func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
 	# 敌袭结束时，在恶魔转换执行之前执行尾数转换
 	if permanent: #敌袭结束
-		multiply_stats(RunData.get_player_effect("foxlab_multiply_stats_end_of_wave", player_index), player_index, permanent)
+		foxlab_multiply_stats(RunData.get_player_effect("foxlab_multiply_stats_end_of_wave", player_index), player_index, permanent)
 		convert_remainder(RunData.get_player_effect("fox_convert_remainder_end_of_wave", player_index), player_index)
 		for effect in RunData.get_player_effect("foxlab_always_convert_stats_end_of_wave", player_index):
 			.convert_stats([effect], player_index, permanent)
 	else: #敌袭中途
-		multiply_stats(RunData.get_player_effect("foxlab_multiply_stats_half_wave", player_index), player_index, permanent)
+		foxlab_multiply_stats(RunData.get_player_effect("foxlab_multiply_stats_half_wave", player_index), player_index, permanent)
 		for effect in RunData.get_player_effect("foxlab_always_convert_stats_half_wave", player_index):
 			.convert_stats([effect], player_index, permanent)
 

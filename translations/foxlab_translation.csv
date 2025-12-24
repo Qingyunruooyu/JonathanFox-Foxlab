@@ -69,8 +69,8 @@ LOSE_HP_PER_SECOND,每秒固定受伤,HP Lose per Second
 POISONED_FRUIT,%毒水果,% Poisoned Fruit
 ENEMY_FRUIT_DROPS,%水果概率,% Fruit Drops
 EFFECT_FOXLAB_SPACETIME_MACHINE,掠夺对立[color=#FF8C00]时空装置[/color]{0}的爆率,Steal {0} drop rate from opposing [color=#FF8C00]Spacetime Machine[/color]
-EFFECT_FOXLAB_SPACETIME_MACHINE_YIN,无法治疗且水果可能有毒，抵消每秒受伤,You can't heal and fruit may be toxic; neutralize HP lose per second
-EFFECT_FOXLAB_SPACETIME_MACHINE_YANG,每秒受到伤害，抵消无法治疗和毒水果,Lose HP every second; neutralize no heal and toxic fruit
+EFFECT_FOXLAB_SPACETIME_MACHINE_YIN,无法治疗且水果可能有毒，抵消1点每秒受伤,You can't heal and fruit may be toxic; neutralize 1 HP lose per second
+EFFECT_FOXLAB_SPACETIME_MACHINE_YANG,每秒受到1伤害，抵消1点无法治疗和毒水果的负面,Lose 1 HP every second; neutralize 1 penalty of no heal and toxic fruit
 ITEM_FOXLAB_SPACETIME_MACHINE_YIN,时空装置・阴,Spacetime Machine (Yin)
 ITEM_FOXLAB_SPACETIME_MACHINE_YANG,时空装置・阳,Spacetime Machine (Yang)
 STRONGER_LOOT_ALIENS_ON_KILL,%战利品外星人击杀增幅,% Stronger Loot Aliens on Kill

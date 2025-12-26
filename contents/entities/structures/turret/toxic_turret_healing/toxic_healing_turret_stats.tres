@@ -1,7 +1,5 @@
-[gd_resource type="Resource" load_steps=8 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
-[ext_resource path="res://weapons/weapon_stats/melee_weapon_stats.gd" type="Script" id=1]
-[ext_resource path="res://weapons/ranged/medical_gun/weapon_fun_pea_shooter_01.wav" type="AudioStream" id=2]
 [ext_resource path="res://projectiles/bullet_medical/turret_healing/bullet_turret_healing.tscn" type="PackedScene" id=3]
 [ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=4]
 [ext_resource path="res://weapons/ranged/medical_gun/weapon_fun_pea_shooter_01.wav" type="AudioStream" id=5]
@@ -42,4 +40,3 @@ can_bounce = true
 projectile_speed = 400
 increase_projectile_speed_with_range = false
 projectile_scene = ExtResource( 3 )
-

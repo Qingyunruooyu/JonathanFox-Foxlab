@@ -15,10 +15,13 @@ const FOXLAB_STAT_MOD_CHANCE:float = 0.2
 #贯通改为反弹相关
 var foxlab_original_piercing = [0, 0, 0, 0]
 
+var foxlab_burning_enemy_speed = 0
+
 func _ready():
 	foxlab_receive_item_stat_ready()
 	foxlab_mutation_ready()
 	foxlab_piercing_is_bounce_ready()
+	foxlab_burning_enemy_speed_ready()
 
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
@@ -186,6 +189,10 @@ func foxlab_piercing_is_bounce_ready():
 			effects["pierce_on_crit"] = 0
 			effects["bounce_on_crit"] += foxlab_original_piercing[player_index]
 
+func foxlab_burning_enemy_speed_ready():
+	foxlab_burning_enemy_speed = RunData.sum_all_player_effects("foxlab_burning_enemy_speed")
+
+##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	._on_WaveTimer_timeout()
 	for player_index in range(RunData.get_player_count()):
@@ -194,7 +201,6 @@ func _on_WaveTimer_timeout() -> void :
 			effects["pierce_on_crit"] += foxlab_original_piercing[player_index]
 			effects["bounce_on_crit"] -= foxlab_original_piercing[player_index]
 
-##############扩展################
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)
 	var effects = RunData.get_player_effects(player_index)

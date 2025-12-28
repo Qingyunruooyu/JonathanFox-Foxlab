@@ -35,6 +35,7 @@ func _init():
 
 	if not IS_ANDROID:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "progress_data.gd")
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "unit.gd")
 
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.en.translation")
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")

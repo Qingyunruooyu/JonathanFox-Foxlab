@@ -110,7 +110,7 @@ EFFECT_FOXLAB_PERIOD,。,.
 EFFECT_FOXLAB_STEAL_INIT,（以刚进商店状态为准）, (based on when you just enter a shop)
 CHARACTER_FOXLAB_ALCHEMIST,炼丹师,Alchemist
 EFFECT_FOXLAB_ELEMENTAL_LANDMINE,直接来自武器或燃烧的{1}杀死敌人会生成1地雷,Spawn a landmine if enemy is kill by {1} from burning or weapon directly
-BURNING_ENEMY_SPEED,%被烧敌人的移速,% Speed of Burning Enemy
+FOXLAB_BURNING_ENEMY_SPEED,%被烧敌人的移速,% Speed of Burning Enemy
 EFFECT_FOXLAB_NO_TREES,无法生成树木,No tree to spawn
 CHARACTER_FOXLAB_ALL_OR_NOTHING,二极管,All or Nothing
 EFFECT_FOXLAB_PIERCING_IS_BOUNCE,贯通改为[color=#FF8C00]反弹[/color],Piercing is [color=#FF8C00]bounce[/color]

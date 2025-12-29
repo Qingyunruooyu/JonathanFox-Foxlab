@@ -30,7 +30,7 @@ func _ready() -> void :
 
 
 func _foxlab_init_resources():
-	foxlab_kill_nearby_icon = ItemService.get_element(ItemService.items, "item_foxlab_inner_indomitable").icon
+	foxlab_kill_nearby_icon = get_element(items, "item_foxlab_inner_indomitable").icon
 
 func _foxlab_init_configs():
 	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
@@ -138,7 +138,7 @@ func foxlab_random_enemies() -> Array:
 	if not foxlab_enemies.empty():
 		return foxlab_enemies
 
-	for enemy in ItemService.enemies:
+	for enemy in enemies:
 		var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
 		var scene_path:String = enemy_path + ".tscn"
 		var scene:PackedScene = load(scene_path)
@@ -161,9 +161,9 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 			return new_boss_num
 		var enemy_data: EnemyData = null
 		if RunData.current_wave >= 13 and Utils.get_chance_success(FOXLAB_BOSS_CHANCE):
-			enemy_data = Utils.get_rand_element(ItemService.bosses)
+			enemy_data = Utils.get_rand_element(bosses)
 		else:
-			enemy_data = Utils.get_rand_element(ItemService.elites)
+			enemy_data = Utils.get_rand_element(elites)
 		enemy_scene = enemy_data.scene
 		var main:Main = Utils.get_scene_node()
 		for player_index in RunData.get_player_count():
@@ -186,7 +186,7 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 		if main.has_node("FloatingTextManager"):
 			var floating_text_manager:FloatingTextManager = main.get_node("FloatingTextManager")
 			if not enemy is Boss:
-				var icon = ItemService.get_element(ItemService.icons, "icon_elite").icon
+				var icon = get_element(icons, "icon_elite").icon
 				var player_position = floating_text_manager.players[player_index].global_position
 				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
 				new_boss_num = 1

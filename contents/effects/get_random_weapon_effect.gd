@@ -7,6 +7,7 @@ const CHANCE_EQUIPPED_WEAPON: float = 0.10
 const CHANCE_LEGENDARY_ITEM: float = 0.05
 const CHANCE_BOOST_MELEE: float = 0.20
 const CHANCE_CONST_WEAPON: float = 0.01
+const MAX_BONUS_CHANCE: float = 0.25
 # item_axolotl, item_goldfish, item_mirror, item_anvil， weapon_captains_sword_3, weapon_stick_1
 # item_foxlab_buddhas_hand, item_foxlab_mask, "item_hourglass"
 var debug_item_name: Array = []
@@ -49,7 +50,7 @@ func get_args(player_index: int) -> Array:
 	return [weapon_id[player_index], extra_item_id[player_index]]
 
 func _get_chance_success(base_chance: float, luck_chance: float)->bool:
-	return Utils.get_chance_success(base_chance * luck_chance)
+	return Utils.get_chance_success(min(MAX_BONUS_CHANCE, base_chance * luck_chance))
 
 func _get_rand_weapon(player_index: int) -> WeaponData:
 	var luck = Utils.get_stat("stat_luck", player_index) / 100.0

@@ -1,5 +1,7 @@
 extends "res://singletons/utils.gd"
 
+const FOXLAB_BASE_NEARBY_KILL_DIST = 200
+
 func average_all_player_stats(stat_name: String) -> float:
 	var value = .average_all_player_stats(stat_name)
 	# 负诅咒导致敌人生命值和伤害变成1

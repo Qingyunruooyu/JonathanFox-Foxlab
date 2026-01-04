@@ -12,6 +12,9 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 	RunData.add_item(new_item, p_player_index)
 
 func _ready() -> void :
+	if RunData.get_player_effect_bool("foxlab_shop_effects_checked", 0):
+		return
+
 	ItemService.foxlab_just_enter_shop = [true, true, true, true]
 	for player_index in RunData.get_player_count():
 		var struct_range = RunData.get_player_effect("structure_range", player_index)
@@ -26,6 +29,21 @@ func _ready() -> void :
 			var player_gear_container = _get_gear_container(player_index)
 			var items = RunData.get_player_items(player_index)
 			player_gear_container.set_items_data(items)
+
+		if RunData.get_player_effect_bool("foxlab_keep_random_weapon", player_index):
+			var weapons = RunData.get_player_weapons(player_index)
+			var weapon_idx_to_keep = Utils.randi_range(0, weapons.size() - 1)
+			var weapon_to_keep:WeaponData = weapons[weapon_idx_to_keep]
+			for i in range(weapons.size()):
+				if i != weapon_idx_to_keep:
+					RunData.remove_weapon(weapons[i], player_index)
+			var player_gear_container = _get_gear_container(player_index)
+			player_gear_container.set_weapons_data([weapon_to_keep])
+			var recycling_value = ItemService.get_recycling_value(RunData.current_wave, weapon_to_keep.value, player_index, true, false)
+			RunData.add_gold(recycling_value, player_index)
+			RunData.add_tracked_value(player_index, "character_foxlab_staff_officer", recycling_value)
+
+	RunData.get_player_effects(0)["foxlab_shop_effects_checked"] = 1
 
 func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	.on_shop_item_bought(shop_item, player_index)

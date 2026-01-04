@@ -66,6 +66,8 @@ static func init_effects()->Dictionary:
 			"item_foxlab_eggs":0,
 			"foxlab_bonus_reroll_weapon_tier": Utils.LARGE_NUMBER, #每页购买一个X级或以上武器可以奖励一次刷新
 			"foxlab_level_up_bonus_crate": 0, #升级时奖励宝箱数
+			"foxlab_keep_random_weapon": 0,
+			"foxlab_shop_effects_checked": 0, #base shop _ready()标记，避免重复操作，没有实际效果
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

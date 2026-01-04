@@ -1,5 +1,9 @@
 extends "res://singletons/run_data.gd"
 
+func on_wave_start(timer: WaveTimer) -> void :
+	.on_wave_start(timer)
+	RunData.get_player_effects(0)["foxlab_shop_effects_checked"] = 0
+
 func get_next_level_xp_needed(player_index) -> float:
 	var xp_needed = .get_next_level_xp_needed(player_index)
 	if xp_needed > 0:

@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
 arg_index = 2
-arg_sign = 5
+arg_sign = 3
 arg_value = 2
 arg_format = 0
 arg_key = "item_foxlab_shrink"
@@ -15,7 +15,7 @@ arg_key = "item_foxlab_shrink"
 script = ExtResource( 1 )
 key = "item_foxlab_expand"
 text_key = "EFFECT_FOXLAB_EXTRA_ITEM_IN_CRATE_DUAL"
-value = 15
+value = 30
 custom_key = "extra_item_in_crate"
 storage_method = 1
 effect_sign = 3

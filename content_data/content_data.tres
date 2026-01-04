@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=126 format=2]
+[gd_resource type="Resource" load_steps=127 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
@@ -125,6 +125,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/inner_indomitable/inner_indomitable_data.tres" type="Resource" id=123]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/heal_when_kill_nearby_effect.gd" type="Script" id=124]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/gain_stat_every_killed_enemies.gd" type="Script" id=125]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/projectile_on_hit_effect.gd" type="Script" id=126]
 
 [resource]
 script = ExtResource( 1 )
@@ -136,16 +137,16 @@ upgrades = [  ]
 consumables = [  ]
 elites = [  ]
 difficulties = [  ]
-effects = [ ExtResource( 6 ), ExtResource( 116 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 125 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 124 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 120 ), ExtResource( 118 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 117 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 121 ), ExtResource( 106 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 116 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 125 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 124 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 120 ), ExtResource( 118 ), ExtResource( 126 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 117 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 121 ), ExtResource( 106 ) ]
 challenges = [  ]
 tracked_items = {
-"character_foxlab_staff_officer": 0,
 "character_foxlab_bloody_wolf": 0,
 "character_foxlab_faceless": 0,
 "character_foxlab_ghost_envoy": 0,
 "character_foxlab_mom": 0,
 "character_foxlab_pufferfish": 0,
 "character_foxlab_refactor": [ 0, 0 ],
+"character_foxlab_staff_officer": 0,
 "character_foxlab_toxic_healer": 0,
 "character_foxlab_turtle": 0,
 "item_foxlab_angel": 0,
@@ -161,7 +162,7 @@ tracked_items = {
 "item_foxlab_reactor": 0,
 "item_foxlab_tracker": 0
 }
-effect_keys_with_weapon_stats = [ "foxlab_ball_lightning" ]
+effect_keys_with_weapon_stats = [ "foxlab_ball_lightning", "foxlab_projectile_on_hit" ]
 effect_keys_full_serialization = [ "foxlab_always_convert_stats_end_of_wave", "foxlab_always_convert_stats_half_wave" ]
 translation_keys_needing_operator = {
 "bounce": [ 0 ],
@@ -248,5 +249,5 @@ translation_keys_needing_percent = {
 "effect_foxlab_transform": [ 2 ],
 "effect_foxlab_vagabond_fruit_neg": [ 2 ],
 "effect_foxlab_vagabond_fruit_pos": [ 2 ],
-"effect_stat_on_every_step_valid_lowest_two": [0],
+"effect_stat_on_every_step_valid_lowest_two": [ 0 ]
 }

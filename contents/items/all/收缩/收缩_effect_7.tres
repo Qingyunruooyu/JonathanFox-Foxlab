@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "enemy_health"
+key = "foxlab_projectile_on_hit_num"
 text_key = "effect_foxlab_apply_only"
-value = 10
+value = 4
 custom_key = ""
 storage_method = 0
-effect_sign = 1
+effect_sign = 3
 custom_args = [  ]

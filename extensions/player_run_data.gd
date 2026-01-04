@@ -68,6 +68,8 @@ static func init_effects()->Dictionary:
 			"foxlab_level_up_bonus_crate": 0, #升级时奖励宝箱数
 			"foxlab_keep_random_weapon": 0,
 			"foxlab_shop_effects_checked": 0, #base shop _ready()标记，避免重复操作，没有实际效果
+			"foxlab_projectile_on_hit":[],
+			"foxlab_projectile_on_hit_num": 0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

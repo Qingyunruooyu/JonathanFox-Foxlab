@@ -1,6 +1,10 @@
 ﻿key,zh_Hans_CN,en
 FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP,面具道具仅变身成为原版角色，适合新手（立即生效）,"Item Mask transforms into vannilla characters only, better for greenhand (take effect immediately)"
 FOXLAB_TRANSFORM_VANILLA_ONLY,仅变身原版角色,Vannilla characters only
+FOXLAB_ENABLE_ITEMS_TOOLTIP,关闭后，只有角色词条强制绑定时道具才会出现（重启生效）,"If disabled, items occur only when a character forces it to (reboot game to work)"
+FOXLAB_ENABLE_ITEMS,启用狐狸实验室道具,Enable FoxLab Items
+FOXLAB_ENABLE_CHARACTERS_TOOLTIP,关闭后，只有无面可选（重启生效）,"If disabled, only Faceless is playable (reboot game to work)"
+FOXLAB_ENABLE_CHARACTERS,启用狐狸实验室角色,Enable FoxLab Characters
 FOXLAB_CURSED_TEXT,被诅咒,Cursed
 EFFECT_FOXLAB_GET_ITEM,你将获得{0}{1},You will get {0} {1}
 CORRUPTED_TREE_NAME,被腐蚀的树,Corrupted Tree
@@ -180,13 +184,11 @@ EFFECT_FOXLAB_GHOST_ENVOY_NEG,敌袭结束时，每1存活敌人{0}{3}、每1存
 EFFECT_FOXLAB_GHOST_ENVOY_GAIN,冥币倍率,Ghost Materials Ratio
 FOXLAB_MIDNIGHT,午夜降临！,Midnight!
 CHARACTER_FOXLAB_DANTE,但丁,Dante
-EFFECT_FOXLAB_DANTE,"开箱必出{3}/{4}两种[color=#FF8C00]形态[/color]
-拥有[color=#FF8C00]双形态[/color]时，箱子中有{5}几率找到{1}
-没有[color=#FF8C00]双形态[/color]时，商店刷新后{6}物品等级
-未拥有{1}时不能以[color=#FF8C00]双形态[/color]作战，否则遭受反噬，商店刷新后保留一个[color=#FF8C00]形态[/color]","Definitely find [color=#FF8C00]Modes[/color] {3}/{4} in a crate
-{5} chance of finding {1} in a crate in [color=#FF8C00]Dual Mode[/color]
-Without [color=#FF8C00]Dual Mode[/color], {6} tier for items after rerolls
-Do not fight in [color=#FF8C00]Dual Mode[/color] unless there's {1}, or you'll get punished; excatly one [color=#FF8C00]Mode[/color] remains after reroll in shop"
+EFFECT_FOXLAB_DANTE,"开箱必出{3}/{4}两种[color=#FF8C00]形态[/color]；
+[color=#FF8C00]双形态[/color]时，箱子中有{5}几率找到{1}，并提升商店刷新后的物品等级，否则降低；
+没有{1}时勿[color=#FF8C00]双形态[/color]作战，否则遭受反噬，商店刷新后保留一个[color=#FF8C00]形态[/color]","Definitely find [color=#FF8C00]Modes[/color] {3}/{4} in a crate;
+In [color=#FF8C00]Dual Mode[/color]: {5} chance of finding {1} in a crate, and item tier is increased (decreased if not in)
+Without {1}: never fight in [color=#FF8C00]Dual Mode[/color] or you'll get punished, and excatly one [color=#FF8C00]Mode[/color] remains after reroll in shop."
 ITEM_FOXLAB_ANGEL,天使,Angel
 EFFECT_FOXLAB_AQUILA,持续召唤[color=#FF8C00]阿奎拉之镖[/color]，拥有20%生命窃取,"Spawns [color=#FF8C00]Aquila[/color] (20% Lifesteal) constantly"
 ITEM_FOXLAB_DEMON,恶魔,Demon
@@ -202,7 +204,7 @@ EFFECT_FOXLAB_STAFF_OFFICER,{1}每达到{5}，其中{0}转换为{4}{2},"Every ti
 CHARACTER_FOXLAB_CULTIVATOR,修仙者,Cultivator
 EFFECT_FOXLAB_CULTIVATOR_UGRADE,敌袭结束后若{1}＜0，[color=#FF8C00]修仙升级[/color],[color=#FF8C00]Cultivation Levels Up[/color] if {1} < 0 at the end of a wave
 EFFECT_FOXLAB_CULTIVATOR_UGRADE_STATS,修仙升级时，{4} [color=#FF8C00]伤害[/color]/[color=#FF8C00]获得%经验[/color]/[color=#FF8C00]敌人属性[/color]的修改,"{4} [color=#FF8C00]Damage[/color]/[color=#FF8C00]% XP Gain[/color]/[color=#FF8C00]Enemy Stat[/color] modifications when cultivation levels up"
-EFFECT_FOXLAB_CULTIVATOR_UGRADE_WEAPON,修仙等级3级之后，修仙升级时有{0} {1},"When cultivation level > 3, {0} {1} when cultivation levels up"
+EFFECT_FOXLAB_CULTIVATOR_UGRADE_WEAPON,修仙升级有{0}{1},"{0} {1} when cultivation levels up"
 FOXLAB_CULTIVATOR_LEVEL,修仙等级,Cultivation Level
 EFFECT_FOXLAB_REVERSE_NEG_CURSE,敌袭中途若{1}＜0则暂时乘以{4},{1} x{4} if it's negative halfway through a wave
 CHARACTER_FOXLAB_SHOPAHOLIC,购物狂,Shopaholic

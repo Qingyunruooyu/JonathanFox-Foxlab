@@ -1,8 +1,20 @@
 extends "res://singletons/run_data.gd"
+###### 道具计数相关 #####
+#本来应该写到item_description.gd，但因为Yoko-Optimize强制写入这个文件并禁止其他MOD写入，就写到这里了
+func foxlab_set_item_description(item_description: ItemDescription, item_data: ItemParentData, player_index: int) -> void :
+	if item_data is ItemData:
+		if item_data.max_nb <= 0:
+			var number = get_nb_item(item_data.my_id, player_index);
+			item_description._category.text += "(%s/∞)" % [str(number)]
+		elif item_data.max_nb == 1:
+			var number = get_nb_item(item_data.my_id, player_index);
+			if number > 1:
+				item_description._category.text += "(%s/1)" % [str(number)]
 
+###### 扩展 ######
 func on_wave_start(timer: WaveTimer) -> void :
 	.on_wave_start(timer)
-	RunData.get_player_effects(0)["foxlab_shop_effects_checked"] = 0
+	get_player_effects(0)["foxlab_shop_effects_checked"] = 0
 
 func get_next_level_xp_needed(player_index) -> float:
 	var xp_needed = .get_next_level_xp_needed(player_index)

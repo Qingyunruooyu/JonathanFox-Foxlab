@@ -2,7 +2,7 @@ extends "res://singletons/run_data.gd"
 ###### 道具计数相关 #####
 #本来应该写到item_description.gd，但因为Yoko-Optimize强制写入这个文件并禁止其他MOD写入，就写到这里了
 func foxlab_set_item_description(item_description: ItemDescription, item_data: ItemParentData, player_index: int) -> void :
-	if item_data is ItemData:
+	if item_data is ItemData and not item_data is CharacterData:
 		if item_data.max_nb <= 0:
 			var number = get_nb_item(item_data.my_id, player_index);
 			item_description._category.text += "(%s/∞)" % [str(number)]

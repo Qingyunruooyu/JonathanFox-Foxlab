@@ -9,19 +9,7 @@ var foxlab_vanilla_characters:Array=[]
 
 const FOXLAB_MOD_NAME = "JonathanFox-FoxLab"
 var foxlab_is_android = false
-
-var ModsConfigInterface = null
-
-# 面具的配置相关
-const FOXLAB_DEFAULT_SETTINGS: = {
-	"FOXLAB_TRANSFORM_VANILLA_ONLY": false
-}
-
-var foxlab_config = null
-var foxlab_current_settings: Dictionary = FOXLAB_DEFAULT_SETTINGS.duplicate()
-
-func is_transform_vanilla_only():
-	return foxlab_current_settings["FOXLAB_TRANSFORM_VANILLA_ONLY"]
+var foxlab_mod = null
 
 func _ready() -> void :
 	call_deferred("_foxlab_init_resources")
@@ -33,53 +21,29 @@ func _foxlab_init_resources():
 	foxlab_kill_nearby_icon = get_element(items, "item_foxlab_inner_indomitable").icon
 
 func _foxlab_init_configs():
-	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
-	foxlab_is_android = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME).IS_ANDROID
+	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
+	foxlab_mod = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME)
+	foxlab_is_android = foxlab_mod.IS_ANDROID
 	DebugService.log_data("run on andriod: " + str(foxlab_is_android))
-	var CONFIG_NAME = "foxlab_config"
-	var configs = ModLoaderConfig.get_configs(FOXLAB_MOD_NAME)
-	if configs.has(CONFIG_NAME):
-		foxlab_config = ModLoaderConfig.get_config(FOXLAB_MOD_NAME, CONFIG_NAME)
-	else:
-		foxlab_config = ModLoaderConfig.create_config(FOXLAB_MOD_NAME, CONFIG_NAME, FOXLAB_DEFAULT_SETTINGS)
-
-	if foxlab_config:
-		var _error_config = ModLoaderConfig.update_config(foxlab_config)
-		var data = foxlab_config.data
-
-		for key in foxlab_current_settings.keys():
-			foxlab_current_settings[key] = data[key]
-
 	if ModsConfigInterface:
 		ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
-		call_deferred("_foxlab_init_settings")
-
-func _foxlab_init_settings() -> void:
-	for key in foxlab_current_settings.keys():
-		ModsConfigInterface.on_setting_changed(key, foxlab_current_settings[key], FOXLAB_MOD_NAME)
-	_foxlab_init_transform_characters()
+		call_deferred("_foxlab_init_transform_characters")
 
 func _on_setting_changed(setting_name, value, mod_name)->void :
-	if mod_name == FOXLAB_MOD_NAME:
-		foxlab_current_settings[setting_name] = value
-
-		if foxlab_config:
-			foxlab_config.data[setting_name] = value
-			var _error_config = ModLoaderConfig.update_config(foxlab_config)
-		if setting_name == "FOXLAB_TRANSFORM_VANILLA_ONLY":
-			_foxlab_init_transform_characters()
+	if mod_name == FOXLAB_MOD_NAME and setting_name == "FOXLAB_TRANSFORM_VANILLA_ONLY":
+		_foxlab_init_transform_characters()
 
 func _foxlab_init_transform_characters():
-	if not is_transform_vanilla_only():
+	if not foxlab_mod.is_transform_vanilla_only():
 		foxlab_transform_characters = characters
-		#DebugService.log_data("item service _foxlab_init_transform_characters done, all")
+		DebugService.log_data("item service _foxlab_init_transform_characters done, all")
 		return
 	if foxlab_vanilla_characters.empty():
 		for character in characters:
 			if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
 				foxlab_vanilla_characters.append(character)
 	foxlab_transform_characters = foxlab_vanilla_characters
-	#DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
+	DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
 
 func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():

@@ -1,7 +1,7 @@
 {
 	"name": "FoxLab",
 	"namespace": "JonathanFox",
-	"version_number": "2.1.0",
+	"version_number": "2.2.0",
 	"description": "some characters and items",
 	"website_url": "",
 	"dependencies": [],
@@ -9,6 +9,13 @@
 		"godot": {
 			"incompatibilities": [],
 			"authors": [ "JonathanFox" ],
+			"optional_dependencies": [
+				"dami-ModOptions"
+			],
+			"tags": [
+				"characters",
+				"items"
+			],
 			"compatible_mod_loader_version": "6.2.2",
 			"compatible_game_version": [ "1.1.13.2" ],
 			"config_defaults": {},
@@ -19,9 +26,21 @@
 				"properties": {
 					"FOXLAB_TRANSFORM_VANILLA_ONLY": {
 						"type": "boolean",
-						"title": "FOXLAB_TRANSFORM_VANILLA_ONLY",
+						"title": "ITEM_FOXLAB_MASK",
 						"tooltip": "FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP",
 						"default": false
+					},
+					"FOXLAB_ENABLE_ITEMS": {
+						"type": "boolean",
+						"title": "ITEM",
+						"tooltip": "FOXLAB_ENABLE_ITEMS_TOOLTIP",
+						"default": true
+					},
+					"FOXLAB_ENABLE_CHARACTERS": {
+						"type": "boolean",
+						"title": "CHARACTER",
+						"tooltip": "FOXLAB_ENABLE_CHARACTERS_TOOLTIP",
+						"default": true
 					}
 				}
 			}

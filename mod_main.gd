@@ -26,8 +26,17 @@ const EXTENSION_SCRIPTS: =[
 	"weapon_service.gd",
 	"character_panel_ui.gd",
 	"sort_inventory_button.gd",
-
 ]
+
+
+var ModsConfigInterface = null
+const DEFAULT_SETTINGS: = {
+	"FOXLAB_TRANSFORM_VANILLA_ONLY": false,
+	"FOXLAB_ENABLE_CHARACTERS": true,
+	"FOXLAB_ENABLE_ITEMS": true
+}
+var foxlab_config = null
+var foxlab_current_settings: Dictionary = DEFAULT_SETTINGS.duplicate()
 
 func _init():
 	ModLoaderLog.info("Init", MOD_NAME)
@@ -42,14 +51,51 @@ func _init():
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")
 
 func _ready():
+	call_deferred("_foxlab_init_configs")
 	if IS_ANDROID:
 		call_deferred("initialize_mod")
 
 func initialize_mod():
 	var mod_data = load("res://mods-unpacked/%s/content_data/content_data.tres" % [MOD_NAME])
-	mod_data.add_resources()
+	mod_data.add_resources(foxlab_current_settings)
 	ItemService.init_unlocked_pool()
 	RunData.reset()
 	ProgressData.load_game_file()
 	ProgressData.add_unlocked_by_default()
 	ProgressData.set_max_selectable_difficulty()
+
+func is_transform_vanilla_only():
+	return foxlab_current_settings["FOXLAB_TRANSFORM_VANILLA_ONLY"]
+
+func _foxlab_init_configs():
+	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
+	var CONFIG_NAME = "foxlab_config"
+	var configs = ModLoaderConfig.get_configs(MOD_NAME)
+	if configs.has(CONFIG_NAME):
+		foxlab_config = ModLoaderConfig.get_config(MOD_NAME, CONFIG_NAME)
+	else:
+		foxlab_config = ModLoaderConfig.create_config(MOD_NAME, CONFIG_NAME, DEFAULT_SETTINGS)
+
+	if foxlab_config:
+		var _error_config = ModLoaderConfig.update_config(foxlab_config)
+		var data:Dictionary = foxlab_config.data
+		if data.size() != foxlab_current_settings.size():
+			data.merge(foxlab_current_settings)
+
+		for key in foxlab_current_settings.keys():
+			foxlab_current_settings[key] = data[key]
+
+	if ModsConfigInterface:
+		ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
+		call_deferred("_foxlab_init_settings")
+
+func _foxlab_init_settings() -> void:
+	for key in foxlab_current_settings.keys():
+		ModsConfigInterface.on_setting_changed(key, foxlab_current_settings[key], MOD_NAME)
+
+func _on_setting_changed(setting_name, value, mod_name)->void :
+	if mod_name == MOD_NAME:
+		foxlab_current_settings[setting_name] = value
+		if foxlab_config:
+			foxlab_config.data[setting_name] = value
+			var _error_config = ModLoaderConfig.update_config(foxlab_config)

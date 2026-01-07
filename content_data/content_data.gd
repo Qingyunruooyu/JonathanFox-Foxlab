@@ -23,8 +23,19 @@ export (Array, String) var effect_keys_full_serialization = []
 export (Dictionary) var translation_keys_needing_operator = {}
 export (Dictionary) var translation_keys_needing_percent = {}
 
-func add_resources():
-	ProgressData._append_without_duplicates(ItemService.characters, characters)
+func add_resources(settings: Dictionary):
+	if settings["FOXLAB_ENABLE_CHARACTERS"]:
+		ProgressData._append_without_duplicates(ItemService.characters, characters)
+	else:
+		for character in characters:
+			if character.my_id == "character_foxlab_faceless":
+				ProgressData._append_without_duplicates(ItemService.characters, [character])
+				break
+
+	if not settings["FOXLAB_ENABLE_ITEMS"]:
+		for item in items:
+			item.can_be_looted = false
+
 	ProgressData._append_without_duplicates(ItemService.items, items)
 	ProgressData._append_without_duplicates(ItemService.effects, effects)
 

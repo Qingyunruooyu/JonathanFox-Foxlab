@@ -1,10 +1,10 @@
 ﻿key,zh_Hans_CN,en
-FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP,面具道具仅变身成为原版角色，适合新手,"Item Mask transforms into vannilla characters only, better for greenhand"
+FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP,面具的角色池仅包含原版角色，适合新手,"Item Mask selects vannilla characters only, better for greenhand"
 FOXLAB_TRANSFORM_VANILLA_ONLY,仅原版角色（立即生效）,Vannilla only (applied immediately)
-FOXLAB_ENABLE_ITEMS_TOOLTIP,关闭后，只有角色强制召唤才会出现,"If disabled, items occur only when a character forces it to"
-FOXLAB_ENABLE_ITEMS,狐狸实验室道具（重启生效）,FoxLab Items (restart game to apply)
-FOXLAB_ENABLE_CHARACTERS_TOOLTIP,关闭后，角色选择界面以及面具的角色池只有无面,"If disabled, only Faceless is selectable by player or Item Mask"
-FOXLAB_ENABLE_CHARACTERS,狐狸实验室角色（重启生效）,FoxLab Characters(restart game to apply)
+FOXLAB_DISABLE_ITEMS_TOOLTIP,禁用后，只有角色强制召唤才会出现,"If banned, items occur only when a character forces it to"
+FOXLAB_DISABLE_ITEMS,禁用FoxLab道具（重启游戏生效）,Ban FoxLab Items (restart game to apply)
+FOXLAB_DISABLE_CHARACTERS_TOOLTIP,禁用后，FoxLab角色中只有无面会出现在角色选择界面和面具的角色池,"If banned, only Faceless in FoxLab is selectable by player or Item Mask"
+FOXLAB_DISABLE_CHARACTERS,禁用FoxLab角色（重启游戏生效）,Ban FoxLab Characters(restart game to apply)
 FOXLAB_CURSED_TEXT,被诅咒,Cursed
 EFFECT_FOXLAB_GET_ITEM,你将获得{0}{1},You will get {0} {1}
 CORRUPTED_TREE_NAME,被腐蚀的树,Corrupted Tree
@@ -103,7 +103,7 @@ EFFECT_FOXLAB_GOLEM_NINJA,上项{3}次执行都有{2}＞{4}，可解除[color=#F
 CHARACTER_FOXLAB_MAGICIAN,魔术师,Magician
 ITEM_FOXLAB_MAGICAL_HAT,魔术帽,Magical Hat
 EFFECT_FOXLAB_PERMANENT,永久,"permanent "
-EFFECT_FOXLAB_MAGICIAN,[color=#FF8C00]魔术帽[/color]数量影响你的能力：,[color=#FF8C00]Magical Hat[/color] count relates to your abilities:
+EFFECT_FOXLAB_MAGICIAN,[color=#FF8C00]魔术帽[/color]数量影响你的能力：,[color=#FF8C00]Magical Hat[/color] count affects you:
 EFFECT_FOXLAB_MAGICIAN_NEG,窃取易出精英怪，敌袭结束后敌人增强{0},"Stealing from the shop tends to spawn an elite, enemies get {0} stronger at the end of a wave"
 EFFECT_FOXLAB_SWITCH_ITEM_LOCKING,无法锁定物品，此前锁定的物品购买后[color=#FF8C00]仍被锁定[/color],"Can't lock items, items locked before are [color=#FF8C00]still locked[/color] after bought"
 EFFECT_FOXLAB_MAGICIAN_TREE,敌袭结束时置{2}为{1}/{3}余数再{4},{2} becomes remainder of {1}/{3} {4}

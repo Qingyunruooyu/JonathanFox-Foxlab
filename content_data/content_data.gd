@@ -24,7 +24,7 @@ export (Dictionary) var translation_keys_needing_operator = {}
 export (Dictionary) var translation_keys_needing_percent = {}
 
 func add_resources(settings: Dictionary):
-	if settings["FOXLAB_ENABLE_CHARACTERS"]:
+	if not settings["FOXLAB_DISABLE_CHARACTERS"]:
 		ProgressData._append_without_duplicates(ItemService.characters, characters)
 	else:
 		for character in characters:
@@ -32,7 +32,7 @@ func add_resources(settings: Dictionary):
 				ProgressData._append_without_duplicates(ItemService.characters, [character])
 				break
 
-	if not settings["FOXLAB_ENABLE_ITEMS"]:
+	if settings["FOXLAB_DISABLE_ITEMS"]:
 		for item in items:
 			item.can_be_looted = false
 

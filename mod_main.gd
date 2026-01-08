@@ -32,8 +32,8 @@ const EXTENSION_SCRIPTS: =[
 var ModsConfigInterface = null
 const DEFAULT_SETTINGS: = {
 	"FOXLAB_TRANSFORM_VANILLA_ONLY": false,
-	"FOXLAB_ENABLE_CHARACTERS": true,
-	"FOXLAB_ENABLE_ITEMS": true
+	"FOXLAB_DISABLE_CHARACTERS": false,
+	"FOXLAB_DISABLE_ITEMS": false
 }
 var foxlab_config = null
 var foxlab_current_settings: Dictionary = DEFAULT_SETTINGS.duplicate()
@@ -79,7 +79,13 @@ func _foxlab_init_configs():
 	if foxlab_config:
 		var _error_config = ModLoaderConfig.update_config(foxlab_config)
 		var data:Dictionary = foxlab_config.data
-		if data.size() != foxlab_current_settings.size():
+		if data.keys() != foxlab_current_settings.keys():
+			var key_to_remove = []
+			for key in data.keys():
+				if not key in foxlab_current_settings:
+					key_to_remove.append(key)
+			for key in key_to_remove:
+				data.erase(key)
 			data.merge(foxlab_current_settings)
 
 		for key in foxlab_current_settings.keys():

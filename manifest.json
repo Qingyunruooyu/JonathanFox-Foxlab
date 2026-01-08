@@ -30,17 +30,17 @@
 						"tooltip": "FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP",
 						"default": false
 					},
-					"FOXLAB_ENABLE_ITEMS": {
+					"FOXLAB_DISABLE_ITEMS": {
 						"type": "boolean",
 						"title": "ITEM",
-						"tooltip": "FOXLAB_ENABLE_ITEMS_TOOLTIP",
-						"default": true
+						"tooltip": "FOXLAB_DISABLE_ITEMS_TOOLTIP",
+						"default": false
 					},
-					"FOXLAB_ENABLE_CHARACTERS": {
+					"FOXLAB_DISABLE_CHARACTERS": {
 						"type": "boolean",
 						"title": "CHARACTER",
-						"tooltip": "FOXLAB_ENABLE_CHARACTERS_TOOLTIP",
-						"default": true
+						"tooltip": "FOXLAB_DISABLE_CHARACTERS_TOOLTIP",
+						"default": false
 					}
 				}
 			}

@@ -20,13 +20,13 @@ func load_dlc_pcks()->void :
 func _foxlab_ready() -> void:
 	foxlab_data = load("%s/content_data/content_data.tres" % [FOXLAB_MOD_PATH])
 	var CONFIG_NAME = "foxlab_config"
-	var settings: Dictionary
+	var config_settings: Dictionary
 	var configs = ModLoaderConfig.get_configs(FOXLAB_MOD_NAME)
 	if configs.has(CONFIG_NAME):
-		settings = ModLoaderConfig.get_config(FOXLAB_MOD_NAME, CONFIG_NAME).data
-	else:
-		settings = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME).foxlab_current_settings
-	foxlab_data.add_resources(settings)
+		config_settings = ModLoaderConfig.get_config(FOXLAB_MOD_NAME, CONFIG_NAME).data
+	var mod_settings:Dictionary = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME).foxlab_current_settings
+	config_settings.merge(mod_settings)
+	foxlab_data.add_resources(config_settings)
 	ItemService.init_unlocked_pool()
 	RunData.reset()
 	load_game_file()

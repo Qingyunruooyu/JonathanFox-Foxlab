@@ -98,22 +98,29 @@ func foxlab_has_node_with_name(packed_scene: PackedScene, node_name: String) -> 
 			return true
 	return false
 
+func foxlab_get_enemy_from_item(enemy:Resource):
+	var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
+	var scene_path:String = enemy_path + ".tscn"
+	var scene:PackedScene = load(scene_path)
+	if scene == null:
+		#DebugService.log_data("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
+		return
+	if not foxlab_has_node_with_name(scene, "Boss"):
+		foxlab_enemies.append(scene)
+#		print(scene_path)
+
 func foxlab_random_enemies() -> Array:
 	if not foxlab_enemies.empty():
 		return foxlab_enemies
-
-	for enemy in enemies:
-		var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
-		var scene_path:String = enemy_path + ".tscn"
-		var scene:PackedScene = load(scene_path)
-		if scene == null:
-			#DebugService.log_data("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
-			continue
-		if not foxlab_has_node_with_name(scene, "Boss"):
-			foxlab_enemies.append(scene)
-			#DebugService.log_data(scene_path)
+	if get("enemies"):
+		for enemy in get("enemies"):
+			foxlab_get_enemy_from_item(enemy)
+	else:
+		for entity in get("entities"):
+			if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
+				continue
+			foxlab_get_enemy_from_item(entity)
 	foxlab_enemies.append(preload("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
-
 	return foxlab_enemies
 
 func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:

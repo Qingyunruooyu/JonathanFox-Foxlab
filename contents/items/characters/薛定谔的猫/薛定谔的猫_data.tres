@@ -1,5 +1,6 @@
-[gd_resource type="Resource" load_steps=40 format=2]
+[gd_resource type="Resource" load_steps=41 format=2]
 
+[ext_resource path="res://weapons/melee/dagger/1/dagger_data.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_1.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_21a.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_3.tres" type="Resource" id=4]
@@ -61,4 +62,4 @@ tags = [  ]
 wanted_tags = [ "lock" ]
 banned_item_groups = [  ]
 banned_items = [ "item_foxlab_wormhole" ]
-starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ) ]
+starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 1 ) ]

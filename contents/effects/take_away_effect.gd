@@ -21,6 +21,6 @@ func unapply(player_index: int) -> void:
 			count += 1
 
 	for item_data in items_to_remove:
-		DebugService.log_data("take away " + item_data.my_id)
+		#DebugService.log_data("take away " + item_data.my_id)
 		RunData.remove_item(item_data, player_index)
 

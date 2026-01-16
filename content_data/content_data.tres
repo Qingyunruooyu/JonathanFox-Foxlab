@@ -159,7 +159,7 @@ tracked_items = {
 "item_foxlab_funnel": 0,
 "item_foxlab_inner_indomitable": [ 0, 0 ],
 "item_foxlab_mask": 0,
-"item_foxlab_reactor": 0,
+"item_foxlab_reactor": [0, 0, 0],
 "item_foxlab_tracker": 0
 }
 effect_keys_with_weapon_stats = [ "foxlab_ball_lightning", "foxlab_projectile_on_hit" ]
@@ -189,6 +189,7 @@ translation_keys_needing_operator = {
 "effect_foxlab_level_up_bonus_crate": [ 0 ],
 "effect_foxlab_magician_tree": [ 4 ],
 "effect_foxlab_mutate_alive_enemy": [ 0 ],
+"effect_foxlab_mutate_alive_enemy_item": [ 0 ],
 "effect_foxlab_odd_eyed": [ 4 ],
 "effect_foxlab_on_hit_double": [ 0, 2 ],
 "effect_foxlab_reactor": [ 5 ],

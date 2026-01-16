@@ -88,8 +88,8 @@ func convert_remainder(stats: Array, player_index:int):
 		if actual_stat_added != 0:
 			RunData.emit_signal("stat_added", to_stat, actual_stat_added, 0.0, player_index)
 
-		DebugService.log_data("remainder stat: %s, stat_value: %d, stat_dividend: %d, remainder: %d, actual_stat_added: %d, to_stat: %s" %
-				[stat_name, stat_value, stat_dividend, stat_remainder, actual_stat_added, to_stat ])
+		#DebugService.log_data("remainder stat: %s, stat_value: %d, stat_dividend: %d, remainder: %d, actual_stat_added: %d, to_stat: %s" %
+		#		[stat_name, stat_value, stat_dividend, stat_remainder, actual_stat_added, to_stat ])
 
 		if keep_value == 1 or stat_name == "random":
 			continue

@@ -13,8 +13,9 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 
 func _ready() -> void :
 	if RunData.get_player_effect_bool("foxlab_shop_effects_checked", 0):
+		DebugService.log_data("foxlab_shop_effects_checked: is true")
 		return
-
+	DebugService.log_data("foxlab_shop_effects_checked: is false")
 	ItemService.foxlab_just_enter_shop = [true, true, true, true]
 	for player_index in RunData.get_player_count():
 		var struct_range = RunData.get_player_effect("structure_range", player_index)
@@ -44,6 +45,7 @@ func _ready() -> void :
 			RunData.add_tracked_value(player_index, "character_foxlab_staff_officer", recycling_value)
 
 	RunData.get_player_effects(0)["foxlab_shop_effects_checked"] = 1
+	DebugService.log_data("foxlab_shop_effects_checked: set true")
 
 func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	.on_shop_item_bought(shop_item, player_index)
@@ -109,7 +111,7 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 			RunData.remove_item(item, player_index)
 			update_item = true
 		else:
-			DebugService.log_data("item not exist: " + item_id)
+			#DebugService.log_data("item not exist: " + item_id)
 			break
 	if update_item:
 		var player_gear_container = _get_gear_container(player_index)

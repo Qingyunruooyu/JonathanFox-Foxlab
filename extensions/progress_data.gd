@@ -36,6 +36,7 @@ func _foxlab_ready() -> void:
 func foxlab_install_extensions() -> void:
 	var extensions: Array = [
 		"charm_enemy_effect_behavior.gd",
+		"dlc_1_data.gd",
 	]
 	for path in extensions:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + path)

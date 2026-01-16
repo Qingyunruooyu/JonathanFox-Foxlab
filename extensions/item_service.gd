@@ -36,14 +36,14 @@ func _on_setting_changed(setting_name, value, mod_name)->void :
 func _foxlab_init_transform_characters():
 	if not foxlab_mod.is_transform_vanilla_only():
 		foxlab_transform_characters = characters
-		DebugService.log_data("item service _foxlab_init_transform_characters done, all")
+		#DebugService.log_data("item service _foxlab_init_transform_characters done, all")
 		return
 	if foxlab_vanilla_characters.empty():
 		for character in characters:
 			if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
 				foxlab_vanilla_characters.append(character)
 	foxlab_transform_characters = foxlab_vanilla_characters
-	DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
+	#DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
 
 func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():
@@ -137,8 +137,8 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 			enemy_data = Utils.get_rand_element(elites)
 		enemy_scene = enemy_data.scene
 		var main:Main = Utils.get_scene_node()
-		for player_index in RunData.get_player_count():
-			var player: Player =  main._players[player_index]
+		for _player_index in RunData.get_player_count():
+			var player: Player =  main._players[_player_index]
 			if is_instance_valid(player) and not player.dead:
 				if player.is_boosted:
 					player._boost_timer.start()
@@ -154,15 +154,23 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 					boost_args.hp_boost = foxlab_player_boost_args.hp_boost
 				player.boost(boost_args)
 				player.emit_signal("stats_boosted", player)
+
+		var floating_text_manager:FloatingTextManager = null
 		if main.has_node("FloatingTextManager"):
-			var floating_text_manager:FloatingTextManager = main.get_node("FloatingTextManager")
-			if not enemy is Boss:
+			floating_text_manager = main.get_node("FloatingTextManager")
+		if not enemy is Boss:
+			if floating_text_manager:
 				var icon = get_element(icons, "icon_elite").icon
 				var player_position = floating_text_manager.players[player_index].global_position
-				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
-				new_boss_num = 1
-			else:
+				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, \
+					floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
+			new_boss_num = 1
+			RunData.add_tracked_value(player_index, "item_foxlab_reactor", 1, 1)
+		else:
+			if floating_text_manager:
 				floating_text_manager.display("FOXLAB_RESURRECT", enemy.global_position)
+			RunData.add_tracked_value(player_index, "item_foxlab_reactor", 1, 2)
+
 	else:
 		enemy_scene = Utils.get_rand_element(foxlab_random_enemies())
 

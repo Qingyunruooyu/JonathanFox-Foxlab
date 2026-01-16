@@ -15,6 +15,7 @@ func foxlab_set_item_description(item_description: ItemDescription, item_data: I
 func on_wave_start(timer: WaveTimer) -> void :
 	.on_wave_start(timer)
 	get_player_effects(0)["foxlab_shop_effects_checked"] = 0
+	DebugService.log_data("foxlab_shop_effects_checked: set false")
 
 func get_next_level_xp_needed(player_index) -> float:
 	var xp_needed = .get_next_level_xp_needed(player_index)

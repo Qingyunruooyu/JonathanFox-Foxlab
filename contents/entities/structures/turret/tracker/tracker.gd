@@ -44,6 +44,8 @@ static func get_max_range_melee_weapon_range(stats: Resource, player_index:int) 
 
 func set_data(data: Resource) -> void :
 	var updated_data = data.duplicate()
+	# Effect.is_cursed不是export变量，需要手动复制
+	updated_data.is_cursed = data.is_cursed
 	var player_weapons = RunData.get_player_weapons(player_index)
 	var max_range = get_max_range_melee_weapon_range(data.stats, player_index)
 	if max_range != updated_data.stats.max_range:

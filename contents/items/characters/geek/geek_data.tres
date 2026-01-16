@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=31 format=2]
+[gd_resource type="Resource" load_steps=33 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_mouth.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_0.tres" type="Resource" id=2]
@@ -30,6 +30,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/geek/geek_effect_2a.tres" type="Resource" id=28]
 [ext_resource path="res://weapons/melee/plank/1/plank_data.tres" type="Resource" id=29]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/brick/1/brick_data.tres" type="Resource" id=30]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/tracker/tracker_data.tres" type="Resource" id=31]
+[ext_resource path="res://dlcs/dlc_1/items/whistle/whistle_data.tres" type="Resource" id=32]
 
 [resource]
 script = ExtResource( 6 )
@@ -53,3 +55,4 @@ wanted_tags = [ "stat_engineering" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 starting_weapons = [ ExtResource( 11 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 16 ), ExtResource( 8 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 29 ) ]
+starting_items = [ ExtResource( 31 ), ExtResource( 32 ) ]

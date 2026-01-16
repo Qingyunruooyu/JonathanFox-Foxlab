@@ -9,5 +9,5 @@ text_key = "EFFECT_FOXLAB_MUTATE_ALIVE_ENEMY_ITEM"
 value = 20
 custom_key = ""
 storage_method = 0
-effect_sign = 2
+effect_sign = 0
 custom_args = [  ]

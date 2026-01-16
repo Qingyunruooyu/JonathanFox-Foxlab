@@ -238,6 +238,7 @@ translation_keys_needing_percent = {
 "effect_foxlab_magician_neg": [ 0 ],
 "effect_foxlab_mom_landmine_crit": [ 2, 3 ],
 "effect_foxlab_mutate_alive_enemy": [ 0 ],
+"effect_foxlab_mutate_alive_enemy_item": [ 0 ],
 "effect_foxlab_programmer": [ 0 ],
 "effect_foxlab_reactor": [ 5 ],
 "effect_foxlab_slow_on_hit": [ 0 ],

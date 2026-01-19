@@ -148,5 +148,5 @@ item_appearances = [ ExtResource( 5 ), ExtResource( 11 ), ExtResource( 12 ), Ext
 tags = [  ]
 wanted_tags = [ "more_enemies" ]
 banned_item_groups = [  ]
-banned_items = [ "item_pumpkin" ]
+banned_items = [ "item_pumpkin", "item_lootworm" ]
 starting_weapons = [ ExtResource( 15 ), ExtResource( 18 ), ExtResource( 128 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 125 ), ExtResource( 8 ), ExtResource( 14 ), ExtResource( 21 ), ExtResource( 20 ), ExtResource( 16 ), ExtResource( 126 ) ]

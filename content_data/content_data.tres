@@ -138,6 +138,16 @@ consumables = [  ]
 elites = [  ]
 difficulties = [  ]
 effects = [ ExtResource( 6 ), ExtResource( 116 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 125 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 124 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 120 ), ExtResource( 118 ), ExtResource( 126 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 117 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 121 ), ExtResource( 106 ) ]
+extra_starting_item = {
+"character_foxlab_golem_ninja": [ "item_bot_o_mine" ],
+"character_foxlab_programmer": [ "item_bot_o_mine" ],
+"character_foxlab_pufferfish": [ "item_ratzilla" ]
+}
+extra_banned_item = {
+"stat_hp_regeneration": [ "item_foxlab_omnic_crisis" ],
+"consumable": [ "item_foxlab_omnic_crisis" ],
+"stat_lifesteal": [ "item_foxlab_omnic_crisis" ]
+}
 challenges = [  ]
 tracked_items = {
 "character_foxlab_bloody_wolf": 0,
@@ -159,7 +169,7 @@ tracked_items = {
 "item_foxlab_funnel": 0,
 "item_foxlab_inner_indomitable": [ 0, 0 ],
 "item_foxlab_mask": 0,
-"item_foxlab_reactor": [0, 0, 0],
+"item_foxlab_reactor": [ 0, 0, 0 ],
 "item_foxlab_tracker": 0
 }
 effect_keys_with_weapon_stats = [ "foxlab_ball_lightning", "foxlab_projectile_on_hit" ]

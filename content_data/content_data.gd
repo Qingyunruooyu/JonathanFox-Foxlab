@@ -10,6 +10,8 @@ export (Array, Resource) var consumables = []
 export (Array, Resource) var elites = []
 export (Array, Resource) var difficulties = []
 export (Array, Resource) var effects = []
+export (Dictionary) var extra_starting_item = {} #版本兼容相关，添加旧版没有的道具
+export (Dictionary) var extra_banned_item = {} #给原版和其他MOD角色按tag添加物品禁用
 
 # ChallengeService
 export (Array, Resource) var challenges = []
@@ -22,6 +24,22 @@ export (Array, String) var effect_keys_full_serialization = []
 # Text
 export (Dictionary) var translation_keys_needing_operator = {}
 export (Dictionary) var translation_keys_needing_percent = {}
+
+func modify_characters():
+	var item_cache = {}
+	for character in characters:
+		if character.my_id in extra_starting_item and "starting_items" in character:
+			for item_name in extra_starting_item[character.my_id]:
+				if not item_name in item_cache:
+					item_cache[item_name] = ItemService.get_element(ItemService.items, item_name)
+				var item = item_cache[item_name]
+				if item and not item in character.starting_items:
+					character.starting_items.append(item)
+
+	for character in ItemService.characters:
+		for tag in extra_banned_item.keys():
+			if tag in character.wanted_tags:
+				ProgressData._append_without_duplicates(character.banned_items, extra_banned_item[tag])
 
 func add_resources(settings: Dictionary):
 	if not settings["FOXLAB_DISABLE_CHARACTERS"]:
@@ -49,3 +67,5 @@ func add_resources(settings: Dictionary):
 
 	if not translation_keys_needing_percent.empty():
 		Text.keys_needing_percent.merge(translation_keys_needing_percent)
+
+	call_deferred("modify_characters")

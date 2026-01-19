@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=24 format=2]
+[gd_resource type="Resource" load_steps=23 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/程序员/程序员_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/程序员/程序员_effect_11.tres" type="Resource" id=2]
@@ -22,7 +22,6 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/程序员/程序员_effect_10.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/tracker/tracker_data.tres" type="Resource" id=21]
 [ext_resource path="res://items/all/turret_flame/turret_flame_data.tres" type="Resource" id=22]
-[ext_resource path="res://items/all/pencil/pencil_data.tres" type="Resource" id=23]
 
 [resource]
 script = ExtResource( 9 )
@@ -46,4 +45,4 @@ wanted_tags = [ "stat_engineering", "structure" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ]
-starting_items = [ ExtResource( 21 ), ExtResource( 23 ), ExtResource( 22 ) ]
+starting_items = [ ExtResource( 21 ), ExtResource( 22 ) ]

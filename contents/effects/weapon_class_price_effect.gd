@@ -1,5 +1,5 @@
 class_name FoxlabWeaponClassPriceEffect
-extends Effect
+extends "res://items/global/effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_weapon_class_price"

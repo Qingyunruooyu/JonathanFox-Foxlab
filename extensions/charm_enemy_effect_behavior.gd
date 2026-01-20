@@ -4,14 +4,14 @@ var _foxlab_original_additional_material: ShaderMaterial
 var foxlab_child_charmed = false
 
 ###新功能####
-func charm_proj(proj: EnemyProjectile):
+func charm_proj(proj: Node2D):
 	_foxlab_original_additional_material = proj._sprite.material
 	proj.set_collision_layer(Utils.PET_PROJECTILES_BIT)
 	var new_shader: = projectile_shader.duplicate()
 	new_shader.set_shader_param("hue", Utils.CHARM_COLOR.h)
 	proj.set_sprite_material(new_shader)
 
-func uncharm_proj(proj: EnemyProjectile):
+func uncharm_proj(proj: Node2D):
 	proj.set_collision_layer(proj._original_collision_layer)
 	proj.set_sprite_material(_foxlab_original_additional_material)
 
@@ -25,7 +25,7 @@ func charm(from_player_index: int) -> void :
 	for additional_proj in _parent._all_additional_projectiles:
 		charm_proj(additional_proj)
 	if _parent.enemy_id == "":
-		var proj:EnemyProjectile = _parent.get_node("Pivot/EnemyProjectile")
+		var proj = _parent.get_node("Pivot/EnemyProjectile")
 		if proj:
 			charm_proj(proj)
 
@@ -40,6 +40,6 @@ func uncharm() -> void :
 	for additional_proj in _parent._all_additional_projectiles:
 		uncharm_proj(additional_proj)
 	if _parent.enemy_id == "":
-		var proj:EnemyProjectile = _parent.get_node("Pivot/EnemyProjectile")
+		var proj = _parent.get_node("Pivot/EnemyProjectile")
 		if proj:
 			uncharm_proj(proj)

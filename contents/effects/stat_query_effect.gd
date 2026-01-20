@@ -1,5 +1,5 @@
 class_name FoxLabStatQueryEffect
-extends NullEffect
+extends "res://effects/weapons/null_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_stat_query"
@@ -46,6 +46,10 @@ func get_args(_player_index: int) -> Array:
 				if effect[0] == key:
 					val += effect[1]
 			return [str(val), tr("EFFECT_FOXLAB_NEXT_WAVE") + tr(key.to_upper())]
+		9: #字符串数组
+			var items: Array = RunData.get_player_effect(key, _player_index)
+			return [tr("FOXLAB_DISABLE") if items.empty() else ", ".join(items), tr(key.to_upper())]
+
 		_:
 			return []
 

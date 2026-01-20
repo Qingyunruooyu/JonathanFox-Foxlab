@@ -26,7 +26,7 @@ func _ready():
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
 	for player_index in _players.size():
-		var player :Player= _players[player_index]
+		var player = _players[player_index]
 		var full_health = (player.current_stats.health == player.max_stats.health)
 		var pre_health = player.current_stats.health
 		var need_reset_player: bool = false
@@ -147,7 +147,7 @@ func _process_when_enemy_take_damage(enemy: Enemy, _is_crit: bool, args: TakeDam
 		for effect in RunData.get_player_effect("temp_stats_on_structure_crit", args.from_player_index):
 			TempStats.add_stat(effect[0], effect[1], args.from_player_index)
 
-	if enemy.dead or args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count() or not foxlab_should_check_mutation[args.from_player_index]:
+	if enemy.dead or enemy.is_boosted or args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count() or not foxlab_should_check_mutation[args.from_player_index]:
 		return
 
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
@@ -166,7 +166,7 @@ func _process_when_enemy_take_damage(enemy: Enemy, _is_crit: bool, args: TakeDam
 				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
 				RunData.add_stat(stat, value, args.from_player_index)
 				RunData.add_tracked_value(args.from_player_index, "character_foxlab_refactor", value, add_mod)
-			var boost_enemy :Enemy = Utils.get_rand_element(_entity_spawner.get_all_enemies(false))
+			var boost_enemy = Utils.get_rand_element(_entity_spawner.get_all_enemies(false))
 			if not is_instance_valid(boost_enemy) or boost_enemy.dead:
 				return
 			var boost_args = BoostArgs.new()
@@ -207,6 +207,8 @@ func _on_WaveTimer_timeout() -> void :
 			effects["pierce_on_crit"] += foxlab_original_piercing[player_index]
 			effects["bounce_on_crit"] -= foxlab_original_piercing[player_index]
 
+		RunData.foxlab_forget_item(player_index)
+
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)
 	var effects = RunData.get_player_effects(player_index)
@@ -216,11 +218,11 @@ func on_levelled_up(player_index: int) -> void :
 	if bonus_crate < 1:
 		return
 
-	var upgrade:UpgradesUI.UpgradeToProcess = _upgrades_to_process[player_index].back()
+	var upgrade = _upgrades_to_process[player_index].back()
 	var consumable_tier = Tier.UNCOMMON
 	if upgrade.level % 5 == 0:
 		consumable_tier = Tier.LEGENDARY
-	var consumable_to_drop: ConsumableData = ItemService.get_consumable_for_tier(consumable_tier).duplicate()
+	var consumable_to_drop = ItemService.get_consumable_for_tier(consumable_tier).duplicate()
 	consumable_to_drop.icon = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/cursed_chest.png")
 	for i in range(bonus_crate):
 		var consumable_to_process = UpgradesUI.ConsumableToProcess.new()
@@ -240,7 +242,7 @@ func _on_HalfWaveTimer_timeout() -> void :
 		if RunData.get_player_gold(i) < 0:
 			_wave_timer_label.change_color(Utils.CURSE_COLOR)
 			_floating_text_manager.display("FOXLAB_MIDNIGHT", _floating_text_manager.players[i].global_position, Utils.CURSE_COLOR)
-			var player_ui: PlayerUIElements = _players_ui[i]
+			var player_ui = _players_ui[i]
 			player_ui.gold.gold_label.add_color_override("font_color", Utils.CURSE_COLOR)
 			if not bg_changed:
 				RunData.reset_background()

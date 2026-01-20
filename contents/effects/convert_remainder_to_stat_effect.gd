@@ -1,8 +1,5 @@
 class_name FoxLabConvertRemainderToStatEffect
-extends Effect
-
-
-
+extends "res://items/global/effect.gd"
 # 将key所指示的属性除以value得到的余数，设置为to_stat指示的属性
 
 # key 属性

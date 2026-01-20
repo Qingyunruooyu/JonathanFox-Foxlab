@@ -1,5 +1,5 @@
 class_name FoxLabHealWhenKillNearby
-extends DoubleValueEffect
+extends "res://effects/items/double_value_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_heal_when_kill_nearby"

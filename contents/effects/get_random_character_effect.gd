@@ -1,5 +1,5 @@
 class_name FoxLabGetRandCharacterEffect
-extends DoubleValueEffect
+extends "res://effects/items/double_value_effect.gd"
 
 const SAME_CHAR_CHANCE = 0.33
 const MIN_TRANSFORM_CHANCE = 10.0
@@ -151,27 +151,14 @@ func _duplicate_weapon(player_index: int):
 	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
 	effects["fox_faceless_upgrade_on_transform_wave"] = RunData.current_wave if _is_wave_started(player_index) else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons(player_index)).duplicate()
-	var weapon_for_effect:WeaponData = Utils.get_rand_element(ItemService.weapons)
+	var weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
 	while weapon_for_effect.effects.empty():
 		weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
 	weapon_for_effect = weapon_for_effect.duplicate()
 	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
-	var null_effect = NullEffect.new()
-	null_effect.key = " %s %s" % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
-	null_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED" if weapon_for_effect.is_cursed else "EFFECT_FOXLAB_WEAPON_TEXT"
-	var new_effects := [null_effect]
-	for effect in weapon_for_effect.effects:
-		effect = effect.duplicate()
-		new_effects.append(effect)
-		if effect is WeaponStackEffect: # stick
-			effect.weapon_stacked_name = weapon.name
-			effect.weapon_stacked_id = weapon.weapon_id
-		elif effect is PercentDamageEffect: # lute etc
-			effect.source_id = weapon.weapon_id
-		elif effect.custom_key == "yztato_destory_weapons":
-			effect.key = weapon.weapon_id #保留的是武器大名，不是带等级的my_id
-			effect.text_key = tr("EFFECT_FOXLAB_WEAPON_TEXT_ONLY") % [tr(weapon.name)]
 	DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
+
+	var new_effects :Array = RunData.foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect)
 	weapon_for_effect.effects = new_effects
 	weapon.effects.append_array(new_effects)
 	var current = weapon
@@ -228,7 +215,7 @@ func cleanup(player_index: int) -> void:
 	# 2. 如果是多面手+宝宝，则进场的时候多面手6->12，宝宝是12-5=7，离场的时候多面手把武器栏直接置为6
 	# 如果顺序弄反了，先多面手离场武器栏恢复6，然后宝宝离场武器栏+5变11
 	for index in range(player_items_raw.size(), 0, -1):
-		var item_data: ItemData = player_items_raw[index - 1]
+		var item_data = player_items_raw[index - 1]
 		for i in range(prev_items.size()):
 			if items_to_remove.has(i):
 				continue
@@ -280,9 +267,9 @@ func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_da
 	return ( conver_stat_num <= 1)
 
 func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -> CharacterData:
-	var current_char: CharacterData = null
+	var current_char = null
 	while current_char == null:
-		var candidate:CharacterData = null
+		var candidate = null
 		if !debug_item_name.empty():
 			candidate = ItemService.get_element(ItemService.characters, debug_item_name.front())
 			debug_item_name.pop_front()
@@ -305,7 +292,7 @@ func _get_rand_chars(player_index: int) -> Array:
 	var residual_value = 1 if Utils.get_chance_success(char_value - char_value_floored) else 0
 	var final_value =  char_value_floored + residual_value
 	for char_idx in range(final_value):
-		var current_char:CharacterData = _get_one_character(player_index, chars_id, chars_return)
+		var current_char = _get_one_character(player_index, chars_id, chars_return)
 		if _can_character_be_modified(current_char):
 			if curse_character:
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")

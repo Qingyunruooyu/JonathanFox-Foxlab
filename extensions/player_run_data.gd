@@ -70,6 +70,14 @@ static func init_effects()->Dictionary:
 			"foxlab_shop_effects_checked": 0, #base shop _ready()标记，避免重复操作，没有实际效果
 			"foxlab_projectile_on_hit":[],
 			"foxlab_projectile_on_hit_num": 0,
+			"foxlab_remember_shop_items": 0,
+			"foxlab_previous_remembered": [],
+			"foxlab_previous_remembered_names": [], # 上面一条的物品的名字，由于有些MOD的物品名字不规范，所以独立存储
+			"foxlab_nullify_fatal_once": 0, # 拿到道具后，一局限一次，免疫致命伤害
+			"foxlab_nullify_fatal_resurrect": 0, # 每波限一次，免疫致命伤害并失去随机道具
+			"foxlab_nullify_fatal_silence": 0, # 免疫致命伤害后，如果是敌人的伤害，本局不再承受其伤害
+			"foxlab_nullify_fatal_revenge": 0, # 免疫致命伤害后，如果是敌人的伤害，未来秒杀这种敌人
+			"foxlab_nullify_fatal_enemy": "", # 免疫致命伤害的敌人
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

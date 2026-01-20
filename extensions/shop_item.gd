@@ -1,4 +1,4 @@
-extends ShopItem
+extends "res://ui/menus/shop/shop_item.gd"
 
 onready var foxlab_material_icon = preload("res://items/materials/material_ui.png")
 

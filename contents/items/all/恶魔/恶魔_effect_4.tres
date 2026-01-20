@@ -60,6 +60,7 @@ effects = [  ]
 spawn_in_center = 200
 spawn_around_player = -1
 can_be_grouped = true
+is_pet = false
 shooting_animation_speed = 1.0
 is_burning = false
 is_spawning = false

@@ -1,8 +1,6 @@
-extends ItemAppearanceData
+extends "res://items/global/item_appearance_data.gd"
 
 export(bool) var hide_vanilla_potato = false
-
-
 
 func serialize() -> Dictionary:
 	var serialized = .serialize()

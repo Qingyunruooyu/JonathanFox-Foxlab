@@ -8,10 +8,14 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 			RunData.remove_item(item, p_player_index)
 			break
 
-	var new_item:ItemData = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
+	var new_item = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
 	RunData.add_item(new_item, p_player_index)
 
 func _ready() -> void :
+	# 用户SL，没有经过敌袭结束的时候，也要忘记掉道具和武器效果
+	for player_index in RunData.get_player_count():
+		RunData.foxlab_forget_item(player_index)
+
 	if RunData.get_player_effect_bool("foxlab_shop_effects_checked", 0):
 		DebugService.log_data("foxlab_shop_effects_checked: is true")
 		return
@@ -31,7 +35,7 @@ func _ready() -> void :
 			var items = RunData.get_player_items(player_index)
 			player_gear_container.set_items_data(items)
 
-		if RunData.get_player_effect_bool("foxlab_keep_random_weapon", player_index):
+		if RunData.get_player_effect_bool("foxlab_keep_random_weapon", player_index) and RunData.get_player_weapons(player_index).size() > 0:
 			var weapons = RunData.get_player_weapons(player_index)
 			var weapon_idx_to_keep = Utils.randi_range(0, weapons.size() - 1)
 			var weapon_to_keep:WeaponData = weapons[weapon_idx_to_keep]
@@ -42,6 +46,7 @@ func _ready() -> void :
 			player_gear_container.set_weapons_data([weapon_to_keep])
 			var recycling_value = ItemService.get_recycling_value(RunData.current_wave, weapon_to_keep.value, player_index, true, false)
 			RunData.add_gold(recycling_value, player_index)
+			_update_stats(player_index)
 			RunData.add_tracked_value(player_index, "character_foxlab_staff_officer", recycling_value)
 
 	RunData.get_player_effects(0)["foxlab_shop_effects_checked"] = 1
@@ -118,3 +123,27 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
 
+func _on_tree_exited() -> void :
+	._on_tree_exited()
+
+	var wave_reset_count: = 0
+	for player_index in RunData.get_player_count():
+		if not RunData.get_player_effect_bool("foxlab_remember_shop_items", player_index):
+			continue
+		RunData.foxlab_forget_item(player_index)
+		for item in _get_shop_items_container(player_index)._shop_items:
+			if item.active and not item.locked:
+				RunData.foxlab_remember_item(item.item_data, player_index)
+		for item in RunData.locked_shop_items[player_index]:
+			RunData.foxlab_remember_item(item[0], player_index)
+		RunData.foxlab_modify_weapon(player_index)
+		RunData.foxlab_update_remembered_item(player_index)
+
+		var effects = RunData.get_player_effects(player_index)
+		var hourglass_count = effects["item_hourglass"]
+		if hourglass_count > 0:
+			wave_reset_count += hourglass_count
+			var source_item = RunData.get_player_item("item_hourglass", player_index)
+			RunData.remove_item(source_item, player_index)
+
+	RunData.current_wave -= wave_reset_count

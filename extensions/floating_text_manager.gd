@@ -7,7 +7,7 @@ func get_stat_modified(stat: String):
 	if stat.begins_with("structure"):
 		return "stat_" + stat
 	if stat.begins_with("fox_poet"):
-		stat = "stat_curse"
+		stat = "curse_locked_items"
 	return stat
 
 func is_fox_ignored_stats(stat: String):

@@ -1,5 +1,5 @@
 class_name FoxLabConvertStatEffect
-extends ConvertStatEffect
+extends "res://effects/items/convert_stat_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_convert_stat"

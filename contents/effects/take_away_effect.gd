@@ -1,5 +1,5 @@
 class_name FoxLabTakeAwayEffect
-extends DoubleValueEffect
+extends "res://effects/items/double_value_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_take_away"
@@ -15,7 +15,7 @@ func unapply(player_index: int) -> void:
 	for index in range(player_items_raw.size(), 0, -1):
 		if count == value:
 			break
-		var item_data: ItemData = player_items_raw[index - 1]
+		var item_data = player_items_raw[index - 1]
 		if item_data.my_id == key and item_data.is_cursed == (value2 != 0):
 			items_to_remove.append(item_data)
 			count += 1

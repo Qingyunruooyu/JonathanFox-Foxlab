@@ -1,5 +1,5 @@
 class_name FoxLabSwapStatEffect
-extends Effect
+extends "res://items/global/effect.gd"
 
 export(Array, String)  var stats_swapped = ["stat_max_hp", "stat_max_hp"]
 

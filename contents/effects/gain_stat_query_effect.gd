@@ -1,5 +1,5 @@
 class_name FoxLabGainStatQueryEffect
-extends NullEffect
+extends "res://effects/weapons/null_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_gain_stat_query"

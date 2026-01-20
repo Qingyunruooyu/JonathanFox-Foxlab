@@ -1,4 +1,4 @@
-extends ItemData
+extends "res://items/global/item_data.gd"
 
 const MOD_ITEMS = ["item_foxlab_inner_indomitable", "character_foxlab_refactor", "item_foxlab_reactor"]
 static func foxlab_get_tracking_text(item_id: String, tracking_text: String,  player_index: int) -> String:

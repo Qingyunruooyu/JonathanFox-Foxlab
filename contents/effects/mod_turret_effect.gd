@@ -1,5 +1,5 @@
 class_name FoxLabTurretEffect
-extends TurretEffect
+extends "res://effects/items/turret_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_turret"

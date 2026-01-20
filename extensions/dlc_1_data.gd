@@ -6,7 +6,7 @@ func curse_item(item_data: ItemParentData, player_index: int, turn_randomization
 	var already_cursed = item_data.is_cursed
 	var ret = .curse_item(item_data, player_index, turn_randomization_off, min_modifier)
 	if not already_cursed and item_data.my_id in STRUCT_WITH_EFFECTS:
-		var structure_effect:StructureEffect = null
+		var structure_effect = null
 		var extra_effects = []
 		for effect in ret.effects:
 			if effect is StructureEffect:

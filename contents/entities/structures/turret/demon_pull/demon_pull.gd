@@ -1,5 +1,5 @@
 class_name FoxLabDemonPull
-extends Turret
+extends "res://entities/structures/turret/turret.gd"
 
 var distance = rand_range(100, 200)
 var rotation_speed = rand_range(2, 2.5)

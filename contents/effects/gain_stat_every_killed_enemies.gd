@@ -1,5 +1,5 @@
 class_name FoxLabGainStatEveryKilledEnemies
-extends DoubleValueEffect
+extends "res://effects/items/double_value_effect.gd"
 
 
 static func get_id() -> String:

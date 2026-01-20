@@ -1,4 +1,4 @@
-extends CharacterData
+extends "res://items/characters/character_data.gd"
 
 var item_data = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/item_data.gd")
 

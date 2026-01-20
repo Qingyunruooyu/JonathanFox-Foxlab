@@ -1,5 +1,5 @@
 class_name FoxLabStructureEffect
-extends StructureEffect
+extends "res://effects/items/structure_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_structure"

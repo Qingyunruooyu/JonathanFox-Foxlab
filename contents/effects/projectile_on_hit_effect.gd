@@ -1,5 +1,5 @@
 class_name FoxLabProjectileOnHitEffect
-extends ProjectileEffect
+extends "res://effects/items/projectile_effect.gd"
 
 export(Array, String) var effects = []
 export(String) var tracking_key = ""

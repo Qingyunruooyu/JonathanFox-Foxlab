@@ -123,22 +123,27 @@ func foxlab_random_enemies() -> Array:
 	foxlab_enemies.append(preload("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
 	return foxlab_enemies
 
+func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int):
+	var nb_reactor = max(1, RunData.get_nb_item("item_foxlab_reactor", player_index))
+	var boss_factor = boss_spawned_this_wave / nb_reactor
+	return (boss_factor < (1 + max(0, (RunData.current_wave -3 ) / 10)) and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / (1 + boss_factor)))
+
 func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:
 	var enemy_scene: PackedScene = null
 	var new_boss_num = 0
-	if enemy is Boss or (boss_spawned_this_wave < (1 + max(0, (RunData.current_wave -3 ) / 10)) and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / (1 + boss_spawned_this_wave))):
+	if enemy is Boss or foxlab_should_spawn_new_boss(boss_spawned_this_wave, player_index):
 		# 最终BOSS不能被变异
 		if enemy is Boss and not enemy.is_elite:
 			return new_boss_num
-		var enemy_data: EnemyData = null
+		var enemy_data = null
 		if RunData.current_wave >= 13 and Utils.get_chance_success(FOXLAB_BOSS_CHANCE):
 			enemy_data = Utils.get_rand_element(bosses)
 		else:
 			enemy_data = Utils.get_rand_element(elites)
 		enemy_scene = enemy_data.scene
-		var main:Main = Utils.get_scene_node()
+		var main = Utils.get_scene_node()
 		for _player_index in RunData.get_player_count():
-			var player: Player =  main._players[_player_index]
+			var player =  main._players[_player_index]
 			if is_instance_valid(player) and not player.dead:
 				if player.is_boosted:
 					player._boost_timer.start()
@@ -155,7 +160,7 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 				player.boost(boost_args)
 				player.emit_signal("stats_boosted", player)
 
-		var floating_text_manager:FloatingTextManager = null
+		var floating_text_manager = null
 		if main.has_node("FloatingTextManager"):
 			floating_text_manager = main.get_node("FloatingTextManager")
 		if not enemy is Boss:

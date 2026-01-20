@@ -10,6 +10,7 @@ export (Array, Resource) var consumables = []
 export (Array, Resource) var elites = []
 export (Array, Resource) var difficulties = []
 export (Array, Resource) var effects = []
+export (Array, Resource) var stats = []
 export (Dictionary) var extra_starting_item = {} #版本兼容相关，添加旧版没有的道具
 export (Dictionary) var extra_banned_item = {} #给原版和其他MOD角色按tag添加物品禁用
 
@@ -61,6 +62,10 @@ func add_resources(settings: Dictionary):
 		RunData.init_tracked_items.merge(tracked_items)
 	ProgressData._append_without_duplicates(RunData.effect_keys_with_weapon_stats, effect_keys_with_weapon_stats)
 	ProgressData._append_without_duplicates(RunData.effect_keys_full_serialization, effect_keys_full_serialization)
+
+	for stat in stats:
+		if stat.stat_name.begins_with("foxlab") or not ItemService.get_stat(stat.stat_name):
+			ItemService.stats.append(stat)
 
 	if not translation_keys_needing_operator.empty():
 		Text.keys_needing_operator.merge(translation_keys_needing_operator)

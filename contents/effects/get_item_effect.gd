@@ -1,5 +1,5 @@
 class_name FoxLabGetItemEffect
-extends Effect
+extends "res://items/global/effect.gd"
 
 var is_item_added := false
 

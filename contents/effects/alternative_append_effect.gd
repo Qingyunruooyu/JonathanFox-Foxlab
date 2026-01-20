@@ -1,5 +1,5 @@
 class_name FoxLabAlterAppendEffect
-extends DoubleKeyValueEffect
+extends "res://effects/items/double_key_value_effect.gd"
 
 
 static func get_id() -> String:

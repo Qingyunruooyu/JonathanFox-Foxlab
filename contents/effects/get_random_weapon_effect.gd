@@ -1,7 +1,5 @@
 class_name FoxLabGetRandWeaponEffect
-extends Effect
-
-export(int) var value_base = 1 # set to == value by default to indicate this effect is not cursed
+extends "res://items/global/effect.gd"
 
 const CHANCE_EQUIPPED_WEAPON: float = 0.10
 const CHANCE_LEGENDARY_ITEM: float = 0.05
@@ -17,6 +15,7 @@ var item_to_get: Array = [null, null, null, null] # for special item effect (dup
 
 var weapon_id: Array = ["","","",""]
 var extra_item_id: Array = ["","","",""]
+var is_const_weapon: Array = [0, 0, 0, 0]
 
 static func get_id() -> String:
 	return "foxlab_effect_get_rand_weapon"
@@ -32,12 +31,12 @@ func try_generate(player_index: int):
 func apply(player_index: int) -> void:
 	try_generate(player_index)
 	RunData.add_weapon(weapon_to_get[player_index], player_index)
+	if is_const_weapon[player_index]:
+		RunData.add_tracked_value(player_index, "item_foxlab_buddhas_hand", 1)
 	if item_to_get[player_index] != null:
 		RunData.add_item(item_to_get[player_index], player_index)
 		item_to_get[player_index] = null
-	if value_base == value: # not cursed
-		weapon_id[player_index] = ""
-
+	weapon_id[player_index] = ""
 
 func unapply(_player_index: int) -> void:
 	pass
@@ -67,18 +66,18 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	if RunData.get_nb_item("item_hourglass", player_index) > 0:
 		args.owned_and_shop_items.push_back(ItemService.get_element(ItemService.items, "item_hourglass"))
 
-	var weapon :WeaponData = null
+	var weapon = null
 	# chance to get the same weapon equiped
 	if _get_chance_success(CHANCE_EQUIPPED_WEAPON, luck_chance) and RunData.players_data[player_index].weapons.size() > 0:
-		var ref_weapon :WeaponData= Utils.get_rand_element(RunData.players_data[player_index].weapons)
-		weapon = ItemService.get_element(ItemService.weapons, ref_weapon.my_id).duplicate() as WeaponData
+		var ref_weapon = Utils.get_rand_element(RunData.players_data[player_index].weapons)
+		weapon = ItemService.get_element(ItemService.weapons, ref_weapon.my_id).duplicate()
 	else:
-		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args).duplicate() as WeaponData
+		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args).duplicate()
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
-		var melee_stats:MeleeWeaponStats  = weapon.stats as MeleeWeaponStats
+		var melee_stats = weapon.stats
 		melee_stats.deal_dmg_on_return = true
 
-	var item_for_effect :ItemParentData = null
+	var item_for_effect = null
 
 	if !debug_item_name.empty():
 		var debug_item:String = debug_item_name.front()
@@ -142,14 +141,14 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	if item_for_effect.is_cursed:
 		extra_item_id[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 
-	var tracked_value = 1
+	is_const_weapon[player_index] = 1
 	if !_get_chance_success(CHANCE_CONST_WEAPON, luck_chance):
-		tracked_value = 0
 		var level_suffix := "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
 		var break_effect := load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
 		weapon.effects.append(break_effect)
 		var neg_color = ("#" + ProgressData.settings.color_negative) if ProgressData.settings.has("color_negative") else Utils.NEG_COLOR_STR
 		extra_item_id[player_index] += "([color=%s]+%s[/color])" % [neg_color, tr("WEAPON_BRICK")]
+		is_const_weapon[player_index] = 0
 	elif item_to_get[player_index] == null:
 		var current = weapon
 		var upgrade_into = current.upgrades_into
@@ -159,23 +158,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			current.upgrades_into = upgrade_into
 			current = upgrade_into
 			upgrade_into = current.upgrades_into
-	RunData.add_tracked_value(player_index, "item_foxlab_buddhas_hand", tracked_value)
 
 	return weapon
 
-func serialize() -> Dictionary:
-	var serialized =.serialize()
 
-	serialized.weapon_id = weapon_id
-	serialized.extra_item_id = extra_item_id
-	serialized.value_base = value_base
-
-	return serialized
-
-
-func deserialize_and_merge(serialized: Dictionary) -> void:
-	.deserialize_and_merge(serialized)
-
-	weapon_id = serialized.weapon_id if "weapon_id" in serialized else ""
-	extra_item_id = serialized.extra_item_id if "extra_item_id" in serialized else ""
-	value_base = serialized.value_base if "value_base" in serialized else 1

@@ -1,5 +1,5 @@
 class_name FoxLabTracker
-extends Turret
+extends "res://entities/structures/turret/turret.gd"
 
 var move_speed = rand_range(1000, 1500)
 var _orbit_radius = rand_range(90, 100)
@@ -7,7 +7,7 @@ var _orbit_speed = rand_range(2, 2.5)
 var _orbit_angle: float = 0.0
 var _current_orbit_center: Vector2 = ZoneService.get_rand_pos_in_area(ZoneService.get_map_center(), 200)
 
-var _current_tracking_enemy: Enemy = null
+var _current_tracking_enemy = null
 var _player_tracked: = false
 var _in_assembling: = false
 
@@ -26,7 +26,7 @@ func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [],
 static func get_max_range_melee_weapon_range(stats: Resource, player_index:int) -> int:
 	var player_weapons = RunData.get_player_weapons(player_index)
 	var max_range = 0
-	var best_weapon:WeaponData = null
+	var best_weapon = null
 	for weapon in player_weapons:
 		if weapon.type == WeaponType.RANGED:
 			continue
@@ -74,7 +74,7 @@ func _assemble_if_idle():
 func _physics_process(delta: float) -> void :
 	if not _in_assembling and _is_idle():
 		# 依次选择攻击范围内的血量最低的头目、选择辅助怪、选择血量最高的小怪
-		var min_hp_boss: Enemy = null
+		var min_hp_boss = null
 		var min_boss_health = Utils.LARGE_NUMBER
 		var max_health = -Utils.LARGE_NUMBER
 		for enemy in _targets_in_range:

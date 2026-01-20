@@ -1,5 +1,5 @@
 class_name FoxLabTrackerEffect
-extends  TurretEffect
+extends  "res://effects/items/turret_effect.gd"
 
 var tracker = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/tracker/tracker.gd")
 

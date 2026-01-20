@@ -1,5 +1,5 @@
 class_name FoxLabItemExplodingEffect
-extends ItemExplodingEffect
+extends "res://effects/items/item_exploding_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_effect_item_exploding"

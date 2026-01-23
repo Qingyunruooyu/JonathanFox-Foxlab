@@ -228,6 +228,8 @@ func cleanup(player_index: int) -> void:
 				items_to_remove[i] = item_data
 				items_to_remove_order.push_back(item_data)
 				break
+		if items_to_remove_order.size() == prev_items.size():
+			break
 	for item_data in items_to_remove_order:
 		DebugService.log_data("remove " + item_data.my_id + str(item_data))
 		RunData.remove_item(item_data, player_index)

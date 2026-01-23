@@ -1,7 +1,8 @@
 extends "res://singletons/run_data.gd"
 
-var foxlab_remembered_items = [ [], [], [], []]
+var foxlab_remembered_items = [ [], [], [], [] ]
 var foxlab_remembered_weapons = [ [], [], [], [] ]
+var foxlab_shop_items = [ [], [], [], []]
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect("foxlab_previous_remembered", player_index)
@@ -16,7 +17,9 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 			foxlab_remembered_weapons[player_index].push_back(weapon)
 	else:
 		foxlab_remembered_items[player_index].push_back(item as ItemData)
+		DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
 		add_item(item, player_index)
+		DebugService.log_data("after add item, item num: %d/%d" % [get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
 
 func foxlab_modify_weapon(player_index: int):
 	if foxlab_remembered_weapons[player_index].empty():
@@ -24,7 +27,6 @@ func foxlab_modify_weapon(player_index: int):
 	for weapon in get_player_weapons(player_index):
 		if weapon == players_data[player_index].selected_weapon:
 			players_data[player_index].selected_weapon = players_data[player_index].selected_weapon.duplicate()
-			print("duplicate start weapon")
 		var null_effect = NullEffect.new()
 		null_effect.key = "foxlab_remember_shop_items"
 		null_effect.text_key = "foxlab_effect_remembered_weapon"
@@ -35,6 +37,7 @@ func foxlab_modify_weapon(player_index: int):
 			for effect in new_effects:
 				effect.apply(player_index)
 			weapon.effects.append_array(new_effects)
+	LinkedStats.reset_player(player_index)
 
 func foxlab_update_remembered_item(player_index: int):
 	var previous_remembered:Array = get_player_effect("foxlab_previous_remembered", player_index)
@@ -57,24 +60,32 @@ func foxlab_update_remembered_item(player_index: int):
 
 func foxlab_forget_item(player_index: int):
 	if not foxlab_remembered_items[player_index].empty():
+		var effects = RunData.get_player_effects(player_index)
+		var previous_loot_next_wave = effects["extra_loot_aliens_next_wave"]
+		var previous_hp_next_wave = effects["hp_start_next_wave"]
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
+				DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
 				remove_item(item, player_index)
-				DebugService.log_data("remove " + item.my_id + " curse: " + str(item.is_cursed))
+				DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
 		add_item_displayed(get_player_character(player_index), player_index)
 		foxlab_remembered_items[player_index].clear()
+		# 数字型临时属性，回收的时候会让属性减少，实际上在出发的时候就被Main清空了
+		# 数组型由于不存在那个key了，所以回收的时候无事发生
+		effects["extra_loot_aliens_next_wave"] = previous_loot_next_wave
+		effects["hp_start_next_wave"] =  previous_hp_next_wave
 
-	if  not foxlab_remembered_weapons[player_index].empty():
-		for weapon in get_player_weapons(player_index):
-			Utils.reset_stat_cache(player_index)
-			var effects: Array = weapon.effects
-			for i in range(effects.size()):
-				if effects[i].text_key == "foxlab_effect_remembered_weapon":
-					while effects.size() > i:
-						effects.pop_back().unapply(player_index)
-					break
-		foxlab_remembered_weapons[player_index].clear()
-
+	for weapon in get_player_weapons(player_index):
+		Utils.reset_stat_cache(player_index)
+		var effects: Array = weapon.effects
+		for i in range(effects.size()):
+			if effects[i].text_key == "foxlab_effect_remembered_weapon":
+				while effects.size() > i:
+					effects.pop_back().unapply(player_index)
+				break
+	LinkedStats.reset_player(player_index)
+	foxlab_remembered_weapons[player_index].clear()
+	foxlab_shop_items[player_index].clear()
 
 func foxlab_adjust_weapon_effect(effect: Effect, weapon: WeaponData):
 	if effect is WeaponStackEffect: # stick
@@ -127,6 +138,9 @@ func add_starting_items_and_weapons() -> void :
 	var effects = get_player_effects(0)
 	.add_starting_items_and_weapons()
 	effects["fox_wave_started"] = 1
+	foxlab_remembered_items = [ [], [], [], [] ]
+	foxlab_remembered_weapons = [ [], [], [], [] ]
+	foxlab_shop_items = [ [], [], [], [] ]
 
 func is_wave_started() -> bool:
 	return get_player_effect_bool("fox_wave_started", 0)

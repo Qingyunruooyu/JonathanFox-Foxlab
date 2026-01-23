@@ -207,7 +207,8 @@ func _on_WaveTimer_timeout() -> void :
 			effects["pierce_on_crit"] += foxlab_original_piercing[player_index]
 			effects["bounce_on_crit"] -= foxlab_original_piercing[player_index]
 
-		RunData.foxlab_forget_item(player_index)
+		if RunData.get_player_effect_bool("foxlab_remember_shop_items", player_index):
+			RunData.foxlab_forget_item(player_index)
 
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)

@@ -12,10 +12,6 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 	RunData.add_item(new_item, p_player_index)
 
 func _ready() -> void :
-	# 用户SL，没有经过敌袭结束的时候，也要忘记掉道具和武器效果
-	for player_index in RunData.get_player_count():
-		RunData.foxlab_forget_item(player_index)
-
 	if RunData.get_player_effect_bool("foxlab_shop_effects_checked", 0):
 		DebugService.log_data("foxlab_shop_effects_checked: is true")
 		return
@@ -123,6 +119,12 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
 
+
+func _on_GoButton_pressed(player_index: int) -> void :
+	if RunData.get_player_effect_bool("foxlab_remember_shop_items", player_index):
+		RunData.foxlab_shop_items[player_index] = _get_shop_items_container(player_index)._shop_items
+	._on_GoButton_pressed(player_index)
+
 func _on_tree_exited() -> void :
 	._on_tree_exited()
 
@@ -130,9 +132,8 @@ func _on_tree_exited() -> void :
 	for player_index in RunData.get_player_count():
 		if not RunData.get_player_effect_bool("foxlab_remember_shop_items", player_index):
 			continue
-		RunData.foxlab_forget_item(player_index)
-		for item in _get_shop_items_container(player_index)._shop_items:
-			if item.active and not item.locked:
+		for item in RunData.foxlab_shop_items[player_index]:
+			if item != null and item.active and not item.locked:
 				RunData.foxlab_remember_item(item.item_data, player_index)
 		for item in RunData.locked_shop_items[player_index]:
 			RunData.foxlab_remember_item(item[0], player_index)
@@ -147,3 +148,4 @@ func _on_tree_exited() -> void :
 			RunData.remove_item(source_item, player_index)
 
 	RunData.current_wave -= wave_reset_count
+

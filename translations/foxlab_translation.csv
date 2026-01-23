@@ -295,12 +295,12 @@ EFFECT_FOXLAB_TRACKER,"生成一个追踪器锁定敌人，造成{0}（{1}）伤
 Base tracking range ({5}) is derived from your best-base-range [color=#FF8C00]Melee[/color] weapon
 You can get close to guide it when it's idle"
 STAT_FOXLAB_PRIMARY_DAMAGE,近战/远程/元素伤害,Melee/Ranged/Elemental Damage
-CHARACTER_FOXLAB_MNEMOSYNE,孟婆（测试中）,Mnemosyne (Testing)
+CHARACTER_FOXLAB_MNEMOSYNE,孟婆,Mnemosyne
 FOXLAB_EVER_IN_MEMORY,昔日之物：{0},Ever in memory: {0}
 FOXLAB_WEAPON_EFFECT,武器效果,Weapon effect
 FOXLAB_PREVIOUS_REMEMBERED_NAMES,记忆,Memory
-EFFECT_FOXLAB_REMEMBER_SHOP_ITEMS,敌袭期间，你[color=#FF8C00]视为拥有[/color]商店的{2}和{3}（不与上次记忆的相同）,"You are [color=#FF8C00]considered as owerning[/color] {2} and {3} in the shop during a wave (not for those in last memory)"
-FOXLAB_EFFECT_REMEMBERED_WEAPON,视为拥有的武器效果：,Weapon effects considered as owerning:
+EFFECT_FOXLAB_REMEMBER_SHOP_ITEMS,敌袭期间，你[color=#FF8C00]视为拥有[/color]商店当前展示的所有{2}和{3}（不与上[color=#FF8C00]一[/color]次的记忆重复）,"During a wave, you are [color=#FF8C00]treated as having[/color] every {2} and {3} currently displayed the shop (not for those in your [color=#FF8C00]last[/color] Memory)"
+FOXLAB_EFFECT_REMEMBERED_WEAPON,记忆中的武器效果：,Weapon effects in memory:
 EFFECT_FOXLAB_NULLIFY_FATAL_RESURRECT,每波敌袭中首次承受致命伤害时，回满生命值然后随机失去{0}个道具,Resurrect when you take fatal damage first time during a wave"," then lose {0} random items
 ITEM_FOXLAB_WHITE_ROSE,白玫瑰,White Rose
 EFFECT_FOXLAB_NULLIFY_FATAL_ONCE,当你获得此道具后，本局游戏可免疫一次致命伤害,Nullify fatal damage once during this run when you get this item

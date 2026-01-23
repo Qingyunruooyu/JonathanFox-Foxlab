@@ -1,5 +1,7 @@
 extends "res://entities/units/player/player.gd"
 
+var foxlab_burning_particle = preload("res://particles/burning/torch_burning_particles.tscn")
+var foxlab_scepter_particle = preload("res://particles/ghost_scepter_particles.tscn")
 var foxlab_potato_texture = preload("res://entities/units/player/potato.png")
 var foxlab_transparent_texture = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
 
@@ -86,6 +88,22 @@ func foxlab_manage_projectile_on_hit() -> void:
 		)
 
 ############ 函数扩展 #########
+func add_weapon(weapon: WeaponData, pos: int) -> void :
+	.add_weapon(weapon, pos)
+	var cur_weapon = current_weapons.back()
+	if not cur_weapon.muzzle.get_children().empty():
+		return
+
+	for effect in cur_weapon.effects:
+		if "burning_data" in effect:
+			var instance = foxlab_burning_particle.instance()
+			cur_weapon.muzzle.add_child(instance)
+			return
+
+	if not RunData.foxlab_remembered_weapons[player_index].empty():
+		var instance = foxlab_scepter_particle.instance()
+		cur_weapon.muzzle.add_child(instance)
+
 func _clean_up() -> void :
 	._clean_up()
 	if _foxlab_ball_lightning_timer:

@@ -15,3 +15,5 @@ func sort_turrets_by_strength(a: TurretEffect, b: TurretEffect) -> bool:
 	var b_index: int = foxlab_turret_keys_all.get_or_add(b.text_key, Utils.LARGE_NUMBER)
 	return a_index <= b_index
 
+func is_weapon_spawning_structure(weapon: WeaponData) -> bool:
+	return (.is_weapon_spawning_structure(weapon) or (weapon.weapon_id in ItemService.foxlab_weapons_spawning_structure))

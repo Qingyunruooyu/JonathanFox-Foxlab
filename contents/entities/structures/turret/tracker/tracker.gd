@@ -20,6 +20,9 @@ func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [],
 	_players = players_ref
 	if Utils.get_chance_success(0.5):
 		_orbit_speed = -_orbit_speed
+	call_deferred("init_assemble_ability", players_ref)
+
+func init_assemble_ability(players_ref: Array):
 	if RunData.get_player_effect_bool("foxlab_assemble_tracker_on_hurt", player_index):
 		players_ref[player_index].connect("took_damage", self, "_on_player_took_damage")
 

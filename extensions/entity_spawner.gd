@@ -12,3 +12,11 @@ func on_enemy_charmed(enemy: Entity) -> void :
 		for effect_behavior in enemy.effect_behaviors.get_children():
 			if "charmed" in effect_behavior:
 				effect_behavior._charm_timer.start(max(_wave_timer.time_left - 5, Utils.CHARM_DURATION))
+
+func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = null, source = null, charmed_by: int = - 1) -> KinematicBody2D:
+	var entity = .spawn_entity(scene, args, data, source, charmed_by)
+	if ItemService.foxlab_is_android and entity is Enemy and entity.enemy_id == "evil_mob":
+		entity.evolve(0)
+		entity.gold_count = 0
+		entity.on_health_updated(entity, entity.current_stats.health, entity.max_stats.health)
+	return entity

@@ -1,8 +1,11 @@
 extends "res://singletons/run_data.gd"
 
+var foxlab_pools_modified = false
+
+#孟婆相关
 var foxlab_remembered_items = [ [], [], [], [] ]
 var foxlab_remembered_weapons = [ [], [], [], [] ]
-var foxlab_shop_items = [ [], [], [], []]
+var foxlab_shop_items = [ [], [], [], [] ]
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect("foxlab_previous_remembered", player_index)
@@ -68,7 +71,9 @@ func foxlab_forget_item(player_index: int):
 				DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
 				remove_item(item, player_index)
 				DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
-		add_item_displayed(get_player_character(player_index), player_index)
+		#被临时道具顶掉了角色外观，恢复回来
+		if not ProgressData.settings.no_item_appearance:
+			add_item_displayed(get_player_character(player_index), player_index)
 		foxlab_remembered_items[player_index].clear()
 		# 数字型临时属性，回收的时候会让属性减少，实际上在出发的时候就被Main清空了
 		# 数组型由于不存在那个key了，所以回收的时候无事发生
@@ -141,6 +146,11 @@ func add_starting_items_and_weapons() -> void :
 	foxlab_remembered_items = [ [], [], [], [] ]
 	foxlab_remembered_weapons = [ [], [], [], [] ]
 	foxlab_shop_items = [ [], [], [], [] ]
+	if foxlab_pools_modified:
+		return
+	ItemService.foxlab_modify_items()
+	ItemService.foxlab_record_structure_weapons()
+	foxlab_pools_modified = true
 
 func is_wave_started() -> bool:
 	return get_player_effect_bool("fox_wave_started", 0)

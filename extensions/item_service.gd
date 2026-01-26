@@ -3,6 +3,9 @@ extends "res://singletons/item_service.gd"
 ######## 全局杀敌 ######
 var foxlab_kill_nearby_icon;
 
+######## 武器池 ########
+var foxlab_weapons_spawning_structure = {}
+
 ######### 面具相关 ############
 var foxlab_transform_characters:Array=[]
 var foxlab_vanilla_characters:Array=[]
@@ -185,6 +188,21 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 	enemy.die(foxlab_die_args)
 	return new_boss_num
 
+func foxlab_modify_items():
+	for item in items:
+		if "structure" in item.tags:
+			continue
+		for effect in item.effects:
+			if effect is StructureEffect:
+				item.tags.append("structure")
+				break
+
+func foxlab_record_structure_weapons():
+	for weapon in weapons:
+		for effect in weapon.effects:
+			if effect is StructureEffect:
+				foxlab_weapons_spawning_structure[weapon.weapon_id] = 1
+				break
 
 ####### 扩展 ###########
 func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapon: bool = false, affected_by_items_price_stat: bool = true) -> int:

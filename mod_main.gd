@@ -46,6 +46,7 @@ func _init():
 
 	if not IS_ANDROID:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "progress_data.gd")
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "evil_mob.gd")
 
 	if "1.1.14" in CrashReporter.VERSION:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "sort_inventory_button_14.gd")

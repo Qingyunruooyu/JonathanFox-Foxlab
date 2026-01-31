@@ -7,7 +7,7 @@
 script = ExtResource( 1 )
 sprite = ExtResource( 2 )
 position = 14
-display_priority = 3
+display_priority = 4
 depth = 1.0
 is_character_appearance = true
-hide_vanilla_potato = true
+foxlab_hide_potato = true

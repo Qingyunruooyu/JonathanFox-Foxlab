@@ -25,8 +25,8 @@ EFFECT_FOXLAB_VAGABOND_FRUIT_POS,捡起水果时有{2}概率增强自己,{2} cha
 EFFECT_FOXLAB_VAGABOND_FRUIT_NEG,捡起水果时有{2}概率使刷新和物品变贵,{2} chance to make reroll or items more expensive when you pick up a fruit
 EFFECT_FOXLAB_FOOD_PRICE,{0}部分[color=#FF8C00]食物类[/color]道具价格,{0} price of some [color=#FF8C00]Food[/color] item
 CHARACTER_FOXLAB_MOM,鬼妈,Mom
+EFFECT_FOXLAB_NO_WEAPON_SLOTS,你没有武器栏,You have no weapon slot
 EFFECT_FOXLAB_MOM_LANDMINE_SPAWN,每{1}秒生成3个地雷（其中{0}个在你附近），造成{2}（{3}）伤害,3 landmines ({0} near you) spawn every {1} seconds dealing {2} ({3}) damage in an area
-EFFECT_FOXLAB_MOM_LANDMINE_CRIT,此地雷可以暴击，初始伤害为x{2}（{3}概率）,"These lamdmines can crit with base damage x{2}({3} chance)"
 CHARACTER_FOXLAB_TOXIC_HEALER,毒奶,Toxic Healer
 EFFECT_FOXLAB_HEALING_BETRAY,此医疗炮塔会[color=#FF8C00]叛变[/color]并召唤同伙,The medical turret [color=#FF8C00]betrays[/color] you and spawns its copy
 CHARACTER_FOXLAB_OLDER_SNIPER,老狙神,Old Sniper
@@ -39,9 +39,9 @@ STAT_FOXLAB_PRIMARY_EXCEPT_CURSE_LUCK,主属性（除[color=#ca61ff]诅咒[/colo
 STAT_FOXLAB_PRIMARY,主属性,Primary Stats
 CHARACTER_FOXLAB_ARCHITECT,架构师,Architect
 ITEM_FOXLAB_ARCHITECTURE_DIAGRAM,架构图,Architecture Diagram
+EFFECT_FOXLAB_MAX_WEAPONS,你有{0}个武器栏,You have {0} weapon slots
 CHARACTER_FOXLAB_INFERNAL_MACHINE,机械恶魔,Infernal Machine
 ITEM_FOXLAB_FUNNEL,浮游炮塔,Funnel
-EFFECT_FOXLAB_STARTING_ITEM,初始拥有{2}{1},You start with {2} {1}
 EFFECT_FOXLAB_FUNNEL_SPAWN,初始拥有3个浮游炮，之后每{1}秒召唤一个,"You start with 3 Funnels and one more spawns every {1} seconds"
 EFFECT_FOXLAB_FUNNEL,生成2个浮游炮，造成{0}（{1}）伤害,Spawns 2 Funnels dealing {0} ({1}) damage
 EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_EQUAL,{0}的{1}在敌袭结束后等量转换为{2},{0} of your {1} are equivalently converted into {2} at the end of a wave
@@ -73,7 +73,7 @@ LOSE_HP_PER_SECOND,每秒固定受伤,HP Lose per Second
 POISONED_FRUIT,%毒水果,% Poisoned Fruit
 ENEMY_FRUIT_DROPS,%水果概率,% Fruit Drops
 EFFECT_FOXLAB_SPACETIME_MACHINE,掠夺对立[color=#FF8C00]时空装置[/color]{0}的爆率,Steal {0} drop rate from opposing [color=#FF8C00]Spacetime Machine[/color]
-EFFECT_FOXLAB_SPACETIME_MACHINE_YIN,无法治疗且水果可能有毒，抵消1点每秒受伤,You can't heal and fruit may be toxic; neutralize 1 HP lose per second
+EFFECT_FOXLAB_SPACETIME_MACHINE_YIN,无法治疗且增加毒水果概率和毒性，抵消1点每秒受伤,You can't heal and fruit may be toxic; neutralize 1 HP lose per second
 EFFECT_FOXLAB_SPACETIME_MACHINE_YANG,每秒受到1伤害，抵消1点无法治疗和毒水果的负面,Lose 1 HP every second; neutralize 1 penalty of no heal and toxic fruit
 ITEM_FOXLAB_SPACETIME_MACHINE_YIN,时空装置・阴,Spacetime Machine (Yin)
 ITEM_FOXLAB_SPACETIME_MACHINE_YANG,时空装置・阳,Spacetime Machine (Yang)
@@ -97,7 +97,6 @@ EFFECT_FOXLAB_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT,每持有{2}异种{3}有{0}{1}[
 CHARACTER_FOXLAB_GOLEM_NINJA,傀儡忍者,Golem Ninja
 ITEM_FOXLAB_OMNIC_CRISIS,智械危机,Omnic Crisis
 EFFECT_FOXLAB_TEMP_STATS_ON_STRUCTURE_CRIT,构筑物以暴击杀死敌人会{0}{1}直至敌袭结束,{0} {1} until the end of the wave when structure kills an enemy with a critical hit
-EFFECT_FOXLAB_STATS_BELOW_HALF_HEALTH_EXPLODE,生命值低于50%时有{0}{1}，每波首次达到时会爆炸,{0} {1} when you have less than 50% health; explode for the first time each wave
 CRIT_CHANCE_CAP,%暴击率上限,% Crit Chance Cap
 EFFECT_FOXLAB_GOLEM_NINJA,上项{3}次执行都有{2}＞{4}，可解除[color=#FF8C00]{5}[/color]负面（余[color=#FF8C00]{0}[/color]）,"When above works for {3} times with {2} > {4}, penalty of [color=#FF8C00]{5}[/color] gone ([color=#FF8C00]{0}[/color] to go)"
 CHARACTER_FOXLAB_MAGICIAN,魔术师,Magician
@@ -124,7 +123,7 @@ EFFECT_FOXLAB_ODD,奇数,Odd
 EFFECT_FOXLAB_EVEN,偶数,Even
 EFFECT_FOXLAB_LOSE,失去,Lose
 EFFECT_FOXLAB_GAIN,获得,Gain
-EFFECT_FOXLAB_ALL_OR_NOTHING,武器单次攻击直接杀死{3}/{4}敌人，分别{5}/{6}等量{1},{5}/{6} equivalent {1} for killing {3}/{4} enemies by a direct weapon attack
+EFFECT_FOXLAB_ALL_OR_NOTHING,武器单次攻击[color=#FF8C00]直接[/color]杀死{3}/{4}敌人，分别{5}/{6}等量{1},{5}/{6} equivalent {1} for killing {3}/{4} enemies by a [color=#FF8C00]direct[/color] weapon attack
 CHARACTER_FOXLAB_POET,诗人,Poet
 FOX_POET_NEXT_CURSE_CHANCE,%下个商店锁定物诅咒率,% Chance to Curse Locked Next Wave
 CURSE_LOCKED_ITEMS,%锁定物诅咒率,% Chance to Curse Locked
@@ -173,7 +172,7 @@ CHARACTER_FOXLAB_ODD_EYED,异瞳,Odd-Eyed
 CRATE_CHANCE,%箱子率,% Crate Chance
 EFFECT_FOXLAB_ABOVE_LINE,上一行,Line Above
 EFFECT_FOXLAB_BELOW_LINE,下一行,Line Below
-EFFECT_FOXLAB_ODD_EYED,每获得直接{4}的道具，面板里该属性{5}/{6}分别{7}/{8}[color=#FF8C00]Ⅰ级升级属性[/color],"Every time you get an item that literally {4}, {5}/{6} them in panel will {7}/{8} [color=#FF8C00]Tier I Upgrade[/color]"
+EFFECT_FOXLAB_ODD_EYED,每获得[color=#FF8C00]直接[/color]{4}的道具，面板里该属性{5}/{6}分别{7}/{8}[color=#FF8C00]Ⅰ级升级属性[/color],"Every time you get an item that [color=#FF8C00]literally[/color] {4}, {5}/{6} them in panel will {7}/{8} [color=#FF8C00]Tier I Upgrade[/color]"
 CHARACTER_FOXLAB_GHOST_ENVOY,鬼差,Ghost Envoy
 ITEM_FOXLAB_HAUNTED_NIGHT,百鬼夜行,Haunted Night
 FOXLAB_GHOST_MATERIALS_GAINED,获得的冥币：{0},Ghost materials gained: {0}
@@ -194,6 +193,7 @@ EFFECT_FOXLAB_AQUILA,持续召唤[color=#FF8C00]阿奎拉之镖[/color]，拥有
 ITEM_FOXLAB_DEMON,恶魔,Demon
 EFFECT_FOXLAB_DEMON_PULL,持续使用[color=#FF8C00]恶魔牵引[/color],[color=#FF8C00]Demon Pull[/color] constantly
 ITEM_FOXLAB_DEVIL_TRIGGER,魔人化,Devil Trigger
+EFFECT_FOXLAB_GAIN_STAT_WHEN_ATTACK_KILLED_ENEMIES,武器单次攻击[color=#FF8C00]直接[/color]杀死至少{2}敌人时{0}{1},{0} {1} when killing at least {2} enemies with a [color=#FF8C00]direct[/color] weapon hit
 EFFECT_FOXLAB_NO_BIG_COOLDOWN,{2}和[color=#FF8C00]近战[/color]武器获得提速,Accelerate {2} and [color=#FF8C00]Melee[/color] weapons
 HIT_PROTECTION,伤害免疫次数,Hit Protection
 EFFECT_FOXLAB_INCREASE_TIER_ON_EVERY_REROLL,商店刷新后物品提升{0}个等级,Items will be {0} tier higher after rerolls
@@ -212,7 +212,7 @@ FOXLAB_SHOP_POINT,积分,Point
 FOXLAB_SHOP_VIP,会员等级,VIP Level
 DIFFERENT_ITEM,异种道具,Different Items
 DUPLICATE_ITEM,复制品,Duplicates
-EFFECT_FOXLAB_GAIN_STAT_FOR_EQUIPPED_ITEM_WITH_STAT,每获得直接{3}的道具有{0}{1},{0} {1} when getting an item that literally {3}
+EFFECT_FOXLAB_GAIN_STAT_FOR_EQUIPPED_ITEM_WITH_STAT,每获得[color=#FF8C00]直接[/color]{3}的道具有{0}{1},{0} {1} when getting an item that [color=#FF8C00]literally[/color] {3}
 EFFECT_FOXLAB_SHOPAHOLIC,达到[color=#FF8C00]10[/color]积分时会员升级，获得{4}{2}、{5}{6},"VIP levels up when you have [color=#FF8C00]10[/color] Points, then {4} {2}, {5} {6}"
 CHARACTER_FOXLAB_SCHRODINGERS_CAT,薛定谔的猫,Schrödinger's Cat
 EFFECT_FOXLAB_CAT_SHOP_EFFECT,"进入商店时：有{0}几率窃取{1}到{2}次；

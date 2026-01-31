@@ -8,7 +8,7 @@
 
 [resource]
 script = ExtResource( 2 )
-key = ""
+key = "stat_melee_damage"
 text_key = "effect_foxlab_tracker"
 value = 1
 custom_key = ""
@@ -22,6 +22,7 @@ effects = [ ExtResource( 3 ), ExtResource( 4 ) ]
 spawn_in_center = 200
 spawn_around_player = -1
 can_be_grouped = true
+is_pet = false
 shooting_animation_speed = 1.0
 is_burning = false
 is_spawning = false

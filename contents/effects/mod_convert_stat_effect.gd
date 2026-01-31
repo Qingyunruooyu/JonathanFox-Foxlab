@@ -6,7 +6,7 @@ static func get_id() -> String:
 
 # 中途关闭游戏重开后, unapply失效的问题
 func unapply(player_index: int) -> void:
-	var effects = RunData.get_player_effects(player_index)[custom_key]
+	var effects = RunData.get_player_effects(player_index)[custom_key_hash]
 	var num =  effects.size()
 	.unapply(player_index)
 	var num_after =  effects.size()

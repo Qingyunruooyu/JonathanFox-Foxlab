@@ -26,6 +26,7 @@ const EXTENSION_SCRIPTS: =[
 	"weapon_service.gd",
 	"character_panel_ui.gd",
 	"memu_confirm.gd",
+	"sort_inventory_button.gd",
 ]
 
 
@@ -47,11 +48,6 @@ func _init():
 	if not IS_ANDROID:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "progress_data.gd")
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "evil_mob.gd")
-
-	if "1.1.14" in CrashReporter.VERSION:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "sort_inventory_button_14.gd")
-	else:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "sort_inventory_button.gd")
 
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.en.translation")
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")

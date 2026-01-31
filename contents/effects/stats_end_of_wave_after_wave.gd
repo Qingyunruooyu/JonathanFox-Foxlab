@@ -4,9 +4,6 @@ extends "res://items/global/effect.gd"
 export (int) var starting_wave: int = 6
 export (int) var end_wave: int = 19
 
-var _foxlab_custom_key = "foxlab_stats_end_of_wave_after_wave"
-
-
 static func get_id() -> String:
 	return "foxlab_effect_stats_end_of_wave_after_wave"
 
@@ -31,14 +28,14 @@ func apply(player_index: int) -> void:
 	if end_wave > 0 and starting_wave > end_wave:
 		return
 
-	var effect_array: Array = RunData.get_player_effect(_foxlab_custom_key, player_index)
+	var effect_array: Array = RunData.get_player_effect(Utils.foxlab_stats_end_of_wave_after_wave_hash, player_index)
 
 	for existing_item in effect_array:
-		if existing_item[0] == key and existing_item[2] == starting_wave and existing_item[3] == end_wave:
+		if existing_item[0] == key_hash and existing_item[2] == starting_wave and existing_item[3] == end_wave:
 			existing_item[1] += value
 			return
 
-	effect_array.push_back([key, value, starting_wave, end_wave])
+	effect_array.push_back([key_hash, value, starting_wave, end_wave])
 
 
 func unapply(player_index: int) -> void:
@@ -46,11 +43,11 @@ func unapply(player_index: int) -> void:
 		return
 
 	var has_effect: bool = false
-	var effect_array: Array = RunData.get_player_effect(_foxlab_custom_key, player_index)
+	var effect_array: Array = RunData.get_player_effect(Utils.foxlab_stats_end_of_wave_after_wave_hash, player_index)
 
 	for i in effect_array.size():
 		var eff = effect_array[i]
-		if eff[0] == key and eff[2] == starting_wave and eff[3] == end_wave:
+		if eff[0] == key_hash and eff[2] == starting_wave and eff[3] == end_wave:
 			has_effect = true
 			eff[1] -= value
 			if eff[1] == 0:

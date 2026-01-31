@@ -23,7 +23,7 @@ func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [],
 	call_deferred("init_assemble_ability", players_ref)
 
 func init_assemble_ability(players_ref: Array):
-	if RunData.get_player_effect_bool("foxlab_assemble_tracker_on_hurt", player_index):
+	if RunData.get_player_effect_bool(Utils.foxlab_assemble_tracker_on_hurt_hash, player_index):
 		players_ref[player_index].connect("took_damage", self, "_on_player_took_damage")
 
 static func get_max_range_melee_weapon_range(stats: Resource, player_index:int) -> int:
@@ -67,7 +67,7 @@ func _on_player_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vec
 	_assemble_if_idle()
 
 func _is_idle() -> bool:
-	return not is_instance_valid(_current_tracking_enemy) or _current_tracking_enemy.dead
+	return not is_instance_valid(_current_tracking_enemy) or _current_tracking_enemy._pending_die
 
 # 召回前不会锁定敌人
 func _assemble_if_idle():

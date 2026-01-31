@@ -6,8 +6,8 @@ func _recheck_extra_items(player_index: int) -> void :
 	# 获得的道具使箱子里额外道具的概率 <=0 的时候，额外道具不再出现
 	# 比如面具变身成功，把魔术师换掉之后，本来要掉落的魔术帽不应该再出现了；如果此前面具变身失败、没有换掉魔术师，就正常掉落魔术帽
 	for extra_item in _extra_items_to_process[player_index]:
-		if extra_item != "random":
-			var extra_item_effects: Array = RunData.get_player_effect("extra_item_in_crate", player_index)
+		if extra_item != Keys.random_hash:
+			var extra_item_effects: Array = RunData.get_player_effect(Keys.extra_item_in_crate_hash, player_index)
 			var is_still_extra: = false
 			for effect in extra_item_effects:
 				if extra_item == effect[0] and effect[1] > 0:

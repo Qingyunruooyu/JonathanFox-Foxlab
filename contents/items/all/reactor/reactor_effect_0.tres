@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource( 2 )
-key = ""
+key = "stat_curse"
 text_key = "effect_foxlab_reactor"
 value = 1
 custom_key = ""
@@ -21,6 +21,7 @@ effects = [ ExtResource( 3 ) ]
 spawn_in_center = -1
 spawn_around_player = -1
 can_be_grouped = true
+is_pet = false
 shooting_animation_speed = 1.0
 is_burning = false
 is_spawning = false

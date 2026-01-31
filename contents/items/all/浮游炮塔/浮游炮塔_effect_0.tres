@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource( 2 )
-key = ""
+key = "stat_levels"
 text_key = "effect_foxlab_funnel"
 value = 2
 custom_key = ""
@@ -20,6 +20,7 @@ effects = [  ]
 spawn_in_center = -1
 spawn_around_player = 200
 can_be_grouped = true
+is_pet = false
 shooting_animation_speed = 1.0
 is_burning = false
 is_spawning = false

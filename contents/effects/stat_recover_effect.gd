@@ -6,9 +6,9 @@ static func get_id() -> String:
 
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
-	base_value = effects[key]
+	base_value = effects[key_hash]
 
 func unapply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
-	effects[key] = base_value
+	effects[key_hash] = base_value
 	Utils.reset_stat_cache(player_index)

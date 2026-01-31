@@ -16,7 +16,7 @@ func unapply(player_index: int) -> void:
 		if count == value:
 			break
 		var item_data = player_items_raw[index - 1]
-		if item_data.my_id == key and item_data.is_cursed == (value2 != 0):
+		if item_data.my_id_hash == key_hash and item_data.is_cursed == (value2 != 0):
 			items_to_remove.append(item_data)
 			count += 1
 

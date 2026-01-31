@@ -21,18 +21,18 @@ static func get_id() -> String:
 	return "foxlab_effect_get_rand_weapon"
 
 func try_generate(player_index: int):
-	var first_generate = RunData.get_player_effect_bool("foxlab_buddhas_hand_first_generate", player_index)
+	var first_generate = RunData.get_player_effect_bool(Utils.foxlab_buddhas_hand_first_generate_hash, player_index)
 	if weapon_id[player_index].empty() or first_generate:
 		weapon_to_get[player_index] = _get_rand_weapon(player_index)
 		if first_generate:
-			RunData.get_player_effects(player_index)["foxlab_buddhas_hand_first_generate"] = 0
+			RunData.get_player_effects(player_index)[Utils.foxlab_buddhas_hand_first_generate_hash] = 0
 			DebugService.log_data("first generate buddha's hand")
 
 func apply(player_index: int) -> void:
 	try_generate(player_index)
 	RunData.add_weapon(weapon_to_get[player_index], player_index)
 	if is_const_weapon[player_index]:
-		RunData.add_tracked_value(player_index, "item_foxlab_buddhas_hand", 1)
+		RunData.add_tracked_value(player_index, Utils.item_foxlab_buddhas_hand_hash, 1)
 	if item_to_get[player_index] != null:
 		RunData.add_item(item_to_get[player_index], player_index)
 		item_to_get[player_index] = null
@@ -52,7 +52,7 @@ func _get_chance_success(base_chance: float, luck_chance: float)->bool:
 	return Utils.get_chance_success(min(MAX_BONUS_CHANCE, base_chance * luck_chance))
 
 func _get_rand_weapon(player_index: int) -> WeaponData:
-	var luck = Utils.get_stat("stat_luck", player_index) / 100.0
+	var luck = Utils.get_stat(Keys.stat_luck_hash, player_index) / 100.0
 	var luck_chance:float = 1.0
 	if luck >= 0:
 		luck_chance = luck_chance * (1 + luck)
@@ -63,16 +63,17 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	var args := ItemService.GetRandItemForWaveArgs.new()
 	args.increase_tier = value - 1
 	args.owned_and_shop_items = []
-	if RunData.get_nb_item("item_hourglass", player_index) > 0:
-		args.owned_and_shop_items.push_back(ItemService.get_element(ItemService.items, "item_hourglass"))
+	if RunData.get_nb_item(Keys.item_hourglass_hash, player_index) > 0:
+		args.owned_and_shop_items.push_back(ItemService.get_element(ItemService.items, Keys.item_hourglass_hash))
 
 	var weapon = null
 	# chance to get the same weapon equiped
 	if _get_chance_success(CHANCE_EQUIPPED_WEAPON, luck_chance) and RunData.players_data[player_index].weapons.size() > 0:
 		var ref_weapon = Utils.get_rand_element(RunData.players_data[player_index].weapons)
-		weapon = ItemService.get_element(ItemService.weapons, ref_weapon.my_id).duplicate()
+		weapon = ItemService.get_element(ItemService.weapons, ref_weapon.my_id_hash).duplicate()
 	else:
 		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args).duplicate()
+
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
 		var melee_stats = weapon.stats
 		melee_stats.deal_dmg_on_return = true
@@ -80,13 +81,12 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	var item_for_effect = null
 
 	if !debug_item_name.empty():
-		var debug_item:String = debug_item_name.front()
+		var debug_item:String = debug_item_name.pop_front()
+		var debug_item_hash = Keys.generate_hash(debug_item)
 		if debug_item.begins_with("weapon_"):
-			item_for_effect = ItemService.get_element(ItemService.weapons, debug_item)
-			debug_item_name.pop_front()
+			item_for_effect = ItemService.get_element(ItemService.weapons, debug_item_hash)
 		else:
-			item_for_effect = ItemService.get_element(ItemService.items, debug_item)
-			debug_item_name.pop_front()
+			item_for_effect = ItemService.get_element(ItemService.items, debug_item_hash)
 	if item_for_effect == null:
 		item_for_effect = Utils.get_rand_element(ItemService.weapons)
 	if item_for_effect.effects.empty():
@@ -95,15 +95,16 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			# items (except hourglass) can be get even if it may exceed the limited number
 		item_for_effect = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.ITEMS, args)
 
-	if item_for_effect.replaced_by:
-		item_to_get[player_index] = item_for_effect
-	else:
-		for effect in item_for_effect.effects:
-			if effect.key != item_for_effect.my_id:
-				continue
-			if effect.custom_key == "duplicate_item" or effect.custom_key == "increase_tier_on_reroll" or effect.key == "item_hourglass":
-				item_to_get[player_index] = item_for_effect
-				break
+	if not item_for_effect.get_category() == Category.WEAPON:
+		if item_for_effect.replaced_by:
+			item_to_get[player_index] = item_for_effect
+		else:
+			for effect in item_for_effect.effects:
+				if effect.key_hash != item_for_effect.my_id_hash:
+					continue
+				if effect.custom_key_hash == Keys.duplicate_item_hash or effect.custom_key_hash == Keys.increase_tier_on_reroll_hash or effect.key_hash == Keys.item_hourglass_hash:
+					item_to_get[player_index] = item_for_effect
+					break
 
 	item_for_effect = item_for_effect.duplicate()
 	var new_effects := []
@@ -113,16 +114,20 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		if effect is WeaponStackEffect: # stick
 			effect.weapon_stacked_name = weapon.name
 			effect.weapon_stacked_id = weapon.weapon_id
+			effect.weapon_stacked_id_hash = weapon.weapon_id_hash
 		elif effect is WeaponGainStatForEveryStatEffect: # captain's sword
-			if effect.stat_scaled == "free_weapon_slots":
+			if effect.stat_scaled_hash == Keys.free_weapon_slots_hash:
 				effect.stat_scaled = "legendary_item"
+				effect.stat_scaled_hash = Keys.legendary_item_hash
 				effect.text_key = "EFFECT_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT"
 		elif effect is SwapMaxMinStatEffect: # axolotl
 			effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
 		elif effect is PercentDamageEffect: # lute, icecube, etc
 			effect.source_id = weapon.weapon_id
+			effect.source_id_hash = weapon.weapon_id_hash
 		elif effect.custom_key == "yztato_destory_weapons":
 			effect.key = weapon.weapon_id
+			effect.key_hash = weapon.weapon_id_hash
 			effect.text_key = tr("EFFECT_FOXLAB_WEAPON_TEXT_ONLY") % [tr(weapon.name)]
 		elif effect.get_id() == get_id():
 			effect.weapon_id = ["","","",""]
@@ -151,8 +156,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		var level_suffix := "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
 		var break_effect := load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
 		weapon.effects.append(break_effect)
-		var neg_color = ("#" + ProgressData.settings.color_negative) if ProgressData.settings.has("color_negative") else Utils.NEG_COLOR_STR
-		extra_item_id[player_index] += "([color=%s]+%s[/color])" % [neg_color, tr("WEAPON_BRICK")]
+		extra_item_id[player_index] += "([color=#%s]+%s[/color])" % [ ProgressData.settings.color_negative, tr("WEAPON_BRICK")]
 		is_const_weapon[player_index] = 0
 	elif item_to_get[player_index] == null:
 		var current = weapon

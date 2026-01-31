@@ -13,7 +13,7 @@ func get_args(player_index: int) -> Array:
 	return args
 
 func unapply(player_index: int) -> void :
-	var effects = RunData.get_player_effects(player_index)["structures"]
+	var effects = RunData.get_player_effects(player_index)[Keys.structures_hash]
 	var num =  effects.size()
 	.unapply(player_index)
 	var num_after =  effects.size()

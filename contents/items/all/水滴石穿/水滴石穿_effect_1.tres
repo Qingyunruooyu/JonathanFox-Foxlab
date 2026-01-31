@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=7 format=2]
 
-[ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/raw_key_effect.gd" type="Script" id=1]
 [ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
 
 [sub_resource type="Resource" id=1]
@@ -44,5 +44,5 @@ custom_key = "extra_enemies_next_wave"
 storage_method = 1
 effect_sign = 3
 custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ]
-key2 = "stat_elemental_damage"
+key2 = ""
 value2 = 25

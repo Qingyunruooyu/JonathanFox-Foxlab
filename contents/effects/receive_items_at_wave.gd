@@ -6,17 +6,28 @@ export var foxlab_receive_item_wave: int = 5
 export var foxlab_receive_item_end_wave: int = -1
 export (bool) var foxlab_cursed_item: bool = false
 
+var foxlab_receive_item_id_hash: int = Keys.empty_hash
 
 static func get_id() -> String:
 	return "foxlab_effect_receive_item_at_wave"
 
+func duplicate(subresources := false) -> Resource:
+	var duplication = .duplicate(subresources)
+	if foxlab_receive_item_id_hash == Keys.empty_hash and foxlab_receive_item_id != "":
+		foxlab_receive_item_id_hash = Keys.generate_hash(foxlab_receive_item_id)
+	duplication.foxlab_receive_item_id_hash = self.foxlab_receive_item_id_hash
+	return duplication
+
+func _generate_hashes() -> void:
+	._generate_hashes()
+	foxlab_receive_item_id_hash = Keys.generate_hash(foxlab_receive_item_id)
 
 func apply(player_index: int) -> void:
-	RunData.get_player_effect(key, player_index).append([value, foxlab_receive_item_id, foxlab_receive_item_wave, curse_factor, foxlab_cursed_item, foxlab_receive_item_end_wave])
+	RunData.get_player_effect(key_hash, player_index).append([value, foxlab_receive_item_id_hash, foxlab_receive_item_wave, curse_factor, foxlab_cursed_item, foxlab_receive_item_end_wave])
 
 
 func unapply(player_index: int) -> void:
-	var effect: Array = RunData.get_player_effect(key, player_index)
+	var effect: Array = RunData.get_player_effect(key_hash, player_index)
 	var index: int = -1
 	for i in effect.size():
 		var entry = effect[i]
@@ -43,13 +54,14 @@ func deserialize_and_merge(effect: Dictionary) -> void:
 	.deserialize_and_merge(effect)
 
 	foxlab_receive_item_id = effect.get("foxlab_receive_item_id", "item_acid")
+	foxlab_receive_item_id_hash = Keys.generate_hash(foxlab_receive_item_id)
 	foxlab_receive_item_wave = effect.get("foxlab_receive_item_wave", 5)
 	foxlab_cursed_item = effect.get("foxlab_cursed_item", false)
 	foxlab_receive_item_end_wave = effect.get("foxlab_receive_item_end_wave", -1)
 
 
 func get_args(_player_index: int) -> Array:
-	var item_data = ItemService.get_element(ItemService.items, foxlab_receive_item_id)
+	var item_data = ItemService.get_element(ItemService.items, foxlab_receive_item_id_hash)
 
 	var item_name: String = ""
 	if not item_data == null:

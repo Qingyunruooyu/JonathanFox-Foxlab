@@ -8,9 +8,9 @@ var foxlab_remembered_weapons = [ [], [], [], [] ]
 var foxlab_shop_items = [ [], [], [], [] ]
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
-	var previous_remembered:Array = get_player_effect("foxlab_previous_remembered", player_index)
+	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
-	if item.my_id in previous_remembered:
+	if item.my_id_hash in previous_remembered:
 		DebugService.log_data("already remembered")
 		return
 
@@ -20,9 +20,9 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 			foxlab_remembered_weapons[player_index].push_back(weapon)
 	else:
 		foxlab_remembered_items[player_index].push_back(item as ItemData)
-		DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
+		DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		add_item(item, player_index)
-		DebugService.log_data("after add item, item num: %d/%d" % [get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
+		DebugService.log_data("after add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 
 func foxlab_modify_weapon(player_index: int):
 	if foxlab_remembered_weapons[player_index].empty():
@@ -32,6 +32,7 @@ func foxlab_modify_weapon(player_index: int):
 			players_data[player_index].selected_weapon = players_data[player_index].selected_weapon.duplicate()
 		var null_effect = NullEffect.new()
 		null_effect.key = "foxlab_remember_shop_items"
+		null_effect.key_hash = Utils.foxlab_remember_shop_items_hash
 		null_effect.text_key = "foxlab_effect_remembered_weapon"
 		weapon.effects.append(null_effect)
 		for weapon_for_effect in foxlab_remembered_weapons[player_index]:
@@ -43,42 +44,42 @@ func foxlab_modify_weapon(player_index: int):
 	LinkedStats.reset_player(player_index)
 
 func foxlab_update_remembered_item(player_index: int):
-	var previous_remembered:Array = get_player_effect("foxlab_previous_remembered", player_index)
+	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	previous_remembered.clear()
-	var previous_remembered_names:Array = get_player_effect("foxlab_previous_remembered_names", player_index)
+	var previous_remembered_names:Array = get_player_effect(Utils.foxlab_previous_remembered_names_hash, player_index)
 	previous_remembered_names.clear()
 	for item in foxlab_remembered_items[player_index]:
-		previous_remembered.append(item.my_id)
+		previous_remembered.append(item.my_id_hash)
 		var name = tr(item.name)
 		if item.is_cursed:
 			name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 		previous_remembered_names.append(name)
 	for weapon in foxlab_remembered_weapons[player_index]:
-		previous_remembered.append(weapon.my_id)
+		previous_remembered.append(weapon.my_id_hash)
 		var name = " %s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 		if weapon.is_cursed:
 			name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 		previous_remembered_names.append(name)
-	RunData.add_tracked_value(player_index, "character_foxlab_mnemosyne", previous_remembered.size())
+	RunData.add_tracked_value(player_index, Utils.character_foxlab_mnemosyne_hash, previous_remembered.size())
 
 func foxlab_forget_item(player_index: int):
 	if not foxlab_remembered_items[player_index].empty():
 		var effects = RunData.get_player_effects(player_index)
-		var previous_loot_next_wave = effects["extra_loot_aliens_next_wave"]
-		var previous_hp_next_wave = effects["hp_start_next_wave"]
+		var previous_loot_next_wave = effects[Keys.extra_loot_aliens_next_wave_hash]
+		var previous_hp_next_wave = effects[Keys.hp_start_next_wave_hash]
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
-				DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
+				DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 				remove_item(item, player_index)
-				DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id, player_index), players_data[player_index].items.size() ])
+				DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:
 			add_item_displayed(get_player_character(player_index), player_index)
 		foxlab_remembered_items[player_index].clear()
 		# 数字型临时属性，回收的时候会让属性减少，实际上在出发的时候就被Main清空了
 		# 数组型由于不存在那个key了，所以回收的时候无事发生
-		effects["extra_loot_aliens_next_wave"] = previous_loot_next_wave
-		effects["hp_start_next_wave"] =  previous_hp_next_wave
+		effects[Keys.extra_loot_aliens_next_wave_hash] = previous_loot_next_wave
+		effects[Keys.hp_start_next_wave_hash] =  previous_hp_next_wave
 
 	for weapon in get_player_weapons(player_index):
 		Utils.reset_stat_cache(player_index)
@@ -96,10 +97,13 @@ func foxlab_adjust_weapon_effect(effect: Effect, weapon: WeaponData):
 	if effect is WeaponStackEffect: # stick
 		effect.weapon_stacked_name = weapon.name
 		effect.weapon_stacked_id = weapon.weapon_id
+		effect.weapon_stacked_id_hash = weapon.weapon_id_hash
 	elif effect is PercentDamageEffect: # lute etc
 		effect.source_id = weapon.weapon_id
+		effect.source_id_hash = weapon.weapon_id_hash
 	elif effect.custom_key == "yztato_destory_weapons":
 		effect.key = weapon.weapon_id #保留的是武器大名，不是带等级的my_id
+		effect.key_hash = weapon.weapon_id_hash #保留的是武器大名，不是带等级的my_id
 		effect.text_key = tr("EFFECT_FOXLAB_WEAPON_TEXT_ONLY") % [tr(weapon.name)]
 
 func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effect: WeaponData) -> Array:
@@ -118,17 +122,17 @@ func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effec
 func foxlab_set_item_description(item_description: ItemDescription, item_data: ItemParentData, player_index: int) -> void :
 	if item_data is ItemData and not item_data is CharacterData:
 		if item_data.max_nb <= 0:
-			var number = get_nb_item(item_data.my_id, player_index);
+			var number = get_nb_item(item_data.my_id_hash, player_index);
 			item_description._category.text += "(%s/∞)" % [str(number)]
 		elif item_data.max_nb == 1:
-			var number = get_nb_item(item_data.my_id, player_index);
+			var number = get_nb_item(item_data.my_id_hash, player_index);
 			if number > 1:
 				item_description._category.text += "(%s/1)" % [str(number)]
 
 ###### 扩展 ######
 func on_wave_start(timer: WaveTimer) -> void :
 	.on_wave_start(timer)
-	get_player_effects(0)["foxlab_shop_effects_checked"] = 0
+	get_player_effects(0)[Utils.foxlab_shop_effects_checked_hash] = 0
 	DebugService.log_data("foxlab_shop_effects_checked: set false")
 
 func get_next_level_xp_needed(player_index) -> float:
@@ -136,13 +140,13 @@ func get_next_level_xp_needed(player_index) -> float:
 	if xp_needed > 0:
 		return xp_needed
 	# 防止需要的经验不是正数，导致无限升级爆栈
-	var xp_needed_effect = max(get_player_effect("next_level_xp_needed", player_index), -99)
+	var xp_needed_effect = max(get_player_effect(Utils.next_level_xp_needed_hash, player_index), -99)
 	return get_xp_needed(get_player_level(player_index) + 1) * (1.0 + xp_needed_effect / 100.0)
 
 func add_starting_items_and_weapons() -> void :
 	var effects = get_player_effects(0)
 	.add_starting_items_and_weapons()
-	effects["fox_wave_started"] = 1
+	effects[Utils.fox_wave_started_hash] = 1
 	foxlab_remembered_items = [ [], [], [], [] ]
 	foxlab_remembered_weapons = [ [], [], [], [] ]
 	foxlab_shop_items = [ [], [], [], [] ]
@@ -153,17 +157,22 @@ func add_starting_items_and_weapons() -> void :
 	foxlab_pools_modified = true
 
 func is_wave_started() -> bool:
-	return get_player_effect_bool("fox_wave_started", 0)
+	return get_player_effect_bool(Utils.fox_wave_started_hash, 0)
 
-const FOXLAB_ELITE_CHARS = ["character_foxlab_war_master", "character_foxlab_survivor", "character_foxlab_kidnapper", "character_foxlab_wormhole_traveler", "character_foxlab_venom", "character_foxlab_bounty_hunter"]
-const FOXLAB_HORDE_CHARS = ["character_foxlab_pufferfish"]
+var FOXLAB_ELITE_CHARS = [Keys.generate_hash("character_foxlab_war_master"),
+						Keys.generate_hash("character_foxlab_survivor"),
+						Keys.generate_hash("character_foxlab_kidnapper"),
+						Keys.generate_hash("character_foxlab_wormhole_traveler"),
+						Keys.generate_hash("character_foxlab_venom"),
+						Keys.generate_hash("character_foxlab_bounty_hunter")]
+var FOXLAB_HORDE_CHARS = [Keys.generate_hash("character_foxlab_pufferfish")]
 
 func init_elites_spawn(base_wave: int = 10, horde_chance: float = 0.4) -> void :
 	for player_index in get_player_count():
 		var current_character = get_player_character(player_index)
 		if current_character != null:
-			if current_character.my_id in FOXLAB_ELITE_CHARS:
+			if current_character.my_id_hash in FOXLAB_ELITE_CHARS:
 				horde_chance = 0.0
-			elif get_player_count() == 1 and current_character.my_id in FOXLAB_HORDE_CHARS:
+			elif get_player_count() == 1 and current_character.my_id_hash in FOXLAB_HORDE_CHARS:
 				horde_chance = 1.0
 	.init_elites_spawn(base_wave, horde_chance)

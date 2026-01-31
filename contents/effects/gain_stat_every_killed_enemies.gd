@@ -8,5 +8,5 @@ static func get_id() -> String:
 func get_args(_player_index: int) -> Array:
 	var number = value2
 	if value2 <= 0:
-		number = max(1, RunData.get_player_effect(key, _player_index))
+		number = max(1, RunData.get_player_effect(key_hash, _player_index))
 	return [str(value), tr(key.to_upper()), str(number)]

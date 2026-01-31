@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "weapon_slot"
-text_key = "effect_gain_stat_when_attack_killed_enemies"
+text_key = "EFFECT_FOXLAB_GAIN_STAT_WHEN_ATTACK_KILLED_ENEMIES"
 value = 1
 custom_key = "gain_stat_when_attack_killed_enemies"
 storage_method = 1

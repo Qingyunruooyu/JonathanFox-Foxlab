@@ -21,7 +21,7 @@ func _ready() -> void :
 
 
 func _foxlab_init_resources():
-	foxlab_kill_nearby_icon = get_element(items, "item_foxlab_inner_indomitable").icon
+	foxlab_kill_nearby_icon = get_element(items, Utils.item_foxlab_inner_indomitable_hash).icon
 
 func _foxlab_init_configs():
 	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
@@ -55,17 +55,14 @@ func get_foxlab_transform_characters() -> Array:
 
 
 ######## 建造者的炮塔相关 ###############
-
-const foxlab_builder_turret_names : Array = ["item_builder_turret_0", "item_builder_turret_1", "item_builder_turret_2", "item_builder_turret_3"]
-
 var foxlab_builder_turret_scatter : Array = [null, null, null, null]
 
 # 玩家第一个建造者的炮塔会居中，其他炮塔除非有group_structure，不然是随机分布的
 func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> ItemData:
-	if RunData.get_nb_item(foxlab_builder_turret_names[new_level], player_index) == 0:
-		return get_element(items, foxlab_builder_turret_names[new_level]) as ItemData
+	if RunData.get_nb_item(Keys.item_builder_turret_n_hash[new_level], player_index) == 0:
+		return get_element(items, Keys.item_builder_turret_n_hash[new_level]) as ItemData
 	if  foxlab_builder_turret_scatter[new_level] == null:
-		foxlab_builder_turret_scatter[new_level] = get_element(items, foxlab_builder_turret_names[new_level]).duplicate()
+		foxlab_builder_turret_scatter[new_level] = get_element(items, Keys.item_builder_turret_n_hash[new_level]).duplicate()
 		for i in range(foxlab_builder_turret_scatter[new_level].effects.size()):
 			var effect = foxlab_builder_turret_scatter[new_level].effects[i]
 			if effect is BuilderTurretEffect:
@@ -81,13 +78,13 @@ const FOXLAB_BOSS_CHANCE := 0.06
 const FOXLAB_CHARM_CHANCE := 0.03
 var foxlab_enemies = []
 var foxlab_die_args = Entity.DieArgs.new()
+const FOXLAB_PLAYER_HP_BOOST = 20
 var foxlab_player_boost_args = BoostArgs.new()
 var foxlab_enemy_boost_args = BoostArgs.new()
 func _foxlab_init_enemies():
 	foxlab_die_args.cleaning_up = true
 	foxlab_die_args.enemy_killed_by_player = false
 	foxlab_die_args.killed_by_player_index = - 1
-	foxlab_player_boost_args.hp_boost = 20
 	foxlab_player_boost_args.speed_boost = 20
 	foxlab_player_boost_args.attack_speed_boost = 20
 	foxlab_enemy_boost_args.hp_boost = 150
@@ -115,19 +112,15 @@ func foxlab_get_enemy_from_item(enemy:Resource):
 func foxlab_random_enemies() -> Array:
 	if not foxlab_enemies.empty():
 		return foxlab_enemies
-	if get("enemies"):
-		for enemy in get("enemies"):
-			foxlab_get_enemy_from_item(enemy)
-	else:
-		for entity in get("entities"):
-			if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
-				continue
-			foxlab_get_enemy_from_item(entity)
+	for entity in entities:
+		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
+			continue
+		foxlab_get_enemy_from_item(entity)
 	foxlab_enemies.append(preload("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
 	return foxlab_enemies
 
 func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int):
-	var nb_reactor = max(1, RunData.get_nb_item("item_foxlab_reactor", player_index))
+	var nb_reactor = max(1, RunData.get_nb_item(Utils.item_foxlab_reactor_hash, player_index))
 	var boss_factor = boss_spawned_this_wave / nb_reactor
 	return (boss_factor < (1 + max(0, (RunData.current_wave -3 ) / 10)) and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / (1 + boss_factor)))
 
@@ -147,20 +140,17 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 		var main = Utils.get_scene_node()
 		for _player_index in RunData.get_player_count():
 			var player =  main._players[_player_index]
-			if is_instance_valid(player) and not player.dead:
+			if is_instance_valid(player) and not player._pending_die and Utils.get_stat(Keys.stat_max_hp_hash, _player_index) > 0:
 				if player.is_boosted:
 					player._boost_timer.start()
 					continue
-				var boost_args = BoostArgs.new()
-				boost_args.speed_boost = foxlab_player_boost_args.speed_boost
-				boost_args.attack_speed_boost = foxlab_player_boost_args.attack_speed_boost
 				var max_hp = player.max_stats.health as float
 				# 最少增加20点血量
-				if max_hp > 0 and max_hp * (foxlab_player_boost_args.hp_boost / 100.0) < foxlab_player_boost_args.hp_boost:
-					boost_args.hp_boost = ((max_hp + foxlab_player_boost_args.hp_boost) / max_hp - 1) * 100
+				if max_hp * (FOXLAB_PLAYER_HP_BOOST / 100.0) < FOXLAB_PLAYER_HP_BOOST:
+					foxlab_player_boost_args.hp_boost = ((max_hp + FOXLAB_PLAYER_HP_BOOST) / max_hp - 1) * 100
 				else:
-					boost_args.hp_boost = foxlab_player_boost_args.hp_boost
-				player.boost(boost_args)
+					foxlab_player_boost_args.hp_boost = FOXLAB_PLAYER_HP_BOOST
+				player.boost(foxlab_player_boost_args)
 				player.emit_signal("stats_boosted", player)
 
 		var floating_text_manager = null
@@ -168,16 +158,16 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 			floating_text_manager = main.get_node("FloatingTextManager")
 		if not enemy is Boss:
 			if floating_text_manager:
-				var icon = get_element(icons, "icon_elite").icon
+				var icon = get_element(icons, Keys.icon_elite_hash).icon
 				var player_position = floating_text_manager.players[player_index].global_position
 				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, \
 					floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
 			new_boss_num = 1
-			RunData.add_tracked_value(player_index, "item_foxlab_reactor", 1, 1)
+			RunData.add_tracked_value(player_index, Utils.item_foxlab_reactor_hash, 1, 1)
 		else:
 			if floating_text_manager:
 				floating_text_manager.display("FOXLAB_RESURRECT", enemy.global_position)
-			RunData.add_tracked_value(player_index, "item_foxlab_reactor", 1, 2)
+			RunData.add_tracked_value(player_index, Utils.item_foxlab_reactor_hash, 1, 2)
 
 	else:
 		enemy_scene = Utils.get_rand_element(foxlab_random_enemies())
@@ -213,10 +203,10 @@ func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapo
 var foxlab_just_enter_shop = [true, true, true, true]
 func get_player_shop_items(wave: int, player_index: int, args: ItemServiceGetShopItemsArgs) -> Array:
 	if not foxlab_just_enter_shop[player_index]:
-		args.increase_tier += RunData.get_player_effect("foxlab_increase_tier_on_rerolls", player_index)
+		args.increase_tier += RunData.get_player_effect(Utils.foxlab_increase_tier_on_rerolls_hash, player_index)
 	return .get_player_shop_items(wave, player_index, args)
 
-const BANNED_ITEM_NAMES_EARLIER = ["item_foxlab_slow_and_steady_wins", "item_foxlab_spacetime_anchor"]
+var BANNED_ITEM_NAMES_EARLIER = [Keys.generate_hash("item_foxlab_slow_and_steady_wins"), Keys.generate_hash("item_foxlab_spacetime_anchor")]
 var banned_items_earlier = []
 func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetRandItemForWaveArgs) -> ItemParentData:
 	if wave < 13 and type == TierData.ITEMS:

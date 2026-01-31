@@ -6,19 +6,19 @@ static func get_id() -> String:
 
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
-	var effect_items: Array = effects[custom_key]
+	var effect_items: Array = effects[custom_key_hash]
 	for existing_item in effect_items:
-		if existing_item[0] == key:
+		if existing_item[0] == key_hash:
 			existing_item[1] *= value / 100.0
 			return
-	effect_items.push_back([key, value / 100.0])
+	effect_items.push_back([key_hash, value / 100.0])
 
 func unapply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
-	var effect_items: Array = effects[custom_key]
+	var effect_items: Array = effects[custom_key_hash]
 	for i in effect_items.size():
 		var effect_item = effect_items[i]
-		if effect_item[0] == key:
+		if effect_item[0] == key_hash:
 			effect_item[1] /= value / 100.0
 			if is_equal_approx(1.00, effect_item[1]):
 				effect_items.remove(i)

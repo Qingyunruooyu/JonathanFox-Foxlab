@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 key = "weapon_slot"
-text_key = "effect_no_weapons"
+text_key = "EFFECT_FOXLAB_NO_WEAPON_SLOTS"
 value = 0
 custom_key = ""
 storage_method = 2

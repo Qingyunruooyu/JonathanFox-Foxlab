@@ -7,7 +7,7 @@ func apply_items_appearance(all_items: Array) -> void :
 	.apply_items_appearance(all_items)
 	for item in all_items:
 		for app in item.item_appearances:
-			if "hide_vanilla_potato" in app and app.hide_vanilla_potato:
+			if "foxlab_hide_potato" in app and app.foxlab_hide_potato:
 				var potato = $"%Character"/Sprite
 				potato.texture = foxlab_transparent_texture
 				var legs = $"%Character"/Legs

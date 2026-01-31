@@ -5,7 +5,7 @@ var foxlab_scepter_particle = preload("res://particles/ghost_scepter_particles.t
 var foxlab_potato_texture = preload("res://entities/units/player/potato.png")
 var foxlab_transparent_texture = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
 
-var foxlab_ball_lighting_names = ["item_foxlab_ball_lightning_3", "item_foxlab_ball_lightning_2", "item_foxlab_ball_lightning_1", "item_foxlab_ball_lightning_0"]
+var foxlab_ball_lighting_names = [Keys.generate_hash("item_foxlab_ball_lightning_3"), Keys.generate_hash("item_foxlab_ball_lightning_2"), Keys.generate_hash("item_foxlab_ball_lightning_1"), Keys.generate_hash("item_foxlab_ball_lightning_0"), ]
 
 var _foxlab_ball_lightning_timer: Timer
 
@@ -15,7 +15,7 @@ var _projectile_on_hit_effects = []
 var _has_projectile_on_hit = false
 
 func _ready() -> void :
-	var ball_lightning_effect = RunData.get_player_effect("foxlab_ball_lightning", player_index)
+	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
 	if ball_lightning_effect.size() > 0 and ball_lightning_effect[0] > 0:
 		_foxlab_ball_lightning_timer = Timer.new()
 		_foxlab_ball_lightning_timer.wait_time = ball_lightning_effect[3]
@@ -23,27 +23,22 @@ func _ready() -> void :
 		add_child(_foxlab_ball_lightning_timer)
 		_foxlab_ball_lightning_timer.start()
 
-	var temp_stats_on_hit_effect = RunData.get_player_effect("temp_stats_on_hit", player_index)
+	var temp_stats_on_hit_effect = RunData.get_player_effect(Keys.temp_stats_on_hit_hash, player_index)
 	for temp_stat_on_hit in temp_stats_on_hit_effect:
-			if "enemy" in temp_stat_on_hit[0]:
-				if "speed" in temp_stat_on_hit[0]:
-					foxlab_enemy_stats_on_hit.push_back("enemy_speed")
-				elif "damage" in temp_stat_on_hit[0]:
-					foxlab_enemy_stats_on_hit.push_back("enemy_damage")
-				elif "health" in temp_stat_on_hit[0]:
-					foxlab_enemy_stats_on_hit.push_back("enemy_health")
+			if temp_stat_on_hit[0] in Utils.foxlab_enemy_stats:
+				foxlab_enemy_stats_on_hit.push_back(temp_stat_on_hit[0])
 
-	var projectile_on_hit_effect: Array = RunData.get_player_effect("foxlab_projectile_on_hit", player_index)
+	var projectile_on_hit_effect: Array = RunData.get_player_effect(Utils.foxlab_projectile_on_hit_hash, player_index)
 	if not projectile_on_hit_effect.empty() and \
-		projectile_on_hit_effect[0] + RunData.get_player_effect("foxlab_projectile_on_hit_num", player_index) > 0:
+		projectile_on_hit_effect[0] + RunData.get_player_effect(Utils.foxlab_projectile_on_hit_num_hash, player_index) > 0:
 			_has_projectile_on_hit = true
 			for effect in projectile_on_hit_effect[4]:
 				_projectile_on_hit_effects.append(load(effect))
 
 func on_foxlab_ball_lightning_timeout() -> void :
-	var ball_lightning_effect = RunData.get_player_effect("foxlab_ball_lightning", player_index)
+	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
 	var ball_lightning_stats = WeaponService.init_ranged_stats(ball_lightning_effect[1], player_index, true)
-	var tracking_key = ""
+	var tracking_key = Keys.empty_hash
 	for track_id in foxlab_ball_lighting_names:
 		if RunData.get_nb_item(track_id, player_index):
 			tracking_key = track_id
@@ -52,7 +47,7 @@ func on_foxlab_ball_lightning_timeout() -> void :
 		var direction = (2 * PI / ball_lightning_effect[0]) * i
 		var auto_target_enemy: bool = ball_lightning_effect[2]
 		var args: = WeaponServiceSpawnProjectileArgs.new()
-		args.damage_tracking_key = tracking_key
+		args.damage_tracking_key_hash = tracking_key
 		args.from_player_index = player_index
 		var _projectile = WeaponService.manage_special_spawn_projectile(
 			self,
@@ -65,16 +60,16 @@ func on_foxlab_ball_lightning_timeout() -> void :
 		)
 
 func foxlab_manage_projectile_on_hit() -> void:
-	var projectile_on_hit_effect: Array = RunData.get_player_effect("foxlab_projectile_on_hit", player_index)
+	var projectile_on_hit_effect: Array = RunData.get_player_effect(Utils.foxlab_projectile_on_hit_hash, player_index)
 	var weapon_args = WeaponServiceInitStatsArgs.new()
 	weapon_args.effects = _projectile_on_hit_effects
 	var projectile_stats = WeaponService.init_ranged_stats(projectile_on_hit_effect[1], player_index, true, weapon_args)
-	var proj_num = projectile_on_hit_effect[0] +  RunData.get_player_effect("foxlab_projectile_on_hit_num", player_index)
+	var proj_num = projectile_on_hit_effect[0] +  RunData.get_player_effect(Utils.foxlab_projectile_on_hit_num_hash, player_index)
 	for i in proj_num:
 		var direction = (2 * PI / projectile_on_hit_effect[0]) * i
 		var auto_target_enemy: bool = projectile_on_hit_effect[2]
 		var args: = WeaponServiceSpawnProjectileArgs.new()
-		args.damage_tracking_key = projectile_on_hit_effect[5]
+		args.damage_tracking_key_hash = projectile_on_hit_effect[5]
 		args.from_player_index = player_index
 		args.effects = _projectile_on_hit_effects
 		var _projectile = WeaponService.manage_special_spawn_projectile(
@@ -113,7 +108,7 @@ func _clean_up() -> void :
 func apply_items_effects() -> void :
 	.apply_items_effects()
 	for appearance in RunData.get_player_appearances(player_index):
-			if "hide_vanilla_potato" in appearance and appearance.hide_vanilla_potato:
+			if "foxlab_hide_potato" in appearance and appearance.foxlab_hide_potato:
 				var potato = $Animation / Sprite
 				potato.texture = foxlab_transparent_texture
 				var legs = $Animation/Legs

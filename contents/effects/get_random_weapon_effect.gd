@@ -44,9 +44,13 @@ func unapply(_player_index: int) -> void:
 
 func get_args(player_index: int) -> Array:
 	if RunData.get_player_character(player_index) == null:
-		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
+		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), ""]
 	try_generate(player_index)
-	return [weapon_id[player_index], extra_item_id[player_index]]
+	return [
+			weapon_id[player_index],\
+			extra_item_id[player_index],\
+			tr("EFFECT_FOXLAB_BUDDHAS_HAND_CONST") if is_const_weapon[player_index] else tr("EFFECT_FOXLAB_BUDDHAS_HAND_BRICK")
+			]
 
 func _get_chance_success(base_chance: float, luck_chance: float)->bool:
 	return Utils.get_chance_success(min(MAX_BONUS_CHANCE, base_chance * luck_chance))
@@ -68,15 +72,18 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 
 	var weapon = null
 	# chance to get the same weapon equiped
-	if _get_chance_success(CHANCE_EQUIPPED_WEAPON, luck_chance) and RunData.players_data[player_index].weapons.size() > 0:
-		var ref_weapon = Utils.get_rand_element(RunData.players_data[player_index].weapons)
+	if _get_chance_success(CHANCE_EQUIPPED_WEAPON, luck_chance) and RunData.get_player_weapons_ref(player_index).size() > 0:
+		var ref_weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index))
 		weapon = ItemService.get_element(ItemService.weapons, ref_weapon.my_id_hash).duplicate()
 	else:
 		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args).duplicate()
 
+	var is_melee_boosted = false
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
-		var melee_stats = weapon.stats
+		var melee_stats = weapon.stats.duplicate()
 		melee_stats.deal_dmg_on_return = true
+		weapon.stats = melee_stats
+		is_melee_boosted = true
 
 	var item_for_effect = null
 
@@ -164,6 +171,9 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		while upgrade_into != null:
 			upgrade_into = upgrade_into.duplicate()
 			upgrade_into.effects.append_array(item_for_effect.effects)
+			if is_melee_boosted:
+				upgrade_into.stats = upgrade_into.stats.duplicate()
+				upgrade_into.stats.deal_dmg_on_return = true
 			current.upgrades_into = upgrade_into
 			current = upgrade_into
 			upgrade_into = current.upgrades_into

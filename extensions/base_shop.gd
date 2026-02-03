@@ -31,7 +31,7 @@ func _ready() -> void :
 			var items = RunData.get_player_items(player_index)
 			player_gear_container.set_items_data(items)
 
-		if RunData.get_player_effect_bool(Utils.foxlab_keep_random_weapon_hash, player_index) and RunData.get_player_weapons(player_index).size() > 0:
+		if RunData.get_player_effect_bool(Utils.foxlab_keep_random_weapon_hash, player_index) and RunData.get_player_weapons_ref(player_index).size() > 0:
 			var weapons = RunData.get_player_weapons(player_index)
 			var weapon_idx_to_keep = Utils.randi_range(0, weapons.size() - 1)
 			var weapon_to_keep:WeaponData = weapons[weapon_idx_to_keep]
@@ -58,30 +58,25 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 
 func buy_item(item_data: ItemData, player_index: int) -> void :
 	var prev_weapon_slot = RunData.get_player_effect(Keys.weapon_slot_hash, player_index)
+	var prev_weapon_num = RunData.get_player_weapons_ref(player_index).size()
+	var prev_mask_value = RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash]
+	var prev_hourglass = RunData.get_player_effect(Keys.item_hourglass_hash, player_index)
+
 	.buy_item(item_data, player_index)
-	var update_weapon = false
-	var update_item = false
-	var update_go_next = false
-	for effect in item_data.effects:
-		if effect.get_id() == "foxlab_effect_get_rand_character":
-			update_weapon = true
-			update_item = true
-		elif effect.get_id() == "foxlab_effect_get_rand_weapon":
-			update_weapon = true
-			update_item = true
-			update_go_next = true
-	if RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot:
-		update_weapon = true
 
 	var player_gear_container = _get_gear_container(player_index)
-	if update_weapon:
+
+	if (RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot) or \
+		(RunData.get_player_weapons_ref(player_index).size() != prev_weapon_num):
 		var weapons = RunData.get_player_weapons(player_index)
 		player_gear_container.set_weapons_data(weapons)
-	if update_item:
+
+	if RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] != prev_mask_value:
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
-	if update_go_next:
-		call_deferred("update_go_next_button_text")
+
+	if RunData.get_player_effect(Keys.item_hourglass_hash, player_index) != prev_hourglass:
+		update_go_next_button_text()
 
 func _on_RerollButton_pressed(player_index: int) -> void :
 	ItemService.foxlab_just_enter_shop[player_index] = false

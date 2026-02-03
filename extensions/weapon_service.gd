@@ -1,4 +1,9 @@
 extends "res://singletons/weapon_service.gd"
+### 扩展 ###
+func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service) -> MeleeWeaponStats:
+	var new_stats = .init_melee_stats(from_stats, player_index, args)
+	new_stats.deal_dmg_on_return = from_stats.deal_dmg_on_return
+	return new_stats
 
 func _set_common_ranged_stats(new_stats: RangedWeaponStats, from_stats: RangedWeaponStats, player_index: int):
 	._set_common_ranged_stats(new_stats, from_stats, player_index)
@@ -17,6 +22,7 @@ func set_projectile_effects(base_effects: Array, player_index: int = - 1) -> Arr
 				effect.key_hash = Keys.bounce_on_crit_hash
 	return .set_projectile_effects(base_effects, player_index)
 
+### 功能 ###
 func foxlab_spawn_landmines_on_enemy_death_count(hitbox: Hitbox, was_burning: bool, player_index: int) -> int:
 	var landmines_on_death_effects = RunData.get_player_effect(Utils.foxlab_landmines_on_death_chance_hash, player_index)
 	if landmines_on_death_effects.empty():

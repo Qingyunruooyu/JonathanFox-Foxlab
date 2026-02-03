@@ -27,7 +27,7 @@ func init_assemble_ability(players_ref: Array):
 		players_ref[player_index].connect("took_damage", self, "_on_player_took_damage")
 
 static func get_max_range_melee_weapon_range(stats: Resource, player_index:int) -> int:
-	var player_weapons = RunData.get_player_weapons(player_index)
+	var player_weapons = RunData.get_player_weapons_ref(player_index)
 	var max_range = 0
 	var best_weapon = null
 	for weapon in player_weapons:
@@ -49,7 +49,6 @@ func set_data(data: Resource) -> void :
 	var updated_data = data.duplicate()
 	# Effect.is_cursed不是export变量，需要手动复制
 	updated_data.is_cursed = data.is_cursed
-	var player_weapons = RunData.get_player_weapons(player_index)
 	var max_range = get_max_range_melee_weapon_range(data.stats, player_index)
 	if max_range != updated_data.stats.max_range:
 		var stats = updated_data.stats.duplicate()

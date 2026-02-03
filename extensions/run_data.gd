@@ -27,7 +27,7 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 func foxlab_modify_weapon(player_index: int):
 	if foxlab_remembered_weapons[player_index].empty():
 		return
-	for weapon in get_player_weapons(player_index):
+	for weapon in get_player_weapons_ref(player_index):
 		if weapon == players_data[player_index].selected_weapon:
 			players_data[player_index].selected_weapon = players_data[player_index].selected_weapon.duplicate()
 		var null_effect = NullEffect.new()
@@ -81,7 +81,7 @@ func foxlab_forget_item(player_index: int):
 		effects[Keys.extra_loot_aliens_next_wave_hash] = previous_loot_next_wave
 		effects[Keys.hp_start_next_wave_hash] =  previous_hp_next_wave
 
-	for weapon in get_player_weapons(player_index):
+	for weapon in get_player_weapons_ref(player_index):
 		Utils.reset_stat_cache(player_index)
 		var effects: Array = weapon.effects
 		for i in range(effects.size()):
@@ -176,3 +176,9 @@ func init_elites_spawn(base_wave: int = 10, horde_chance: float = 0.4) -> void :
 			elif get_player_count() == 1 and current_character.my_id_hash in FOXLAB_HORDE_CHARS:
 				horde_chance = 1.0
 	.init_elites_spawn(base_wave, horde_chance)
+
+# 初始携带就能增加统计数据的角色/道具（如面具、佛手、无面）
+func revert_all_selections() -> void :
+	.revert_all_selections()
+	for player_index in range(get_player_count()):
+		tracked_item_effects[player_index] = init_tracked_effects()

@@ -58,7 +58,7 @@ func unapply(player_index: int) -> void:
 
 func try_generate(player_index: int):
 	var first_generate = RunData.get_player_effect_bool(Utils.foxlab_mask_first_generate_hash, player_index)
-	if chars_to_get[player_index].empty() or first_generate:
+	if chars_name[player_index] == "" or first_generate:
 		if first_generate:
 			chars_name[player_index] = ""
 			starting_items[player_index].clear()
@@ -122,7 +122,7 @@ func apply(player_index: int) -> void:
 	starting_items[player_index].clear()
 	RunData.add_tracked_value(player_index, Utils.item_foxlab_mask_hash, 1)
 
-	if RunData.players_data[player_index].weapons.size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
+	if RunData.get_player_weapons_ref(player_index).size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
 		_duplicate_weapon(player_index)
 
 	var is_vagabond_on1 = RunData.get_player_effect_bool(Keys.all_weapons_count_for_sets_hash, player_index)
@@ -150,7 +150,7 @@ func _duplicate_weapon(player_index: int):
 
 	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
 	effects[Utils.fox_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if _is_wave_started(player_index) else 1
-	var weapon = Utils.get_rand_element(RunData.get_player_weapons(player_index)).duplicate()
+	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	var weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
 	while weapon_for_effect.effects.empty():
 		weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
@@ -189,7 +189,7 @@ func cleanup(player_index: int) -> void:
 			var weapon = WeaponData.new()
 			weapon.deserialize_and_merge(weapon_data)
 			DebugService.log_data("remove " + weapon.my_id + str(weapon))
-			var player_weapons_raw: Array = RunData.players_data[player_index].weapons
+			var player_weapons_raw: Array = RunData.get_player_weapons_ref(player_index)
 			var weapon_count_before = player_weapons_raw.size()
 			RunData.remove_weapon(weapon, player_index)
 			var weapon_count_after = player_weapons_raw.size()
@@ -208,7 +208,7 @@ func cleanup(player_index: int) -> void:
 
 	var items_to_remove:Dictionary={}
 	var items_to_remove_order:Array = []
-	var player_items_raw = RunData.players_data[player_index].items
+	var player_items_raw = RunData.get_player_items_ref(player_index)
 	# 要移除的往往是新获得的物品，而且先加入的应该后退出才能保证REPLACE类型的数据正确地恢复
 	# 1. 比如宝宝+多面手，宝宝-5武器栏，多面手是置1为12，进场的时候12武器栏，离场的时候，应该是多面手把武器栏恢复成1，然后宝宝+5恢复成6
 	# 如果顺序弄反了，先宝宝离场武器栏变17然后多面手离场，武器变1了
@@ -238,7 +238,7 @@ func cleanup(player_index: int) -> void:
 
 func get_args(player_index: int) -> Array:
 	if RunData.get_player_character(player_index) == null:
-		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
+		return ["%s ~ %s" % [str(floor(MIN_TRANSFORM_NUM)), str(ceil(MAX_TRANSFORM_NUM))], tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
 	try_generate(player_index)
 	return [str(chars_to_get[player_index].size()), chars_name[player_index], str(stepify(_get_transform_chance(player_index), 0.01))]
 
@@ -348,19 +348,12 @@ func _get_rand_chars(player_index: int) -> Array:
 					if dlc and effect.brolab_cursed_item:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
-			elif effect.key_hash == Utils.foxlab_effect_receive_item_at_wave_hash \
-				and effect.foxlab_receive_item_wave == 1\
-				and effect.foxlab_receive_item_end_wave == 1:
-				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
-				for i in range(effect.value):
-					var item = ItemService.get_element(ItemService.items, effect.foxlab_receive_item_id_hash)
-					if dlc and effect.foxlab_cursed_item:
-						item = dlc.curse_item(item, player_index, true)
-					container.append(item)
 
 		for starting in special_starting:
 			if starting is WeaponData:
 				prev_items.append(starting.serialize())
 			else:
 				prev_items.append([starting.my_id_hash, starting.curse_factor])
+	if chars_name[player_index] == "":
+		chars_name[player_index] = tr("FOXLAB_DISABLE")
 	return chars_return

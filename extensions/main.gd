@@ -11,7 +11,7 @@ var foxlab_mutate_chance:Array = [0, 0, 0, 0]
 var foxlab_should_check_mutation:Array = [false, false, false, false]
 var foxlab_bosses_this_wave = [0, 0, 0, 0]
 const FOXLAB_STAT_MOD_CHANCE:float = 0.2
-var foxlab_mutate_boost = ItemService.foxlab_enemy_boost_args.duplicate()
+var foxlab_mutate_boost = [null, null, null, null]
 
 #贯通改为反弹相关
 var foxlab_original_piercing = [0, 0, 0, 0]
@@ -111,28 +111,32 @@ func foxlab_receive_item_stat_ready():
 			player.emit_signal("health_updated", player, player.current_stats.health, player.max_stats.health)
 
 ########### 异变相关 ###############
+func foxlab_should_check_mutation(player_index: int)-> bool:
+	foxlab_mutate_chance[player_index] = max(0, RunData.get_player_effect(Utils.foxlab_mutate_alive_enemy_hash, player_index))
+	if foxlab_mutate_chance[player_index]:
+		return true
+	for structure_effect in RunData.get_player_effect(Keys.structures_hash, player_index):
+		for effect in structure_effect.effects:
+			if effect.key_hash == Utils.foxlab_mutate_alive_enemy_hash or effect.custom_key_hash == Utils.foxlab_mutate_alive_enemy_hash:
+				return true
+	for weapon in RunData.get_player_weapons_ref(player_index):
+		for effect in weapon.effects:
+			if effect.key_hash == Utils.foxlab_mutate_alive_enemy_hash or effect.custom_key_hash == Utils.foxlab_mutate_alive_enemy_hash:
+				return true
+	return false
+
 func foxlab_mutation_ready():
 	for i in RunData.get_player_count():
-		foxlab_mutate_chance[i] = max(0, RunData.get_player_effect(Utils.foxlab_mutate_alive_enemy_hash, i))
-		if foxlab_mutate_chance[i]:
-			foxlab_should_check_mutation[i] = true
-			continue
-		for structure_effect in RunData.get_player_effect(Keys.structures_hash, i):
-			if foxlab_should_check_mutation[i]:
-				continue
-			for effect in structure_effect.effects:
-				if effect.key_hash == Utils.foxlab_mutate_alive_enemy_hash or effect.custom_key_hash == Utils.foxlab_mutate_alive_enemy_hash:
-					foxlab_should_check_mutation[i] = true
-					break
-		for weapon in RunData.get_player_weapons(i):
-			if foxlab_should_check_mutation[i]:
-				continue
-			for effect in weapon.effects:
-				if effect.key_hash == Utils.foxlab_mutate_alive_enemy_hash or effect.custom_key_hash == Utils.foxlab_mutate_alive_enemy_hash:
-					foxlab_should_check_mutation[i] = true
-					break
+		foxlab_should_check_mutation[i] = foxlab_should_check_mutation(i)
+		if foxlab_should_check_mutation[i]:
+			foxlab_mutate_boost[i] = BoostArgs.new()
+			foxlab_mutate_boost[i].hp_boost = ItemService.foxlab_enemy_boost_args.hp_boost
+			foxlab_mutate_boost[i].damage_boost = ItemService.foxlab_enemy_boost_args.damage_boost
 
 func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
+	if args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count():
+		return
+
 	if enemy._pending_die:
 		for i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
 			var pos = _entity_spawner.get_spawn_pos_in_area(enemy.global_position, 200)
@@ -145,9 +149,10 @@ func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_directio
 
 		return
 
-	if enemy.is_boosted or args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count() or not foxlab_should_check_mutation[args.from_player_index]:
-		return
+	if not enemy.is_boosted and foxlab_should_check_mutation[args.from_player_index]:
+		foxlab_process_enemy_mutate(enemy, args)
 
+func foxlab_process_enemy_mutate(enemy: Enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
 	if is_instance_valid(args.hitbox):
 		for effect in args.hitbox.from.effects if args.hitbox.from is Structure else args.hitbox.effects:
@@ -158,18 +163,22 @@ func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_directio
 	if Utils.get_chance_success(chance):
 		foxlab_bosses_this_wave[args.from_player_index] += ItemService.foxlab_spawn_random_enemy(enemy, foxlab_bosses_this_wave[args.from_player_index], args.from_player_index)
 		if RunData.get_player_effect_bool(Utils.foxlab_gain_stat_on_mutate_hash, args.from_player_index) and Utils.get_chance_success(chance):
+			var boost_enemy = _entity_spawner.get_rand_enemy()
+			if not is_instance_valid(boost_enemy):
+				return
+
+			foxlab_mutate_boost[args.from_player_index].speed_boost =  0 if boost_enemy is Boss else ItemService.foxlab_enemy_boost_args.attack_speed_boost
+			var pre_state = boost_enemy.can_be_boosted
+			boost_enemy.can_be_boosted = true
+			boost_enemy.boost(foxlab_mutate_boost[args.from_player_index])
+			boost_enemy.can_be_boosted = pre_state
+
 			for i in range(1 + RunData.current_wave / 5):
 				var add_mod :bool = Utils.get_chance_success(FOXLAB_STAT_MOD_CHANCE)
 				var stat = Utils.get_rand_element(Utils.foxlab_primary_stat_gain_map.keys()) if add_mod else Utils.get_rand_element(Utils.foxlab_primary_stat_gain_map.values())
 				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
 				RunData.add_stat(stat, value, args.from_player_index)
 				RunData.add_tracked_value(args.from_player_index, Utils.character_foxlab_refactor_hash, value, add_mod)
-			var boost_enemy = _entity_spawner.get_rand_enemy()
-			foxlab_mutate_boost.speed_boost =  0 if boost_enemy is Boss else ItemService.foxlab_enemy_boost_args.attack_speed_boost
-			var pre_state = boost_enemy.can_be_boosted
-			boost_enemy.can_be_boosted = true
-			boost_enemy.boost(foxlab_mutate_boost)
-			boost_enemy.can_be_boosted = pre_state
 
 ##########贯通改为反弹相关########
 func foxlab_piercing_is_bounce_ready():

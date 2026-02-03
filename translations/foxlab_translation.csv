@@ -42,7 +42,7 @@ ITEM_FOXLAB_ARCHITECTURE_DIAGRAM,架构图,Architecture Diagram
 EFFECT_FOXLAB_MAX_WEAPONS,你有{0}个武器栏,You have {0} weapon slots
 CHARACTER_FOXLAB_INFERNAL_MACHINE,机械恶魔,Infernal Machine
 ITEM_FOXLAB_FUNNEL,浮游炮塔,Funnel
-EFFECT_FOXLAB_FUNNEL_SPAWN,初始拥有3个浮游炮，之后每{1}秒召唤一个,"You start with 3 Funnels and one more spawns every {1} seconds"
+EFFECT_FOXLAB_FUNNEL_SPAWN,每{1}秒召唤一个浮游炮,"One Funnel spawns every {1} seconds"
 EFFECT_FOXLAB_FUNNEL,生成2个浮游炮，造成{0}（{1}）伤害,Spawns 2 Funnels dealing {0} ({1}) damage
 EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_EQUAL,{0}的{1}在敌袭结束后等量转换为{2},{0} of your {1} are equivalently converted into {2} at the end of a wave
 CHARACTER_FOXLAB_BALL,球球,Ball
@@ -169,13 +169,13 @@ ITEM_FOXLAB_MOUNTAIN,铁砧・不动如山,Anvil (Immovable as Mountain)
 ITEM_FOXLAB_SHADOW,铁砧・难知如阴,Anvil (Unfathomable as Shadow)
 ITEM_FOXLAB_THUNDER,铁砧・动如雷震,Anvil (Sudden as Thunder)
 CHARACTER_FOXLAB_ODD_EYED,异瞳,Odd-Eyed
-CRATE_CHANCE,%箱子率,% Crate Chance
+CRATE_CHANCE,%消耗品出箱子率,% Crate Chance in Consumable
 EFFECT_FOXLAB_ABOVE_LINE,上一行,Line Above
 EFFECT_FOXLAB_BELOW_LINE,下一行,Line Below
 EFFECT_FOXLAB_ODD_EYED,每获得[color=#FF8C00]直接[/color]{4}的道具，面板里该属性{5}/{6}分别{7}/{8}[color=#FF8C00]Ⅰ级升级属性[/color],"Every time you get an item that [color=#FF8C00]literally[/color] {4}, {5}/{6} them in panel will {7}/{8} [color=#FF8C00]Tier I Upgrade[/color]"
 CHARACTER_FOXLAB_GHOST_ENVOY,鬼差,Ghost Envoy
 ITEM_FOXLAB_HAUNTED_NIGHT,百鬼夜行,Haunted Night
-FOXLAB_GHOST_MATERIALS_GAINED,获得的冥币：{0},Ghost materials gained: {0}
+FOXLAB_GHOST_MATERIALS_GAINED,已获得冥币：{0},Ghost materials gained: {0}
 EFFECT_FOXLAB_MULTIPLY_MATERIAL_HALF_WAVE,敌袭中途{1}乘以{0},{1} x{0} halfway through a wave
 EFFECT_FOXLAB_MULTIPLY_STATS_HALF_WAVE,敌袭中途{1}暂时乘以{0},{1} x{0} temporarily halfway through a wave
 EFFECT_FOXLAB_MULTIPLY_STATS_END_OF_WAVE,敌袭结束后{1}乘以{0},{1} x{0} at the end of a wave
@@ -253,8 +253,9 @@ EFFECT_FOXLAB_SLOW_ON_HIT,敌人受{1}伤害会暂时减速{0},Enemy is slowed {
 EFFECT_FOXLAB_SPAWN_LANDMINE_CHANCE,武器直接杀死敌人时有{0}几率生成1地雷,{0} chance to spawn a landmine if an enemy is killed directly by your weapon
 CHARACTER_FOXLAB_MONK,僧侣,Monk
 ITEM_FOXLAB_BUDDHAS_HAND,佛手,Buddha's Hand
-EFFECT_FOXLAB_BUDDHAS_HAND,获得此道具时，你会装备{0}并赋予其{1}效果,"You equip a {0} with effect of {1} when you get this item"
-EFFECT_FOXLAB_BUDDHAS_HAND_BRICK,赋予的效果若有{3}{1}，武器升级后失去此效果,"If the effect has {3}{1}, it is lost when you upgrade the weapon"
+EFFECT_FOXLAB_BUDDHAS_HAND,你将装备1{0}（拥有{1}效果{2}）,"You'll equip a {0} with effect of {1}{2}"
+EFFECT_FOXLAB_BUDDHAS_HAND_BRICK,，武器升级后[color=#FF8C00]失去[/color]此效果," (The effect is [color=#FF8C00]lost[/color] on weapon upgrade)"
+EFFECT_FOXLAB_BUDDHAS_HAND_CONST,，武器[color=#FF8C00]主动升级（如铁砧）[/color]或点击[color=#FF8C00]此武器[/color]合成按钮，可[color=#FF8C00]保留[/color]此效果," (The effect is [color=#FF8C00]kept[/color] if the weapon [color=#FF8C00]upgrades by itself (eg. Anvil)[/color] or is [color=#FF8C00]selected by you[/color] for combination)"
 EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME,下场敌袭会出现额外的[color=#FF8C00]{2}[/color],Extra [color=#FF8C00]{2}[/color] appears during the next wave
 FOXLAB_RANDOM,随机,random
 EXTRA_LOOT_ALIENS_NEXT_WAVE,下波战利品外星人,Loot Aliens Next Wave
@@ -266,8 +267,11 @@ CHARACTER_FOXLAB_FACELESS,无面,Faceless
 FOXLAB_WEAPON_DUPLICATED,已复制的武器：{0},Weapons duplicated: {0}
 FOXLAB_TRANSFORM_TIMES,已成功变身：{0}, Successfully transformed: {0}
 PCT_NEXT_LEVEL_XP_NEEDED,%升级所需经验,% XP required to level up
-EFFECT_FOXLAB_FACELESS_DUPLICATE_WEAPON,变身成功后，你以此次变身成功的几率[color=#FF8C00]复制并改造[/color]你的一把武器（不会与上一次成功复制的波次相同）,"Same chance as transformation to [color=#FF8C00]duplicate and modify[/color] one of your weapon when you transform successfully (not at the same wave as previous weapon duplication)"
-EFFECT_FOXLAB_TRANSFORM,获得此道具时，你有{2}几率变身为{0}个角色：{1},"{2} chance to transform into {0} characters ({1}) when you get this item"
+EFFECT_FOXLAB_FACELESS_DUPLICATE_WEAPON,变身后有相同几率[color=#FF8C00]复制并改造[/color]你随机一把武器（不与上一次复制的波次相同）,"Same chance as transform to [color=#FF8C00]duplicate and modify[/color] one of your random weapon after transform (not at the same wave as previous one)"
+EFFECT_FOXLAB_TRANSFORM,你有{2}几率变身为{0}个角色：{1},"{2} chance to transform into {0} characters ({1})"
+EFFECT_FOXLAB_WEAPON_DUPLICATION,[color=#eae2b0]本波次{0}复制武器[/color],[color=#eae2b0]Weapon duplication is {0} this wave[/color]
+EFFECT_FOXLAB_FACELESS_ENABLE,还能,still enabled
+EFFECT_FOXLAB_FACELESS_DISABLE,已不能,now disabled
 EFFECT_FOXLAB_TRANSFORM_GAIN,[color=#FF8C00]护甲[/color]会降低{1}变身几率、增加变身数量,[color=#FF8C00]Armor[/color] decreases transform chance but increases transform character number of {1}
 EFFECT_FOXLAB_LOSE_ON_REROLL,刷新按钮显示{1}时，刷新失去1{1},Lose 1 {1} on reroll when reroll botton shows {1}
 EFFECT_FOXLAB_FORCE_REMOVE_ON_REROLL,刷新后失去{1},Lose all {1} on reroll

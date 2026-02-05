@@ -15,8 +15,6 @@ const EXTENSION_SCRIPTS: =[
 	"player_run_data.gd",
 	"main.gd",
 	"base_shop.gd",
-	"item_panel_ui.gd",
-	"upgrades_ui_player_container.gd",
 	"shop_item.gd",
 	"floating_text_manager.gd",
 	"entity_spawner.gd",
@@ -27,6 +25,7 @@ const EXTENSION_SCRIPTS: =[
 	"character_panel_ui.gd",
 	"memu_confirm.gd",
 	"sort_inventory_button.gd",
+	"item_description.gd",
 ]
 
 

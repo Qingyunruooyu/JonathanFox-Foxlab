@@ -94,6 +94,11 @@ var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")
 var foxlab_ignored_floating_stat_hash = {
 	Keys.no_heal_hash: 0,
 	Keys.negative_knockback_hash: 0,
+	Keys.enemy_damage_hash: 0,
+	Keys.enemy_health_hash: 0,
+	Keys.enemy_speed_hash: 0,
+	foxlab_troubleshooter_crisis_num_hash: 0,
+	foxlab_troubleshooter_temp_hash: 0,
 	foxlab_dante_states_hash: 0,
 	foxlab_shop_point_hash: 0,
 	foxlab_shop_point_upgrade_hash: 0,

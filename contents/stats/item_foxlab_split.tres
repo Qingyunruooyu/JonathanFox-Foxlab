@@ -1,11 +1,11 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://items/all/tentacle/tentacle_icon.png" type="Texture" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/spawner_icon.png" type="Texture" id=1]
 [ext_resource path="res://items/upgrades/stat_data.gd" type="Script" id=2]
 
 [resource]
 script = ExtResource( 2 )
-stat_name = "enemy_damage"
+stat_name = "item_foxlab_split"
 icon = ExtResource( 1 )
 small_icon = ExtResource( 1 )
 is_primary_stat = false

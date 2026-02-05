@@ -31,12 +31,19 @@ func modify_characters():
 			if tag in character.wanted_tags:
 				ProgressData._append_without_duplicates(character.banned_items, extra_banned_item[tag])
 
+func add_stats():
+	for stat in stats:
+		stat.generate_hashes()
+		if "foxlab" in stat.stat_name or not ItemService.get_stat(stat.stat_hash):
+			ItemService.stats.append(stat)
+
 func add_resources(settings: Dictionary):
 	if not settings["FOXLAB_DISABLE_CHARACTERS"]:
 		ProgressData._append_without_duplicates(ItemService.characters, characters)
 	else:
+		var faceless_hash = Keys.generate_hash("character_foxlab_faceless")
 		for character in characters:
-			if character.my_id == "character_foxlab_faceless":
+			if character.my_id_hash == faceless_hash:
 				ProgressData._append_without_duplicates(ItemService.characters, [character])
 				break
 
@@ -49,13 +56,10 @@ func add_resources(settings: Dictionary):
 	ProgressData._append_without_duplicates(RunData.effect_keys_with_weapon_stats, Utils.convert_to_hash_array(effect_keys_with_weapon_stats))
 	ProgressData._append_without_duplicates(RunData.effect_keys_full_serialization, Utils.convert_to_hash_array(effect_keys_full_serialization))
 
-	for stat in stats:
-		stat.generate_hashes()
-		if stat.stat_name.begins_with("foxlab") or not ItemService.get_stat(stat.stat_hash):
-			ItemService.stats.append(stat)
 	RunData.init_tracked_items.merge(Utils.convert_dictionary_to_hash(tracked_items))
 
 	Text.keys_needing_operator.merge(translation_keys_needing_operator)
 	Text.keys_needing_percent.merge(translation_keys_needing_percent)
 
 	call_deferred("modify_characters")
+	call_deferred("add_stats")

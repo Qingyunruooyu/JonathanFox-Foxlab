@@ -49,6 +49,7 @@ func set_data(data: Resource) -> void :
 	var updated_data = data.duplicate()
 	# Effect.is_cursed不是export变量，需要手动复制
 	updated_data.is_cursed = data.is_cursed
+	updated_data.tracking_key_hash = data.tracking_key_hash
 	var max_range = get_max_range_melee_weapon_range(data.stats, player_index)
 	if max_range != updated_data.stats.max_range:
 		var stats = updated_data.stats.duplicate()

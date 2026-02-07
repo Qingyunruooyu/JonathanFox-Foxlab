@@ -117,7 +117,7 @@ func apply(player_index: int) -> void:
 			var weapon = RunData.add_weapon(item, player_index)
 			#即便是相同的武器ID也可能会有不同的效果，所以用序列化精确判断
 			prev_items.append(weapon.serialize())
-			DebugService.log_data("add weapon " + weapon.my_id)
+			DebugService.log_data("add weapon " + weapon.my_id + str(weapon))
 
 	starting_items[player_index].clear()
 	RunData.add_tracked_value(player_index, Utils.item_foxlab_mask_hash, 1)

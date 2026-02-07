@@ -20,9 +20,18 @@ func _generate_hashes() -> void:
 	tracking_key_hash = Keys.generate_hash(tracking_key)
 
 func apply(player_index: int) -> void:
-	.apply(player_index)
 	var effect: Array = RunData.get_player_effect(key_hash, player_index)
-	effect.append_array([effects, tracking_key_hash])
+	var first_apply = effect.empty()
+	.apply(player_index)
+	if first_apply:
+		effect.append_array([effects, tracking_key_hash])
+
+func unapply(player_index: int) -> void:
+	var effect: Array = RunData.get_player_effect(key_hash, player_index)
+	if effect[0] - value <= 0:
+		effect.clear()
+	else:
+		.unapply(player_index)
 
 func get_args(player_index: int) -> Array:
 	var weapon_args = WeaponServiceInitStatsArgs.new()

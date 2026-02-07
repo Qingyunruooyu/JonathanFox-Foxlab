@@ -23,7 +23,7 @@ const EXTENSION_SCRIPTS: =[
 	"upgrades_ui.gd",
 	"weapon_service.gd",
 	"character_panel_ui.gd",
-	"memu_confirm.gd",
+	"menu_confirm.gd",
 	"sort_inventory_button.gd",
 	"item_description.gd",
 ]

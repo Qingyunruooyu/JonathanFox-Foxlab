@@ -135,7 +135,6 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		elif effect.custom_key == "yztato_destory_weapons":
 			effect.key = weapon.weapon_id
 			effect.key_hash = weapon.weapon_id_hash
-			effect.text_key = tr("EFFECT_FOXLAB_WEAPON_TEXT_ONLY") % [tr(weapon.name)]
 		elif effect.get_id() == get_id():
 			effect.weapon_id = ["","","",""]
 			effect.debug_item_name = []

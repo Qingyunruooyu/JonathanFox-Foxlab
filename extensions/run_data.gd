@@ -81,17 +81,17 @@ func foxlab_forget_item(player_index: int):
 		effects[Keys.extra_loot_aliens_next_wave_hash] = previous_loot_next_wave
 		effects[Keys.hp_start_next_wave_hash] =  previous_hp_next_wave
 
-	for weapon in get_player_weapons_ref(player_index):
-		Utils.reset_stat_cache(player_index)
-		var effects: Array = weapon.effects
-		for i in range(effects.size()):
-			if effects[i].text_key == "foxlab_effect_remembered_weapon":
-				while effects.size() > i:
-					effects.pop_back().unapply(player_index)
-				break
-	LinkedStats.reset_player(player_index)
-	foxlab_remembered_weapons[player_index].clear()
-	foxlab_shop_items[player_index].clear()
+	if not foxlab_remembered_weapons[player_index].empty():
+		for weapon in get_player_weapons_ref(player_index):
+			Utils.reset_stat_cache(player_index)
+			var effects: Array = weapon.effects
+			for i in range(effects.size()):
+				if effects[i].text_key == "foxlab_effect_remembered_weapon":
+					while effects.size() > i:
+						effects.pop_back().unapply(player_index)
+					break
+		foxlab_remembered_weapons[player_index].clear()
+		LinkedStats.reset_player(player_index)
 
 func foxlab_adjust_weapon_effect(effect: Effect, weapon: WeaponData):
 	if effect is WeaponStackEffect: # stick
@@ -104,7 +104,6 @@ func foxlab_adjust_weapon_effect(effect: Effect, weapon: WeaponData):
 	elif effect.custom_key == "yztato_destory_weapons":
 		effect.key = weapon.weapon_id #保留的是武器大名，不是带等级的my_id
 		effect.key_hash = weapon.weapon_id_hash #保留的是武器大名，不是带等级的my_id
-		effect.text_key = tr("EFFECT_FOXLAB_WEAPON_TEXT_ONLY") % [tr(weapon.name)]
 
 func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effect: WeaponData) -> Array:
 	var null_effect = NullEffect.new()

@@ -35,9 +35,15 @@ func get_args(_player_index: int) -> Array:
 			return [str(stepify(stat_value, 0.001)), tr(key.to_upper())]
 		7: #股民的购买力
 			var gain_stat_max_hp = RunData.get_player_effect(Keys.gain_stat_max_hp_hash, _player_index)
+			var ret = ["", tr("EFFECT_FOXLAB_PURCHASING_POWER")]
 			if gain_stat_max_hp <= -100:
-				return [tr("FOXLAB_DISABLE"), tr("EFFECT_FOXLAB_PURCHASING_POWER")]
-			return [ str(stepify(1 / ((100 + gain_stat_max_hp) / 100.0), 0.01) * 100) + "%", tr("EFFECT_FOXLAB_PURCHASING_POWER")]
+				if RunData.get_stat(Keys.stat_max_hp_hash, _player_index) > 0:
+					ret[0] = "∞"
+				else:
+					ret[0] = tr("FOXLAB_DISABLE")
+			else:
+				ret[0] = str(stepify(1 / ((100 + gain_stat_max_hp) / 100.0), 0.01) * 100) + "%"
+			return ret
 		8: #下波临时属性
 			var val = 0
 			for effect in RunData.get_player_effect(Keys.stats_next_wave_hash, _player_index):

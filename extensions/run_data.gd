@@ -116,6 +116,15 @@ func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effec
 		foxlab_adjust_weapon_effect(effect, weapon)
 	return new_effects
 
+func get_foxlab_buddhas_hand_weapon(player_index: int):
+	return players_data[player_index].foxlab_buddhas_hand_weapon
+
+func get_foxlab_buddhas_hand_item(player_index: int):
+	return players_data[player_index].foxlab_buddhas_hand_item
+
+func get_foxlab_buddhas_hand_meta(player_index: int):
+	return players_data[player_index].foxlab_buddhas_hand_meta
+
 ###### 扩展 ######
 func on_wave_start(timer: WaveTimer) -> void :
 	.on_wave_start(timer)

@@ -48,6 +48,13 @@ func _ready() -> void :
 	RunData.get_player_effects(0)[Utils.foxlab_shop_effects_checked_hash] = 1
 	DebugService.log_data("foxlab_shop_effects_checked: set true")
 
+func _combine_weapon(weapon_data: WeaponData, player_index: int, is_upgrade: bool) -> void :
+	._combine_weapon(weapon_data, player_index, is_upgrade)
+	var player_gear_container = _get_gear_container(player_index)
+	var ele_size = player_gear_container.weapons_container.get_element_count()
+	if  ele_size != RunData.get_player_weapons_ref(player_index).size():
+		player_gear_container.set_weapons_data(RunData.get_player_weapons(player_index))
+
 func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	.on_shop_item_bought(shop_item, player_index)
 	var item_data = shop_item.item_data

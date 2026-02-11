@@ -62,6 +62,12 @@ func foxlab_update_remembered_item(player_index: int):
 		previous_remembered_names.append(name)
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_mnemosyne_hash, previous_remembered.size())
 
+# 大部分时候没用，非主角位置的孟婆，记忆了商店的面具道具将孟婆换掉之后
+# 由于已经没有孟婆了，敌袭结束记忆保留，如果之后面具再次随机出孟婆，如果前一次孟婆的记忆还在，会重复添加
+func foxlab_forget_item_entry(player_index:int):
+	foxlab_remembered_weapons[player_index].clear()
+	foxlab_remembered_items[player_index].clear()
+
 func foxlab_forget_item(player_index: int):
 	if not foxlab_remembered_items[player_index].empty():
 		var effects = RunData.get_player_effects(player_index)
@@ -116,14 +122,11 @@ func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effec
 		foxlab_adjust_weapon_effect(effect, weapon)
 	return new_effects
 
-func get_foxlab_buddhas_hand_weapon(player_index: int):
-	return players_data[player_index].foxlab_buddhas_hand_weapon
-
-func get_foxlab_buddhas_hand_item(player_index: int):
-	return players_data[player_index].foxlab_buddhas_hand_item
-
 func get_foxlab_buddhas_hand_meta(player_index: int):
 	return players_data[player_index].foxlab_buddhas_hand_meta
+
+func get_foxlab_mask_meta(player_index: int):
+	return players_data[player_index].foxlab_mask_meta
 
 ###### 扩展 ######
 func on_wave_start(timer: WaveTimer) -> void :

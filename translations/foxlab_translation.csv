@@ -273,7 +273,7 @@ EFFECT_FOXLAB_TRANSFORM,你有{2}几率变身为{0}个角色：{1},"{2} chance t
 EFFECT_FOXLAB_WEAPON_DUPLICATION,[color=#eae2b0]本波次{0}复制武器[/color],[color=#eae2b0]Weapon duplication is {0} this wave[/color]
 EFFECT_FOXLAB_FACELESS_ENABLE,还能,still enabled
 EFFECT_FOXLAB_FACELESS_DISABLE,已不能,now disabled
-EFFECT_FOXLAB_TRANSFORM_GAIN,[color=#FF8C00]护甲[/color]会降低{1}变身几率、增加变身数量,[color=#FF8C00]Armor[/color] decreases transform chance but increases transform character number of {1}
+EFFECT_FOXLAB_TRANSFORM_GAIN,{1}会降低{0}变身几率、增加变身数量,{1} decreases transform chance but increases transform character number of {0}
 EFFECT_FOXLAB_LOSE_ON_REROLL,刷新按钮显示{1}时，刷新失去1{1},Lose 1 {1} on reroll when reroll botton shows {1}
 EFFECT_FOXLAB_FORCE_REMOVE_ON_REROLL,刷新后失去{1},Lose all {1} on reroll
 EFFECT_FOXLAB_WEAPON_TEXT,[color=#FF8C00]{1}：[/color],[color=#FF8C00]{1}:[/color]

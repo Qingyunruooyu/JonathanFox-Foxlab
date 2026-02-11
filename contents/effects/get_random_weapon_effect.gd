@@ -17,8 +17,8 @@ static func get_id() -> String:
 func try_generate(player_index: int):
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]
-	if meta.weapon_id.empty():
-		RunData.get_foxlab_buddhas_hand_weapon(player_index)[is_cursed] = _get_rand_weapon(player_index)
+	if meta.weapon == null:
+		meta.weapon = _get_rand_weapon(player_index)
 
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
@@ -32,14 +32,13 @@ func apply(player_index: int) -> void:
 	try_generate(player_index)
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]
-	RunData.add_weapon(RunData.get_foxlab_buddhas_hand_weapon(player_index)[is_cursed], player_index)
+	RunData.add_weapon(meta.weapon, player_index)
 	if meta.is_const_weapon:
 		RunData.add_tracked_value(player_index, Utils.item_foxlab_buddhas_hand_hash, 1)
-	var item_to_get:Array = RunData.get_foxlab_buddhas_hand_item(player_index)
-	if  item_to_get[is_cursed]!= null:
-		RunData.add_item(item_to_get[is_cursed], player_index)
-		item_to_get[is_cursed] = null
-	meta.weapon_id = ""
+	if  meta.item != null:
+		RunData.add_item(meta.item, player_index)
+		meta.item = null
+	meta.weapon = null
 
 	_after_buddhas_hand(player_index, stack_effect)
 
@@ -116,17 +115,16 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]
-	var item_to_get:Array = RunData.get_foxlab_buddhas_hand_item(player_index)
 
 	if not item_for_effect.get_category() == Category.WEAPON:
 		if item_for_effect.replaced_by:
-			item_to_get[is_cursed] = item_for_effect
+			meta.item = item_for_effect
 		else:
 			for effect in item_for_effect.effects:
 				if effect.key_hash != item_for_effect.my_id_hash:
 					continue
 				if effect.custom_key_hash == Keys.duplicate_item_hash or effect.custom_key_hash == Keys.increase_tier_on_reroll_hash or effect.key_hash == Keys.item_hourglass_hash:
-					item_to_get[is_cursed] = item_for_effect
+					meta.item = item_for_effect
 					break
 
 	item_for_effect = item_for_effect.duplicate()
@@ -134,24 +132,16 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	for effect in item_for_effect.effects:
 		effect = effect.duplicate()
 		new_effects.append(effect)
-		if effect is WeaponStackEffect: # stick
-			effect.weapon_stacked_name = weapon.name
-			effect.weapon_stacked_id = weapon.weapon_id
-			effect.weapon_stacked_id_hash = weapon.weapon_id_hash
-		elif effect is SwapMaxMinStatEffect: # axolotl
+		if  effect is SwapMaxMinStatEffect: # axolotl
 			effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
-		elif effect is PercentDamageEffect: # lute, icecube, etc
-			effect.source_id = weapon.weapon_id
-			effect.source_id_hash = weapon.weapon_id_hash
-		elif effect.custom_key == "yztato_destory_weapons":
-			effect.key = weapon.weapon_id
-			effect.key_hash = weapon.weapon_id_hash
 		elif effect.get_id() == get_id():
 			effect.debug_item_name = []
+		else:
+			RunData.foxlab_adjust_weapon_effect(effect, weapon)
 
 	item_for_effect.effects = new_effects
 
-	if item_to_get[is_cursed] == null:
+	if meta.item == null:
 		weapon.effects.append_array(item_for_effect.effects)
 
 	meta.weapon_id = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
@@ -173,7 +163,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		weapon.effects.append(break_effect)
 		meta.extra_item_id += "([color=#%s]+%s[/color])" % [ ProgressData.settings.color_negative, tr("WEAPON_BRICK")]
 		meta.is_const_weapon = 0
-	elif item_to_get[is_cursed] == null:
+	elif meta.item == null:
 		var current = weapon
 		var upgrade_into = current.upgrades_into
 		while upgrade_into != null:

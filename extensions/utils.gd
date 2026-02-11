@@ -19,8 +19,6 @@ var foxlab_shop_vip_hash: int = Keys.generate_hash("foxlab_shop_vip")
 var foxlab_cultivator_level_hash: int = Keys.generate_hash("foxlab_cultivator_level")
 var foxlab_cultivator_reset_hash: int = Keys.generate_hash("foxlab_cultivator_reset")
 var fox_wave_started_hash: int = Keys.generate_hash("fox_wave_started")
-var foxlab_mask_first_generate_hash: int = Keys.generate_hash("foxlab_mask_first_generate")
-var fox_faceless_prev_items_hash: int = Keys.generate_hash("fox_faceless_prev_items")
 var fox_faceless_enable_upgrade_on_transform_hash: int = Keys.generate_hash("fox_faceless_enable_upgrade_on_transform")
 var fox_faceless_upgrade_on_transform_wave_hash: int = Keys.generate_hash("fox_faceless_upgrade_on_transform_wave")
 var fox_faceless_convert_stat_characters_hash: int = Keys.generate_hash("fox_faceless_convert_stat_characters")
@@ -97,6 +95,7 @@ var foxlab_ignored_floating_stat_hash = {
 	Keys.enemy_damage_hash: 0,
 	Keys.enemy_health_hash: 0,
 	Keys.enemy_speed_hash: 0,
+	Keys.stronger_elites_on_kill_hash: 0,
 	foxlab_troubleshooter_crisis_num_hash: 0,
 	foxlab_troubleshooter_temp_hash: 0,
 	foxlab_dante_states_hash: 0,

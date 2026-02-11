@@ -1,9 +1,9 @@
 extends "res://singletons/player_run_data.gd"
 
-var foxlab_buddhas_hand_weapon = [null, null]
-# for special item effect (duplicate_item, increase_tier_on_reroll, item_hourglass)
-var foxlab_buddhas_hand_item = [null, null]
+# 佛手相关
 var foxlab_buddhas_hand_meta = []
+# 面具相关
+var foxlab_mask_meta = []
 
 static func init_foxlab_stats() -> Dictionary:
 	return {
@@ -14,64 +14,115 @@ static func init_foxlab_stats() -> Dictionary:
 			Utils.item_foxlab_eggs_hash:0,
 		}
 
+
+func _foxlab_deserialize_item(items: Array, item_dict:Dictionary):
+	var item_data = ItemService.get_element_safe(items, item_dict.my_id)
+	# 游戏刚启动ProgressData的_ready()如果在MOD加载好之前，拿MOD角色会返回null
+	# 不影响，因为后面还会再反序列化
+	if item_data != null:
+		item_data = item_data.duplicate()
+		item_data.deserialize_and_merge(item_dict)
+		return item_data
+	return null
+
 ##### 扩展 ######
 func _init():
-	foxlab_buddhas_hand_meta.push_back({"is_const_weapon": 0, "extra_item_id": "", "weapon_id": ""})
+	foxlab_buddhas_hand_meta.push_back({
+				"weapon_id": "",
+				"weapon": null,
+				"is_const_weapon": 0,
+				"extra_item_id": "",
+				"item": null, # for special item effect (duplicate_item, increase_tier_on_reroll, item_hourglass)
+				})
 	foxlab_buddhas_hand_meta.push_back(foxlab_buddhas_hand_meta[0].duplicate())
+
+	foxlab_mask_meta.push_back({
+				"chars": [],      #变换的角色（对象）
+				"items": [],      #初始道具（对象）
+				"weapons": [],    #初始武器（对象）
+				"names": "",      #变换的角色的名字
+				"prevs": [],      #前一次变身的角色/道具（[名字,诅咒系数]）和武器（对象），这次变身成功后需要移除
+				})
+	foxlab_mask_meta.push_back(foxlab_mask_meta[0].duplicate(true))
 
 func duplicate() -> PlayerRunData:
 	var copy = .duplicate()
-	copy.foxlab_buddhas_hand_weapon = foxlab_buddhas_hand_weapon.duplicate()
-	copy.foxlab_buddhas_hand_item = foxlab_buddhas_hand_item.duplicate()
-	copy.foxlab_buddhas_hand_meta = foxlab_buddhas_hand_meta.duplicate()
-	return copy
 
+	for i in range(foxlab_buddhas_hand_meta.size()):
+		# duplicate the Dict
+		copy.foxlab_buddhas_hand_meta[i] = foxlab_buddhas_hand_meta[i].duplicate()
+
+	for i in range(foxlab_mask_meta.size()):
+		var meta = foxlab_mask_meta[i]
+		for key in meta.keys():
+			if meta[key] is String:
+				copy.foxlab_mask_meta[i][key] = meta[key]
+			else: # duplicate the Array
+				copy.foxlab_mask_meta[i][key] = meta[key].duplicate()
+	return copy
 
 func serialize() -> Dictionary:
 	var serialized = .serialize()
 
-	serialized.foxlab_buddhas_hand_weapon = []
-	for weapon in foxlab_buddhas_hand_weapon:
-		serialized.foxlab_buddhas_hand_weapon.push_back(weapon.serialize() if weapon else null)
+	serialized.foxlab_buddhas_hand_meta = []
+	for src_meta in foxlab_buddhas_hand_meta:
+		serialized.foxlab_buddhas_hand_meta.push_back(src_meta.duplicate())
+		var meta = serialized.foxlab_buddhas_hand_meta.back()
+		for key in meta.keys():
+			if meta[key] is Resource:
+				meta[key] = meta[key].serialize()
 
-	serialized.foxlab_buddhas_hand_item = []
-	for item in foxlab_buddhas_hand_item:
-		serialized.foxlab_buddhas_hand_item.push_back(item.serialize() if item else null)
-
-	serialized.foxlab_buddhas_hand_meta = foxlab_buddhas_hand_meta.duplicate()
-
+	serialized.foxlab_mask_meta = []
+	for src_meta in foxlab_mask_meta:
+		serialized.foxlab_mask_meta.push_back(src_meta.duplicate())
+		var meta = serialized.foxlab_mask_meta.back()
+		for key in meta.keys():
+			var value = meta[key]
+			if not value is Array:
+				continue
+			for i in range(value.size()):
+				if value[i] is Resource:
+					value[i] = value[i].serialize()
 	return serialized
-
 
 func deserialize(data: Dictionary) -> PlayerRunData:
 	.deserialize(data)
-
-	if "foxlab_buddhas_hand_weapon" in data:
-		foxlab_buddhas_hand_weapon = []
-		for weapon in data.foxlab_buddhas_hand_weapon:
-			if weapon:
-				var weapon_data = ItemService.get_element_safe(ItemService.weapons, weapon.my_id)
-				if weapon_data:
-					weapon_data = weapon_data.duplicate()
-					weapon_data.deserialize_and_merge(weapon)
-					foxlab_buddhas_hand_weapon.push_back(weapon_data)
-			else:
-				foxlab_buddhas_hand_weapon.push_back(null)
-
-	if "foxlab_buddhas_hand_item" in data:
-		foxlab_buddhas_hand_item = []
-		for item in data.foxlab_buddhas_hand_item:
-			if item:
-				var item_data = ItemService.get_element_safe(ItemService.items, item.my_id)
-				if item_data != null:
-					item_data = item_data.duplicate()
-					item_data.deserialize_and_merge(item)
-					foxlab_buddhas_hand_item.push_back(item_data)
-			else:
-				foxlab_buddhas_hand_item.push_back(null)
-
 	if "foxlab_buddhas_hand_meta" in data:
-		foxlab_buddhas_hand_meta = data.foxlab_buddhas_hand_meta.duplicate()
+		for i in range(data.foxlab_buddhas_hand_meta.size()):
+			foxlab_buddhas_hand_meta[i] =  data.foxlab_buddhas_hand_meta[i].duplicate()
+			var meta = foxlab_buddhas_hand_meta[i]
+			if meta.item:
+				meta.item = _foxlab_deserialize_item(ItemService.items, meta.item)
+			if meta.weapon:
+				meta.weapon = _foxlab_deserialize_item(ItemService.weapons, meta.weapon)
+
+	if "foxlab_mask_meta" in data:
+		for i in range(data.foxlab_mask_meta.size()):
+			foxlab_mask_meta[i] = data.foxlab_mask_meta[i].duplicate()
+			var meta = foxlab_mask_meta[i]
+			if not meta.chars.empty():
+				var chars = []
+				for character in meta.chars:
+					chars.push_back(_foxlab_deserialize_item(ItemService.characters, character))
+				meta.chars = chars
+			if not meta.items.empty():
+				var items = []
+				for item in meta.items:
+					items.push_back(_foxlab_deserialize_item(ItemService.items, item))
+				meta.items = items
+			if not meta.weapons.empty():
+				var weapons = []
+				for weapon in meta.weapons:
+					weapons.push_back(_foxlab_deserialize_item(ItemService.weapons, weapon))
+				meta.weapons = weapons
+			if not meta.prevs.empty():
+				var prev_items = []
+				for item in meta.prevs:
+					if item is Dictionary:
+						prev_items.push_back(_foxlab_deserialize_item(ItemService.weapons, item))
+					else:
+						prev_items.push_back(item.duplicate())
+				meta.prevs = prev_items
 
 	return self
 
@@ -105,8 +156,6 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_cultivator_level_hash: 0,
 			Utils.foxlab_cultivator_reset_hash: 0,
 			Utils.fox_wave_started_hash: 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
-			Utils.foxlab_mask_first_generate_hash: 1, # 如果是第一次生成，则清除前一次运行的数据
-			Utils.fox_faceless_prev_items_hash:[],  # 所有面具效果的道具在获得的时候，都会清理已有的变身
 			Utils.fox_faceless_enable_upgrade_on_transform_hash:0,
 			Utils.fox_faceless_upgrade_on_transform_wave_hash:Utils.LARGE_NUMBER,
 			#ConvertStatEffect存在短路行为，如果两个角色都有这个效果，则不兼容，不允许同时变身

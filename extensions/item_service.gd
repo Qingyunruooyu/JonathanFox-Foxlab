@@ -182,17 +182,13 @@ func foxlab_modify_items():
 	for item in items:
 		if "structure" in item.tags:
 			continue
-		for effect in item.effects:
-			if effect is StructureEffect:
-				item.tags.append("structure")
-				break
+		if item.is_structure_item():
+			item.tags.append("structure")
 
 func foxlab_record_structure_weapons():
 	for weapon in weapons:
-		for effect in weapon.effects:
-			if effect is StructureEffect:
-				foxlab_weapons_spawning_structure[weapon.weapon_id] = 1
-				break
+		if weapon.is_structure_item():
+			foxlab_weapons_spawning_structure[weapon.weapon_id_hash] = 1
 
 ####### 扩展 ###########
 func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapon: bool = false, affected_by_items_price_stat: bool = true) -> int:

@@ -48,12 +48,20 @@ func _ready() -> void :
 	RunData.get_player_effects(0)[Utils.foxlab_shop_effects_checked_hash] = 1
 	DebugService.log_data("foxlab_shop_effects_checked: set true")
 
+
+# 合出的武器带有佛手/面具等修改道具/武器的效果时，刷新
 func _combine_weapon(weapon_data: WeaponData, player_index: int, is_upgrade: bool) -> void :
+	var prev_mask_value = RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash]
 	._combine_weapon(weapon_data, player_index, is_upgrade)
 	var player_gear_container = _get_gear_container(player_index)
+
 	var ele_size = player_gear_container.weapons_container.get_element_count()
 	if  ele_size != RunData.get_player_weapons_ref(player_index).size():
 		player_gear_container.set_weapons_data(RunData.get_player_weapons(player_index))
+
+	if RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] != prev_mask_value:
+		var items = RunData.get_player_items(player_index)
+		player_gear_container.set_items_data(items)
 
 func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	.on_shop_item_bought(shop_item, player_index)
@@ -134,6 +142,7 @@ func _on_tree_exited() -> void :
 	for player_index in RunData.get_player_count():
 		if not RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
 			continue
+		RunData.foxlab_forget_item_entry(player_index)
 		for item in RunData.foxlab_shop_items[player_index]:
 			if item != null and item.active and not item.locked:
 				RunData.foxlab_remember_item(item.item_data, player_index)

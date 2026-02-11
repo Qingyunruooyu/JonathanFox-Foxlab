@@ -5,15 +5,11 @@ const SAME_CHAR_CHANCE = 0.33
 const MIN_TRANSFORM_CHANCE = 10.0
 const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
+const VALUE_BASE = 2
 # character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_foxlab_survivor, character_foxlab_infernal_machine
 # character_foxlab_architect
 var debug_item_name: Array = []
 var curse_character: bool = false
-
-var chars_to_get: Array = [[], [], [], []]
-var starting_items: Array =  [[], [], [], []]
-
-var chars_name: Array = ["","","",""]
 
 static func get_id() -> String:
 	return "foxlab_effect_get_rand_character"
@@ -29,7 +25,7 @@ func _get_transform_chance(player_index: int) -> float:
 	return  max(armor * value2, MIN_TRANSFORM_CHANCE)
 
 func _can_character_be_modified(character: CharacterData) -> bool:
-	if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
+	if character.resource_path.begins_with("res://items/") or character.resource_path.begins_with("res://dlcs/"):
 		for effect in character.effects:
 			# cyborg, demon
 			if effect is ConvertStatEffect and effect.custom_key_hash == Keys.convert_stats_end_of_wave_hash:
@@ -57,14 +53,10 @@ func unapply(player_index: int) -> void:
 	pass
 
 func try_generate(player_index: int):
-	var first_generate = RunData.get_player_effect_bool(Utils.foxlab_mask_first_generate_hash, player_index)
-	if chars_name[player_index] == "" or first_generate:
-		if first_generate:
-			chars_name[player_index] = ""
-			starting_items[player_index].clear()
-			RunData.get_player_effects(player_index)[Utils.foxlab_mask_first_generate_hash] = 0
-			DebugService.log_data("first generate mask")
-		chars_to_get[player_index] = _get_rand_chars(player_index)
+	var is_cursed:int = value != VALUE_BASE
+	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
+	if meta.names == "":
+		meta.chars = _get_rand_chars(player_index)
 
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
@@ -90,7 +82,9 @@ func apply(player_index: int) -> void:
 
 	cleanup(player_index)
 
-	var prev_items = RunData.get_player_effect(custom_key_hash,player_index)
+	var is_cursed:int = value != VALUE_BASE
+	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
+	var prev_items = meta.prevs
 	# always place ConvertStatEffect of characters ahead
 	var convert_stats_half_wave:Array = RunData.get_player_effect(Keys.convert_stats_half_wave_hash, player_index)
 	var convert_stats_end_of_wave:Array = RunData.get_player_effect(Keys.convert_stats_end_of_wave_hash, player_index)
@@ -98,28 +92,25 @@ func apply(player_index: int) -> void:
 	var convert_stats_end_of_wave_bak:Array = convert_stats_end_of_wave.duplicate()
 	convert_stats_half_wave.clear()
 	convert_stats_end_of_wave.clear()
-	for character in chars_to_get[player_index]:
+	for character in meta.chars:
 		RunData.add_item(_update_character_bg(character, player_index), player_index)
 		DebugService.log_data("add character " + character.my_id)
 		prev_items.append([character.my_id_hash, character.curse_factor])
 	convert_stats_half_wave.append_array(convert_stats_half_wave_bak)
 	convert_stats_end_of_wave.append_array(convert_stats_end_of_wave_bak)
+	meta.chars.clear()
 
-	chars_to_get[player_index].clear()
+	for item in meta.items:
+		RunData.add_item(item, player_index)
+		DebugService.log_data("add item " + item.my_id)
+		prev_items.append([item.my_id_hash, item.curse_factor])
+	for weapon in meta.weapons:
+		var weapon_to_add = RunData.add_weapon(weapon, player_index)
+		prev_items.append(weapon_to_add)
+		DebugService.log_data("add weapon " + weapon_to_add.my_id + str(weapon_to_add))
+	meta.items.clear()
+	meta.weapons.clear()
 
-	for item in starting_items[player_index]:
-		if item is ItemData:
-			RunData.add_item(item, player_index)
-			DebugService.log_data("add item " + item.my_id)
-			prev_items.append([item.my_id_hash, item.curse_factor])
-
-		else:
-			var weapon = RunData.add_weapon(item, player_index)
-			#即便是相同的武器ID也可能会有不同的效果，所以用序列化精确判断
-			prev_items.append(weapon.serialize())
-			DebugService.log_data("add weapon " + weapon.my_id + str(weapon))
-
-	starting_items[player_index].clear()
 	RunData.add_tracked_value(player_index, Utils.item_foxlab_mask_hash, 1)
 
 	if RunData.get_player_weapons_ref(player_index).size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
@@ -129,7 +120,7 @@ func apply(player_index: int) -> void:
 	if is_vagabond_on0 != is_vagabond_on1:
 		RunData.update_sets(player_index)
 
-	chars_name[player_index] = ""
+	meta.names = ""
 
 	_after_transform(player_index, stack_effect)
 
@@ -178,29 +169,29 @@ func cleanup(player_index: int) -> void:
 	if  not _is_wave_started(player_index) :
 		return
 
-	var prev_items :Array= RunData.get_player_effect(custom_key_hash, player_index)
+	var is_cursed:int = value != VALUE_BASE
+	var prev_items :Array =  RunData.get_foxlab_mask_meta(player_index)[is_cursed].prevs
 	if prev_items.empty():
 		return
 
 	var weapon_to_remove = []
 	for i in range(prev_items.size()):
-		var weapon_data = prev_items[i]
-		if weapon_data is Dictionary:
-			var weapon = WeaponData.new()
-			weapon.deserialize_and_merge(weapon_data)
-			DebugService.log_data("remove " + weapon.my_id + str(weapon))
+		var weapon = prev_items[i]
+		if weapon is WeaponData:
 			var player_weapons_raw: Array = RunData.get_player_weapons_ref(player_index)
-			var weapon_count_before = player_weapons_raw.size()
-			RunData.remove_weapon(weapon, player_index)
-			var weapon_count_after = player_weapons_raw.size()
-			# 没有消除成功，可能是原版里面反序列化没做对，比如秒杀剑的one_shot_on_hit不在ItemServices.effects里面，导致没有反序列化
-			if weapon_count_after == weapon_count_before:
-				for weapon_index in range(weapon_count_after):
-					var owned_weapon = player_weapons_raw[weapon_index]
-					if owned_weapon.my_id_hash == weapon.my_id_hash and owned_weapon.curse_factor == weapon.curse_factor:
-						RunData.remove_weapon_by_index(weapon_index, player_index)
-						DebugService.log_data("remove " + weapon.my_id + " manually")
+			var should_remove_weapon = false
+			if weapon in player_weapons_raw:
+				should_remove_weapon = true
+			else:
+				for exist_weapon in player_weapons_raw:
+					if ItemService.is_same_weapon(exist_weapon, weapon):
+						should_remove_weapon = true
 						break
+			if should_remove_weapon:
+				RunData.remove_weapon(weapon, player_index)
+				DebugService.log_data("remove " + weapon.my_id + str(weapon))
+			else:
+				DebugService.log_data("not remove missing " + weapon.my_id + str(weapon))
 			weapon_to_remove.append(i)
 	weapon_to_remove.invert()
 	for i in weapon_to_remove:
@@ -217,17 +208,14 @@ func cleanup(player_index: int) -> void:
 	for index in range(player_items_raw.size(), 0, -1):
 		var item_data = player_items_raw[index - 1]
 		for i in range(prev_items.size()):
-			if items_to_remove.has(i):
+			if items_to_remove.has(i) or item_data.curse_factor != prev_items[i][1]:
 				continue
-			if [item_data.my_id_hash, item_data.curse_factor] == prev_items[i] :
+
+			if item_data.my_id_hash == prev_items[i][0] or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_items[i][0] in Keys.item_builder_turret_n_hash) :
 				items_to_remove[i] = item_data
 				items_to_remove_order.push_back(item_data)
 				break
-			elif (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_items[i][0] in Keys.item_builder_turret_n_hash)\
-				and (item_data.curse_factor == prev_items[i][1]):
-				items_to_remove[i] = item_data
-				items_to_remove_order.push_back(item_data)
-				break
+
 		if items_to_remove_order.size() == prev_items.size():
 			break
 	for item_data in items_to_remove_order:
@@ -240,7 +228,9 @@ func get_args(player_index: int) -> Array:
 	if RunData.get_player_character(player_index) == null:
 		return ["%s ~ %s" % [str(floor(MIN_TRANSFORM_NUM)), str(ceil(MAX_TRANSFORM_NUM))], tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
 	try_generate(player_index)
-	return [str(chars_to_get[player_index].size()), chars_name[player_index], str(stepify(_get_transform_chance(player_index), 0.01))]
+	var is_cursed:int = value != VALUE_BASE
+	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
+	return [str(meta.chars.size()),meta.names, str(stepify(_get_transform_chance(player_index), 0.01))]
 
 func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictionary):
 	if not character.my_id_hash in convert_stat_dict:
@@ -293,6 +283,8 @@ func _get_rand_chars(player_index: int) -> Array:
 	var char_value_floored :int = int(char_value)
 	var residual_value = 1 if Utils.get_chance_success(char_value - char_value_floored) else 0
 	var final_value =  char_value_floored + residual_value
+	var is_cursed:int = value != VALUE_BASE
+	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
 	for char_idx in range(final_value):
 		var current_char = _get_one_character(player_index, chars_id, chars_return)
 		if _can_character_be_modified(current_char):
@@ -302,20 +294,14 @@ func _get_rand_chars(player_index: int) -> Array:
 			current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
 		chars_return.append(current_char)
 		chars_id.append(current_char.my_id_hash)
-		chars_name[player_index] += tr(current_char.name)
+		meta.names += tr(current_char.name)
 
 		if current_char.is_cursed:
-			chars_name[player_index] += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+			meta.names += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 		if char_idx + 1 < final_value:
-			chars_name[player_index] += ", "
+			meta.names += ", "
 
-		var container = starting_items[player_index]
-		# 游戏本体已经添加的初始物品，也就是游戏开始前的变身是自带初始物品的角色，在这里只记录，不添加了，下次变身的时候清理这些物品
-		var special_starting :Array = []
-		var wave_started = _is_wave_started(player_index)
-		if not wave_started:
-			container = special_starting
-		var prev_items :Array= RunData.get_player_effect(custom_key_hash, player_index)
+		var container = []
 		for effect in current_char.effects:
 			if effect.custom_key_hash == Keys.starting_item_hash:
 				for i in range(effect.value):
@@ -349,11 +335,20 @@ func _get_rand_chars(player_index: int) -> Array:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 
-		for starting in special_starting:
-			if starting is WeaponData:
-				prev_items.append(starting.serialize())
-			else:
-				prev_items.append([starting.my_id_hash, starting.curse_factor])
-	if chars_name[player_index] == "":
-		chars_name[player_index] = tr("FOXLAB_DISABLE")
+		if _is_wave_started(player_index):
+			for starting in container:
+				if starting is WeaponData:
+					meta.weapons.push_back(starting)
+				else:
+					meta.items.push_back(starting)
+		# 游戏本体已经添加的初始物品，也就是游戏开始前的变身是自带初始物品的角色，在这里只记录，不添加了，下次变身的时候清理这些物品
+		else:
+			var prev_items = meta.prevs
+			for starting in container:
+				if starting is WeaponData:
+					prev_items.append(starting)
+				else:
+					prev_items.append([starting.my_id_hash, starting.curse_factor])
+	if meta.names == "":
+		meta.names = tr("FOXLAB_DISABLE")
 	return chars_return

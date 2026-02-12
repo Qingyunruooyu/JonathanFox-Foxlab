@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=18 format=2]
+[gd_resource type="Resource" load_steps=20 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/pufferfish_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/河鲀_effect_0.tres" type="Resource" id=2]
@@ -15,8 +15,10 @@
 [ext_resource path="res://items/all/ratzilla/ratzilla.tres" type="Resource" id=13]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/河鲀_effect_12.tres" type="Resource" id=14]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/pufferfish_appearance.tres" type="Resource" id=15]
+[ext_resource path="res://items/all/metal_plate/metal_plate_data.tres" type="Resource" id=16]
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=17]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/河鲀_effect_14.tres" type="Resource" id=18]
+[ext_resource path="res://items/all/dynamite/dynamite_data.tres" type="Resource" id=19]
 
 [resource]
 script = ExtResource( 17 )
@@ -40,4 +42,4 @@ wanted_tags = [ "exploration", "explosive" ]
 banned_item_groups = [  ]
 banned_items = [ "item_jelly", "item_nail", "item_crystal", "item_coffee", "item_seashell", "item_foxlab_omnic_crisis" ]
 starting_weapons = [  ]
-starting_items = [ ExtResource( 8 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 13 ) ]
+starting_items = [ ExtResource( 8 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 19 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 16 ) ]

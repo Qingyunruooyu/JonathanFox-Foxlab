@@ -143,23 +143,15 @@ func _duplicate_weapon(player_index: int):
 	effects[Utils.fox_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if _is_wave_started(player_index) else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	var weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
-	while weapon_for_effect.effects.empty():
+	# 附魔的武器的等级最多超过当前武器1级
+	while weapon_for_effect.effects.empty() or (weapon.tier + 1 < weapon_for_effect.tier):
 		weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
 	weapon_for_effect = weapon_for_effect.duplicate()
 	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
 	DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
 
-	var new_effects :Array = RunData.foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect)
-	weapon_for_effect.effects = new_effects
+	var new_effects :Array = RunData.foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect, true)
 	weapon.effects.append_array(new_effects)
-	var current = weapon
-	var upgrade_into = current.upgrades_into
-	while upgrade_into != null:
-		upgrade_into = upgrade_into.duplicate()
-		upgrade_into.effects.append_array(weapon_for_effect.effects)
-		current.upgrades_into = upgrade_into
-		current = upgrade_into
-		upgrade_into = current.upgrades_into
 	RunData.add_weapon(weapon, player_index)
 	DebugService.log_data("duplicate weapon " + weapon.my_id)
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_faceless_hash, 1)
@@ -168,15 +160,18 @@ func cleanup(player_index: int) -> void:
 	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）
 	if  not _is_wave_started(player_index) :
 		return
-
-	var is_cursed:int = value != VALUE_BASE
-	var prev_items :Array =  RunData.get_foxlab_mask_meta(player_index)[is_cursed].prevs
+	var metas = RunData.get_foxlab_mask_meta(player_index)
+	var prev_items = []
+	for meta in metas:
+		if not meta.prevs.empty():
+			prev_items.append_array(meta.prevs)
 	if prev_items.empty():
 		return
 
 	var weapon_to_remove = []
 	for i in range(prev_items.size()):
 		var weapon = prev_items[i]
+		assert (not weapon is Dictionary)
 		if weapon is WeaponData:
 			var player_weapons_raw: Array = RunData.get_player_weapons_ref(player_index)
 			var should_remove_weapon = false
@@ -221,7 +216,9 @@ func cleanup(player_index: int) -> void:
 	for item_data in items_to_remove_order:
 		DebugService.log_data("remove " + item_data.my_id + str(item_data))
 		RunData.remove_item(item_data, player_index)
-	prev_items.clear()
+
+	for meta in metas:
+		meta.prevs.clear()
 
 
 func get_args(player_index: int) -> Array:

@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 key = "stronger_elites_on_kill"
 text_key = ""
-value = 25
+value = 27
 custom_key = ""
 storage_method = 0
 effect_sign = 1

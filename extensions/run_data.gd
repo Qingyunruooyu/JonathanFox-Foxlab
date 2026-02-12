@@ -27,16 +27,18 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 func foxlab_modify_weapon(player_index: int):
 	if foxlab_remembered_weapons[player_index].empty():
 		return
+	var begin_effect = NullEffect.new()
+	begin_effect.key = "foxlab_remember_shop_items"
+	begin_effect.key_hash = Utils.foxlab_remember_shop_items_hash
+	begin_effect.custom_key = "foxlab_remembered_effect_begin"
+	begin_effect.custom_key_hash = Utils.foxlab_remembered_effect_begin_hash
+	begin_effect.text_key = "foxlab_effect_remembered_weapon"
 	for weapon in get_player_weapons_ref(player_index):
 		if weapon == players_data[player_index].selected_weapon:
 			players_data[player_index].selected_weapon = players_data[player_index].selected_weapon.duplicate()
-		var null_effect = NullEffect.new()
-		null_effect.key = "foxlab_remember_shop_items"
-		null_effect.key_hash = Utils.foxlab_remember_shop_items_hash
-		null_effect.text_key = "foxlab_effect_remembered_weapon"
-		weapon.effects.append(null_effect)
+		weapon.effects.append(begin_effect)
 		for weapon_for_effect in foxlab_remembered_weapons[player_index]:
-			var new_effects:Array = foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect)
+			var new_effects:Array = foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect, false)
 			Utils.reset_stat_cache(player_index)
 			for effect in new_effects:
 				effect.apply(player_index)
@@ -76,7 +78,17 @@ func foxlab_forget_item(player_index: int):
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
 				DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+				var custom_key_hash = null
+				if item.my_id_hash in Utils.foxlab_least_one_items and RunData.get_nb_item(item.my_id_hash, player_index) <= 1:
+					for effect in item.effects:
+						if effect is ProjectileEffect:
+							var effect_data = RunData.get_player_effect(effect.key_hash, player_index)
+							if effect_data[0] == effect.value:
+								custom_key_hash = effect.key_hash
+							break
 				remove_item(item, player_index)
+				if custom_key_hash:
+					RunData.get_player_effects(player_index)[custom_key_hash].clear()
 				DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:
@@ -91,9 +103,10 @@ func foxlab_forget_item(player_index: int):
 		for weapon in get_player_weapons_ref(player_index):
 			Utils.reset_stat_cache(player_index)
 			var effects: Array = weapon.effects
-			for i in range(effects.size()):
-				if effects[i].text_key == "foxlab_effect_remembered_weapon":
-					while effects.size() > i:
+			# 倒着找，只找最后一次记忆的效果段 （孟婆记忆面具，面具换掉孟婆从而保留的效果，不会失去）
+			for i in range(effects.size(), -1, -1):
+				if effects[i - 1].custom_key_hash == Utils.foxlab_remembered_effect_begin_hash:
+					while effects.size() >= i:
 						effects.pop_back().unapply(player_index)
 					break
 		foxlab_remembered_weapons[player_index].clear()
@@ -111,15 +124,24 @@ func foxlab_adjust_weapon_effect(effect: Effect, weapon: WeaponData):
 		effect.key = weapon.weapon_id #保留的是武器大名，不是带等级的my_id
 		effect.key_hash = weapon.weapon_id_hash #保留的是武器大名，不是带等级的my_id
 
-func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effect: WeaponData) -> Array:
-	var null_effect = NullEffect.new()
-	null_effect.key = " %s %s" % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
-	null_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED" if weapon_for_effect.is_cursed else "EFFECT_FOXLAB_WEAPON_TEXT"
-	var new_effects := [null_effect]
+func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effect: WeaponData, is_const_effect: bool) -> Array:
+	var begin_effect = NullEffect.new()
+	begin_effect.key = " %s %s" % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
+	begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED" if weapon_for_effect.is_cursed else "EFFECT_FOXLAB_WEAPON_TEXT"
+	if is_const_effect:
+		begin_effect.custom_key = "foxlab_const_effect_begin"
+		begin_effect.custom_key_hash = Utils.foxlab_const_effect_begin_hash
+	var new_effects := [begin_effect]
 	for effect in weapon_for_effect.effects:
 		effect = effect.duplicate()
 		new_effects.append(effect)
 		foxlab_adjust_weapon_effect(effect, weapon)
+	if is_const_effect:
+		var end_effect = NullEffect.new()
+		end_effect.text_key = "[EMPTY]"
+		end_effect.custom_key = "foxlab_const_effect_end"
+		end_effect.custom_key_hash = Utils.foxlab_const_effect_end_hash
+		new_effects.append(end_effect)
 	return new_effects
 
 func get_foxlab_buddhas_hand_meta(player_index: int):
@@ -142,7 +164,23 @@ func get_next_level_xp_needed(player_index) -> float:
 	var xp_needed_effect = max(get_player_effect(Utils.next_level_xp_needed_hash, player_index), -99)
 	return get_xp_needed(get_player_level(player_index) + 1) * (1.0 + xp_needed_effect / 100.0)
 
+func foxlab_item_recycle_test():
+	var failed_items = ["item_baby_with_a_beard", "item_alien_eyes", "item_seashell", "character_builder"]
+	for item in ItemService.items + ItemService.characters:
+		if item.my_id in failed_items:
+			continue
+		print("test ", item.my_id)
+		add_item(item, 0)
+		remove_item(item, 0)
+		if not item.can_be_looted or item is CharacterData:
+			continue
+		var new_item = ItemService.apply_item_effect_modifications(item, 0)
+		add_item(new_item, 0)
+		remove_item(new_item, 0)
+	return true
+	
 func add_starting_items_and_weapons() -> void :
+#	assert(foxlab_item_recycle_test())
 	var effects = get_player_effects(0)
 	.add_starting_items_and_weapons()
 	effects[Utils.fox_wave_started_hash] = 1

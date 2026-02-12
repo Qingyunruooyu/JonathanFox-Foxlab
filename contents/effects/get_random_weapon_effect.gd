@@ -111,6 +111,9 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		if _get_chance_success(CHANCE_LEGENDARY_ITEM, luck_chance):
 			args.increase_tier = 3
 			# items (except hourglass) can be get even if it may exceed the limited number
+		for least_one in Utils.foxlab_least_one_items.keys():
+			if RunData.get_nb_item(least_one, player_index) <= 1:
+				args.excluded_items.append([Utils.foxlab_least_one_items[least_one], RunData.current_wave])
 		item_for_effect = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.ITEMS, args)
 
 	var is_cursed:int = value != VALUE_BASE
@@ -127,8 +130,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 					meta.item = item_for_effect
 					break
 
-	item_for_effect = item_for_effect.duplicate()
-	var new_effects := []
+	var begin_effect = NullEffect.new()
+	var new_effects := [begin_effect]
 	for effect in item_for_effect.effects:
 		effect = effect.duplicate()
 		new_effects.append(effect)
@@ -139,11 +142,6 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		else:
 			RunData.foxlab_adjust_weapon_effect(effect, weapon)
 
-	item_for_effect.effects = new_effects
-
-	if meta.item == null:
-		weapon.effects.append_array(item_for_effect.effects)
-
 	meta.weapon_id = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 	if weapon.is_cursed:
 		meta.weapon_id += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
@@ -152,30 +150,33 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		meta.extra_item_id = "%s %s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
 	else:
 		meta.extra_item_id = tr(item_for_effect.name)
+	begin_effect.key = meta.extra_item_id
 
 	if item_for_effect.is_cursed:
 		meta.extra_item_id += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED"
+	else:
+		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT"
 
 	meta.is_const_weapon = 1
 	if !_get_chance_success(CHANCE_CONST_WEAPON, luck_chance):
 		var level_suffix := "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
 		var break_effect := load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
-		weapon.effects.append(break_effect)
+		new_effects.append(break_effect)
 		meta.extra_item_id += "([color=#%s]+%s[/color])" % [ ProgressData.settings.color_negative, tr("WEAPON_BRICK")]
+		begin_effect.key += "(+%s)" % [tr("WEAPON_BRICK")]
 		meta.is_const_weapon = 0
 	elif meta.item == null:
-		var current = weapon
-		var upgrade_into = current.upgrades_into
-		while upgrade_into != null:
-			upgrade_into = upgrade_into.duplicate()
-			upgrade_into.effects.append_array(item_for_effect.effects)
-			if is_melee_boosted:
-				upgrade_into.stats = upgrade_into.stats.duplicate()
-				upgrade_into.stats.deal_dmg_on_return = true
-			current.upgrades_into = upgrade_into
-			current = upgrade_into
-			upgrade_into = current.upgrades_into
+		begin_effect.custom_key = "foxlab_const_effect_begin"
+		begin_effect.custom_key_hash = Utils.foxlab_const_effect_begin_hash
+		var end_effect = NullEffect.new()
+		end_effect.text_key = "[EMPTY]"
+		end_effect.custom_key = "foxlab_const_effect_end"
+		end_effect.custom_key_hash = Utils.foxlab_const_effect_end_hash
+		new_effects.append(end_effect)
 
+	if meta.item == null:
+		weapon.effects.append_array(new_effects)
 	return weapon
 
 

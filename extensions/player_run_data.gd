@@ -74,19 +74,34 @@ func serialize() -> Dictionary:
 
 	serialized.foxlab_mask_meta = []
 	for src_meta in foxlab_mask_meta:
-		serialized.foxlab_mask_meta.push_back(src_meta.duplicate())
+		serialized.foxlab_mask_meta.push_back({})
 		var meta = serialized.foxlab_mask_meta.back()
-		for key in meta.keys():
-			var value = meta[key]
+		for key in src_meta.keys():
+			var value = src_meta[key]
 			if not value is Array:
-				continue
-			for i in range(value.size()):
-				if value[i] is Resource:
-					value[i] = value[i].serialize()
+				assert(value is String)
+				meta[key] = value
+			else:
+				var data = []
+				for res in value:
+					assert(res is Resource or res is Array)
+					if res is Resource:
+						data.push_back(res.serialize())
+					else:
+						data.push_back(res.duplicate())
+				meta[key] = data
 	return serialized
 
 func deserialize(data: Dictionary) -> PlayerRunData:
+	# 纯名字不需要被转换为哈希
+	var memory = null
+	var key = str(Utils.foxlab_previous_remembered_names_hash)
+	if key in data.effects:
+		memory = data.effects[key].duplicate()
 	.deserialize(data)
+	if memory:
+		effects[Utils.foxlab_previous_remembered_names_hash] = memory
+
 	if "foxlab_buddhas_hand_meta" in data:
 		for i in range(data.foxlab_buddhas_hand_meta.size()):
 			foxlab_buddhas_hand_meta[i] =  data.foxlab_buddhas_hand_meta[i].duplicate()
@@ -121,6 +136,7 @@ func deserialize(data: Dictionary) -> PlayerRunData:
 					if item is Dictionary:
 						prev_items.push_back(_foxlab_deserialize_item(ItemService.weapons, item))
 					else:
+						assert (item is Array)
 						prev_items.push_back(item.duplicate())
 				meta.prevs = prev_items
 
@@ -194,7 +210,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_nullify_fatal_resurrect_hash: 0, # 每波限一次，免疫致命伤害并失去随机道具
 			Utils.foxlab_nullify_fatal_silence_hash: 0, # 免疫致命伤害后，如果是敌人的伤害，本局不再承受其伤害
 			Utils.foxlab_nullify_fatal_revenge_hash: 0, # 免疫致命伤害后，如果是敌人的伤害，未来秒杀这种敌人
-			Utils.foxlab_nullify_fatal_enemy_hash: "", # 免疫致命伤害的敌人
+			Utils.foxlab_nullify_fatal_enemy_hash: 0, # 免疫致命伤害的敌人
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

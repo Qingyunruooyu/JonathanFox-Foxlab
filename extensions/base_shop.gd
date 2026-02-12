@@ -11,6 +11,41 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 	var new_item = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
 	RunData.add_item(new_item, p_player_index)
 
+func foxlab_after_weapon_combined(prev_mask_value: int, prev_items_num: int, player_index: int):
+	var player_gear_container = _get_gear_container(player_index)
+
+	var ele_size = player_gear_container.weapons_container.get_element_count()
+	if  ele_size != RunData.get_player_weapons_ref(player_index).size():
+		player_gear_container.set_weapons_data(RunData.get_player_weapons(player_index))
+
+	if (RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] != prev_mask_value) or \
+		(RunData.get_player_items_ref(player_index).size() != prev_items_num):
+		var items = RunData.get_player_items(player_index)
+		player_gear_container.set_items_data(items)
+
+func foxlab_modify_weapon_upgrade(weapon: WeaponData):
+	assert(weapon.upgrades_into != null)
+	var has_extra_effects = false
+	for effect in weapon.effects:
+		if effect.custom_key_hash == Utils.foxlab_const_effect_begin_hash:
+			has_extra_effects = true
+			break
+	if not has_extra_effects:
+		return
+	var upgrades_into = weapon.upgrades_into.duplicate()
+	var new_effects = upgrades_into.effects.duplicate()
+	var is_in_extra_range = false
+	for effect in weapon.effects:
+		if effect.custom_key_hash == Utils.foxlab_const_effect_begin_hash:
+			is_in_extra_range = true
+		if is_in_extra_range:
+			new_effects.push_back(effect)
+		if effect.custom_key_hash == Utils.foxlab_const_effect_end_hash:
+			is_in_extra_range = false
+	upgrades_into.effects = new_effects
+	weapon.upgrades_into = upgrades_into
+
+######### 扩展 #########
 func _ready() -> void :
 	if RunData.get_player_effect_bool(Utils.foxlab_shop_effects_checked_hash, 0):
 		DebugService.log_data("foxlab_shop_effects_checked: is true")
@@ -52,14 +87,17 @@ func _ready() -> void :
 # 合出的武器带有佛手/面具等修改道具/武器的效果时，刷新
 func _combine_weapon(weapon_data: WeaponData, player_index: int, is_upgrade: bool) -> void :
 	var prev_mask_value = RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash]
+	var prev_items_num = RunData.get_player_items_ref(player_index).size()
+	foxlab_modify_weapon_upgrade(weapon_data)
 	._combine_weapon(weapon_data, player_index, is_upgrade)
-	var player_gear_container = _get_gear_container(player_index)
+	foxlab_after_weapon_combined(prev_mask_value, prev_items_num, player_index)
 
-	var ele_size = player_gear_container.weapons_container.get_element_count()
-	if  ele_size != RunData.get_player_weapons_ref(player_index).size():
-		player_gear_container.set_weapons_data(RunData.get_player_weapons(player_index))
-
-	if RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] != prev_mask_value:
+# 回收的武器附魔有“获得道具”效果
+func _on_item_discard_button_pressed(weapon_data: WeaponData, player_index: int) -> void :
+	var prev_items_num = RunData.get_player_items_ref(player_index).size()
+	._on_item_discard_button_pressed(weapon_data, player_index)
+	if RunData.get_player_items_ref(player_index).size() != prev_items_num:
+		var player_gear_container = _get_gear_container(player_index)
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
 
@@ -81,14 +119,19 @@ func buy_item(item_data: ItemData, player_index: int) -> void :
 
 	var player_gear_container = _get_gear_container(player_index)
 
+	var update_weapons = false
 	if (RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot) or \
 		(RunData.get_player_weapons_ref(player_index).size() != prev_weapon_num):
-		var weapons = RunData.get_player_weapons(player_index)
-		player_gear_container.set_weapons_data(weapons)
+		update_weapons = true
 
 	if RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] != prev_mask_value:
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
+		update_weapons = true
+	
+	if update_weapons:
+		var weapons = RunData.get_player_weapons(player_index)
+		player_gear_container.set_weapons_data(weapons)
 
 	if RunData.get_player_effect(Keys.item_hourglass_hash, player_index) != prev_hourglass:
 		update_go_next_button_text()
@@ -144,7 +187,7 @@ func _on_tree_exited() -> void :
 			continue
 		RunData.foxlab_forget_item_entry(player_index)
 		for item in RunData.foxlab_shop_items[player_index]:
-			if item != null and item.active and not item.locked:
+			if is_instance_valid(item) and item.active and not item.locked:
 				RunData.foxlab_remember_item(item.item_data, player_index)
 		for item in RunData.locked_shop_items[player_index]:
 			RunData.foxlab_remember_item(item[0], player_index)

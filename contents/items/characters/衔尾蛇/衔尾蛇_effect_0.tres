@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
-[ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
 [ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
 arg_index = 2
 arg_sign = 1
-arg_value = 0
+arg_value = 2
 arg_format = 0
-arg_key = ""
+arg_key = "12"
 
 [resource]
 script = ExtResource( 1 )
@@ -20,5 +20,3 @@ custom_key = "starting_item"
 storage_method = 1
 effect_sign = 3
 custom_args = [ SubResource( 1 ) ]
-key2 = "stat_elemental_damage"
-value2 = 12

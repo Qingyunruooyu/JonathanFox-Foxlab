@@ -61,6 +61,12 @@ var foxlab_nullify_fatal_silence_hash: int = Keys.generate_hash("foxlab_nullify_
 var foxlab_nullify_fatal_revenge_hash: int = Keys.generate_hash("foxlab_nullify_fatal_revenge")
 var foxlab_nullify_fatal_enemy_hash: int = Keys.generate_hash("foxlab_nullify_fatal_enemy")
 
+# weapon extra effects that will be kept on weapon upgrade
+var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
+var foxlab_const_effect_end_hash: int = Keys.generate_hash("foxlab_const_effect_end")
+# remembered weapon effects that will be forgotten at wave end
+var foxlab_remembered_effect_begin_hash: int = Keys.generate_hash("foxlab_remembered_effect_begin")
+
 # tracking items
 var character_foxlab_bloody_wolf_hash: int = Keys.generate_hash("character_foxlab_bloody_wolf")
 var character_foxlab_faceless_hash: int = Keys.generate_hash("character_foxlab_faceless")
@@ -114,6 +120,9 @@ var foxlab_enemy_stats = [Keys.enemy_damage_hash, Keys.enemy_health_hash, Keys.e
 
 var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character_foxlab_refactor_hash, item_foxlab_reactor_hash]
 
+# 异形眼球，胡子婴儿等全部回收时，会有除以0的bug
+var foxlab_least_one_items = {}
+
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
 	if player_index != RunData.DUMMY_PLAYER_INDEX :
@@ -134,11 +143,22 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 
 			text += "\n[color=#" + Utils.SECONDARY_FONT_COLOR.to_html() + "]" + Text.text(tracking_text_to_use.to_upper(), [Text.get_formatted_number(tracked_count)]) + "[/color]"
 	return text
+	
+func foxlab_get_least_one_items():
+	for item in ItemService.items:
+		if not item.can_be_looted:
+			continue
+		for effect in item.effects:
+			if effect is ProjectileEffect:
+				foxlab_least_one_items[item.my_id_hash] = item
+				break
 
+######## 扩展 ######
 func _ready():
 	for stat in _primary_stat_keys:
 		var gain_stat = "gain_" + Keys.hash_to_string[stat]
 		foxlab_primary_stat_gain_map[Keys.generate_hash(gain_stat)] = stat
+	call_deferred("foxlab_get_least_one_items")
 
 func average_all_player_stats(stat_hsh: int) -> float:
 	var value = .average_all_player_stats(stat_hsh)

@@ -54,7 +54,7 @@ func unapply(_player_index: int) -> void:
 
 func get_args(player_index: int) -> Array:
 	if RunData.get_player_character(player_index) == null:
-		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr("EFFECT_FOXLAB_BUDDHAS_HAND_HINT")]
+		return [tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), Text.text(tr("EFFECT_FOXLAB_BUDDHAS_HAND_HINT"), [tr(key.to_upper())], [Sign.POSITIVE])]
 	try_generate(player_index)
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]
@@ -67,7 +67,7 @@ func _get_chance_success(base_chance: float, luck_chance: float)->bool:
 	return Utils.get_chance_success(min(MAX_BONUS_CHANCE, base_chance * luck_chance))
 
 func _get_rand_weapon(player_index: int) -> WeaponData:
-	var luck = Utils.get_stat(Keys.stat_luck_hash, player_index) / 100.0
+	var luck = Utils.get_stat(key_hash, player_index) / 100.0
 	var luck_chance:float = 1.0
 	if luck >= 0:
 		luck_chance = luck_chance * (1 + luck)

@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource( 1 )
-key = ""
-text_key = "[EMPTY]"
+key = "item_foxlab_tick_tock"
+text_key = "EFFECT_FOXLAB_TICK_TOCK_TOOLTIP"
 value = 0
 custom_key = ""
 storage_method = 0
-effect_sign = 3
+effect_sign = 0
 custom_args = [  ]
 stats_swapped = [ "stat_max_hp", "stat_hp_regeneration" ]

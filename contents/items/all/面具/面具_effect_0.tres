@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = ""
+key = "stat_armor"
 text_key = "EFFECT_FOXLAB_TRANSFORM"
 value = 2
 custom_key = ""

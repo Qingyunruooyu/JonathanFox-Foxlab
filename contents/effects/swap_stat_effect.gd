@@ -49,11 +49,6 @@ func apply(player_index: int) -> void:
 func unapply(_player_index: int) -> void:
 	pass
 
-
-func get_args(player_index: int) -> Array:
-	return [tr(stats_swapped[1].to_upper()), tr(stats_swapped[0].to_upper())]
-
-
 func serialize() -> Dictionary:
 	var serialized = .serialize()
 

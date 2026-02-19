@@ -111,9 +111,6 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		if _get_chance_success(CHANCE_LEGENDARY_ITEM, luck_chance):
 			args.increase_tier = 3
 			# items (except hourglass) can be get even if it may exceed the limited number
-		for least_one in Utils.foxlab_least_one_items.keys():
-			if RunData.get_nb_item(least_one, player_index) <= 1:
-				args.excluded_items.append([Utils.foxlab_least_one_items[least_one], RunData.current_wave])
 		item_for_effect = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.ITEMS, args)
 
 	var is_cursed:int = value != VALUE_BASE

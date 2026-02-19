@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_item_exploding_effect.gd" type="Script" id=1]
+[ext_resource path="res://effects/items/item_exploding_effect.gd" type="Script" id=1]
 [ext_resource path="res://projectiles/explosion.tscn" type="PackedScene" id=2]
 
 [resource]

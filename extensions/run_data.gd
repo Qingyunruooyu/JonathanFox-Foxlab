@@ -78,17 +78,7 @@ func foxlab_forget_item(player_index: int):
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
 				DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
-				var custom_key_hash = null
-				if item.my_id_hash in Utils.foxlab_least_one_items and RunData.get_nb_item(item.my_id_hash, player_index) <= 1:
-					for effect in item.effects:
-						if effect is ProjectileEffect:
-							var effect_data = RunData.get_player_effect(effect.key_hash, player_index)
-							if effect_data[0] == effect.value:
-								custom_key_hash = effect.key_hash
-							break
 				remove_item(item, player_index)
-				if custom_key_hash:
-					RunData.get_player_effects(player_index)[custom_key_hash].clear()
 				DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:

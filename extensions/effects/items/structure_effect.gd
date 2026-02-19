@@ -1,8 +1,4 @@
-class_name FoxLabStructureEffect
 extends "res://effects/items/structure_effect.gd"
-
-static func get_id() -> String:
-	return "foxlab_effect_structure"
 
 func unapply(player_index: int) -> void :
 	var effects = RunData.get_player_effects(player_index)[Keys.structures_hash]

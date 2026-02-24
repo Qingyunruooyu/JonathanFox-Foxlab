@@ -26,11 +26,7 @@ const EXTENSION_SCRIPTS: =[
 	"menu_confirm.gd",
 	"sort_inventory_button.gd",
 	"item_description.gd",
-	"effects/weapons/weapon_gain_stat_for_every_stat_effect.gd",
-	"effects/weapons/weapon_slow_on_hit_effect.gd",
-	"effects/items/item_exploding_effect.gd",
-	"effects/items/convert_stat_effect.gd",
-	"effects/items/projectile_effect.gd",
+	"effects/projectile_effect.gd",
 ]
 
 
@@ -52,7 +48,6 @@ func _init():
 	if not IS_ANDROID:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "progress_data.gd")
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "evil_mob.gd")
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "effects/items/structure_effect.gd")
 
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.en.translation")
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")

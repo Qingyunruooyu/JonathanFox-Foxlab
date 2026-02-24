@@ -1,4 +1,8 @@
+class_name FoxLabConvertStatEffect
 extends "res://effects/items/convert_stat_effect.gd"
+
+static func get_id() -> String:
+	return "foxlab_effect_convert_stat"
 
 # 中途关闭游戏重开后, unapply失效的问题
 func unapply(player_index: int) -> void:

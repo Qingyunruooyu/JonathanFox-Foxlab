@@ -168,7 +168,7 @@ func foxlab_item_recycle_test():
 		add_item(new_item, 0)
 		remove_item(new_item, 0)
 	return true
-	
+
 func add_starting_items_and_weapons() -> void :
 #	assert(foxlab_item_recycle_test())
 	var effects = get_player_effects(0)

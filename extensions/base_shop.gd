@@ -128,7 +128,7 @@ func buy_item(item_data: ItemData, player_index: int) -> void :
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
 		update_weapons = true
-	
+
 	if update_weapons:
 		var weapons = RunData.get_player_weapons(player_index)
 		player_gear_container.set_weapons_data(weapons)
@@ -183,9 +183,9 @@ func _on_tree_exited() -> void :
 
 	var wave_reset_count: = 0
 	for player_index in RunData.get_player_count():
+		RunData.foxlab_forget_item_entry(player_index)
 		if not RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
 			continue
-		RunData.foxlab_forget_item_entry(player_index)
 		for item in RunData.foxlab_shop_items[player_index]:
 			if is_instance_valid(item) and item.active and not item.locked:
 				RunData.foxlab_remember_item(item.item_data, player_index)

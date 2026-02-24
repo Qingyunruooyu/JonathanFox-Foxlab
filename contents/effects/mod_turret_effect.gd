@@ -1,16 +1,8 @@
-class_name FoxLabTrackerEffect
-extends  "res://effects/items/turret_effect.gd"
-
-var tracker = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/tracker/tracker.gd")
+class_name FoxLabTurretEffect
+extends "res://effects/items/turret_effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_tracker"
-
-func get_args(player_index: int) -> Array:
-	var args = .get_args(player_index)
-	var max_range = tracker.get_max_range_melee_weapon_range(stats, player_index)
-	args.push_back(str(max_range))
-	return args
+	return "foxlab_effect_turret"
 
 func unapply(player_index: int) -> void :
 	var effects = RunData.get_player_effects(player_index)[Keys.structures_hash]
@@ -24,3 +16,5 @@ func unapply(player_index: int) -> void :
 			 effect.get_args(player_index) == get_args(player_index):
 			effects.erase(effect)
 			return
+
+

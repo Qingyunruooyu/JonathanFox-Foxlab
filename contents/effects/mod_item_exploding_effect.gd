@@ -1,4 +1,8 @@
+class_name FoxLabItemExplodingEffect
 extends "res://effects/items/item_exploding_effect.gd"
+
+static func get_id() -> String:
+	return "foxlab_effect_item_exploding"
 
 func unapply(player_index: int) -> void :
 	var effects = RunData.get_player_effects(player_index)[key_hash]

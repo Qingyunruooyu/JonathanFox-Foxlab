@@ -61,5 +61,9 @@ func add_resources(settings: Dictionary):
 	Text.keys_needing_operator.merge(translation_keys_needing_operator)
 	Text.keys_needing_percent.merge(translation_keys_needing_percent)
 
-	call_deferred("modify_characters")
-	call_deferred("add_stats")
+	if OS.get_name() == "Android":
+		modify_characters()
+		add_stats()
+	else:
+		call_deferred("modify_characters")
+		call_deferred("add_stats")

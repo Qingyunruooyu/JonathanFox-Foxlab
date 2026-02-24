@@ -95,9 +95,11 @@ func add_weapon(weapon: WeaponData, pos: int) -> void :
 			cur_weapon.muzzle.add_child(instance)
 			return
 
-	if not RunData.foxlab_remembered_weapons[player_index].empty():
-		var instance = foxlab_scepter_particle.instance()
-		cur_weapon.muzzle.add_child(instance)
+	for effect in cur_weapon.effects:
+		if effect.custom_key_hash == Utils.foxlab_remembered_effect_begin_hash:
+			var instance = foxlab_scepter_particle.instance()
+			cur_weapon.muzzle.add_child(instance)
+			return
 
 func _clean_up() -> void :
 	._clean_up()

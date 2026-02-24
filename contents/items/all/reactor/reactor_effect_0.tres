@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/reactor/reactor.tscn" type="PackedScene" id=1]
-[ext_resource path="res://effects/items/turret_effect.gd" type="Script" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_turret_effect.gd" type="Script" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/reactor/reactor_effect_0.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/reactor/reactor_stats.tres" type="Resource" id=5]
 

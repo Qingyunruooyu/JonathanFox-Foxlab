@@ -102,6 +102,9 @@ var foxlab_ignored_floating_stat_hash = {
 	Keys.enemy_health_hash: 0,
 	Keys.enemy_speed_hash: 0,
 	Keys.stronger_elites_on_kill_hash: 0,
+	Keys.next_level_xp_needed_hash: 0,
+	Keys.items_price_hash: 0,
+	Keys.reroll_price_hash: 0,
 	foxlab_troubleshooter_crisis_num_hash: 0,
 	foxlab_troubleshooter_temp_hash: 0,
 	foxlab_dante_states_hash: 0,
@@ -197,15 +200,15 @@ func convert_remainder(stats: Array, player_index:int):
 	if stats.empty():
 		return
 	for stat_to_convert in stats:
-		var pct_converted:float = stat_to_convert[0]/100.0
-		var stat_name :int= stat_to_convert[1]
-		var stat_dividend :int= stat_to_convert[2]
-		var remainder_offset:int = stat_to_convert[3]
-		var keep_value = stat_to_convert[4]
-		var to_stat:int = stat_to_convert[5]
-		var to_stat_scaling:float= stat_to_convert[6]
-		var storage_method = stat_to_convert[7]
-		var is_negative_key:bool = stat_to_convert[8]
+		var pct_converted:float = stat_to_convert.pct_converted/100.0
+		var stat_name :int= stat_to_convert.key_hash
+		var stat_dividend :int= stat_to_convert.value
+		var remainder_offset:int = stat_to_convert.offset
+		var keep_value = stat_to_convert.keep_value
+		var to_stat:int = stat_to_convert.to_stat_hash
+		var to_stat_scaling:float= stat_to_convert.to_stat_scaling
+		var storage_method = stat_to_convert.storage_method
+		var is_negative_key:bool = stat_to_convert.is_negative_key
 
 		var stat_value :int = 0
 		if stat_name == Keys.materials_hash:

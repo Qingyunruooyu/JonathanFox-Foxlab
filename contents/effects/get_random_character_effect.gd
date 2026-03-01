@@ -232,7 +232,7 @@ func get_args(player_index: int) -> Array:
 func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictionary):
 	if not character.my_id_hash in convert_stat_dict:
 		for effect in character.effects:
-			if effect is ConvertStatEffect and not effect.custom_key.begins_with("foxlab_always"):
+			if effect is ConvertStatEffect and not effect.custom_key.begins_with("fox"):
 				convert_stat_dict[character.my_id_hash] = 1
 				return
 		convert_stat_dict[character.my_id_hash] = 0

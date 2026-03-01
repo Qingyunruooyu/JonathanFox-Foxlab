@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://projectiles/flesh_explosion/flesh_explosion.tscn" type="PackedScene" id=1]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_item_exploding_effect.gd" type="Script" id=2]
+[ext_resource path="res://effects/items/item_exploding_effect.gd" type="Script" id=2]
 [ext_resource path="res://weapons/weapon_stats/melee_weapon_stats.gd" type="Script" id=3]
 [ext_resource path="res://dlcs/dlc_1/items/sunken_bell/bell_large_ringing_01.wav" type="AudioStream" id=4]
 

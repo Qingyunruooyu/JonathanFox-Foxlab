@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=145 format=2]
+[gd_resource type="Resource" load_steps=142 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
@@ -107,10 +107,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/receive_items_at_wave.gd" type="Script" id=105]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/weapon_class_price_effect.gd" type="Script" id=106]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/get_item_effect.gd" type="Script" id=107]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_convert_stat_effect.gd" type="Script" id=108]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_item_exploding_effect.gd" type="Script" id=109]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_turret_effect.gd" type="Script" id=110]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/mod_structure_effect.gd" type="Script" id=111]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/stats/lose_hp_per_second.tres" type="Resource" id=108]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/magician_effect.gd" type="Script" id=112]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/cursed_starting_weapon.gd" type="Script" id=113]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/gain_stat_query_effect.gd" type="Script" id=114]
@@ -155,8 +152,8 @@ upgrades = [  ]
 consumables = [  ]
 elites = [  ]
 difficulties = [  ]
-effects = [ ExtResource( 6 ), ExtResource( 116 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 125 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 124 ), ExtResource( 112 ), ExtResource( 108 ), ExtResource( 109 ), ExtResource( 145 ), ExtResource( 111 ), ExtResource( 110 ), ExtResource( 120 ), ExtResource( 118 ), ExtResource( 126 ), ExtResource( 135 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 117 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 121 ), ExtResource( 106 ) ]
-stats = [ ExtResource( 131 ), ExtResource( 133 ), ExtResource( 129 ), ExtResource( 138 ), ExtResource( 140 ), ExtResource( 128 ), ExtResource( 130 ), ExtResource( 139 ), ExtResource( 137 ), ExtResource( 143 ), ExtResource( 142 ), ExtResource( 132 ), ExtResource( 141 ), ExtResource( 136 ), ExtResource( 134 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 116 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 125 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 124 ), ExtResource( 112 ), ExtResource( 145 ), ExtResource( 120 ), ExtResource( 118 ), ExtResource( 126 ), ExtResource( 135 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 104 ), ExtResource( 117 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 121 ), ExtResource( 106 ) ]
+stats = [ ExtResource( 131 ), ExtResource( 133 ), ExtResource( 129 ), ExtResource( 138 ), ExtResource( 140 ), ExtResource( 128 ), ExtResource( 130 ), ExtResource( 139 ), ExtResource( 137 ), ExtResource( 143 ), ExtResource( 142 ), ExtResource( 132 ), ExtResource( 108 ), ExtResource( 141 ), ExtResource( 136 ), ExtResource( 134 ) ]
 extra_banned_item = {
 "consumable": [ "item_foxlab_omnic_crisis" ],
 "stat_hp_regeneration": [ "item_foxlab_omnic_crisis" ],
@@ -188,7 +185,7 @@ tracked_items = {
 "item_foxlab_tracker": 0
 }
 effect_keys_with_weapon_stats = [ "foxlab_ball_lightning", "foxlab_projectile_on_hit" ]
-effect_keys_full_serialization = [ "foxlab_always_convert_stats_end_of_wave", "foxlab_always_convert_stats_half_wave" ]
+effect_keys_full_serialization = [ "foxlab_always_convert_stats_end_of_wave", "foxlab_always_convert_stats_half_wave", "fox_convert_remainder_end_of_wave" ]
 translation_keys_needing_operator = {
 "bounce": [ 0 ],
 "bounce_damage": [ 0 ],

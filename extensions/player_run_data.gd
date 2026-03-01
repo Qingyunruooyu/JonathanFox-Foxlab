@@ -93,15 +93,6 @@ func serialize() -> Dictionary:
 	return serialized
 
 func deserialize(data: Dictionary) -> PlayerRunData:
-	# 纯名字不需要被转换为哈希
-	var memory = null
-	var key = str(Utils.foxlab_previous_remembered_names_hash)
-	if key in data.effects:
-		memory = data.effects[key].duplicate()
-	.deserialize(data)
-	if memory:
-		effects[Utils.foxlab_previous_remembered_names_hash] = memory
-
 	if "foxlab_buddhas_hand_meta" in data:
 		for i in range(data.foxlab_buddhas_hand_meta.size()):
 			foxlab_buddhas_hand_meta[i] =  data.foxlab_buddhas_hand_meta[i].duplicate()
@@ -140,8 +131,45 @@ func deserialize(data: Dictionary) -> PlayerRunData:
 						prev_items.push_back(item.duplicate())
 				meta.prevs = prev_items
 
+	# 纯名字不需要被转换为哈希
+	var memory = null
+	var key = str(Utils.foxlab_previous_remembered_names_hash)
+	if key in data.effects:
+		memory = data.effects[key].duplicate()
+
+	.deserialize(data)
+
+	if memory:
+		effects[Utils.foxlab_previous_remembered_names_hash] = memory
+
 	return self
 
+# 切换面具角色需要移除的角色/道具，如果是对象类型（构筑物、爆炸、恶魔等），像武器一样能正确地回收
+func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> void :
+	var prev_items = []
+	for meta in foxlab_mask_meta:
+		for prev in meta.prevs:
+			if prev is Array: # [id_hash, curse_factor]
+				prev_items.append(prev)
+
+	if not prev_items.empty():
+		elements = elements.duplicate()
+		var items_indices:Dictionary = {}
+		for index in range(items.size(), 0, -1):
+			var item_data = items[index - 1]
+			for i in range(prev_items.size()):
+				if items_indices.has(i) or item_data.curse_factor != prev_items[i][1]:
+					continue
+
+				if item_data.my_id_hash == prev_items[i][0]  or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_items[i][0] in Keys.item_builder_turret_n_hash):
+					items_indices[i] = item_data
+					elements.push_back(item_data)
+					break
+
+			if items_indices.size() == prev_items.size():
+				break
+
+	._cache_effect_hashes(elements, weapon_effect_hashes)
 
 static func init_stats(all_null_values: bool = false)->Dictionary:
 	if (not Utils == null) :

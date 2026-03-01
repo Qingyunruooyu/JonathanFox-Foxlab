@@ -26,6 +26,7 @@ const EXTENSION_SCRIPTS: =[
 	"menu_confirm.gd",
 	"sort_inventory_button.gd",
 	"item_description.gd",
+	"weapon_selection.gd",
 	"effects/projectile_effect.gd",
 ]
 

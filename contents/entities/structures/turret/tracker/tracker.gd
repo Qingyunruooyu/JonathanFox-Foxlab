@@ -63,16 +63,13 @@ func _on_tracking_enemy_died(target: Node, _args: Entity.DieArgs) -> void :
 	assert (target == _current_tracking_enemy)
 	_current_tracking_enemy = null
 
-func _on_player_took_damage(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
-	_assemble_if_idle()
+# 召回前不会锁定敌人
+func _on_player_took_damage(_enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, _args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
+	if _value > 0 and _is_idle():
+		_in_assembling = true
 
 func _is_idle() -> bool:
-	return not is_instance_valid(_current_tracking_enemy) or _current_tracking_enemy._pending_die
-
-# 召回前不会锁定敌人
-func _assemble_if_idle():
-	if _is_idle() :
-		_in_assembling = true
+	return not is_instance_valid(_current_tracking_enemy) or _current_tracking_enemy.dead
 
 func _physics_process(delta: float) -> void :
 	if not _in_assembling and _is_idle():

@@ -165,6 +165,7 @@ func foxlab_multiply_stats(stats: Array, player_index: int, permanent: bool = tr
 			var gold = RunData.get_player_gold(player_index)
 			var gold_delta = gold * mul - gold
 			RunData.add_gold(gold_delta, player_index)
+			RunData.foxlab_is_midnight[player_index] = not permanent
 			if not permanent:
 				var actual_gain = gold * abs(mul) - gold
 				RunData.add_tracked_value(player_index, character_foxlab_ghost_envoy_hash, actual_gain)

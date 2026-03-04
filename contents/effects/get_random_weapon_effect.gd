@@ -89,12 +89,10 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	else:
 		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args).duplicate()
 
-	var is_melee_boosted = false
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
 		var melee_stats = weapon.stats.duplicate()
 		melee_stats.deal_dmg_on_return = true
 		weapon.stats = melee_stats
-		is_melee_boosted = true
 
 	var item_for_effect = null
 

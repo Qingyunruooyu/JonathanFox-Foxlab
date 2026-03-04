@@ -43,6 +43,14 @@ func foxlab_modify_weapon_upgrade(weapon: WeaponData):
 		if effect.custom_key_hash == Utils.foxlab_const_effect_end_hash:
 			is_in_extra_range = false
 	upgrades_into.effects = new_effects
+
+	if weapon.type ==  WeaponData.Type.MELEE and \
+		weapon.stats.deal_dmg_on_return == true and\
+		upgrades_into.stats.deal_dmg_on_return == false:
+		var melee_stats = upgrades_into.stats.duplicate()
+		melee_stats.deal_dmg_on_return = true
+		upgrades_into.stats = melee_stats
+
 	weapon.upgrades_into = upgrades_into
 
 ######### 扩展 #########

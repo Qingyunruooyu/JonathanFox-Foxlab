@@ -244,7 +244,7 @@ func _on_HalfWaveTimer_timeout() -> void :
 	if multi_stats:
 		var bg_changed: =false
 		for i in range(RunData.get_player_count()):
-			if RunData.get_player_gold(i) < 0:
+			if RunData.foxlab_is_midnight[i]:
 				_wave_timer_label.change_color(Utils.CURSE_COLOR)
 				_floating_text_manager.display("FOXLAB_MIDNIGHT", _floating_text_manager.players[i].global_position, Utils.CURSE_COLOR)
 				var player_ui = _players_ui[i]

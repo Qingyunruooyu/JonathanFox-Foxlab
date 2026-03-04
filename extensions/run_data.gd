@@ -7,6 +7,9 @@ var foxlab_remembered_items = [ [], [], [], [] ]
 var foxlab_remembered_weapons = [ [], [], [], [] ]
 var foxlab_shop_items = [ [], [], [], [] ]
 
+#鬼差相关
+var foxlab_is_midnight = [false, false, false, false]
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
@@ -141,10 +144,21 @@ func get_foxlab_mask_meta(player_index: int):
 	return players_data[player_index].foxlab_mask_meta
 
 ###### 扩展 ######
+func remove_gold(value: int, player_index: int) -> void :
+	var player_data = players_data[player_index]
+	if foxlab_is_midnight[player_index]:
+		player_data.gold = (player_data.gold - value) as int
+		emit_signal("gold_changed", player_data.gold, player_index)
+	else:
+		.remove_gold(value, player_index)
+
 func on_wave_start(timer: WaveTimer) -> void :
 	.on_wave_start(timer)
-	get_player_effects(0)[Utils.foxlab_shop_effects_checked_hash] = 0
+	var effects = get_player_effects(0)
+	effects[Utils.foxlab_shop_effects_checked_hash] = 0
 	DebugService.log_data("foxlab_shop_effects_checked: set false")
+	#公牛等没有武器的角色，不会执行add_starting_items_and_weapons
+	effects[Utils.fox_wave_started_hash] = 1
 
 func get_next_level_xp_needed(player_index) -> float:
 	var xp_needed = .get_next_level_xp_needed(player_index)

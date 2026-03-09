@@ -63,7 +63,7 @@ EFFECT_FOXLAB_ITEM_STEAL_WARMHOLE_SPAWN,偷窃会生成精英怪和随机敌人,
 EFFECT_FOXLAB_ITEM_STEAL_WARMHOLE,下个商店起，每个商店可窃取{0}个道具,Can steal {0} item per shop since the next shop
 STRONGER_ELITES_ON_KILL,%头目击杀增幅,% Stronger Boss on Kill
 EFFECT_FOXLAB_NEGATIVE_KNOCKBACK,击退改为[color=#FF8C00]抓取[/color],Knockback is [color=#FF8C00]Pull[/color]
-EFFECT_FOXLAB_WORMHOLE_UPGRADE,上项执行后，每{3}{1}转换为{4}{2}并清零击退,"When above works, every {3} {1} are converted into {4} {2} and reset Knockback"
+EFFECT_FOXLAB_WORMHOLE_UPGRADE,上一项执行后，每{3}{1}转换为{4}{2}并清零击退,"When above works, every {3} {1} are converted into {4} {2} and reset Knockback"
 EFFECT_FOXLAB_WEAPON_STRUCT_BONUS,{0} 基础{1},{0} base {1}
 CHARACTER_FOXLAB_YINYANG,阴阳师,Yin-Yang Master
 FOXLAB_ENABLE,生效,Enabled
@@ -98,7 +98,7 @@ CHARACTER_FOXLAB_GOLEM_NINJA,傀儡忍者,Golem Ninja
 ITEM_FOXLAB_OMNIC_CRISIS,智械危机,Omnic Crisis
 EFFECT_FOXLAB_TEMP_STATS_ON_STRUCTURE_CRIT,构筑物以暴击杀死敌人会{0}{1}直至敌袭结束,{0} {1} until the end of the wave when structure kills an enemy with a critical hit
 CRIT_CHANCE_CAP,%暴击率上限,% Crit Chance Cap
-EFFECT_FOXLAB_GOLEM_NINJA,上项{3}次执行都有{2}＞{4}，可解除[color=#FF8C00]{5}[/color]负面（余[color=#FF8C00]{0}[/color]）,"When above works for {3} times with {2} > {4}, penalty of [color=#FF8C00]{5}[/color] gone ([color=#FF8C00]{0}[/color] to go)"
+EFFECT_FOXLAB_GOLEM_NINJA,上一项{3}次执行都有{2}＞{4}，可解除[color=#FF8C00]{5}[/color]负面（余[color=#FF8C00]{0}[/color]）,"When above works for {3} times with {2} > {4}, penalty of [color=#FF8C00]{5}[/color] gone ([color=#FF8C00]{0}[/color] to go)"
 CHARACTER_FOXLAB_MAGICIAN,魔术师,Magician
 ITEM_FOXLAB_MAGICAL_HAT,魔术帽,Magical Hat
 EFFECT_FOXLAB_PERMANENT,永久,"permanent "
@@ -307,6 +307,10 @@ FOXLAB_WEAPON_EFFECT,武器效果,Weapon effect
 FOXLAB_PREVIOUS_REMEMBERED_NAMES,记忆,Memory
 EFFECT_FOXLAB_REMEMBER_SHOP_ITEMS,敌袭期间，你[color=#FF8C00]视为拥有[/color]商店当前展示的所有{2}和{3}（不与上[color=#FF8C00]一[/color]次的记忆重复）,"During a wave, you are [color=#FF8C00]treated as having[/color] every {2} and {3} currently displayed the shop (not for those in your [color=#FF8C00]last[/color] Memory)"
 FOXLAB_EFFECT_REMEMBERED_WEAPON,记忆中的武器效果：,Weapon effects in memory:
+CHARACTER_FOXLAB_SNOWBALL,雪球,Snowball
+EFFECT_FOXLAB_BUY_ITEM_INCREASE_TIER,每次购买{0}/{1}级物品，[color=#FF8C00]本商店[/color]下一页物品{2}/{3}等级（上限：{4}）,"Each time you buy something of tier {0}/{1}, things on the next page of [color=#FF8C00]current shop[/color] {2}/{3} tier (Max: {4})"
+EFFECT_FOXLAB_NO_PETS,你无法拥有宠物,You can't have pets
+FOXLAB_BUY_ITEM_INCREASE_TIER_CURRENT,下一页商品等级修正,Tier modification next page
 EFFECT_FOXLAB_NULLIFY_FATAL_RESURRECT,每波敌袭中首次承受致命伤害时，回满生命值然后随机失去{0}个道具,Resurrect when you take fatal damage first time during a wave"," then lose {0} random items
 ITEM_FOXLAB_WHITE_ROSE,白玫瑰,White Rose
 EFFECT_FOXLAB_NULLIFY_FATAL_ONCE,当你获得此道具后，本局游戏可免疫一次致命伤害,Nullify fatal damage once during this run when you get this item

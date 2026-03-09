@@ -1,0 +1,68 @@
+[gd_resource type="Resource" load_steps=43 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_ears.tres" type="Resource" id=1]
+[ext_resource path="res://weapons/melee/spear/2/spear_2_data.tres" type="Resource" id=2]
+[ext_resource path="res://weapons/ranged/double_barrel_shotgun/2/double_barrel_shotgun_2_data.tres" type="Resource" id=3]
+[ext_resource path="res://weapons/melee/hammer/2/hammer_2_data.tres" type="Resource" id=4]
+[ext_resource path="res://weapons/melee/circular_saw/2/circular_saw_2_data.tres" type="Resource" id=5]
+[ext_resource path="res://weapons/ranged/smg/2/smg_2_data.tres" type="Resource" id=6]
+[ext_resource path="res://weapons/ranged/rocket_launcher/2/rocket_launcher_2_data.tres" type="Resource" id=7]
+[ext_resource path="res://weapons/ranged/icicle/2/icicle_2_data.tres" type="Resource" id=8]
+[ext_resource path="res://weapons/melee/wrench/2/wrench_2_data.tres" type="Resource" id=9]
+[ext_resource path="res://weapons/ranged/slingshot/2/slingshot_2_data.tres" type="Resource" id=10]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_carrot.tres" type="Resource" id=11]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_icon.png" type="Texture" id=12]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=13]
+[ext_resource path="res://items/all/piggy_bank/piggy_bank_data.tres" type="Resource" id=14]
+[ext_resource path="res://weapons/melee/claw/2/claw_2_data.tres" type="Resource" id=15]
+[ext_resource path="res://weapons/melee/dagger/2/dagger_2_data.tres" type="Resource" id=16]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_1.tres" type="Resource" id=17]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_2.tres" type="Resource" id=18]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_0.tres" type="Resource" id=19]
+[ext_resource path="res://dlcs/dlc_1/weapons/ranged/grenade_launcher/2/grenade_launcher_2_data.tres" type="Resource" id=20]
+[ext_resource path="res://weapons/ranged/fireball/2/fireball_2_data.tres" type="Resource" id=21]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_query.tres" type="Resource" id=22]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/anchor/2/anchor_2_data.tres" type="Resource" id=23]
+[ext_resource path="res://weapons/ranged/revolver/2/revolver_2_data.tres" type="Resource" id=24]
+[ext_resource path="res://weapons/melee/ghost_axe/2/ghost_axe_2_data.tres" type="Resource" id=25]
+[ext_resource path="res://weapons/melee/vorpal_sword/2/vorpal_sword_2_data.tres" type="Resource" id=26]
+[ext_resource path="res://weapons/melee/sword/2/sword_2_data.tres" type="Resource" id=27]
+[ext_resource path="res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_data.tres" type="Resource" id=28]
+[ext_resource path="res://items/all/little_frog/little_frog_data.tres" type="Resource" id=29]
+[ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/2/javelin_2_data.tres" type="Resource" id=30]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_3.tres" type="Resource" id=31]
+[ext_resource path="res://items/all/dangerous_bunny/dangerous_bunny_data.tres" type="Resource" id=32]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/trident/2/trident_2_data.tres" type="Resource" id=33]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/hiking_stick/2/hiking_stick_2_data.tres" type="Resource" id=34]
+[ext_resource path="res://dlcs/dlc_1/weapons/ranged/blunderbuss/2/blunderbuss_2_data.tres" type="Resource" id=35]
+[ext_resource path="res://dlcs/dlc_1/weapons/ranged/harpoon_gun/2/harpoon_gun_2_data.tres" type="Resource" id=36]
+[ext_resource path="res://items/all/bait/bait_data.tres" type="Resource" id=37]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/mace/2/mace_2_data.tres" type="Resource" id=38]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_eyes.tres" type="Resource" id=39]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_mouth.tres" type="Resource" id=40]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_0a.tres" type="Resource" id=41]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_4.tres" type="Resource" id=42]
+
+[resource]
+script = ExtResource( 13 )
+my_id = "character_foxlab_snowball"
+unlocked_by_default = true
+can_be_looted = true
+icon = ExtResource( 12 )
+name = "CHARACTER_FOXLAB_SNOWBALL"
+tier = 0
+value = 1
+effects = [ ExtResource( 41 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 31 ), ExtResource( 42 ), ExtResource( 18 ), ExtResource( 22 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = -1
+item_appearances = [ ExtResource( 11 ), ExtResource( 1 ), ExtResource( 39 ), ExtResource( 40 ) ]
+tags = [  ]
+wanted_tags = [  ]
+banned_item_groups = [  ]
+banned_items = [  ]
+starting_weapons = [ ExtResource( 4 ), ExtResource( 7 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 16 ), ExtResource( 27 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 24 ), ExtResource( 15 ), ExtResource( 8 ), ExtResource( 34 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 30 ), ExtResource( 36 ), ExtResource( 26 ), ExtResource( 38 ), ExtResource( 5 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 20 ) ]
+starting_items = [ ExtResource( 32 ), ExtResource( 14 ), ExtResource( 37 ), ExtResource( 29 ) ]

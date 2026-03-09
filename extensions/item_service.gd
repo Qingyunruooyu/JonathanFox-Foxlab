@@ -4,7 +4,9 @@ extends "res://singletons/item_service.gd"
 var foxlab_kill_nearby_icon;
 
 ######## 武器池 ########
+var foxlab_pet_structure_stats_added = false
 var foxlab_weapons_spawning_structure = {}
+var foxlab_weapon_spawning_pet = [] #原版没有召唤宠物的武器，浅陌造物有
 
 ######### 面具相关 ############
 var foxlab_transform_characters:Array=[]
@@ -178,17 +180,25 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 	enemy.die(foxlab_die_args)
 	return new_boss_num
 
-func foxlab_modify_items():
-	for item in items:
-		if "structure" in item.tags:
-			continue
-		if item.is_structure_item():
-			item.tags.append("structure")
+func foxlab_add_pet_structure_stats():
+	if not foxlab_pet_structure_stats_added:
+		_foxlab_modify_items_tag()
+		_foxlab_record_spawning_weapons()
+		foxlab_pet_structure_stats_added = true
 
-func foxlab_record_structure_weapons():
+func _foxlab_modify_items_tag():
+	for item in items:
+		if not "structure" in item.tags and item.is_structure_item():
+			item.tags.append("structure")
+		if not "pet" in items.tag and item.is_pet_item():
+			item.tags.append("pet")
+
+func _foxlab_record_spawning_weapons():
 	for weapon in weapons:
 		if weapon.is_structure_item():
 			foxlab_weapons_spawning_structure[weapon.weapon_id_hash] = 1
+		if weapon.is_pet_item():
+			foxlab_weapon_spawning_pet.push_back([weapon, 0])
 
 ####### 扩展 ###########
 func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapon: bool = false, affected_by_items_price_stat: bool = true) -> int:
@@ -199,15 +209,20 @@ func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapo
 var foxlab_just_enter_shop = [true, true, true, true]
 func get_player_shop_items(wave: int, player_index: int, args: ItemServiceGetShopItemsArgs) -> Array:
 	if not foxlab_just_enter_shop[player_index]:
-		args.increase_tier += RunData.get_player_effect(Utils.foxlab_increase_tier_on_rerolls_hash, player_index)
+		args.increase_tier += RunData.get_player_effect(Utils.foxlab_increase_tier_on_rerolls_hash, player_index) + \
+							min(1, RunData.get_player_effect(Utils.foxlab_buy_item_increase_tier_current_hash, player_index))
 	return .get_player_shop_items(wave, player_index, args)
 
-var BANNED_ITEM_NAMES_EARLIER = [Keys.generate_hash("item_foxlab_slow_and_steady_wins"), Keys.generate_hash("item_foxlab_spacetime_anchor")]
-var banned_items_earlier = []
+var FOXLAB_BANNED_ITEM_NAMES_EARLIER = [Keys.generate_hash("item_foxlab_slow_and_steady_wins"), Keys.generate_hash("item_foxlab_spacetime_anchor")]
+var foxlab_banned_items_earlier = []
 func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetRandItemForWaveArgs) -> ItemParentData:
 	if wave < 13 and type == TierData.ITEMS:
-		if banned_items_earlier.empty():
-			for item_name in BANNED_ITEM_NAMES_EARLIER:
-				banned_items_earlier.push_back([get_item_from_id(item_name), 0])
-		args.excluded_items.append_array(banned_items_earlier)
+		if foxlab_banned_items_earlier.empty():
+			for item_name in FOXLAB_BANNED_ITEM_NAMES_EARLIER:
+				foxlab_banned_items_earlier.push_back([get_item_from_id(item_name), 0])
+		args.excluded_items.append_array(foxlab_banned_items_earlier)
+	
+	if type == TierData.WEAPONS and RunData.get_player_effect(Keys.remove_shop_items_hash, player_index).has(Keys.pet_hash):
+		args.excluded_items.append_array(foxlab_weapon_spawning_pet)
+
 	return ._get_rand_item_for_wave(wave, player_index, type, args)

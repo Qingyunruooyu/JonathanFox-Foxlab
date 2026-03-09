@@ -234,6 +234,8 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_remember_shop_items_hash: 0,
 			Utils.foxlab_previous_remembered_hash: [],
 			Utils.foxlab_previous_remembered_names_hash: [], # 上面一条的物品的名字，由于有些MOD的物品名字不规范，所以独立存储
+			Utils.foxlab_buy_item_increase_tier_hash: 0,
+			Utils.foxlab_buy_item_increase_tier_current_hash: 0,
 			Utils.foxlab_nullify_fatal_once_hash: 0, # 拿到道具后，一局限一次，免疫致命伤害
 			Utils.foxlab_nullify_fatal_resurrect_hash: 0, # 每波限一次，免疫致命伤害并失去随机道具
 			Utils.foxlab_nullify_fatal_silence_hash: 0, # 免疫致命伤害后，如果是敌人的伤害，本局不再承受其伤害

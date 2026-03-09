@@ -1,7 +1,5 @@
 extends "res://singletons/run_data.gd"
 
-var foxlab_pools_modified = false
-
 #孟婆相关
 var foxlab_remembered_items = [ [], [], [], [] ]
 var foxlab_remembered_weapons = [ [], [], [], [] ]
@@ -156,9 +154,12 @@ func on_wave_start(timer: WaveTimer) -> void :
 	.on_wave_start(timer)
 	var effects = get_player_effects(0)
 	effects[Utils.foxlab_shop_effects_checked_hash] = 0
+	for i in range(get_player_count()):
+		get_player_effects(i)[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
 	DebugService.log_data("foxlab_shop_effects_checked: set false")
 	#公牛等没有武器的角色，不会执行add_starting_items_and_weapons
 	effects[Utils.fox_wave_started_hash] = 1
+	ItemService.foxlab_add_pet_structure_stats()
 
 func get_next_level_xp_needed(player_index) -> float:
 	var xp_needed = .get_next_level_xp_needed(player_index)
@@ -169,7 +170,7 @@ func get_next_level_xp_needed(player_index) -> float:
 	return get_xp_needed(get_player_level(player_index) + 1) * (1.0 + xp_needed_effect / 100.0)
 
 func foxlab_item_recycle_test():
-	var failed_items = ["item_baby_with_a_beard", "item_alien_eyes", "item_seashell", "character_builder"]
+	var failed_items = []
 	for item in ItemService.items + ItemService.characters:
 		if item.my_id in failed_items:
 			continue
@@ -191,11 +192,7 @@ func add_starting_items_and_weapons() -> void :
 	foxlab_remembered_items = [ [], [], [], [] ]
 	foxlab_remembered_weapons = [ [], [], [], [] ]
 	foxlab_shop_items = [ [], [], [], [] ]
-	if foxlab_pools_modified:
-		return
-	ItemService.foxlab_modify_items()
-	ItemService.foxlab_record_structure_weapons()
-	foxlab_pools_modified = true
+	ItemService.foxlab_add_pet_structure_stats()
 
 func is_wave_started() -> bool:
 	return get_player_effect_bool(Utils.fox_wave_started_hash, 0)

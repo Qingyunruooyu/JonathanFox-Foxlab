@@ -6,7 +6,7 @@ func _ready() -> void :
 	foxlab_expand_indefinitely = expand_indefinitely
 
 func set_item(item_data: ItemParentData, player_index: int, item_count: int = 1)->void :
-	if item_data is WeaponData and item_data.effects.size() > 9:
+	if RunData.shop_effects_checked and item_data is WeaponData and item_data.effects.size() > 9:
 		expand_indefinitely = false
 	else:
 		expand_indefinitely = foxlab_expand_indefinitely

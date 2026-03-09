@@ -112,6 +112,13 @@ func _on_item_discard_button_pressed(weapon_data: WeaponData, player_index: int)
 func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	.on_shop_item_bought(shop_item, player_index)
 	var item_data = shop_item.item_data
+
+	if shop_item.value != 0 and RunData.get_player_effect_bool(Utils.foxlab_buy_item_increase_tier_hash, player_index):
+		if item_data.tier <= Tier.COMMON:
+			RunData.get_player_effects(player_index)[Utils.foxlab_buy_item_increase_tier_current_hash] -= 1
+		elif item_data.tier >= Tier.LEGENDARY:
+			RunData.get_player_effects(player_index)[Utils.foxlab_buy_item_increase_tier_current_hash] += 1
+
 	if item_data.get_category() == Category.WEAPON and\
 		item_data.tier >= RunData.get_player_effect(Utils.foxlab_bonus_reroll_weapon_tier_hash, player_index):
 		_has_bonus_free_reroll[player_index] = true
@@ -160,11 +167,13 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 
 	var prev_weapon_slot = RunData.get_player_effect(Keys.weapon_slot_hash, player_index)
 	._on_RerollButton_pressed(player_index)
+	var player_effects = RunData.get_player_effects(player_index)
+	player_effects[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
 	if RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot:
 		var player_gear_container = _get_gear_container(player_index)
 		var weapons = RunData.get_player_weapons(player_index)
 		player_gear_container.set_weapons_data(weapons)
-	var effects:Array = RunData.get_player_effects(player_index)[Utils.foxlab_force_remove_on_reroll_hash]
+	var effects:Array = player_effects[Utils.foxlab_force_remove_on_reroll_hash]
 	var update_item = false
 	while not effects.empty():
 		var item_id = effects.front()[0]
@@ -205,9 +214,10 @@ func _on_tree_exited() -> void :
 		var effects = RunData.get_player_effects(player_index)
 		var hourglass_count = effects[Keys.item_hourglass_hash]
 		if hourglass_count > 0:
-			wave_reset_count += hourglass_count
 			var source_item = RunData.get_player_item(Keys.item_hourglass_hash, player_index)
-			RunData.remove_item(source_item, player_index)
+			if source_item:
+				wave_reset_count += hourglass_count
+				RunData.remove_item(source_item, player_index)
 
 	RunData.current_wave -= wave_reset_count
 

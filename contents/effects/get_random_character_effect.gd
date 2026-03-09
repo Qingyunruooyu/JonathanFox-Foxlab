@@ -142,6 +142,8 @@ func _duplicate_weapon(player_index: int):
 	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
 	effects[Utils.fox_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if _is_wave_started(player_index) else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
+	#附魔后加一个价值， 避免建造者的炮塔不识货
+	weapon.value += 1
 	var weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
 	# 附魔的武器的等级最多超过当前武器1级
 	while weapon_for_effect.effects.empty() or (weapon.tier + 1 < weapon_for_effect.tier):

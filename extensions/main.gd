@@ -126,6 +126,9 @@ func foxlab_should_check_mutation(player_index: int)-> bool:
 	return false
 
 func foxlab_mutation_ready():
+	if Utils.foxlab_primary_stat_gain_map.empty():
+		Utils._foxlab_init_primary_stat_gain_map()
+
 	for i in RunData.get_player_count():
 		foxlab_should_check_mutation[i] = foxlab_should_check_mutation(i)
 		if foxlab_should_check_mutation[i]:
@@ -163,7 +166,7 @@ func foxlab_process_enemy_mutate(enemy: Enemy, args: TakeDamageArgs):
 	if Utils.get_chance_success(chance):
 		foxlab_bosses_this_wave[args.from_player_index] += ItemService.foxlab_spawn_random_enemy(enemy, foxlab_bosses_this_wave[args.from_player_index], args.from_player_index)
 		if RunData.get_player_effect_bool(Utils.foxlab_gain_stat_on_mutate_hash, args.from_player_index) and Utils.get_chance_success(chance):
-			var boost_enemy = _entity_spawner.get_rand_enemy()
+			var boost_enemy = Utils.get_rand_element(_entity_spawner.get_all_enemies(false))
 			if not is_instance_valid(boost_enemy):
 				return
 

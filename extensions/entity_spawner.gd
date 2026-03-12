@@ -6,6 +6,15 @@ func on_group_spawn_timing_reached(group_data: WaveGroupData) -> void :
 				return
 	.on_group_spawn_timing_reached(group_data)
 
+func get_nb_bosses_and_elites_alive() -> int:
+	var boss_num = .get_nb_bosses_and_elites_alive()
+	# 异变或者水滴石穿出来的BOSS，不在bosses里面
+	if RunData.current_wave == RunData.nb_of_waves:
+		for enemy in enemies:
+			if enemy is Boss and not enemy in charmed_enemies:
+				boss_num += 1
+	return boss_num
+
 func on_enemy_charmed(enemy: Entity) -> void :
 	.on_enemy_charmed(enemy)
 	if ItemService.foxlab_is_android and enemy is Boss:

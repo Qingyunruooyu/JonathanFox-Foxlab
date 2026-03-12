@@ -146,11 +146,15 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 			text += "\n[color=#" + Utils.SECONDARY_FONT_COLOR.to_html() + "]" + Text.text(tracking_text_to_use.to_upper(), [Text.get_formatted_number(tracked_count)]) + "[/color]"
 	return text
 
-######## 扩展 ######
-func _ready():
+func _foxlab_init_primary_stat_gain_map():
 	for stat in _primary_stat_keys:
 		var gain_stat = "gain_" + Keys.hash_to_string[stat]
 		foxlab_primary_stat_gain_map[Keys.generate_hash(gain_stat)] = stat
+
+######## 扩展 ######
+# 移植版不会调用这个函数
+func _ready():
+	_foxlab_init_primary_stat_gain_map()
 
 func average_all_player_stats(stat_hsh: int) -> float:
 	var value = .average_all_player_stats(stat_hsh)

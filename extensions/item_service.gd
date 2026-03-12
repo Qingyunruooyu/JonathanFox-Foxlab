@@ -127,8 +127,9 @@ func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int
 	return (boss_factor < (1 + max(0, (RunData.current_wave -3 ) / 10)) and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / (1 + boss_factor)))
 
 func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:
-	var enemy_scene: PackedScene = null
 	var new_boss_num = 0
+	var charmed_by = player_index if Utils.get_chance_success(FOXLAB_CHARM_CHANCE) else enemy.get_charmed_by_player_index()
+	var pos = ZoneService.get_rand_pos_in_area(Vector2(enemy.global_position.x, enemy.global_position.y), 200)
 	if enemy is Boss or foxlab_should_spawn_new_boss(boss_spawned_this_wave, player_index):
 		# 最终BOSS不能被变异
 		if enemy is Boss and not enemy.is_elite:
@@ -138,7 +139,6 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 			enemy_data = Utils.get_rand_element(bosses)
 		else:
 			enemy_data = Utils.get_rand_element(elites)
-		enemy_scene = enemy_data.scene
 		var main = Utils.get_scene_node()
 		for _player_index in RunData.get_player_count():
 			var player =  main._players[_player_index]
@@ -170,14 +170,12 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 			if floating_text_manager:
 				floating_text_manager.display("FOXLAB_RESURRECT", enemy.global_position)
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_reactor_hash, 1, 2)
-
+		enemy.emit_signal("wanted_to_spawn_an_enemy", enemy_data.scene, pos, enemy, charmed_by)
 	else:
-		enemy_scene = Utils.get_rand_element(foxlab_random_enemies())
+		enemy.emit_signal("wanted_to_spawn_an_enemy", Utils.get_rand_element(foxlab_random_enemies()), pos, enemy,charmed_by)
 
-	enemy.emit_signal("wanted_to_spawn_an_enemy", enemy_scene, ZoneService.get_rand_pos_in_area(Vector2(enemy.global_position.x,
-	enemy.global_position.y), 200), enemy, player_index if Utils.get_chance_success(FOXLAB_CHARM_CHANCE) else enemy.get_charmed_by_player_index())
 	enemy.can_drop_loot = false
-	enemy.die(foxlab_die_args)
+	enemy.call_deferred("die", foxlab_die_args)
 	return new_boss_num
 
 func foxlab_add_pet_structure_stats():
@@ -190,7 +188,7 @@ func _foxlab_modify_items_tag():
 	for item in items:
 		if not "structure" in item.tags and item.is_structure_item():
 			item.tags.append("structure")
-		if not "pet" in items.tag and item.is_pet_item():
+		if not "pet" in item.tags and item.is_pet_item():
 			item.tags.append("pet")
 
 func _foxlab_record_spawning_weapons():
@@ -221,7 +219,7 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 			for item_name in FOXLAB_BANNED_ITEM_NAMES_EARLIER:
 				foxlab_banned_items_earlier.push_back([get_item_from_id(item_name), 0])
 		args.excluded_items.append_array(foxlab_banned_items_earlier)
-	
+
 	if type == TierData.WEAPONS and RunData.get_player_effect(Keys.remove_shop_items_hash, player_index).has(Keys.pet_hash):
 		args.excluded_items.append_array(foxlab_weapon_spawning_pet)
 

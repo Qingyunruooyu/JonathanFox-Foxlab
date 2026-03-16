@@ -57,11 +57,6 @@ var foxlab_previous_remembered_hash: int = Keys.generate_hash("foxlab_previous_r
 var foxlab_previous_remembered_names_hash: int = Keys.generate_hash("foxlab_previous_remembered_names")
 var foxlab_buy_item_increase_tier_hash: int = Keys.generate_hash("foxlab_buy_item_increase_tier")
 var foxlab_buy_item_increase_tier_current_hash: int = Keys.generate_hash("foxlab_buy_item_increase_tier_current")
-var foxlab_nullify_fatal_once_hash: int = Keys.generate_hash("foxlab_nullify_fatal_once")
-var foxlab_nullify_fatal_resurrect_hash: int = Keys.generate_hash("foxlab_nullify_fatal_resurrect")
-var foxlab_nullify_fatal_silence_hash: int = Keys.generate_hash("foxlab_nullify_fatal_silence")
-var foxlab_nullify_fatal_revenge_hash: int = Keys.generate_hash("foxlab_nullify_fatal_revenge")
-var foxlab_nullify_fatal_enemy_hash: int = Keys.generate_hash("foxlab_nullify_fatal_enemy")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")

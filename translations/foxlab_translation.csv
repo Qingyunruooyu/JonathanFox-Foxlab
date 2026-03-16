@@ -312,10 +312,5 @@ CHARACTER_FOXLAB_SNOWBALL,雪球,Snowball
 EFFECT_FOXLAB_BUY_ITEM_INCREASE_TIER,每次购买{0}/{1}级物品，[color=#FF8C00]本商店[/color]下一页物品{2}/{3}等级（上限：{4}）,"Each time you buy something of tier {0}/{1}, things on the next page of [color=#FF8C00]current shop[/color] {2}/{3} tier (Max: {4})"
 EFFECT_FOXLAB_NO_PETS,你无法拥有宠物,You can't have pets
 FOXLAB_BUY_ITEM_INCREASE_TIER_CURRENT,下一页商品等级修正,Tier modification next page
-EFFECT_FOXLAB_NULLIFY_FATAL_RESURRECT,每波敌袭中首次承受致命伤害时，回满生命值然后随机失去{0}个道具,Resurrect when you take fatal damage first time during a wave"," then lose {0} random items
-ITEM_FOXLAB_WHITE_ROSE,白玫瑰,White Rose
-EFFECT_FOXLAB_NULLIFY_FATAL_ONCE,当你获得此道具后，本局游戏可免疫一次致命伤害,Nullify fatal damage once during this run when you get this item
-EFFECT_FOXLAB_NULLIFY_FATAL_SILENCE,免疫下次令你承受致命伤害的敌人类型（{1}）的所有伤害,Nullify all damages from the kind of enemy ({1}) that fatally damages you next time
-FOXLAB_NULLIFY_COUNT,免疫计数：{0},Nullify count: {0}
-ITEM_FOXLAB_RED_ROSE,红玫瑰,Red Rose
-EFFECT_FOXLAB_NULLIFY_FATAL_REVENGE,下次令你承受致命伤害的敌人类型（{1}）可被你一击毙命,One shot the kind of enemy ({1}) that fatally damages you next time
+CHARACTER_FOXLAB_GOAT_KEEPER,牧羊人,Goat Keeper
+

@@ -11,8 +11,8 @@ var _foxlab_ball_lightning_timer: Timer
 
 var foxlab_enemy_stats_on_hit = []
 
-var _projectile_on_hit_effects = []
-var _has_projectile_on_hit = false
+var _foxlab_projectile_on_hit_effects = []
+var _foxlab_has_projectile_on_hit = false
 
 func _ready() -> void :
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
@@ -31,9 +31,9 @@ func _ready() -> void :
 	var projectile_on_hit_effect: Array = RunData.get_player_effect(Utils.foxlab_projectile_on_hit_hash, player_index)
 	if not projectile_on_hit_effect.empty() and \
 		projectile_on_hit_effect[0] + RunData.get_player_effect(Utils.foxlab_projectile_on_hit_num_hash, player_index) > 0:
-			_has_projectile_on_hit = true
+			_foxlab_has_projectile_on_hit = true
 			for effect in projectile_on_hit_effect[4]:
-				_projectile_on_hit_effects.append(load(effect))
+				_foxlab_projectile_on_hit_effects.append(load(effect))
 
 func on_foxlab_ball_lightning_timeout() -> void :
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
@@ -62,7 +62,7 @@ func on_foxlab_ball_lightning_timeout() -> void :
 func foxlab_manage_projectile_on_hit() -> void:
 	var projectile_on_hit_effect: Array = RunData.get_player_effect(Utils.foxlab_projectile_on_hit_hash, player_index)
 	var weapon_args = WeaponServiceInitStatsArgs.new()
-	weapon_args.effects = _projectile_on_hit_effects
+	weapon_args.effects = _foxlab_projectile_on_hit_effects
 	var projectile_stats = WeaponService.init_ranged_stats(projectile_on_hit_effect[1], player_index, true, weapon_args)
 	var proj_num = projectile_on_hit_effect[0] +  RunData.get_player_effect(Utils.foxlab_projectile_on_hit_num_hash, player_index)
 	for i in proj_num:
@@ -71,7 +71,7 @@ func foxlab_manage_projectile_on_hit() -> void:
 		var args: = WeaponServiceSpawnProjectileArgs.new()
 		args.damage_tracking_key_hash = projectile_on_hit_effect[5]
 		args.from_player_index = player_index
-		args.effects = _projectile_on_hit_effects
+		args.effects = _foxlab_projectile_on_hit_effects
 		var _projectile = WeaponService.manage_special_spawn_projectile(
 			self,
 			projectile_stats,
@@ -148,6 +148,6 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 		for stats in foxlab_enemy_stats_on_hit:
 			EntityService.factor_cache.erase(stats)
 		var hitbox = args.hitbox
-		if _has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from is Enemy:
+		if _foxlab_has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from is Enemy:
 			foxlab_manage_projectile_on_hit()
 	return ret

@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_foxlab_faceless_guide"
-text_key = "[EMPTY]"
+key = "foxlab_materials_on_scapegoat_hit"
+text_key = "effect_foxlab_materials_on_scapegoat_hit"
 value = 1
-custom_key = "starting_item"
-storage_method = 1
+custom_key = ""
+storage_method = 0
 effect_sign = 3
 custom_args = [  ]

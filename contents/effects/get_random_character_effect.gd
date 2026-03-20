@@ -120,6 +120,10 @@ func apply(player_index: int) -> void:
 	if is_vagabond_on0 != is_vagabond_on1:
 		RunData.update_sets(player_index)
 
+	var color = ProgressData.settings.color_negative if (RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] & 1)\
+		 else ProgressData.settings.color_positive
+	var history = "[color=#%s]%s[/color]" % [ color, meta.names]
+	RunData.get_player_effect(Utils.foxlab_mask_history_hash, player_index).append(history)
 	meta.names = ""
 
 	_after_transform(player_index, stack_effect)

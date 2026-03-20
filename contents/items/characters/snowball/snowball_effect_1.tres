@@ -51,4 +51,4 @@ value = 1
 custom_key = ""
 storage_method = 0
 effect_sign = 0
-custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) , SubResource( 5 )]
+custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ]

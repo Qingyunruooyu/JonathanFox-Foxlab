@@ -23,6 +23,7 @@ var fox_faceless_enable_upgrade_on_transform_hash: int = Keys.generate_hash("fox
 var fox_faceless_upgrade_on_transform_wave_hash: int = Keys.generate_hash("fox_faceless_upgrade_on_transform_wave")
 var fox_faceless_convert_stat_characters_hash: int = Keys.generate_hash("fox_faceless_convert_stat_characters")
 var fox_faceless_transform_stack_hash: int = Keys.generate_hash("fox_faceless_transform_stack")
+var foxlab_mask_history_hash: int=Keys.generate_hash("foxlab_mask_history")
 var foxlab_buddhas_hand_stack_hash: int = Keys.generate_hash("foxlab_buddhas_hand_stack")
 var fox_convert_remainder_end_of_wave_hash: int = Keys.generate_hash("fox_convert_remainder_end_of_wave")
 var foxlab_temp_stats_on_structure_crit_hash: int = Keys.generate_hash("foxlab_temp_stats_on_structure_crit")
@@ -57,6 +58,10 @@ var foxlab_previous_remembered_hash: int = Keys.generate_hash("foxlab_previous_r
 var foxlab_previous_remembered_names_hash: int = Keys.generate_hash("foxlab_previous_remembered_names")
 var foxlab_buy_item_increase_tier_hash: int = Keys.generate_hash("foxlab_buy_item_increase_tier")
 var foxlab_buy_item_increase_tier_current_hash: int = Keys.generate_hash("foxlab_buy_item_increase_tier_current")
+var foxlab_materials_on_scapegoat_hit_hash: int = Keys.generate_hash("foxlab_materials_on_scapegoat_hit")
+var foxlab_scapegoat_no_heal_hash: int = Keys.generate_hash("foxlab_scapegoat_no_heal")
+var foxlab_stats_on_scapegoat_death_hash: int = Keys.generate_hash("foxlab_stats_on_scapegoat_death")
+var foxlab_gain_scapegoat_no_hurt_hash: int = Keys.generate_hash("foxlab_gain_scapegoat_no_hurt")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -87,6 +92,7 @@ var item_foxlab_inner_indomitable_hash: int = Keys.generate_hash("item_foxlab_in
 var item_foxlab_mask_hash: int = Keys.generate_hash("item_foxlab_mask")
 var item_foxlab_reactor_hash: int = Keys.generate_hash("item_foxlab_reactor")
 var item_foxlab_tracker_hash: int = Keys.generate_hash("item_foxlab_tracker")
+var item_foxlab_faceless_guide_hash: int = Keys.generate_hash("item_foxlab_faceless_guide")
 
 # enemy names
 var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")
@@ -119,6 +125,8 @@ var foxlab_structure_stats = {
 var foxlab_enemy_stats = [Keys.enemy_damage_hash, Keys.enemy_health_hash, Keys.enemy_speed_hash]
 
 var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character_foxlab_refactor_hash, item_foxlab_reactor_hash]
+
+var foxlab_keys_raw_text = [foxlab_mask_history_hash, foxlab_previous_remembered_names_hash]
 
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
@@ -166,9 +174,11 @@ func foxlab_multiply_stats(stats: Array, player_index: int, permanent: bool = tr
 			var gold = RunData.get_player_gold(player_index)
 			var gold_delta = gold * mul - gold
 			RunData.add_gold(gold_delta, player_index)
-			RunData.foxlab_is_midnight[player_index] = not permanent
 			if not permanent:
 				var actual_gain = gold * abs(mul) - gold
+				if RunData.get_player_gold(player_index) < 0:
+					RunData.foxlab_is_midnight[player_index] = true
+				RunData.emit_signal("stat_added", Keys.stat_materials_hash, actual_gain, 0.0, player_index)
 				RunData.add_tracked_value(player_index, character_foxlab_ghost_envoy_hash, actual_gain)
 		else:
 			var value = RunData.get_stat(stat, player_index)

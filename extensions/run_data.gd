@@ -8,6 +8,9 @@ var foxlab_shop_items = [ [], [], [], [] ]
 #鬼差相关
 var foxlab_is_midnight = [false, false, false, false]
 
+#替罪羊相关
+var foxlab_scapegoat_no_hurt = [[], [], [], []]
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
@@ -142,6 +145,11 @@ func get_foxlab_mask_meta(player_index: int):
 	return players_data[player_index].foxlab_mask_meta
 
 ###### 扩展 ######
+func _reset_per_wave_properties() -> void :
+	._reset_per_wave_properties()
+	foxlab_is_midnight = [false, false, false, false]
+	foxlab_scapegoat_no_hurt = [[], [], [], []]
+
 func remove_gold(value: int, player_index: int) -> void :
 	var player_data = players_data[player_index]
 	if foxlab_is_midnight[player_index]:

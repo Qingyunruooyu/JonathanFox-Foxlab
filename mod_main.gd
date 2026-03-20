@@ -29,7 +29,8 @@ const EXTENSION_SCRIPTS: =[
 	"weapon_selection.gd",
 	"effects/projectile_effect.gd",
 	"tag_panel.gd",
-	"tags_container.gd"
+	"tags_container.gd",
+	"scapegoat.gd",
 ]
 
 

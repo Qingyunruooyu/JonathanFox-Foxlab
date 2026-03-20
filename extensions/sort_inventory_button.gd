@@ -9,5 +9,7 @@ func _sort_inventory(index: int = - 10, _inventory: Inventory = null):
 			break
 	if push_character_ahead:
 		for element_instance in inventory_to_sort.get_children():
-			if element_instance.item is CharacterData or element_instance.item.my_id_hash == Utils.item_foxlab_mask_hash or  element_instance.item.my_id_hash in Keys.item_builder_turret_n_hash:
+			if element_instance.item is CharacterData or \
+				element_instance.item.my_id_hash in [Utils.item_foxlab_mask_hash, Utils.item_foxlab_faceless_guide_hash]\
+				 or  element_instance.item.my_id_hash in Keys.item_builder_turret_n_hash:
 				inventory_to_sort.move_child(element_instance, 0)

@@ -132,16 +132,17 @@ func deserialize(data: Dictionary) -> PlayerRunData:
 				meta.prevs = prev_items
 
 	# 纯名字不需要被转换为哈希
-	var memory = null
-	var key = str(Utils.foxlab_previous_remembered_names_hash)
-	if key in data.effects:
-		memory = data.effects[key].duplicate()
+	var memory = {}
+	for key in Utils.foxlab_keys_raw_text:
+		var key_str = str(key)
+		if key_str in data.effects:
+			memory[key] = data.effects[key_str].duplicate()
 
 	.deserialize(data)
 
-	if memory:
-		effects[Utils.foxlab_previous_remembered_names_hash] = memory
-
+	if not memory.empty():
+		for key in memory.keys():
+			effects[key] = memory[key]
 	return self
 
 # 切换面具角色需要移除的角色/道具，如果是对象类型（构筑物、爆炸、恶魔等），像武器一样能正确地回收
@@ -205,6 +206,7 @@ static func init_effects()->Dictionary:
 			#ConvertStatEffect存在短路行为，如果两个角色都有这个效果，则不兼容，不允许同时变身
 			Utils.fox_faceless_convert_stat_characters_hash:{},
 			Utils.fox_faceless_transform_stack_hash:[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
+			Utils.foxlab_mask_history_hash: [],
 			Utils.foxlab_buddhas_hand_stack_hash:[0, false], #如果佛手给的武器有佛手效果，避免嵌套
 			Utils.fox_convert_remainder_end_of_wave_hash:[],
 			Utils.foxlab_temp_stats_on_structure_crit_hash: [], # 被删掉的原版词条
@@ -236,6 +238,10 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_previous_remembered_names_hash: [], # 上面一条的物品的名字，由于有些MOD的物品名字不规范，所以独立存储
 			Utils.foxlab_buy_item_increase_tier_hash: 0,
 			Utils.foxlab_buy_item_increase_tier_current_hash: 0,
+			Utils.foxlab_materials_on_scapegoat_hit_hash: 0,
+			Utils.foxlab_scapegoat_no_heal_hash: 0,
+			Utils.foxlab_stats_on_scapegoat_death_hash: [],
+			Utils.foxlab_gain_scapegoat_no_hurt_hash: [],
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

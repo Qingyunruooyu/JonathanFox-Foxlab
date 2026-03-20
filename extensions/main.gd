@@ -205,6 +205,23 @@ func foxlab_gain_stat_every_killed_enemies_ready():
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
+	for player_index in range(RunData.get_player_count()):
+		var gain_effects = RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index)
+		if gain_effects.empty() or RunData.foxlab_scapegoat_no_hurt[player_index].empty():
+			continue
+		for gain_effect in gain_effects:
+			# Cache
+			var _item = ItemService.get_item_from_id(Keys.item_alien_eyes_hash)
+			var item_data = ItemService.get_element(ItemService.items, gain_effect[0])
+			if not item_data == null:
+				for _i in gain_effect[1]:
+					var actual_item_data = ItemService.apply_item_effect_modifications(item_data, player_index)
+					if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
+						for effect in actual_item_data.effects:
+							if effect is SwapMaxMinStatEffect:
+								effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
+					RunData.add_item(actual_item_data, player_index)
+				_floating_text_manager.display_icon(gain_effect[1], item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, _players[player_index].global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)
 	._on_WaveTimer_timeout()
 	for player_index in range(RunData.get_player_count()):
 		if foxlab_original_piercing[player_index]:

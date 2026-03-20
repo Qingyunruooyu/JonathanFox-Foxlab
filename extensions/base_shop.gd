@@ -66,7 +66,7 @@ func _ready() -> void :
 		var update_item = false
 		for level in range(new_level):
 			var number = RunData.get_nb_item(Keys.item_builder_turret_n_hash[level], player_index)
-			for i in range(number):
+			for _i in range(number):
 				foxlab_switch_turret_item(level, new_level, player_index)
 				update_item = true
 		if update_item:

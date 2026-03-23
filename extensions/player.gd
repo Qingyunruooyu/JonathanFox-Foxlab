@@ -14,6 +14,8 @@ var foxlab_enemy_stats_on_hit = []
 var _foxlab_projectile_on_hit_effects = []
 var _foxlab_has_projectile_on_hit = false
 
+var foxlab_scapegoat_no_heal = []
+
 func _ready() -> void :
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
 	if ball_lightning_effect.size() > 0 and ball_lightning_effect[0] > 0:

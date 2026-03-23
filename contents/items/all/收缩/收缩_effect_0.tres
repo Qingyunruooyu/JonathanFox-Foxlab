@@ -9,5 +9,5 @@ text_key = "EFFECT_FOXLAB_FORCE_REMOVE_ON_REROLL"
 value = 0
 custom_key = "foxlab_force_remove_on_reroll"
 storage_method = 4
-effect_sign = 2
+effect_sign = 1
 custom_args = [  ]

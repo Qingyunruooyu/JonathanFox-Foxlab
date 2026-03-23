@@ -244,9 +244,11 @@ translation_keys_needing_operator = {
 "poisoned_fruit": [ 0 ],
 "recycling_gains": [ 0 ],
 "stronger_elites_on_kill": [ 0 ],
-"stronger_loot_aliens_on_kill": [ 0 ]
+"stronger_loot_aliens_on_kill": [ 0 ],
+"effect_foxlab_scapegoat_no_heal": [ 0 ],
 }
 translation_keys_needing_percent = {
+"effect_foxlab_scapegoat_no_heal": [ 0 ],
 "effect_foxlab_anvil": [ 0 ],
 "effect_foxlab_bonus_damage_via_health": [ 0, 2 ],
 "effect_foxlab_cat_wave_effect": [ 0 ],

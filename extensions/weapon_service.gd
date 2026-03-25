@@ -1,6 +1,6 @@
 extends "res://singletons/weapon_service.gd"
 ### 扩展 ###
-func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service) -> MeleeWeaponStats:
+func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service):
 	var new_stats = .init_melee_stats(from_stats, player_index, args)
 	new_stats.deal_dmg_on_return = from_stats.deal_dmg_on_return
 	return new_stats

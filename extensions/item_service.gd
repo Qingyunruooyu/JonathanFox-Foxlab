@@ -213,7 +213,7 @@ func get_player_shop_items(wave: int, player_index: int, args: ItemServiceGetSho
 
 var FOXLAB_BANNED_ITEM_NAMES_EARLIER = [Keys.generate_hash("item_foxlab_slow_and_steady_wins"), Keys.generate_hash("item_foxlab_spacetime_anchor")]
 var foxlab_banned_items_earlier = []
-func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetRandItemForWaveArgs) -> ItemParentData:
+func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetRandItemForWaveArgs):
 	if wave < 13 and type == TierData.ITEMS:
 		if foxlab_banned_items_earlier.empty():
 			for item_name in FOXLAB_BANNED_ITEM_NAMES_EARLIER:

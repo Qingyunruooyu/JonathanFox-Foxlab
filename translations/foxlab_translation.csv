@@ -316,7 +316,9 @@ EFFECT_FOXLAB_BUY_ITEM_INCREASE_TIER,每次购买{0}/{1}级物品，[color=#FF8C
 EFFECT_FOXLAB_NO_PETS,你无法拥有宠物,You can't have pets
 FOXLAB_BUY_ITEM_INCREASE_TIER_CURRENT,下一页物品等级修正,Tier modification next page
 CHARACTER_FOXLAB_GOAT_KEEPER,牧羊人（测试中）,Goat Keeper (Testing)
-EFFECT_FOXLAB_MATERIALS_ON_SCAPEGOAT_HIT,你的替罪羔羊受伤时掉落{0}材料,Your scapegoat drops {0} materials on taking damage
+EFFECT_FOXLAB_MATERIALS_ON_SCAPEGOAT_HIT,你的替罪羔羊受伤时掉落{0}材料或箱子,Your scapegoat drops {0} materials or crates on taking damage
 EFFECT_FOXLAB_SCAPEGOAT_NO_HEAL,你的替罪羔羊无法治疗，受伤时有{0}概率改变运动行为,Your scapegoats can't heal in anyway and {0} chance for them to change movement behavior on taking damage
 EFFECT_FOXLAB_STATS_ON_SCAPEGOAT_DEATH,你的替罪羔羊死亡时有{0}{1},{0} {1} when your scapegoat dies
 EFFECT_FOXLAB_GAIN_SCAPEGOAT_NO_HURT,敌袭结束时，若你有未受伤的替罪羔羊则{0}{1},{0} {1} at wave end if any of your scapegoat is intact this wave
+FOXLAB_MATERIALS_DROPPED,掉落的材料：{0},Materials dropped: {0}
+FOXLAB_CRATES_DROPPED,掉落的箱子：{0},Crates dropped: {0}

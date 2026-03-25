@@ -45,7 +45,7 @@ func _init():
 				})
 	foxlab_mask_meta.push_back(foxlab_mask_meta[0].duplicate(true))
 
-func duplicate() -> PlayerRunData:
+func duplicate():
 	var copy = .duplicate()
 
 	for i in range(foxlab_buddhas_hand_meta.size()):
@@ -92,7 +92,7 @@ func serialize() -> Dictionary:
 				meta[key] = data
 	return serialized
 
-func deserialize(data: Dictionary) -> PlayerRunData:
+func deserialize(data: Dictionary):
 	if "foxlab_buddhas_hand_meta" in data:
 		for i in range(data.foxlab_buddhas_hand_meta.size()):
 			foxlab_buddhas_hand_meta[i] =  data.foxlab_buddhas_hand_meta[i].duplicate()

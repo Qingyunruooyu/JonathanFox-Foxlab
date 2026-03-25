@@ -46,14 +46,22 @@ func _foxlab_update_coop_hightlight():
 		add_outline(highlight_color)
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
-	var dmg_taken = .take_damage(value, args)
+	var dmg_taken = [0, 0]
+	if not (args.hitbox and args.hitbox.is_healing):
+		dmg_taken = .take_damage(value, args)
 	if dmg_taken[1] > 0:
 		if not RunData.foxlab_scapegoat_no_hurt[player_index].empty() and current_stats.health + dmg_taken[1] >= max_stats.health:
 			RunData.foxlab_scapegoat_no_hurt[player_index].erase(self)
 
 		var material = RunData.get_player_effect(Utils.foxlab_materials_on_scapegoat_hit_hash, player_index)
 		if material > 0:
-			players_ref[player_index].emit_signal("wanted_to_spawn_gold", material, global_position, 100)
+			for _i in range(material):
+				if _entity_spawner_ref._main.foxlab_spawn_crate(self):
+					SoundManager.play(sound_rising, 0, 0.1)
+					RunData.add_tracked_value(player_index, Utils.character_foxlab_goat_keeper_hash, 1, 1)
+				else:
+					players_ref[player_index].emit_signal("wanted_to_spawn_gold", 1, global_position, 50)
+					RunData.add_tracked_value(player_index, Utils.character_foxlab_goat_keeper_hash, 1, 0)
 
 		var movement_chance =  RunData.get_player_effect(Utils.foxlab_scapegoat_no_heal_hash, player_index)
 		if movement_chance > 0:

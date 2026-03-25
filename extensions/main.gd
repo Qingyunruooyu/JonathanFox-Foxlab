@@ -203,6 +203,28 @@ func foxlab_gain_stat_every_killed_enemies_ready():
 			if effect[2] <= 0:
 				foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]] = 0
 
+# ref: func spawn_consumables(unit: Unit)，但是只要判定掉落消耗品，就会掉落箱子
+func foxlab_spawn_crate(unit: Unit) -> bool:
+	var consumable_to_spawn: ConsumableData = ItemService.get_consumable_to_drop(unit, 1.0)
+	if consumable_to_spawn != null and consumable_to_spawn.my_id_hash in [Keys.consumable_item_box_hash, Keys.consumable_legendary_item_box_hash]:
+		var consumable: Consumable = get_node_from_pool(_consumable_pool_id, _consumables_container)
+		if consumable == null:
+			consumable = consumable_scene.instance()
+			_consumables_container.call_deferred("add_child", consumable)
+			var _error = consumable.connect("picked_up", self, "on_consumable_picked_up")
+			yield(consumable, "ready")
+
+		consumable.already_picked_up = false
+		consumable.consumable_data = consumable_to_spawn
+		consumable.set_texture(consumable_to_spawn.icon)
+		var pos: = unit.global_position
+		var dist: = rand_range(50, 100 + unit.stats.gold_spread)
+		var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
+		consumable.drop(pos, 0, push_back_destination)
+		_consumables.push_back(consumable)
+		return true
+	return false
+
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):

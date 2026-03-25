@@ -80,6 +80,7 @@ var character_foxlab_refactor_hash: int = Keys.generate_hash("character_foxlab_r
 var character_foxlab_staff_officer_hash: int = Keys.generate_hash("character_foxlab_staff_officer")
 var character_foxlab_toxic_healer_hash: int = Keys.generate_hash("character_foxlab_toxic_healer")
 var character_foxlab_turtle_hash: int = Keys.generate_hash("character_foxlab_turtle")
+var character_foxlab_goat_keeper_hash: int = Keys.generate_hash("character_foxlab_goat_keeper")
 var item_foxlab_angel_hash: int = Keys.generate_hash("item_foxlab_angel")
 var item_foxlab_ball_lightning_0_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_0")
 var item_foxlab_ball_lightning_1_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_1")
@@ -124,7 +125,7 @@ var foxlab_structure_stats = {
 	}
 var foxlab_enemy_stats = [Keys.enemy_damage_hash, Keys.enemy_health_hash, Keys.enemy_speed_hash]
 
-var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character_foxlab_refactor_hash, item_foxlab_reactor_hash]
+var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character_foxlab_refactor_hash, item_foxlab_reactor_hash, character_foxlab_goat_keeper_hash]
 
 var foxlab_keys_raw_text = [foxlab_mask_history_hash, foxlab_previous_remembered_names_hash]
 
@@ -145,6 +146,8 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 					tracking_text_to_use = "FOXLAB_BOSSES_INVOKED"
 				elif i == 2:
 					tracking_text_to_use = "FOXLAB_BOSSES_RESURRECTED"
+			elif item_id == Utils.character_foxlab_goat_keeper_hash and i == 1:
+				tracking_text_to_use = "FOXLAB_CRATES_DROPPED"
 
 			text += "\n[color=#" + Utils.SECONDARY_FONT_COLOR.to_html() + "]" + Text.text(tracking_text_to_use.to_upper(), [Text.get_formatted_number(tracked_count)]) + "[/color]"
 	return text

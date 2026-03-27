@@ -298,6 +298,10 @@ func _on_HalfWaveTimer_timeout() -> void :
 					MusicManager.play(0)
 					bg_changed = true
 
+	for i in range(RunData.get_player_count()):
+		if RunData.get_stat(Keys.stat_curse_hash, i) < 0:
+			_players[i].foxlab_add_curse_particle()
+
 	EntityService.reset_cache()
 
 func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :

@@ -4,6 +4,8 @@ var foxlab_burning_particle = preload("res://particles/burning/torch_burning_par
 var foxlab_scepter_particle = preload("res://particles/ghost_scepter_particles.tscn")
 var foxlab_potato_texture = preload("res://entities/units/player/potato.png")
 var foxlab_transparent_texture = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
+var _foxlab_curse_particle =preload("res://particles/curse/curse_enemy_particles.tscn")
+var _foxlab_curse_particle_instance = null
 
 var foxlab_ball_lighting_names = [Keys.generate_hash("item_foxlab_ball_lightning_3"), Keys.generate_hash("item_foxlab_ball_lightning_2"), Keys.generate_hash("item_foxlab_ball_lightning_1"), Keys.generate_hash("item_foxlab_ball_lightning_0"), ]
 
@@ -14,7 +16,10 @@ var foxlab_enemy_stats_on_hit = []
 var _foxlab_projectile_on_hit_effects = []
 var _foxlab_has_projectile_on_hit = false
 
+
 func _ready() -> void :
+	if _foxlab_has_curse():
+		foxlab_add_curse_particle()
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
 	if ball_lightning_effect.size() > 0 and ball_lightning_effect[0] > 0:
 		_foxlab_ball_lightning_timer = Timer.new()
@@ -34,6 +39,24 @@ func _ready() -> void :
 			_foxlab_has_projectile_on_hit = true
 			for effect in projectile_on_hit_effect[4]:
 				_foxlab_projectile_on_hit_effects.append(load(effect))
+
+func _foxlab_has_curse():
+	if RunData.get_player_character(player_index).is_cursed:
+		return true
+	var metas = RunData.get_foxlab_mask_meta(player_index)
+	for meta in metas:
+		for prev in meta.prevs:
+			if prev is WeaponData:
+				if prev.is_cursed:
+					return true;
+			elif prev[1] > 0:
+				return true
+
+func foxlab_add_curse_particle():
+	if _foxlab_curse_particle_instance == null:
+		_foxlab_curse_particle_instance = _foxlab_curse_particle.instance()
+		add_child(_foxlab_curse_particle_instance)
+		add_outline(Utils.CURSE_COLOR)
 
 func on_foxlab_ball_lightning_timeout() -> void :
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)

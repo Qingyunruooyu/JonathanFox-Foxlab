@@ -8,7 +8,7 @@ const MIN_TRANSFORM_NUM = 0.95
 const VALUE_BASE = 2
 # character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_foxlab_survivor, character_foxlab_infernal_machine
 # character_foxlab_architect
-var debug_item_name: Array = []
+var debug_item_name: Array = ["character_creature", "", "character_foxlab_troubleshooter", "", "character_foxlab_cultivator"]
 var curse_character: bool = false
 
 static func get_id() -> String:
@@ -120,8 +120,8 @@ func apply(player_index: int) -> void:
 	if is_vagabond_on0 != is_vagabond_on1:
 		RunData.update_sets(player_index)
 
-	var color = ProgressData.settings.color_negative if (RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] & 1)\
-		 else ProgressData.settings.color_positive
+	var index = RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] as int
+	var color = ProgressData.settings.color_positive if (index & 1) else ProgressData.settings.color_negative
 	var history = "[color=#%s]%s[/color]" % [ color, meta.names]
 	RunData.get_player_effect(Utils.foxlab_mask_history_hash, player_index).append(history)
 	meta.names = ""

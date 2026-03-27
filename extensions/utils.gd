@@ -94,6 +94,7 @@ var item_foxlab_mask_hash: int = Keys.generate_hash("item_foxlab_mask")
 var item_foxlab_reactor_hash: int = Keys.generate_hash("item_foxlab_reactor")
 var item_foxlab_tracker_hash: int = Keys.generate_hash("item_foxlab_tracker")
 var item_foxlab_faceless_guide_hash: int = Keys.generate_hash("item_foxlab_faceless_guide")
+var item_foxlab_enchanted_eyes_hash: int = Keys.generate_hash("item_foxlab_enchanted_eyes")
 
 # enemy names
 var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")

@@ -31,6 +31,7 @@ const EXTENSION_SCRIPTS: =[
 	"tag_panel.gd",
 	"tags_container.gd",
 	"scapegoat.gd",
+	"player_explosion.gd",
 ]
 
 

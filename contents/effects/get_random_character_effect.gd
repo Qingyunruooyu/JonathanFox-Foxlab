@@ -84,6 +84,7 @@ func apply(player_index: int) -> void:
 
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
+	RunData.emit_signal("foxlab_sec_char_changed", meta.chars, player_index)
 	var prev_items = meta.prevs
 	# always place ConvertStatEffect of characters ahead
 	var convert_stats_half_wave:Array = RunData.get_player_effect(Keys.convert_stats_half_wave_hash, player_index)

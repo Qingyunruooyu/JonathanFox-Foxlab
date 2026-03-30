@@ -17,6 +17,7 @@ var foxlab_mutate_boost = [null, null, null, null]
 var foxlab_original_piercing = [0, 0, 0, 0]
 
 func _ready():
+	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	foxlab_receive_item_stat_ready()
 	foxlab_mutation_ready()
 	foxlab_piercing_is_bounce_ready()
@@ -224,6 +225,13 @@ func foxlab_spawn_crate(unit: Unit) -> bool:
 		_consumables.push_back(consumable)
 		return true
 	return false
+
+#面具弹出相关
+func _on_foxlab_sec_char_changed(new_characters, player_index):
+	var pos = _players[player_index].global_position - Vector2(0, 50)
+	for character in new_characters:
+		_floating_text_manager.display_icon(1, character.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, pos, _floating_text_manager.direction, -10.0)
+		pos -= Vector2(30, 30)
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :

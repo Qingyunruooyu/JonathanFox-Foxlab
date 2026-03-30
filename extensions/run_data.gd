@@ -11,6 +11,9 @@ var foxlab_is_midnight = [false, false, false, false]
 #替罪羊相关
 var foxlab_scapegoat_no_hurt = [[], [], [], []]
 
+#面具相关，面具成功触发时发出信号
+signal foxlab_sec_char_changed(new_characters, player_index)
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])

@@ -106,6 +106,18 @@ func foxlab_manage_projectile_on_hit() -> void:
 		)
 
 ############ 函数扩展 #########
+#　修复官方bug
+func die(args: = Utils.default_die_args) -> void :
+	.die(args)
+	Utils.default_die_args.knockback_vector = Vector2.ZERO
+	Utils.default_die_args.cleaning_up = false
+	Utils.default_die_args.enemy_killed_by_player = true
+	Utils.default_die_args.killed_by_player_index = - 1
+	Utils.default_die_args.killing_blow_dmg_value = 0
+	Utils.default_die_args.is_burning = false
+	Utils.default_die_args.from = null
+
+
 func add_weapon(weapon: WeaponData, pos: int) -> void :
 	.add_weapon(weapon, pos)
 	var cur_weapon = current_weapons.back()

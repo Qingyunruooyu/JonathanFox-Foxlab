@@ -1,5 +1,8 @@
 extends "res://ui/menus/shop/base_shop.gd"
 
+var foxlab_mask_success_sound = preload("res://entities/units/enemies/pursuer/sci-fi_code_fail_13.wav")
+var foxlab_current_shop_item_pos = [[null, null], [null, null], [null, null], [null, null]]
+
 func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: int) -> void :
 	var player_items = RunData.get_player_items(p_player_index)
 
@@ -53,8 +56,32 @@ func foxlab_modify_weapon_upgrade(weapon: WeaponData):
 
 	weapon.upgrades_into = upgrades_into
 
+
+#面具弹出相关
+func _on_foxlab_sec_char_changed(new_characters, player_index):
+	var pos = foxlab_current_shop_item_pos[player_index]
+	if pos[0] == null or pos[1] == null:
+		return
+	var offset = Vector2(-30, 30)
+	var popup_pos = pos[0]
+	var direction: Vector2
+	if RunData.is_coop_run:
+		popup_pos.x -= 35
+		direction = Vector2(0, - 30)
+	else:
+		popup_pos.x += pos[1]
+		direction = Vector2(25, - 100)
+	for character in new_characters:
+		var icon = character.icon
+		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false, Vector2.ONE)
+		popup_pos -= offset
+	SoundManager.play(foxlab_mask_success_sound, - 2, 0.2, true)
+
+
 ######### 扩展 #########
 func _ready() -> void :
+	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
+
 	if RunData.get_player_effect_bool(Utils.foxlab_shop_effects_checked_hash, 0):
 		DebugService.log_data("foxlab_shop_effects_checked: is true")
 		return
@@ -110,6 +137,9 @@ func _on_item_discard_button_pressed(weapon_data: WeaponData, player_index: int)
 		player_gear_container.set_items_data(items)
 
 func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
+	foxlab_current_shop_item_pos[player_index][0] = shop_item._button.rect_global_position
+	foxlab_current_shop_item_pos[player_index][1] = shop_item._button.rect_size.x / 2.0
+
 	.on_shop_item_bought(shop_item, player_index)
 	var item_data = shop_item.item_data
 
@@ -166,13 +196,8 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 			RunData.unlock_player_shop_item(Utils.get_rand_element(player_locked_items)[0], player_index)
 
 	var prev_weapon_slot = RunData.get_player_effect(Keys.weapon_slot_hash, player_index)
-	._on_RerollButton_pressed(player_index)
+
 	var player_effects = RunData.get_player_effects(player_index)
-	player_effects[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
-	if RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot:
-		var player_gear_container = _get_gear_container(player_index)
-		var weapons = RunData.get_player_weapons(player_index)
-		player_gear_container.set_weapons_data(weapons)
 	var effects:Array = player_effects[Utils.foxlab_force_remove_on_reroll_hash]
 	var update_item = false
 	while not effects.empty():
@@ -184,6 +209,14 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 		else:
 			#DebugService.log_data("item not exist: " + item_id)
 			break
+
+	._on_RerollButton_pressed(player_index)
+	player_effects[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
+	if RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot:
+		var player_gear_container = _get_gear_container(player_index)
+		var weapons = RunData.get_player_weapons(player_index)
+		player_gear_container.set_weapons_data(weapons)
+
 	if update_item:
 		var player_gear_container = _get_gear_container(player_index)
 		var items = RunData.get_player_items(player_index)

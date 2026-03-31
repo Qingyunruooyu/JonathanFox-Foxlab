@@ -13,18 +13,25 @@ var _in_assembling: = false
 
 var _angle = rand_range(0, 2 * PI)
 var _players: = []
+var _current_player = null
 const _PLAYER_TRACKING_DISTANCE = 100.0
 
 func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [], _entity_spawner_ref = null) -> void :
 	.init(zone_min_pos, zone_max_pos, players_ref, _entity_spawner_ref)
-	_players = players_ref
+	_players = players_ref.duplicate()
 	if Utils.get_chance_success(0.5):
 		_orbit_speed = -_orbit_speed
-	call_deferred("init_assemble_ability", players_ref)
+	call_deferred("init_player_ability")
 
-func init_assemble_ability(players_ref: Array):
-	if RunData.get_player_effect_bool(Utils.foxlab_assemble_tracker_on_hurt_hash, player_index):
-		players_ref[player_index].connect("took_damage", self, "_on_player_took_damage")
+func init_player_ability():
+	_current_player = _players[player_index]
+	_foxlab_connect_signals(player_index)
+	_players.shuffle()
+
+func _foxlab_connect_signals(_player_index):
+	if RunData.get_player_effect_bool(Utils.foxlab_assemble_tracker_on_hurt_hash, _player_index):
+		_current_player.connect("took_damage", self, "_on_cur_player_took_damage")
+	_current_player.connect("died", self, "_on_cur_player_died")
 
 static func get_max_range_melee_weapon_range(stats: Resource, player_index:int) -> int:
 	var player_weapons = RunData.get_player_weapons_ref(player_index)
@@ -59,14 +66,30 @@ func set_data(data: Resource) -> void :
 	reload_data()
 
 func _on_tracking_enemy_died(target: Node, _args: Entity.DieArgs) -> void :
-	target.disconnect("died", self, "_on_tracking_enemy_died")
-	assert (target == _current_tracking_enemy)
+	assert(target == _current_tracking_enemy)
+	if target.is_connected("died", self, "_on_tracking_enemy_died"):
+		target.disconnect("died", self, "_on_tracking_enemy_died")
+	if target.is_connected("charmed", self, "_on_tracking_enemy_charmed"):
+		target.disconnect("charmed", self, "_on_tracking_enemy_charmed")
 	_current_tracking_enemy = null
 
+func _on_tracking_enemy_charmed(target: Node):
+	_on_tracking_enemy_died(target, Utils.default_die_args)
+
 # 召回前不会锁定敌人
-func _on_player_took_damage(_enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, _args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
+func _on_cur_player_took_damage(_enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, _args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	if _value > 0 and _is_idle():
 		_in_assembling = true
+
+func _on_cur_player_died(_player: Player, _args: Entity.DieArgs) -> void :
+	if _current_player.is_connected("took_damage", self, "_on_cur_player_took_damage"):
+		_current_player.disconnect("took_damage", self, "_on_cur_player_took_damage")
+	_current_player.disconnect("died", self, "_on_cur_player_died")
+	for _player_index in _players.size():
+		if not _players[_player_index].dead:
+			_current_player = _players[_player_index]
+			_foxlab_connect_signals(_player_index)
+			return
 
 func _is_idle() -> bool:
 	return not is_instance_valid(_current_tracking_enemy) or _current_tracking_enemy.dead
@@ -79,8 +102,6 @@ func _physics_process(delta: float) -> void :
 		var max_health = -Utils.LARGE_NUMBER
 		for enemy in _targets_in_range:
 			if not enemy is Enemy:
-				continue
-			if global_position.distance_to(enemy.global_position) > stats.max_range:
 				continue
 			if enemy is Boss:
 				if min_hp_boss == null or enemy.current_stats.health < min_boss_health:
@@ -96,17 +117,21 @@ func _physics_process(delta: float) -> void :
 				max_health = enemy.current_stats.health
 				_current_tracking_enemy = enemy
 		if _current_tracking_enemy:
-			var _error = _current_tracking_enemy.connect("died", self, "_on_tracking_enemy_died")
+			if not _current_tracking_enemy.is_connected("died", self, "_on_tracking_enemy_died"):
+				var _error = _current_tracking_enemy.connect("died", self, "_on_tracking_enemy_died")
+			if not _current_tracking_enemy.is_connected("charmed", self, "_on_tracking_enemy_charmed"):
+				var _error = _current_tracking_enemy.connect("charmed", self, "_on_tracking_enemy_charmed")
+
 
 	var new_center = _current_orbit_center
 	if not _is_idle():
 		new_center =  _current_tracking_enemy.global_position
 		_player_tracked = false
-	elif _in_assembling or _player_tracked or global_position.distance_to(_players[player_index].global_position) <= _PLAYER_TRACKING_DISTANCE:
+	elif _in_assembling or _player_tracked or global_position.distance_to(_current_player.global_position) <= _PLAYER_TRACKING_DISTANCE:
 		_player_tracked = true
-		if _in_assembling and global_position.distance_to(_players[player_index].global_position) <= _PLAYER_TRACKING_DISTANCE:
+		if _in_assembling and global_position.distance_to(_current_player.global_position) <= _PLAYER_TRACKING_DISTANCE:
 			_in_assembling = false
-		new_center = _players[player_index].global_position
+		new_center = _current_player.global_position
 
 	# 如果旋转中心改变了，重新计算当前角度
 	if _current_orbit_center != new_center:

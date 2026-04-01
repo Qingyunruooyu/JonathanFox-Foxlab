@@ -259,8 +259,12 @@ func _on_WaveTimer_timeout() -> void :
 			effects[Keys.pierce_on_crit_hash] += foxlab_original_piercing[player_index]
 			effects[Keys.bounce_on_crit_hash] -= foxlab_original_piercing[player_index]
 
-		if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
-			RunData.foxlab_forget_item(player_index)
+func _on_EndWaveTimer_timeout() -> void :
+	if not _is_wave_failed:
+		for player_index in range(RunData.get_player_count()):
+			if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
+				RunData.foxlab_forget_item(player_index)
+	._on_EndWaveTimer_timeout()
 
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)

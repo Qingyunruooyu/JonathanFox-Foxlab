@@ -43,7 +43,7 @@ EFFECT_FOXLAB_MAX_WEAPONS,你有{0}个武器栏,You have {0} weapon slots
 CHARACTER_FOXLAB_INFERNAL_MACHINE,机械恶魔,Infernal Machine
 ITEM_FOXLAB_FUNNEL,浮游炮塔,Funnel
 EFFECT_FOXLAB_FUNNEL_SPAWN,每{1}秒召唤一个浮游炮,"One Funnel spawns every {1} seconds"
-EFFECT_FOXLAB_FUNNEL,生成2个浮游炮，造成{0}（{1}）伤害,Spawns 2 Funnels dealing {0} ({1}) damage
+EFFECT_FOXLAB_FUNNEL,生成2个浮游炮，造成{0}（{1}）伤害并使周围敌人减速,Spawns 2 Funnels dealing {0} ({1}) damage and slowing down nearby enemies
 EFFECT_FOXLAB_CONVERT_STAT_END_OF_WAVE_EQUAL,{0}的{1}在敌袭结束后等量转换为{2},{0} of your {1} are equivalently converted into {2} at the end of a wave
 CHARACTER_FOXLAB_BALL,球球,Ball
 ITEM_FOXLAB_BALL_LIGHTNING_3,球状闪电・天,Ball Lightning (Ace)
@@ -285,7 +285,7 @@ ITEM_FOXLAB_FACELESS_GUIDE,无面的指引,Faceless' Guide
 EFFECT_FOXLAB_FACELESS_GUIDE,无面复制的武器，[color=#FF8C00]主动升级（如铁砧）[/color]或点击[color=#FF8C00]此武器[/color]合成按钮，可[color=#FF8C00]保留[/color]额外效果,"The extra effects are [color=#FF8C00]kept[/color] if a modified weapon [color=#FF8C00]upgrades by itself (eg. Anvil)[/color] or is [color=#FF8C00]selected by you[/color] for combination"
 FOXLAB_MASK_HISTORY,变身历史,Transformation history
 CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
-EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，造成{0}（{1}）伤害,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage"
+EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，使投射物周围敌人减速，造成{0}（{1}）伤害,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage and slowing enemies around them"
 ITEM_FOXLAB_REACTOR,反应堆,Reactor
 FOXLAB_MODIFICATION_GAINED,已获得修改：{0},Modifications gained: {0}
 FOXLAB_BOSSES_INVOKED,生成的头目：{0},Bosses spawned: {0}
@@ -322,3 +322,6 @@ EFFECT_FOXLAB_STATS_ON_SCAPEGOAT_DEATH,你的替罪羔羊死亡时有{0}{1},{0} 
 EFFECT_FOXLAB_GAIN_SCAPEGOAT_NO_HURT,敌袭结束时，若你有未受伤的替罪羔羊则{0}{1},{0} {1} at wave end if any of your scapegoat is intact this wave
 FOXLAB_MATERIALS_DROPPED,掉落的材料：{0},Materials dropped: {0}
 FOXLAB_CRATES_DROPPED,掉落的箱子：{0},Crates dropped: {0}
+CHARACTER_FOXLAB_STARGAZER,观星者,Stargazer
+EFFECT_FOXLAB_STATS_ON_FROZEN_ENEMY_KILL,击杀瞬时速度＜{2}的目标有{0}{1},{0}{1} after killing an object who's instantaneous speed < {2}
+EFFECT_FOXLAB_ITEM_UPGRADE,升级时不会提升属性，但可选择一个道具,You choose an item when you level up instead of a stat upgrade

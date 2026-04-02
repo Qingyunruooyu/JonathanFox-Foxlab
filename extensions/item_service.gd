@@ -142,7 +142,7 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 		var main = Utils.get_scene_node()
 		for _player_index in RunData.get_player_count():
 			var player =  main._players[_player_index]
-			if is_instance_valid(player) and not player._pending_die and Utils.get_stat(Keys.stat_max_hp_hash, _player_index) > 0:
+			if not player._pending_die and Utils.get_stat(Keys.stat_max_hp_hash, _player_index) > 0:
 				if player.is_boosted:
 					player._boost_timer.start()
 					continue
@@ -155,20 +155,16 @@ func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player
 				player.boost(foxlab_player_boost_args)
 				player.emit_signal("stats_boosted", player)
 
-		var floating_text_manager = null
-		if main.has_node("FloatingTextManager"):
-			floating_text_manager = main.get_node("FloatingTextManager")
+		var floating_text_manager = main._floating_text_manager
 		if not enemy is Boss:
-			if floating_text_manager:
-				var icon = get_element(icons, Keys.icon_elite_hash).icon
-				var player_position = floating_text_manager.players[player_index].global_position
-				floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, \
-					floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
+			var icon = get_element(icons, Keys.icon_elite_hash).icon
+			var player_position = floating_text_manager.players[player_index].global_position
+			floating_text_manager.display_icon(1, icon, floating_text_manager.stat_pos_sounds, \
+				floating_text_manager.stat_neg_sounds, player_position, floating_text_manager.direction, -10.0)
 			new_boss_num = 1
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_reactor_hash, 1, 1)
 		else:
-			if floating_text_manager:
-				floating_text_manager.display("FOXLAB_RESURRECT", enemy.global_position)
+			floating_text_manager.display("FOXLAB_RESURRECT", enemy.global_position)
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_reactor_hash, 1, 2)
 		enemy.emit_signal("wanted_to_spawn_an_enemy", enemy_data.scene, pos, enemy, charmed_by)
 	else:
@@ -224,3 +220,36 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 		args.excluded_items.append_array(foxlab_weapon_spawning_pet)
 
 	return ._get_rand_item_for_wave(wave, player_index, type, args)
+
+func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: int) -> Array:
+	if not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
+		return .get_upgrades(level, number, old_upgrades, player_index)
+
+	var owned_items: Array = RunData.get_player_items(player_index)
+	for locked_item in RunData.get_player_locked_shop_items(player_index):
+		if locked_item[0] is ItemData:
+			owned_items.push_back(locked_item[0])
+	var args: = GetRandItemForWaveArgs.new()
+	args.owned_and_shop_items = owned_items
+	for upgrade in old_upgrades:
+		if upgrade.has_meta("foxlab_item"):
+			args.excluded_items.push_back([upgrade.get_meta("foxlab_item"), 0])
+	if level % 5 == 0:
+		if level >= 25:
+			args.fixed_tier = Tier.LEGENDARY
+		elif level == 5:
+			args.fixed_tier =  Tier.UNCOMMON
+		else:
+			args.fixed_tier = Tier.RARE
+	var items_ret = []
+	for i in number:
+		var item = _get_rand_item_for_wave(level, player_index, TierData.ITEMS, args)
+		args.excluded_items.push_back([item, 0])
+		var upgrade = UpgradeData.new()
+		upgrade.icon = item.icon
+		upgrade.deserialize_and_merge(item.serialize())
+		upgrade.upgrade_id = item.my_id
+		upgrade.upgrade_id_hash = item.my_id_hash
+		upgrade.set_meta("foxlab_item", item)
+		items_ret.append(upgrade)
+	return items_ret

@@ -252,6 +252,8 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_scapegoat_no_heal_hash: 0,
 			Utils.foxlab_stats_on_scapegoat_death_hash: [],
 			Utils.foxlab_gain_scapegoat_no_hurt_hash: [],
+			Utils.foxlab_stats_on_frozen_enemy_kill_hash: [],
+			Utils.foxlab_item_upgrade_hash: 0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

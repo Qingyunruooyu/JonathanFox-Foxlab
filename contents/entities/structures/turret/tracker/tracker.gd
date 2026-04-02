@@ -14,7 +14,7 @@ var _in_assembling: = false
 var _angle = rand_range(0, 2 * PI)
 var _players: = []
 var _current_player = null
-const _PLAYER_TRACKING_DISTANCE = 100.0
+const _PLAYER_TRACKING_DISTANCE_SQUARED = 100.0 * 100.0
 
 func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [], _entity_spawner_ref = null) -> void :
 	.init(zone_min_pos, zone_max_pos, players_ref, _entity_spawner_ref)
@@ -127,9 +127,9 @@ func _physics_process(delta: float) -> void :
 	if not _is_idle():
 		new_center =  _current_tracking_enemy.global_position
 		_player_tracked = false
-	elif _in_assembling or _player_tracked or global_position.distance_to(_current_player.global_position) <= _PLAYER_TRACKING_DISTANCE:
+	elif _in_assembling or _player_tracked or global_position.distance_squared_to(_current_player.global_position) <= _PLAYER_TRACKING_DISTANCE_SQUARED:
 		_player_tracked = true
-		if _in_assembling and global_position.distance_to(_current_player.global_position) <= _PLAYER_TRACKING_DISTANCE:
+		if _in_assembling and global_position.distance_squared_to(_current_player.global_position) <= _PLAYER_TRACKING_DISTANCE_SQUARED:
 			_in_assembling = false
 		new_center = _current_player.global_position
 

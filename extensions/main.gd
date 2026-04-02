@@ -137,7 +137,8 @@ func foxlab_mutation_ready():
 			foxlab_mutate_boost[i].hp_boost = ItemService.foxlab_enemy_boost_args.hp_boost
 			foxlab_mutate_boost[i].damage_boost = ItemService.foxlab_enemy_boost_args.damage_boost
 
-func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
+func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
+		 _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	if args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count():
 		return
 
@@ -151,10 +152,18 @@ func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_directio
 			for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
 				TempStats.add_stat(effect[0], effect[1], args.from_player_index)
 
+		_foxlab_process_frozen_unit_kill(enemy, args.from_player_index)
+
 		return
 
 	if not enemy.is_boosted and foxlab_should_check_mutation[args.from_player_index]:
 		foxlab_process_enemy_mutate(enemy, args)
+
+func _on_neutral_took_damage_foxlab(neutral: Neutral, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, \
+	_is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
+	if neutral._pending_die and args.from_player_index >= 0 and args.from_player_index < RunData.get_player_count():
+		_foxlab_process_frozen_unit_kill(neutral, args.from_player_index)
+
 
 func foxlab_process_enemy_mutate(enemy: Enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
@@ -168,7 +177,7 @@ func foxlab_process_enemy_mutate(enemy: Enemy, args: TakeDamageArgs):
 		foxlab_bosses_this_wave[args.from_player_index] += ItemService.foxlab_spawn_random_enemy(enemy, foxlab_bosses_this_wave[args.from_player_index], args.from_player_index)
 		if RunData.get_player_effect_bool(Utils.foxlab_gain_stat_on_mutate_hash, args.from_player_index) and Utils.get_chance_success(chance):
 			var boost_enemy = Utils.get_rand_element(_entity_spawner.get_all_enemies(false))
-			if not is_instance_valid(boost_enemy):
+			if not is_instance_valid(boost_enemy) or boost_enemy._pending_die:
 				return
 
 			foxlab_mutate_boost[args.from_player_index].speed_boost =  0 if boost_enemy is Boss else ItemService.foxlab_enemy_boost_args.attack_speed_boost
@@ -177,7 +186,7 @@ func foxlab_process_enemy_mutate(enemy: Enemy, args: TakeDamageArgs):
 			boost_enemy.boost(foxlab_mutate_boost[args.from_player_index])
 			boost_enemy.can_be_boosted = pre_state
 
-			for i in range(1 + RunData.current_wave / 5):
+			for _i in range(1 + RunData.current_wave / 5):
 				var add_mod :bool = Utils.get_chance_success(FOXLAB_STAT_MOD_CHANCE)
 				var stat = Utils.get_rand_element(Utils.foxlab_primary_stat_gain_map.keys()) if add_mod else Utils.get_rand_element(Utils.foxlab_primary_stat_gain_map.values())
 				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
@@ -232,6 +241,16 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 	for character in new_characters:
 		_floating_text_manager.display_icon(1, character.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, pos, _floating_text_manager.direction, -10.0)
 		pos -= Vector2(30, 30)
+
+#击杀慢速敌人相关
+func _foxlab_process_frozen_unit_kill(unit: Node2D, player_index: int):
+	var velocity = unit._integrate_forces_velocity
+	if not unit._can_move or velocity.length_squared() < Utils.FOXLAB_FROZEN_SPEED * Utils.FOXLAB_FROZEN_SPEED:
+		var frozen_effect = RunData.get_player_effect(Utils.foxlab_stats_on_frozen_enemy_kill_hash, player_index)
+		if not frozen_effect.empty():
+			for effect in frozen_effect:
+				RunData.add_stat(effect[0], effect[1], player_index)
+				RunData.add_tracked_value(player_index, Utils.character_foxlab_stargazer_hash, effect[1])
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
@@ -324,8 +343,9 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 		for near_effect in RunData.get_player_effect(Utils.foxlab_heal_when_kill_nearby_hash, player_index):
 			if not Utils.get_chance_success(near_effect[2] / 100.0):
 				continue
-			var dist_to_player = enemy.global_position.distance_to(player.global_position)
-			if dist_to_player <= Utils.FOXLAB_BASE_NEARBY_KILL_DIST + WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index):
+			var dist_to_player = enemy.global_position.distance_squared_to(player.global_position)
+			if dist_to_player <= Utils.FOXLAB_BASE_NEARBY_KILL_DIST * Utils.FOXLAB_BASE_NEARBY_KILL_DIST and \
+				WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index):
 				if player.on_healing_effect(1, Utils.item_foxlab_inner_indomitable_hash) <= 0:
 					RunData.add_gold(1, player_index)
 					RunData.add_tracked_value(player_index, Utils.item_foxlab_inner_indomitable_hash, 1, 1)
@@ -358,4 +378,12 @@ func _on_EntitySpawner_enemy_spawned(enemy: Enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)
 	var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
 
+func _on_EntitySpawner_neutral_spawned(neutral: Neutral) -> void :
+	._on_EntitySpawner_neutral_spawned(neutral)
+	var _error_took_damage = neutral.connect("took_damage", self, "_on_neutral_took_damage_foxlab")
 
+func on_upgrade_selected(upgrade_data: UpgradeData, upgrade: UpgradesUI.UpgradeToProcess) -> void :
+	if upgrade_data.has_meta("foxlab_item"):
+		RunData.add_item(upgrade_data.get_meta("foxlab_item"), upgrade.player_index)
+	else:
+		.on_upgrade_selected(upgrade_data, upgrade)

@@ -23,4 +23,4 @@ is_cursed = false
 curse_factor = 0.0
 max_nb = 2
 item_appearances = [  ]
-tags = [ "structure", "stat_curse", "stat_engineering" ]
+tags = [ "structure", "stat_curse", "stat_engineering", "less_enemy_speed" ]

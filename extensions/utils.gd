@@ -1,6 +1,7 @@
 extends "res://singletons/utils.gd"
 
 const FOXLAB_BASE_NEARBY_KILL_DIST = 250
+const FOXLAB_FROZEN_SPEED = 40
 
 # Effects
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
@@ -62,6 +63,8 @@ var foxlab_materials_on_scapegoat_hit_hash: int = Keys.generate_hash("foxlab_mat
 var foxlab_scapegoat_no_heal_hash: int = Keys.generate_hash("foxlab_scapegoat_no_heal")
 var foxlab_stats_on_scapegoat_death_hash: int = Keys.generate_hash("foxlab_stats_on_scapegoat_death")
 var foxlab_gain_scapegoat_no_hurt_hash: int = Keys.generate_hash("foxlab_gain_scapegoat_no_hurt")
+var foxlab_stats_on_frozen_enemy_kill_hash: int = Keys.generate_hash("foxlab_stats_on_frozen_enemy_kill")
+var foxlab_item_upgrade_hash: int = Keys.generate_hash("foxlab_item_upgrade")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -81,6 +84,7 @@ var character_foxlab_staff_officer_hash: int = Keys.generate_hash("character_fox
 var character_foxlab_toxic_healer_hash: int = Keys.generate_hash("character_foxlab_toxic_healer")
 var character_foxlab_turtle_hash: int = Keys.generate_hash("character_foxlab_turtle")
 var character_foxlab_goat_keeper_hash: int = Keys.generate_hash("character_foxlab_goat_keeper")
+var character_foxlab_stargazer_hash: int = Keys.generate_hash("character_foxlab_stargazer")
 var item_foxlab_angel_hash: int = Keys.generate_hash("item_foxlab_angel")
 var item_foxlab_ball_lightning_0_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_0")
 var item_foxlab_ball_lightning_1_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_1")

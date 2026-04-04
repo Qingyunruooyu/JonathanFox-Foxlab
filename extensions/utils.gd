@@ -65,6 +65,7 @@ var foxlab_stats_on_scapegoat_death_hash: int = Keys.generate_hash("foxlab_stats
 var foxlab_gain_scapegoat_no_hurt_hash: int = Keys.generate_hash("foxlab_gain_scapegoat_no_hurt")
 var foxlab_stats_on_frozen_enemy_kill_hash: int = Keys.generate_hash("foxlab_stats_on_frozen_enemy_kill")
 var foxlab_item_upgrade_hash: int = Keys.generate_hash("foxlab_item_upgrade")
+var foxlab_instant_poisoned_attracting_hash: int = Keys.generate_hash("foxlab_instant_poisoned_attracting")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")

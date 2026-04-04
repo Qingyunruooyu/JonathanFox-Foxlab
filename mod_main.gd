@@ -32,6 +32,7 @@ const EXTENSION_SCRIPTS: =[
 	"tags_container.gd",
 	"scapegoat.gd",
 	"player_explosion.gd",
+	"consumable.gd",
 ]
 
 

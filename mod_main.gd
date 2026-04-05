@@ -33,6 +33,9 @@ const EXTENSION_SCRIPTS: =[
 	"scapegoat.gd",
 	"player_explosion.gd",
 	"consumable.gd",
+	"catling_gun.gd",
+	"coop_upgrades_ui_player_container.gd",
+	"upgrade_ui.gd",
 ]
 
 

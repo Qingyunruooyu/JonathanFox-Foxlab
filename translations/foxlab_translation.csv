@@ -323,6 +323,6 @@ EFFECT_FOXLAB_GAIN_SCAPEGOAT_NO_HURT,敌袭结束时，若你有未受伤的替�
 FOXLAB_MATERIALS_DROPPED,掉落的材料：{0},Materials dropped: {0}
 FOXLAB_CRATES_DROPPED,掉落的箱子：{0},Crates dropped: {0}
 CHARACTER_FOXLAB_STARGAZER,观星者,Stargazer
-EFFECT_FOXLAB_STATS_ON_FROZEN_ENEMY_KILL,击杀瞬时速度＜{2}的目标有{0}{1},{0}{1} after killing an object who's instantaneous speed < {2}
+EFFECT_FOXLAB_STATS_ON_FROZEN_ENEMY_KILL,击杀[color=#FF8C00]瞬时速度[/color]＜{2}的目标有{0}{1},{0}{1} after killing an object who's [color=#FF8C00]instantaneous speed[/color] < {2}
 EFFECT_FOXLAB_ITEM_UPGRADE,升级时不会提升属性，但可选择一个道具,You choose an item when you level up instead of a stat upgrade
 EFFECT_FOXLAB_INSTANT_POISONED_ATTRACTING,有{0}概率立即吸收掉落的有毒消耗品,{0} chance to instantly attract a poisoned consumable when it’s dropped

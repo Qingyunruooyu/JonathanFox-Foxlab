@@ -67,3 +67,10 @@ func curse_item(item_data: ItemParentData, player_index: int, turn_randomization
 			ret.effects.erase(effect)
 		ret.effects.append_array(effect_to_move)
 	return ret
+
+func update_consumable_to_get(base_consumable_data: ConsumableData) -> ConsumableData:
+	if base_consumable_data != null and base_consumable_data.my_id_hash == Keys.consumable_fruit_hash:
+		var chance_poisoned = RunData.sum_all_player_effects(Keys.poisoned_fruit_hash)
+		if Utils.get_chance_success(chance_poisoned / 100.0):
+			return poisoned_fruit
+	return .update_consumable_to_get(base_consumable_data)

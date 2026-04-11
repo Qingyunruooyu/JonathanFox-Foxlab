@@ -254,6 +254,7 @@ EFFECT_FOXLAB_SLOW_ON_HIT,敌人受{1}伤害会暂时减速{0},Enemy is slowed {
 EFFECT_FOXLAB_SPAWN_LANDMINE_CHANCE,武器直接杀死敌人时有{0}几率生成1地雷,{0} chance to spawn a landmine if an enemy is killed directly by your weapon
 CHARACTER_FOXLAB_MONK,僧侣,Monk
 ITEM_FOXLAB_BUDDHAS_HAND,佛手,Buddha's Hand
+TAG_DESCRIPTION_ITEM_FOXLAB_BUDDHAS_HAND,佛手装备武器可以溢出武器栏,Buddha's Hand can give you weapons even when weapon slot is full
 EFFECT_FOXLAB_BUDDHAS_HAND,你将装备1{0}（拥有{1}效果{2}）,"You'll equip a {0} with effect of {1}{2}"
 EFFECT_FOXLAB_BUDDHAS_HAND_HINT,，此效果有几率（受{0}影响）在武器升级时保留," (There's chance (affected by {0}) to keep the effect on weapon upgrade)"
 EFFECT_FOXLAB_BUDDHAS_HAND_BRICK,，武器升级后[color=#FF8C00]失去[/color]此效果," (The effect is [color=#FF8C00]lost[/color] on weapon upgrade)"
@@ -280,7 +281,7 @@ EFFECT_FOXLAB_FORCE_REMOVE_ON_REROLL,刷新后失去{1},Lose all {1} on reroll
 EFFECT_FOXLAB_WEAPON_TEXT,[color=#FF8C00]{1}：[/color],[color=#FF8C00]{1}:[/color]
 EFFECT_FOXLAB_WEAPON_TEXT_CURSED,[color=#ca61ff]诅咒[/color][color=#FF8C00]{1}：[/color],[color=#ca61ff]Cursed [/color][color=#FF8C00]{1}:[/color]
 ITEM_FOXLAB_MASK,面具,Mask
-TAG_DESCRIPTION_FOXLAB_MASK,变身会替换你的次要角色,Replace secondary characters
+TAG_DESCRIPTION_ITEM_FOXLAB_MASK,变身会替换你的次要角色,Replace secondary characters
 ITEM_FOXLAB_FACELESS_GUIDE,无面的指引,Faceless' Guide
 EFFECT_FOXLAB_FACELESS_GUIDE,无面复制的武器，[color=#FF8C00]主动升级（如铁砧）[/color]或点击[color=#FF8C00]此武器[/color]合成按钮，可[color=#FF8C00]保留[/color]额外效果,"The extra effects are [color=#FF8C00]kept[/color] if a modified weapon [color=#FF8C00]upgrades by itself (eg. Anvil)[/color] or is [color=#FF8C00]selected by you[/color] for combination"
 FOXLAB_MASK_HISTORY,变身历史,Transformation history

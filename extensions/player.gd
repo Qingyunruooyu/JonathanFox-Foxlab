@@ -1,10 +1,10 @@
 extends "res://entities/units/player/player.gd"
 
-var foxlab_burning_particle = preload("res://particles/burning/torch_burning_particles.tscn")
-var foxlab_scepter_particle = preload("res://particles/ghost_scepter_particles.tscn")
+var foxlab_burning_particle = load("res://particles/burning/torch_burning_particles.tscn")
+var foxlab_scepter_particle = load("res://particles/ghost_scepter_particles.tscn")
 var foxlab_potato_texture = preload("res://entities/units/player/potato.png")
 var foxlab_transparent_texture = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
-var _foxlab_curse_particle =preload("res://particles/curse/curse_enemy_particles.tscn")
+var _foxlab_curse_particle =load("res://particles/curse/curse_enemy_particles.tscn")
 var _foxlab_curse_particle_instance = null
 
 var foxlab_ball_lighting_names = [Keys.generate_hash("item_foxlab_ball_lightning_3"), Keys.generate_hash("item_foxlab_ball_lightning_2"), Keys.generate_hash("item_foxlab_ball_lightning_1"), Keys.generate_hash("item_foxlab_ball_lightning_0"), ]
@@ -108,14 +108,36 @@ func foxlab_manage_projectile_on_hit() -> void:
 ############ 函数扩展 #########
 #　修复官方bug
 func die(args: = Utils.default_die_args) -> void :
+	var reset_to_default = false
+	if args == Utils.default_die_args:
+		_die_args_unit.knockback_vector = args.knockback_vector
+		_die_args_unit.cleaning_up = args.cleaning_up
+		_die_args_unit.enemy_killed_by_player = args.enemy_killed_by_player
+		_die_args_unit.killed_by_player_index = args.killed_by_player_index
+		_die_args_unit.killing_blow_dmg_value = args.killing_blow_dmg_value
+		_die_args_unit.is_burning = args.is_burning
+		if not is_instance_valid(args.from):
+			if _is_burning:
+				_die_args_unit.from = ItemService.get_item_from_id(Keys.item_scared_sausage_hash)
+		elif args.from is Structure or args.from is Pet:
+			_die_args_unit.from = players_ref[args.from.player_index]
+		else:
+			_die_args_unit.from = args.from
+		if _die_args_unit.has_meta("is_bullet_hell"):
+			_die_args_unit.is_bullet_hell = args.is_bullet_hell
+		args = _die_args_unit
+		reset_to_default = true
 	.die(args)
-	Utils.default_die_args.knockback_vector = Vector2.ZERO
-	Utils.default_die_args.cleaning_up = false
-	Utils.default_die_args.enemy_killed_by_player = true
-	Utils.default_die_args.killed_by_player_index = - 1
-	Utils.default_die_args.killing_blow_dmg_value = 0
-	Utils.default_die_args.is_burning = false
-	Utils.default_die_args.from = null
+	if reset_to_default:
+		Utils.default_die_args.knockback_vector = Vector2.ZERO
+		Utils.default_die_args.cleaning_up = false
+		Utils.default_die_args.enemy_killed_by_player = true
+		Utils.default_die_args.killed_by_player_index = - 1
+		Utils.default_die_args.killing_blow_dmg_value = 0
+		Utils.default_die_args.is_burning = false
+		Utils.default_die_args.from = null
+		if Utils.default_die_args.has_meta("is_bullet_hell"):
+			Utils.default_die_args.is_bullet_hell = false
 
 
 func add_weapon(weapon: WeaponData, pos: int) -> void :

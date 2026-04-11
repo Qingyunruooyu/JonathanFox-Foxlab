@@ -2,8 +2,8 @@ extends "res://entities/units/pet/scapegoat/scapegoat.gd"
 
 onready var foxlab_healing_zone = $"%HealingTriggeringZone"
 onready var foxlab_healing_shape = $"%HealingTriggeringZone/CollisionShape2D"
-var _foxlab_movement_behavior = preload("res://entities/units/movement_behaviors/follow_rand_pos_around_player_movement_behavior.gd")
-var _foxlab_target_behavior = preload("res://entities/units/target_behavior/closest_player_target_behavior.gd")
+var _foxlab_movement_behavior = load("res://entities/units/movement_behaviors/follow_rand_pos_around_player_movement_behavior.gd")
+var _foxlab_target_behavior = load("res://entities/units/target_behavior/closest_player_target_behavior.gd")
 
 var _foxlab_movement_ins = null
 var _foxlab_target_ins = null

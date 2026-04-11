@@ -118,7 +118,7 @@ func foxlab_random_enemies() -> Array:
 		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
 			continue
 		foxlab_get_enemy_from_item(entity)
-	foxlab_enemies.append(preload("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
+	foxlab_enemies.append(load("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
 	return foxlab_enemies
 
 func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int):

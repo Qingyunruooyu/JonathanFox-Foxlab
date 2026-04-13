@@ -170,15 +170,14 @@ func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> 
 			if items_indices.size() == prev_items.size():
 				break
 
-	var low_builder_turret = [Keys.item_builder_turret_n_hash[0], Keys.item_builder_turret_n_hash[1], Keys.item_builder_turret_n_hash[3]]
-	var low_builder_turret_items = []
+	var builder_turret_items = []
 	for item_data in items:
-		if item_data.my_id_hash in low_builder_turret and not item_data in elements:
-			low_builder_turret_items.push_back(item_data)
-	if not low_builder_turret_items.empty():
+		if item_data.my_id_hash in Keys.item_builder_turret_n_hash and not item_data in elements:
+			builder_turret_items.push_back(item_data)
+	if not builder_turret_items.empty():
 		if prev_items.empty():
 			elements = elements.duplicate()
-		elements.append_array(low_builder_turret_items)
+		elements.append_array(builder_turret_items)
 
 	._cache_effect_hashes(elements, weapon_effect_hashes)
 

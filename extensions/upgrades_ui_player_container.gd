@@ -26,7 +26,7 @@ func _ready():
 
 func on_upgrade_hovered(upgrade_data: UpgradeData, control: Control):
 	if upgrade_data.has_meta("foxlab_item"):
-		_foxlab_item_popup.display_item_data(upgrade_data.get_meta("foxlab_item"), control)
+		_foxlab_item_popup.display_item_data(upgrade_data.get_meta("foxlab_item"), control._upgrade_description._name)
 		if RunData.is_coop_run:
 			_foxlab_item_popup._panel.show()
 		else:
@@ -35,10 +35,12 @@ func on_upgrade_hovered(upgrade_data: UpgradeData, control: Control):
 
 func on_item_hovered():
 	if _item_data is ItemData:
-		_foxlab_item_popup.display_item_data(_item_data, _item_description)
+		_foxlab_item_popup.display_item_data(_item_data, _item_description._name)
 		_foxlab_item_popup._panel.hide()
 
 func on_item_left():
 	_foxlab_item_popup.hide()
 
-
+func show_item(item_data: ItemParentData) -> void :
+	.show_item(item_data)
+	on_item_hovered()

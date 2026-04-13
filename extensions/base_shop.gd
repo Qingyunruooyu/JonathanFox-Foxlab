@@ -66,14 +66,14 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 	var popup_pos = pos[0]
 	var direction: Vector2
 	if RunData.is_coop_run:
-		popup_pos.x -= 35
+		popup_pos.x += 35
 		direction = Vector2(0, - 30)
 	else:
 		popup_pos.x += pos[1]
 		direction = Vector2(25, - 100)
 	for character in new_characters:
 		var icon = character.icon
-		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false, Vector2.ONE)
+		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false)
 		popup_pos -= offset
 	SoundManager.play(foxlab_mask_success_sound, - 2, 0.2, true)
 
@@ -254,3 +254,11 @@ func _on_tree_exited() -> void :
 
 	RunData.current_wave -= wave_reset_count
 
+func _on_shop_item_focused(shop_item: ShopItem, player_index: int) -> void :
+	._on_shop_item_focused(shop_item, player_index)
+	if not RunData.is_coop_run and shop_item.active and UIService.current_device != CoopService.PlayerType.KEYBOARD_AND_MOUSE:
+		show_shop_item_tags(shop_item)
+
+func _on_shop_item_unfocused(shop_item: ShopItem, player_index: int) -> void :
+	._on_shop_item_unfocused(shop_item, player_index)
+	hide_tags(shop_item)

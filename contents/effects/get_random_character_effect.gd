@@ -8,7 +8,7 @@ const MIN_TRANSFORM_NUM = 0.95
 const VALUE_BASE = 2
 # character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_foxlab_survivor, character_foxlab_infernal_machine
 # character_foxlab_architect
-var debug_item_name: Array = ["character_creature", "", "character_foxlab_troubleshooter", "", "character_foxlab_cultivator"]
+var debug_item_name: Array = []
 var curse_character: bool = false
 
 static func get_id() -> String:

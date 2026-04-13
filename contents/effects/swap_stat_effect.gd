@@ -1,4 +1,3 @@
-class_name FoxLabSwapStatEffect
 extends "res://items/global/effect.gd"
 
 export(Array, String)  var stats_swapped = ["stat_max_hp", "stat_max_hp"]
@@ -6,7 +5,7 @@ export(Array, String)  var stats_swapped = ["stat_max_hp", "stat_max_hp"]
 var stats_swapped_hash = []
 
 static func get_id() -> String:
-	return "foxlab_effect_swap_stat"
+	return "foxlab_swap_stat"
 
 func duplicate(subresources := false) -> Resource:
 	var duplication = .duplicate(subresources)

@@ -1,4 +1,3 @@
-class_name FoxLabProjectileOnHitEffect
 extends "res://effects/items/projectile_effect.gd"
 
 export(Array, String) var effects = []
@@ -6,7 +5,7 @@ export(String) var tracking_key = ""
 var tracking_key_hash: int = Keys.empty_hash
 
 static func get_id() -> String:
-	return "foxlab_effect_projectile_on_hit"
+	return "foxlab_projectile_on_hit"
 
 func duplicate(subresources := false) -> Resource:
 	var duplication = .duplicate(subresources)

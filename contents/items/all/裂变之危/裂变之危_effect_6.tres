@@ -13,7 +13,7 @@ arg_key = "SPAWNER_NAME"
 
 [resource]
 script = ExtResource( 1 )
-key = "res://zones/zone_1/014/d4_group_1.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/split/group_6.tres"
 text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
 value = 1
 custom_key = "extra_enemies_next_wave"

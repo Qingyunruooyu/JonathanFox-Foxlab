@@ -2,6 +2,9 @@ extends "res://singletons/utils.gd"
 
 const FOXLAB_BASE_NEARBY_KILL_DIST = 250
 const FOXLAB_FROZEN_SPEED = 40
+const FOXLAB_BOSS_SPAWN_CHANCE = 25
+const FOXLAB_BOSS_SPAWN_NUM = 4
+const FOXLAB_BOSS_INTERVAL = 30
 
 # Effects
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
@@ -10,6 +13,10 @@ var foxlab_gain_enemy_health_hash: int = Keys.generate_hash("gain_enemy_health")
 var foxlab_gain_enemy_speed_hash: int = Keys.generate_hash("gain_enemy_speed")
 var foxlab_gain_enemy_damage_hash: int = Keys.generate_hash("gain_enemy_damage")
 var foxlab_gain_structure_percent_damage_hash: int = Keys.generate_hash("gain_structure_percent_damage")
+var foxlab_item_steal_warmhole_spawn_hash: int = Keys.generate_hash("foxlab_item_steal_warmhole_spawn")
+var foxlab_extra_enemies_hash: int = Keys.generate_hash("foxlab_extra_enemies")
+var foxlab_extra_crash_zone_enemies_hash: int = Keys.generate_hash("foxlab_extra_crash_zone_enemies")
+var foxlab_extra_abyss_enemies_hash: int = Keys.generate_hash("foxlab_extra_abyss_enemies")
 var fox_poet_next_curse_chance_hash: int = Keys.generate_hash("fox_poet_next_curse_chance")
 var foxlab_troubleshooter_crisis_num_hash: int = Keys.generate_hash("foxlab_troubleshooter_crisis_num")
 var foxlab_troubleshooter_temp_hash: int = Keys.generate_hash("foxlab_troubleshooter_temp")
@@ -19,6 +26,7 @@ var foxlab_shop_point_upgrade_hash: int = Keys.generate_hash("foxlab_shop_point_
 var foxlab_shop_vip_hash: int = Keys.generate_hash("foxlab_shop_vip")
 var foxlab_cultivator_level_hash: int = Keys.generate_hash("foxlab_cultivator_level")
 var foxlab_cultivator_reset_hash: int = Keys.generate_hash("foxlab_cultivator_reset")
+var foxlab_extra_bosses_hash: int = Keys.generate_hash("foxlab_extra_bosses")
 var fox_wave_started_hash: int = Keys.generate_hash("fox_wave_started")
 var fox_faceless_enable_upgrade_on_transform_hash: int = Keys.generate_hash("fox_faceless_enable_upgrade_on_transform")
 var fox_faceless_upgrade_on_transform_wave_hash: int = Keys.generate_hash("fox_faceless_upgrade_on_transform_wave")
@@ -100,6 +108,7 @@ var item_foxlab_reactor_hash: int = Keys.generate_hash("item_foxlab_reactor")
 var item_foxlab_tracker_hash: int = Keys.generate_hash("item_foxlab_tracker")
 var item_foxlab_faceless_guide_hash: int = Keys.generate_hash("item_foxlab_faceless_guide")
 var item_foxlab_enchanted_eyes_hash: int = Keys.generate_hash("item_foxlab_enchanted_eyes")
+var item_foxlab_wanted_hash: int = Keys.generate_hash("item_foxlab_wanted")
 
 # enemy names
 var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")
@@ -135,6 +144,11 @@ var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character
 
 var foxlab_keys_raw_text = [foxlab_mask_history_hash, foxlab_previous_remembered_names_hash]
 
+var foxlab_item_wanted = []
+var foxlab_item_wanted_hash = {}
+
+var foxlab_gaster_group = null
+
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
 	if player_index != RunData.DUMMY_PLAYER_INDEX :
@@ -162,6 +176,74 @@ func _foxlab_init_primary_stat_gain_map():
 	for stat in _primary_stat_keys:
 		var gain_stat = "gain_" + Keys.hash_to_string[stat]
 		foxlab_primary_stat_gain_map[Keys.generate_hash(gain_stat)] = stat
+
+
+func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
+	var ret_groups = []
+	var extra_group_chance = 0.01
+	var zone_data = null
+	if zone_id != "":
+		for zone in ZoneService.zones:
+			if zone.name == zone_id:
+				zone_data = zone
+				break;
+	if zone_data == null:
+		zone_data = get_rand_element(ZoneService.zones)
+	for groups in [zone_data.groups_data_in_all_waves, zone_data.horde_groups]:
+		if get_chance_success(extra_group_chance):
+			ret_groups.append(get_rand_element(groups))
+	if get_chance_success(extra_group_chance):
+		if foxlab_gaster_group == null:
+			# preload会提前加载enemy.gd，导致兼容性问题
+			foxlab_gaster_group = load("res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres")
+		ret_groups.append(foxlab_gaster_group)
+		ret_groups.append(foxlab_gaster_group)
+	# var min_wave = min(9, RunData.current_wave) as int
+	# var max_wave = clamp(RunData.current_wave*2.5, 1, zone_data.waves_data.size()) as int
+	var min_wave = 11
+	var max_wave = zone_data.waves_data.size()
+	var wave = min_wave + randi()%(max_wave - min_wave + 1) - 1
+	assert (wave < zone_data.waves_data.size())
+	var wave_data = zone_data.waves_data[wave].groups_data.duplicate()
+	wave_data.shuffle()
+	for data in wave_data:
+		if not data.is_boss and data.min_difficulty <= RunData.current_difficulty and RunData.current_difficulty <= data.max_difficulty:
+			ret_groups.append(data)
+			break;
+	return ret_groups
+
+static func foxlab_pickup_random_bosses() -> Array:
+	var bosses = ItemService.bosses
+	if bosses.size() > FOXLAB_BOSS_SPAWN_NUM:
+		bosses = bosses.duplicate()
+		bosses.shuffle()
+		var bosses_tmp = []
+		for i in FOXLAB_BOSS_SPAWN_NUM:
+			bosses_tmp.append(bosses[i])
+		bosses = bosses_tmp
+	elif bosses.size() < FOXLAB_BOSS_SPAWN_NUM:
+		bosses = bosses.duplicate()
+		while bosses.size() < FOXLAB_BOSS_SPAWN_NUM:
+			bosses.append(Utils.get_rand_element(ItemService.bosses))
+
+	var group = preload("res://zones/common/elite/group_elite.tres").duplicate()
+	group.repeating_interval = FOXLAB_BOSS_INTERVAL
+	group.repeating = 999
+	for boss in bosses:
+		var wave_unit_data = WaveUnitData.new()
+		wave_unit_data.type = EntityType.BOSS
+		wave_unit_data.spawn_chance = FOXLAB_BOSS_SPAWN_CHANCE / 100.0
+		wave_unit_data.unit_scene = boss.scene
+		group.wave_units_data.append(wave_unit_data)
+	return [group]
+
+func foxlab_get_random_item_foxlab_wanted():
+	if foxlab_item_wanted.empty():
+		for item in ItemService.items:
+			if item.name == "ITEM_FOXLAB_WANTED":
+				foxlab_item_wanted.append(item)
+				foxlab_item_wanted_hash[item.my_id_hash] = 1
+	return foxlab_item_wanted.pick_random()
 
 ######## 扩展 ######
 # 移植版不会调用这个函数

@@ -18,11 +18,10 @@ func _ready():
 		ui.connect("foxlab_hovered", self, "on_upgrade_hovered")
 		ui.connect("foxlab_left", self, "on_item_left")
 
-	for button in [_take_button, _discard_button,_ban_button]:
-		button.connect("focus_entered", self, "on_item_hovered")
-		button.connect("mouse_entered", self, "on_item_hovered")
-		button.connect("focus_exited", self, "on_item_left")
-		button.connect("mouse_exited", self, "on_item_left")
+	_take_button.connect("focus_entered", self, "on_item_hovered")
+	_take_button.connect("mouse_entered", self, "on_item_hovered")
+	_take_button.connect("focus_exited", self, "on_item_left")
+	_take_button.connect("mouse_exited", self, "on_item_left")
 
 func on_upgrade_hovered(upgrade_data: UpgradeData, control: Control):
 	if upgrade_data.has_meta("foxlab_item"):

@@ -1,8 +1,7 @@
-class_name FoxlabWeaponClassPriceEffect
 extends "res://items/global/effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_weapon_class_price"
+	return "foxlab_weapon_class_price"
 
 func apply(player_index: int) -> void:
 	var effect = Effect.new()

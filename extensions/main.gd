@@ -112,7 +112,7 @@ func foxlab_receive_item_stat_ready():
 			player.emit_signal("health_updated", player, player.current_stats.health, player.max_stats.health)
 
 ########### 异变相关 ###############
-func foxlab_should_check_mutation(player_index: int)-> bool:
+func _foxlab_should_check_mutation(player_index: int)-> bool:
 	foxlab_mutate_chance[player_index] = max(0, RunData.get_player_effect(Utils.foxlab_mutate_alive_enemy_hash, player_index))
 	if foxlab_mutate_chance[player_index]:
 		return true
@@ -131,7 +131,7 @@ func foxlab_mutation_ready():
 		Utils._foxlab_init_primary_stat_gain_map()
 
 	for i in RunData.get_player_count():
-		foxlab_should_check_mutation[i] = foxlab_should_check_mutation(i)
+		foxlab_should_check_mutation[i] = _foxlab_should_check_mutation(i)
 		if foxlab_should_check_mutation[i]:
 			foxlab_mutate_boost[i] = BoostArgs.new()
 			foxlab_mutate_boost[i].hp_boost = ItemService.foxlab_enemy_boost_args.hp_boost
@@ -143,7 +143,7 @@ func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_directio
 		return
 
 	if enemy._pending_die:
-		for i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
+		for _i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
 			var pos = _entity_spawner.get_spawn_pos_in_area(enemy.global_position, 200)
 			var queue = _entity_spawner.queues_to_spawn_structures[args.from_player_index]
 			queue.push_back([EntityType.STRUCTURE, landmines_effect.scene, pos, landmines_effect])
@@ -300,7 +300,7 @@ func on_levelled_up(player_index: int) -> void :
 		consumable_tier = Tier.LEGENDARY
 	var consumable_to_drop = ItemService.get_consumable_for_tier(consumable_tier).duplicate()
 	consumable_to_drop.icon = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/cursed_chest.png")
-	for i in range(bonus_crate):
+	for _i in range(bonus_crate):
 		var consumable_to_process = UpgradesUI.ConsumableToProcess.new()
 		consumable_to_process.consumable_data = consumable_to_drop
 		consumable_to_process.player_index = player_index
@@ -381,6 +381,23 @@ func _on_EntitySpawner_enemy_spawned(enemy: Enemy) -> void :
 func _on_EntitySpawner_neutral_spawned(neutral: Neutral) -> void :
 	._on_EntitySpawner_neutral_spawned(neutral)
 	var _error_took_damage = neutral.connect("took_damage", self, "_on_neutral_took_damage_foxlab")
+
+func _on_EntitySpawner_players_spawned(players: Array) -> void :
+	._on_EntitySpawner_players_spawned(players)
+	var extra_enemies = 0
+	for player_index in _players.size():
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_enemies_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data())
+			extra_enemies += 1
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_crash_zone_enemies_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_CRASH_ZONE"))
+			extra_enemies += 1
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_abyss_enemies_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_ABYSS"))
+			extra_enemies += 1
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_bosses_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_bosses())
+	_is_horde_wave = (extra_enemies > 4)
 
 func on_upgrade_selected(upgrade_data: UpgradeData, upgrade: UpgradesUI.UpgradeToProcess) -> void :
 	if upgrade_data.has_meta("foxlab_item"):

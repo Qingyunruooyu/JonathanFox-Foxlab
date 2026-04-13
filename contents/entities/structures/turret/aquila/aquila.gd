@@ -1,4 +1,3 @@
-class_name FoxLabAquila
 extends "res://entities/structures/turret/turret.gd"
 
 var distance = rand_range(100, 500)

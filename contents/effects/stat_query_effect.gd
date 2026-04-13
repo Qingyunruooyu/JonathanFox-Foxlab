@@ -1,8 +1,7 @@
-class_name FoxLabStatQueryEffect
 extends "res://effects/weapons/null_effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_stat_query"
+	return "foxlab_stat_query"
 
 func get_args(_player_index: int) -> Array:
 	match value:

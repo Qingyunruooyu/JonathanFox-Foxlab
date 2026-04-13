@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=48 format=2]
+[gd_resource type="Resource" load_steps=32 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_22.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_25.tres" type="Resource" id=2]
@@ -23,27 +23,11 @@
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_26.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_1.tres" type="Resource" id=23]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_12.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_0.tres" type="Resource" id=25]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_9.tres" type="Resource" id=26]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_11.tres" type="Resource" id=27]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_6.tres" type="Resource" id=28]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_13.tres" type="Resource" id=29]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_14.tres" type="Resource" id=30]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_15.tres" type="Resource" id=31]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_4.tres" type="Resource" id=32]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_3.tres" type="Resource" id=33]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_16.tres" type="Resource" id=34]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_17.tres" type="Resource" id=35]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_18.tres" type="Resource" id=36]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_8.tres" type="Resource" id=37]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_10.tres" type="Resource" id=38]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_19.tres" type="Resource" id=39]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_2.tres" type="Resource" id=40]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_7.tres" type="Resource" id=41]
 [ext_resource path="res://weapons/melee/wrench/1/wrench_data.tres" type="Resource" id=42]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_21.tres" type="Resource" id=43]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_effect_5.tres" type="Resource" id=44]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/赏金猎人_icon.png" type="Texture" id=45]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/bounter_hunter_mouth.tres" type="Resource" id=46]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/bounter_hunter_eyes.tres" type="Resource" id=47]
@@ -57,7 +41,7 @@ icon = ExtResource( 45 )
 name = "CHARACTER_FOXLAB_BOUNTY_HUNTER"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 25 ), ExtResource( 23 ), ExtResource( 40 ), ExtResource( 33 ), ExtResource( 32 ), ExtResource( 44 ), ExtResource( 28 ), ExtResource( 41 ), ExtResource( 37 ), ExtResource( 26 ), ExtResource( 38 ), ExtResource( 27 ), ExtResource( 24 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 43 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 22 ) ]
+effects = [ ExtResource( 25 ), ExtResource( 23 ), ExtResource( 40 ), ExtResource( 39 ), ExtResource( 43 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 22 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

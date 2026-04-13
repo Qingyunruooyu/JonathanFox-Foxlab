@@ -13,7 +13,7 @@ arg_key = "DIPLOCAULUS_NAME"
 
 [resource]
 script = ExtResource( 1 )
-key = "res://zones/zone_1/007/d5_group_1.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/eggs/group_7.tres"
 text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
 value = 1
 custom_key = "extra_enemies_next_wave"

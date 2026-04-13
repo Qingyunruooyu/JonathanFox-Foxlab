@@ -1,8 +1,7 @@
-class_name FoxLabWeaponGainStatForEveryStatEffect
 extends "res://effects/weapons/weapon_gain_stat_for_every_stat_effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_weapon_gain_stat_for_every_stat"
+	return "foxlab_weapon_gain_stat_for_every_stat"
 
 func serialize() -> Dictionary:
 	var serialized = .serialize()

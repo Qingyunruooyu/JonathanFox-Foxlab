@@ -1,10 +1,9 @@
-class_name FoxLabTakeAwayEffect
 extends "res://effects/items/double_value_effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_take_away"
+	return "foxlab_take_away"
 
-func apply(player_index: int) -> void:
+func apply(_player_index: int) -> void:
 	pass
 
 func unapply(player_index: int) -> void:

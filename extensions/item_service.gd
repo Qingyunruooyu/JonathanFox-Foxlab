@@ -34,7 +34,7 @@ func _foxlab_init_configs():
 		ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
 		call_deferred("_foxlab_init_transform_characters")
 
-func _on_setting_changed(setting_name, value, mod_name)->void :
+func _on_setting_changed(setting_name, _value, mod_name)->void :
 	if mod_name == FOXLAB_MOD_NAME and setting_name == "FOXLAB_TRANSFORM_VANILLA_ONLY":
 		_foxlab_init_transform_characters()
 
@@ -105,11 +105,11 @@ func foxlab_get_enemy_from_item(enemy:Resource):
 	var scene_path:String = enemy_path + ".tscn"
 	var scene:PackedScene = load(scene_path)
 	if scene == null:
-		#DebugService.log_data("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
+		#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
 		return
 	if not foxlab_has_node_with_name(scene, "Boss"):
 		foxlab_enemies.append(scene)
-#		print(scene_path)
+		#print(scene_path)
 
 func foxlab_random_enemies() -> Array:
 	if not foxlab_enemies.empty():
@@ -198,7 +198,7 @@ func _foxlab_record_spawning_weapons():
 func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapon: bool = false, affected_by_items_price_stat: bool = true) -> int:
 	# 游戏本身bug，回收带有 specific_items_price 的武器时，如果道具价格低于-100%，导致负负得正，原因是没有乘以 specific_items_price/100
 	# ui/menus/shop/item_popup.gd ui/menus/shop/base_shop.gd
-	return .get_recycling_value(wave, max(1, from_value), player_index, is_weapon, affected_by_items_price_stat)
+	return .get_recycling_value(wave, max(1, from_value) as int, player_index, is_weapon, affected_by_items_price_stat)
 
 var foxlab_just_enter_shop = [true, true, true, true]
 func get_player_shop_items(wave: int, player_index: int, args: ItemServiceGetShopItemsArgs) -> Array:

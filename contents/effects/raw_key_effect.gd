@@ -1,8 +1,7 @@
-class_name FoxLabRawKeyEffect
 extends "res://effects/items/double_key_value_effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_raw_key"
+	return "foxlab_raw_key"
 
 
 func apply(player_index: int) -> void:

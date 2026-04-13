@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "res://zones/zone_1/018/d4_group_1.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/eggs/group_9.tres"
 text_key = "[EMPTY]"
 value = 1
 custom_key = "extra_enemies_next_wave"

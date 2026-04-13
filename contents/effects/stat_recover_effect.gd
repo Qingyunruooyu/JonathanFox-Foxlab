@@ -1,8 +1,7 @@
-class_name FoxLabStatRecoverEffect
 extends "res://items/global/effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_stat_recover"
+	return "foxlab_stat_recover"
 
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)

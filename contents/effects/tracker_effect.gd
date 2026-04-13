@@ -1,10 +1,9 @@
-class_name FoxLabTrackerEffect
 extends  "res://effects/items/turret_effect.gd"
 
 var tracker = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/tracker/tracker.gd")
 
 static func get_id() -> String:
-	return "foxlab_effect_tracker"
+	return "foxlab_tracker"
 
 func get_args(player_index: int) -> Array:
 	var args = .get_args(player_index)

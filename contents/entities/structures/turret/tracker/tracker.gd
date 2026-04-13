@@ -1,4 +1,3 @@
-class_name FoxLabTracker
 extends "res://entities/structures/turret/turret.gd"
 
 var move_speed = rand_range(1000, 1500)
@@ -82,13 +81,14 @@ func _on_cur_player_took_damage(_enemy: Enemy, _value: int, _knockback_direction
 		_in_assembling = true
 
 func _on_cur_player_died(_player: Player, _args: Entity.DieArgs) -> void :
+	assert(_player == _current_player)
 	if _current_player.is_connected("took_damage", self, "_on_cur_player_took_damage"):
 		_current_player.disconnect("took_damage", self, "_on_cur_player_took_damage")
 	_current_player.disconnect("died", self, "_on_cur_player_died")
-	for _player_index in _players.size():
-		if not _players[_player_index].dead:
-			_current_player = _players[_player_index]
-			_foxlab_connect_signals(_player_index)
+	for _i in _players.size():
+		if not _players[_i].dead:
+			_current_player = _players[_i]
+			_foxlab_connect_signals(_current_player.player_index)
 			return
 
 func _is_idle() -> bool:

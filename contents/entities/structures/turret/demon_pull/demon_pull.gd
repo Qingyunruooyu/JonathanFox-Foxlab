@@ -1,4 +1,3 @@
-class_name FoxLabDemonPull
 extends "res://entities/structures/turret/turret.gd"
 
 var distance = rand_range(100, 200)

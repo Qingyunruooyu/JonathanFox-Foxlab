@@ -1,9 +1,8 @@
-class_name FoxLabGainStatEveryKilledEnemies
 extends "res://effects/items/double_value_effect.gd"
 
 
 static func get_id() -> String:
-	return "foxlab_effect_gain_stat_every_killed_enemies"
+	return "foxlab_gain_stat_every_killed_enemies"
 
 func get_args(_player_index: int) -> Array:
 	var number = value2

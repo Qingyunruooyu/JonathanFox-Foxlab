@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "item_foxlab_wanted_bat"
+key = "item_foxlab_wanted"
 text_key = "EFFECT_FOXLAB_WANTED_ITEM_WITH_STARTING"
-value = 2
+value = 29
 custom_key = "extra_item_in_crate"
 storage_method = 1
-effect_sign = 3
+effect_sign = 2
 custom_args = [  ]

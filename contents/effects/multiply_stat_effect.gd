@@ -1,8 +1,7 @@
-class_name FoxLabMultiplyStatEffect
 extends "res://items/global/effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_multiply_stat"
+	return "foxlab_multiply_stat"
 
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)

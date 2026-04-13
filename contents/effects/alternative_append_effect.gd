@@ -1,9 +1,8 @@
-class_name FoxLabAlterAppendEffect
 extends "res://effects/items/double_key_value_effect.gd"
 
 
 static func get_id() -> String:
-	return "foxlab_effect_alter_append"
+	return "foxlab_alter_append"
 
 func apply(player_index: int) -> void:
 	var effects :Array= RunData.get_player_effect(custom_key_hash, player_index)

@@ -1,48 +1,13 @@
-[gd_resource type="Resource" load_steps=7 format=2]
+[gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/raw_key_effect.gd" type="Script" id=1]
-[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
-
-[sub_resource type="Resource" id=1]
-script = ExtResource( 2 )
-arg_index = 3
-arg_sign = 2
-arg_value = 2
-arg_format = 0
-arg_key = "PREDATOR_NAME"
-
-[sub_resource type="Resource" id=2]
-script = ExtResource( 2 )
-arg_index = 4
-arg_sign = 2
-arg_value = 2
-arg_format = 0
-arg_key = "INVOKER_NAME"
-
-[sub_resource type="Resource" id=3]
-script = ExtResource( 2 )
-arg_index = 5
-arg_sign = 2
-arg_value = 2
-arg_format = 0
-arg_key = "DEAD_WHALE_NAME"
-
-[sub_resource type="Resource" id=4]
-script = ExtResource( 2 )
-arg_index = 6
-arg_sign = 2
-arg_value = 2
-arg_format = 0
-arg_key = "EEL_NAME"
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/extra_bosses.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/group_dead_whale.tres"
+key = "foxlab_extra_bosses"
 text_key = "EFFECT_FOXLAB_EXTRA_BOSSES_WITH_CHANCE"
 value = 1
-custom_key = "extra_enemies_next_wave"
+custom_key = "stats_next_wave"
 storage_method = 1
-effect_sign = 3
-custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ]
-key2 = ""
-value2 = 25
+effect_sign = 2
+custom_args = [  ]

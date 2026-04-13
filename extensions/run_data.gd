@@ -16,7 +16,7 @@ signal foxlab_sec_char_changed(new_characters, player_index)
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
-	DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
+	# DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
 	if item.my_id_hash in previous_remembered:
 		DebugService.log_data("already remembered")
 		return
@@ -27,9 +27,9 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 			foxlab_remembered_weapons[player_index].push_back(weapon)
 	else:
 		foxlab_remembered_items[player_index].push_back(item as ItemData)
-		DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+		# DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		add_item(item, player_index)
-		DebugService.log_data("after add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+		# DebugService.log_data("after add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 
 func foxlab_modify_weapon(player_index: int):
 	if foxlab_remembered_weapons[player_index].empty():
@@ -84,9 +84,9 @@ func foxlab_forget_item(player_index: int):
 		var previous_hp_next_wave = effects[Keys.hp_start_next_wave_hash]
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
-				DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+				# DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 				remove_item(item, player_index)
-				DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+				# DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:
 			add_item_displayed(get_player_character(player_index), player_index)

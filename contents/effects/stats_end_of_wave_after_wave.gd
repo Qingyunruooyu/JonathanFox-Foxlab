@@ -5,7 +5,7 @@ export (int) var starting_wave: int = 6
 export (int) var end_wave: int = 19
 
 static func get_id() -> String:
-	return "foxlab_effect_stats_end_of_wave_after_wave"
+	return "foxlab_stats_end_of_wave_after_wave"
 
 
 func serialize() -> Dictionary:
@@ -58,7 +58,7 @@ func unapply(player_index: int) -> void:
 		.unapply(player_index)
 
 
-func get_args(player_index: int) -> Array:
+func get_args(_player_index: int) -> Array:
 	var text_raw = Text.text("EFFECT_GAIN_STAT_END_OF_WAVE", [str(value), tr(key.to_upper())], [effect_sign, effect_sign])
 	var args: = [
 		str(starting_wave),

@@ -71,9 +71,17 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 	else:
 		popup_pos.x += pos[1]
 		direction = Vector2(25, - 100)
+	var standard_icon_size =  ItemService.characters[0].icon.get_size()
 	for character in new_characters:
 		var icon = character.icon
-		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false)
+		var icon_scale = Vector2(0.5, 0.5)
+		var icon_size = icon.get_size()
+		if icon_size != standard_icon_size:
+			var max_dimension = max(icon_size.x, icon_size.y)
+			var scale_factor = standard_icon_size.x / max_dimension
+			icon_scale.x *= scale_factor
+			icon_scale.y *= scale_factor
+		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
 		popup_pos -= offset
 	SoundManager.play(foxlab_mask_success_sound, - 2, 0.2, true)
 
@@ -135,6 +143,21 @@ func _on_item_discard_button_pressed(weapon_data: WeaponData, player_index: int)
 		var player_gear_container = _get_gear_container(player_index)
 		var items = RunData.get_player_items(player_index)
 		player_gear_container.set_items_data(items)
+
+func on_shop_item_stolen(shop_item: ShopItem, player_index: int) -> void :
+	if _item_steals[player_index] > 0:
+		var extra_enemies = RunData.get_player_effect(Utils.foxlab_item_steal_warmhole_spawn_hash, player_index)
+		if extra_enemies > 0:
+			var effect_items: Array = RunData.get_player_effects(player_index)[Keys.stats_next_wave_hash]
+			var applied = false
+			for existing_item in effect_items:
+				if existing_item[0] == Utils.foxlab_extra_enemies_hash:
+					existing_item[1] += extra_enemies
+					applied = true
+					break
+			if not applied:
+				effect_items.push_back([Utils.foxlab_extra_enemies_hash, extra_enemies])
+	.on_shop_item_stolen(shop_item, player_index)
 
 func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	foxlab_current_shop_item_pos[player_index][0] = shop_item._button.rect_global_position

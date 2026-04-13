@@ -8,10 +8,14 @@ var foxlab_mask_meta = []
 static func init_foxlab_stats() -> Dictionary:
 	return {
 			Keys.stat_levels_hash: 0,
+			Utils.foxlab_extra_enemies_hash: 0,
+			Utils.foxlab_extra_crash_zone_enemies_hash: 0,
+			Utils.foxlab_extra_abyss_enemies_hash: 0,
+			Utils.foxlab_extra_bosses_hash: 0,
 			Utils.foxlab_cat_duplicate_item_hash: 0,
-			Utils.item_foxlab_stargazer_hash:0,
-			Utils.item_foxlab_split_hash:0,
-			Utils.item_foxlab_eggs_hash:0,
+			Utils.item_foxlab_stargazer_hash: 0,
+			Utils.item_foxlab_split_hash: 0,
+			Utils.item_foxlab_eggs_hash: 0,
 		}
 
 
@@ -200,6 +204,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_gain_enemy_speed_hash: 0,
 			Utils.foxlab_gain_enemy_damage_hash: 0,
 			Utils.foxlab_gain_structure_percent_damage_hash:0,
+			Utils.foxlab_item_steal_warmhole_spawn_hash:0,
 			Utils.fox_poet_next_curse_chance_hash: 0,
 			Utils.foxlab_troubleshooter_crisis_num_hash: 0,
 			Utils.foxlab_troubleshooter_temp_hash:0,

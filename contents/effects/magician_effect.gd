@@ -1,10 +1,9 @@
-class_name FoxLabMagicianEffect
 extends "res://effects/weapons/null_effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_magician"
+	return "foxlab_magician"
 
-func get_text(player_index: int, colored: bool = true) -> String:
+func get_text(player_index: int, _colored: bool = true) -> String:
 	var text:String = tr("EFFECT_FOXLAB_MAGICIAN") + "\n"
 
 	var min_tier = clamp(RunData.get_player_effect(Keys.min_weapon_tier_hash, player_index), 0, 3)

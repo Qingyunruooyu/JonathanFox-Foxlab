@@ -13,7 +13,7 @@ arg_key = "STARGAZER_NAME"
 
 [resource]
 script = ExtResource( 1 )
-key = "res://dlcs/dlc_1/zones/abyss/013/d1_group_1b.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/stargazer/group_6.tres"
 text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
 value = 1
 custom_key = "extra_enemies_next_wave"

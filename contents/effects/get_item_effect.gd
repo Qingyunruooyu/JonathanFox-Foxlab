@@ -1,10 +1,9 @@
-class_name FoxLabGetItemEffect
 extends "res://items/global/effect.gd"
 
 var is_item_added := false
 
 static func get_id() -> String:
-	return "foxlab_effect_get_item"
+	return "foxlab_get_item"
 
 func apply(player_index: int) -> void:
 	var item_to_add  = null
@@ -15,7 +14,7 @@ func apply(player_index: int) -> void:
 	else:
 		item_to_add = ItemService.get_element(ItemService.items, key_hash)
 	if item_to_add != null:
-		for i in range(value):
+		for _i in range(value):
 			RunData.add_item(item_to_add, player_index)
 			is_item_added = true
 

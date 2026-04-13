@@ -9,7 +9,7 @@ export (bool) var foxlab_cursed_item: bool = false
 var foxlab_receive_item_id_hash: int = Keys.empty_hash
 
 static func get_id() -> String:
-	return "foxlab_effect_receive_item_at_wave"
+	return "foxlab_receive_item_at_wave"
 
 func duplicate(subresources := false) -> Resource:
 	var duplication = .duplicate(subresources)

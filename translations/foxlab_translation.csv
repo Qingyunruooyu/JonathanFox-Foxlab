@@ -246,7 +246,7 @@ EFFECT_FOXLAB_TICK_TOCK,获得此道具后，[color=#FF8C00]主要[/color]和[co
 EFFECT_FOXLAB_TOCK_TICK,获得此道具后，[color=#FF8C00]主要[/color]和[color=#FF8C00]次要[/color]属性面板的数值会分别整体[color=#FF8C00]下移[/color]一行（底行属性会转到顶行）,Move downward digits in [color=#FF8C00]Primary[/color] and [color=#FF8C00]Secondary[/color] stat panel when you get this item (Bottom row goes to top)
 CHARACTER_FOXLAB_SURVIVOR,砺练者,Survivor
 ITEM_FOXLAB_SLOW_AND_STEADY_WINS,水滴石穿,Slow and Steady Wins
-EFFECT_FOXLAB_EXTRA_BOSSES_WITH_CHANCE,下场敌袭期间，[color=#FF8C00]{3}[/color]、[color=#FF8C00]{4}[/color]、[color=#FF8C00]{5}[/color]、[color=#FF8C00]{6}[/color]每30秒各有{2}几率登场,"{2} chance individually for [color=#FF8C00]{3}[/color], [color=#FF8C00]{4}[/color], [color=#FF8C00]{5}[/color] and [color=#FF8C00]{6}[/color] to appear each 30 seconds during the next wave"
+EFFECT_FOXLAB_EXTRA_BOSSES_WITH_CHANCE,随机挑选{1}个最终头目，下场敌袭期间每{0}秒每个头目各有{2}几率登场,"Randomly pick up {1} final Bosses, {2} chance individually for them to appear for every {0} seconds during the next wave"
 EFFECT_FOXLAB_TEMP_STATS_PER_INTERVAL_LIMITED,每{2}秒{0}{1}直至敌袭结束，受伤时重新计算,"{0} {1} every {2} second until the end of the wave, bonus is lost when taking damage"
 CHARACTER_FOXLAB_TRAP_MASTER,陷阱大师,Trap Master
 ITEM_FOXLAB_INPLACE_OPERATION,就地取材,Inplace Operation

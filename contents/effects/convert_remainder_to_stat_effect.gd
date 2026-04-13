@@ -1,4 +1,3 @@
-class_name FoxLabConvertRemainderToStatEffect
 extends "res://effects/items/convert_stat_effect.gd"
 # 将key所指示的属性除以value得到的余数，设置为to_stat指示的属性
 
@@ -13,7 +12,7 @@ export(float) var to_stat_scaling = 1.0 #转换为几倍
 export(bool) var is_negative_key = false # key指示的stat仅在负数/正数时起效
 
 static func get_id() -> String:
-	return "foxlab_effect_convert_remainder"
+	return "foxlab_convert_remainder"
 
 func get_args(_player_index: int) -> Array:
 	return [str(pct_converted), tr(key.to_upper()), tr(to_stat.to_upper()),

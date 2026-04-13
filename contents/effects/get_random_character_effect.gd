@@ -1,4 +1,3 @@
-class_name FoxLabGetRandCharacterEffect
 extends "res://effects/items/double_value_effect.gd"
 
 const SAME_CHAR_CHANCE = 0.33
@@ -12,7 +11,7 @@ var debug_item_name: Array = []
 var curse_character: bool = false
 
 static func get_id() -> String:
-	return "foxlab_effect_get_rand_character"
+	return "foxlab_get_rand_character"
 
 func _get_armor_chance(player_index: int, armor_increases_chance: bool) -> float:
 	var num = -1 if armor_increases_chance else 1
@@ -33,12 +32,7 @@ func _can_character_be_modified(character: CharacterData) -> bool:
 		return true
 	return false
 
-func _is_wave_started(player_index: int) -> bool:
-	var started = RunData.is_wave_started()
-	DebugService.log_data("check fox_wave_started: %s" % [str(started)])
-	return started
-
-func _update_character_bg(character: CharacterData, player_index: int) -> CharacterData:
+func _update_character_bg(character: CharacterData) -> CharacterData:
 	var diff_info = ProgressData.get_character_difficulty_info(character.my_id_hash, RunData.current_zone)
 	var new_item = character.duplicate()
 	if diff_info.max_difficulty_beaten.difficulty_value < 0:
@@ -49,7 +43,7 @@ func _update_character_bg(character: CharacterData, player_index: int) -> Charac
 		new_item.tier = diff_info.max_difficulty_beaten.difficulty_value
 	return new_item
 
-func unapply(player_index: int) -> void:
+func unapply(_player_index: int) -> void:
 	pass
 
 func try_generate(player_index: int):
@@ -64,17 +58,17 @@ func apply(player_index: int) -> void:
 	var stack_effect:Array = effects[Utils.fox_faceless_transform_stack_hash]
 	if stack_effect[1]:
 		stack_effect[0] += 1
-		DebugService.log_data("add transform stack: %d" % [stack_effect[0]])
+		#DebugService.log_data("add transform stack: %d" % [stack_effect[0]])
 		return
 	stack_effect[1] = true
-	DebugService.log_data("start transform, stack: %d" % [stack_effect[0]])
+	#DebugService.log_data("start transform, stack: %d" % [stack_effect[0]])
 
 	try_generate(player_index)
 	var transform_chance = _get_transform_chance(player_index)
-	DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
-	var wave_started = _is_wave_started(player_index)
+	#DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
+	var wave_started = RunData.is_wave_started()
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
-		DebugService.log_data("transform failed")
+		#DebugService.log_data("transform failed")
 		_after_transform(player_index, stack_effect)
 		return
 
@@ -94,8 +88,8 @@ func apply(player_index: int) -> void:
 	convert_stats_half_wave.clear()
 	convert_stats_end_of_wave.clear()
 	for character in meta.chars:
-		RunData.add_item(_update_character_bg(character, player_index), player_index)
-		DebugService.log_data("add character " + character.my_id)
+		RunData.add_item(_update_character_bg(character), player_index)
+		#DebugService.log_data("add character " + character.my_id)
 		prev_items.append([character.my_id_hash, character.curse_factor])
 	convert_stats_half_wave.append_array(convert_stats_half_wave_bak)
 	convert_stats_end_of_wave.append_array(convert_stats_end_of_wave_bak)
@@ -103,12 +97,12 @@ func apply(player_index: int) -> void:
 
 	for item in meta.items:
 		RunData.add_item(item, player_index)
-		DebugService.log_data("add item " + item.my_id)
+		#DebugService.log_data("add item " + item.my_id)
 		prev_items.append([item.my_id_hash, item.curse_factor])
 	for weapon in meta.weapons:
 		var weapon_to_add = RunData.add_weapon(weapon, player_index)
 		prev_items.append(weapon_to_add)
-		DebugService.log_data("add weapon " + weapon_to_add.my_id + str(weapon_to_add))
+		#DebugService.log_data("add weapon " + weapon_to_add.my_id + str(weapon_to_add))
 	meta.items.clear()
 	meta.weapons.clear()
 
@@ -132,7 +126,7 @@ func apply(player_index: int) -> void:
 
 func _after_transform(player_index: int, stack_effect: Array) -> void:
 	stack_effect[1] = false
-	DebugService.log_data("end transform, stack: %d" % [stack_effect[0]])
+	#DebugService.log_data("end transform, stack: %d" % [stack_effect[0]])
 	if stack_effect[0] > 0:
 		stack_effect[0] -= 1
 		apply(player_index)
@@ -144,8 +138,8 @@ func _duplicate_weapon(player_index: int):
 	if  not upgrade_enabled or RunData.current_wave == upgrade_wave:
 		return
 
-	DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
-	effects[Utils.fox_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if _is_wave_started(player_index) else 1
+	#DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
+	effects[Utils.fox_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if RunData.is_wave_started() else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	#附魔后加一个价值， 避免建造者的炮塔不识货
 	weapon.value += 1
@@ -155,17 +149,17 @@ func _duplicate_weapon(player_index: int):
 		weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
 	weapon_for_effect = weapon_for_effect.duplicate()
 	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
-	DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
+	#DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
 
 	var new_effects :Array = RunData.foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect, true)
 	weapon.effects.append_array(new_effects)
 	RunData.add_weapon(weapon, player_index)
-	DebugService.log_data("duplicate weapon " + weapon.my_id)
+	#DebugService.log_data("duplicate weapon " + weapon.my_id)
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_faceless_hash, 1)
 
 func cleanup(player_index: int) -> void:
 	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）
-	if  not _is_wave_started(player_index) :
+	if  not RunData.is_wave_started() :
 		return
 	var metas = RunData.get_foxlab_mask_meta(player_index)
 	var prev_items = []
@@ -191,9 +185,10 @@ func cleanup(player_index: int) -> void:
 						break
 			if should_remove_weapon:
 				RunData.remove_weapon(weapon, player_index)
-				DebugService.log_data("remove " + weapon.my_id + str(weapon))
+				#DebugService.log_data("remove " + weapon.my_id + str(weapon))
 			else:
-				DebugService.log_data("not remove missing " + weapon.my_id + str(weapon))
+				#DebugService.log_data("not remove missing " + weapon.my_id + str(weapon))
+				pass
 			weapon_to_remove.append(i)
 	weapon_to_remove.invert()
 	for i in weapon_to_remove:
@@ -221,7 +216,7 @@ func cleanup(player_index: int) -> void:
 		if items_to_remove_order.size() == prev_items.size():
 			break
 	for item_data in items_to_remove_order:
-		DebugService.log_data("remove " + item_data.my_id + str(item_data))
+		#DebugService.log_data("remove " + item_data.my_id + str(item_data))
 		RunData.remove_item(item_data, player_index)
 
 	for meta in metas:
@@ -251,15 +246,15 @@ func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_da
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
 	_get_convert_stat_result(candidate, convert_stat_dict)
-	DebugService.log_data("player: %s, value: %s" % [player_character.my_id,convert_stat_dict[player_character.my_id_hash]])
-	DebugService.log_data("candidate: %s, value: %s" % [candidate.my_id, convert_stat_dict[candidate.my_id_hash]])
+	#DebugService.log_data("player: %s, value: %s" % [player_character.my_id,convert_stat_dict[player_character.my_id_hash]])
+	#DebugService.log_data("candidate: %s, value: %s" % [candidate.my_id, convert_stat_dict[candidate.my_id_hash]])
 	var conver_stat_num = convert_stat_dict[player_character.my_id_hash]
 	for character in chars_data:
-		DebugService.log_data("already exists:%s, value: %s " %[ character.my_id, convert_stat_dict[character.my_id_hash]])
+		#DebugService.log_data("already exists:%s, value: %s " %[ character.my_id, convert_stat_dict[character.my_id_hash]])
 		conver_stat_num += convert_stat_dict[character.my_id_hash]
 
 	conver_stat_num += convert_stat_dict[candidate.my_id_hash]
-	DebugService.log_data("convert_stat_num: %d" % [conver_stat_num])
+	#DebugService.log_data("convert_stat_num: %d" % [conver_stat_num])
 	return ( conver_stat_num <= 1)
 
 func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -> CharacterData:
@@ -308,23 +303,23 @@ func _get_rand_chars(player_index: int) -> Array:
 		var container = []
 		for effect in current_char.effects:
 			if effect.custom_key_hash == Keys.starting_item_hash:
-				for i in range(effect.value):
+				for _i in range(effect.value):
 					var item = ItemService.get_element(ItemService.items, effect.key_hash)
 					container.append(item)
 			elif effect.custom_key_hash == Keys.starting_weapon_hash:
-				for i in range(effect.value):
+				for _i in range(effect.value):
 					var weapon = ItemService.get_element(ItemService.weapons,effect.key_hash)
 					container.append(weapon)
 			elif effect.custom_key_hash == Keys.cursed_starting_item_hash  and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
-				for i in range(effect.value):
+				for _i in range(effect.value):
 					var item = ItemService.get_element(ItemService.items, effect.key_hash)
 					if dlc:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 			elif effect.custom_key_hash == Keys.cursed_starting_weapon_hash and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
-				for i in range(effect.value):
+				for _i in range(effect.value):
 					var weapon = ItemService.get_element(ItemService.weapons, effect.key_hash)
 					if dlc:
 						weapon = dlc.curse_item(weapon, player_index, true)
@@ -333,13 +328,13 @@ func _get_rand_chars(player_index: int) -> Array:
 				and effect.brolab_receive_item_wave == 1\
 				and effect.brolab_receive_item_end_wave == 1:
 				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
-				for i in range(effect.value):
+				for _i in range(effect.value):
 					var item = ItemService.get_element(ItemService.items, Keys.generate_hash(effect.brolab_receive_item_id))
 					if dlc and effect.brolab_cursed_item:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 
-		if _is_wave_started(player_index):
+		if RunData.is_wave_started():
 			for starting in container:
 				if starting is WeaponData:
 					meta.weapons.push_back(starting)

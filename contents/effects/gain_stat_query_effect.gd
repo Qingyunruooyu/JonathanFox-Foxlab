@@ -1,10 +1,9 @@
-class_name FoxLabGainStatQueryEffect
 extends "res://effects/weapons/null_effect.gd"
 
 static func get_id() -> String:
-	return "foxlab_effect_gain_stat_query"
+	return "foxlab_gain_stat_query"
 
-func get_text(player_index: int, colored: bool = true) -> String:
+func get_text(player_index: int, _colored: bool = true) -> String:
 	var text:String = tr("EFFECT_FOXLAB_GAIN_STAT_QUERY")
 	for stat in Utils.get_primary_stat_keys():
 		var stat_str = Keys.hash_to_string[stat]

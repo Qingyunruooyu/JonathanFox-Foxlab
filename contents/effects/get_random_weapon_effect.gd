@@ -1,4 +1,3 @@
-class_name FoxLabGetRandWeaponEffect
 extends "res://items/global/effect.gd"
 
 const CHANCE_EQUIPPED_WEAPON: float = 0.10
@@ -12,7 +11,7 @@ const VALUE_BASE: int = 1
 var debug_item_name: Array = []
 
 static func get_id() -> String:
-	return "foxlab_effect_get_rand_weapon"
+	return "foxlab_get_rand_weapon"
 
 func try_generate(player_index: int):
 	var is_cursed:int = value != VALUE_BASE

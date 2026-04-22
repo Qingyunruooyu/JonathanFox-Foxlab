@@ -14,18 +14,6 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 	var new_item = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
 	RunData.add_item(new_item, p_player_index)
 
-func foxlab_after_weapon_combined(prev_mask_value: int, prev_items_num: int, player_index: int):
-	var player_gear_container = _get_gear_container(player_index)
-
-	var ele_size = player_gear_container.weapons_container.get_element_count()
-	if  ele_size != RunData.get_player_weapons_ref(player_index).size():
-		player_gear_container.set_weapons_data(RunData.get_player_weapons(player_index))
-
-	if (RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] != prev_mask_value) or \
-		(RunData.get_player_items_ref(player_index).size() != prev_items_num):
-		var items = RunData.get_player_items(player_index)
-		player_gear_container.set_items_data(items)
-
 func foxlab_modify_weapon_upgrade(weapon: WeaponData):
 	assert(weapon.upgrades_into != null)
 	var has_extra_effects = false
@@ -60,6 +48,7 @@ func foxlab_modify_weapon_upgrade(weapon: WeaponData):
 #面具弹出相关
 func _on_foxlab_sec_char_changed(new_characters, player_index):
 	var pos = foxlab_current_shop_item_pos[player_index]
+	SoundManager.play(foxlab_mask_success_sound, - 2, 0.2, true)
 	if pos[0] == null or pos[1] == null:
 		return
 	var offset = Vector2(-30, 30)
@@ -83,12 +72,22 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 			icon_scale.y *= scale_factor
 		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
 		popup_pos -= offset
-	SoundManager.play(foxlab_mask_success_sound, - 2, 0.2, true)
 
+func _on_foxlab_item_gear_changed(player_index):
+	var player_gear_container = _get_gear_container(player_index)
+	var items = RunData.get_player_items(player_index)
+	player_gear_container.call_deferred("set_items_data", items)
+
+func _on_foxlab_weapon_gear_changed(player_index):
+	var player_gear_container = _get_gear_container(player_index)
+	var weapons = RunData.get_player_weapons(player_index)
+	player_gear_container.call_deferred("set_weapons_data", weapons)
 
 ######### 扩展 #########
 func _ready() -> void :
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
+	_err = RunData.connect("foxlab_item_gear_changed", self, "_on_foxlab_item_gear_changed")
+	_err = RunData.connect("foxlab_weapon_gear_changed", self, "_on_foxlab_weapon_gear_changed")
 
 	if RunData.get_player_effect_bool(Utils.foxlab_shop_effects_checked_hash, 0):
 		DebugService.log_data("foxlab_shop_effects_checked: is true")
@@ -105,9 +104,7 @@ func _ready() -> void :
 				foxlab_switch_turret_item(level, new_level, player_index)
 				update_item = true
 		if update_item:
-			var player_gear_container = _get_gear_container(player_index)
-			var items = RunData.get_player_items(player_index)
-			player_gear_container.set_items_data(items)
+			_on_foxlab_item_gear_changed(player_index)
 
 		if RunData.get_player_effect_bool(Utils.foxlab_keep_random_weapon_hash, player_index) and RunData.get_player_weapons_ref(player_index).size() > 0:
 			var weapons = RunData.get_player_weapons(player_index)
@@ -116,8 +113,7 @@ func _ready() -> void :
 			for i in range(weapons.size()):
 				if i != weapon_idx_to_keep:
 					RunData.remove_weapon(weapons[i], player_index)
-			var player_gear_container = _get_gear_container(player_index)
-			player_gear_container.set_weapons_data([weapon_to_keep])
+			_on_foxlab_weapon_gear_changed(player_index)
 			var recycling_value = ItemService.get_recycling_value(RunData.current_wave, weapon_to_keep.value, player_index, true, false)
 			RunData.add_gold(recycling_value, player_index)
 			_update_stats(player_index)
@@ -126,23 +122,9 @@ func _ready() -> void :
 	RunData.get_player_effects(0)[Utils.foxlab_shop_effects_checked_hash] = 1
 	DebugService.log_data("foxlab_shop_effects_checked: set true")
 
-
-# 合出的武器带有佛手/面具等修改道具/武器的效果时，刷新
 func _combine_weapon(weapon_data: WeaponData, player_index: int, is_upgrade: bool) -> void :
-	var prev_mask_value = RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash]
-	var prev_items_num = RunData.get_player_items_ref(player_index).size()
 	foxlab_modify_weapon_upgrade(weapon_data)
 	._combine_weapon(weapon_data, player_index, is_upgrade)
-	foxlab_after_weapon_combined(prev_mask_value, prev_items_num, player_index)
-
-# 回收的武器附魔有“获得道具”效果
-func _on_item_discard_button_pressed(weapon_data: WeaponData, player_index: int) -> void :
-	var prev_items_num = RunData.get_player_items_ref(player_index).size()
-	._on_item_discard_button_pressed(weapon_data, player_index)
-	if RunData.get_player_items_ref(player_index).size() != prev_items_num:
-		var player_gear_container = _get_gear_container(player_index)
-		var items = RunData.get_player_items(player_index)
-		player_gear_container.set_items_data(items)
 
 func on_shop_item_stolen(shop_item: ShopItem, player_index: int) -> void :
 	if _item_steals[player_index] > 0:
@@ -179,27 +161,12 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 
 func buy_item(item_data: ItemData, player_index: int) -> void :
 	var prev_weapon_slot = RunData.get_player_effect(Keys.weapon_slot_hash, player_index)
-	var prev_weapon_num = RunData.get_player_weapons_ref(player_index).size()
-	var prev_mask_value = RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash]
 	var prev_hourglass = RunData.get_player_effect(Keys.item_hourglass_hash, player_index)
 
 	.buy_item(item_data, player_index)
 
-	var player_gear_container = _get_gear_container(player_index)
-
-	var update_weapons = false
-	if (RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot) or \
-		(RunData.get_player_weapons_ref(player_index).size() != prev_weapon_num):
-		update_weapons = true
-
-	if RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] != prev_mask_value:
-		var items = RunData.get_player_items(player_index)
-		player_gear_container.set_items_data(items)
-		update_weapons = true
-
-	if update_weapons:
-		var weapons = RunData.get_player_weapons(player_index)
-		player_gear_container.set_weapons_data(weapons)
+	if (RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot):
+		_on_foxlab_weapon_gear_changed(player_index)
 
 	if RunData.get_player_effect(Keys.item_hourglass_hash, player_index) != prev_hourglass:
 		update_go_next_button_text()
@@ -223,28 +190,24 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 	var player_effects = RunData.get_player_effects(player_index)
 	var effects:Array = player_effects[Utils.foxlab_force_remove_on_reroll_hash]
 	var update_item = false
-	while not effects.empty():
-		var item_id = effects.front()[0]
+	var non_exist_num = 0;
+	while not effects.size() == non_exist_num:
+		var item_id = effects[non_exist_num][0]
 		var item = RunData.get_player_item(item_id, player_index)
 		if item != null:
 			RunData.remove_item(item, player_index)
 			update_item = true
 		else:
-			#DebugService.log_data("item not exist: " + item_id)
-			break
+			DebugService.log_data("item not exist: " + Keys.hash_to_string[item_id])
+			non_exist_num += 1
 
 	._on_RerollButton_pressed(player_index)
 	player_effects[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
 	if RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot:
-		var player_gear_container = _get_gear_container(player_index)
-		var weapons = RunData.get_player_weapons(player_index)
-		player_gear_container.set_weapons_data(weapons)
+		_on_foxlab_weapon_gear_changed(player_index)
 
 	if update_item:
-		var player_gear_container = _get_gear_container(player_index)
-		var items = RunData.get_player_items(player_index)
-		player_gear_container.set_items_data(items)
-
+		_on_foxlab_item_gear_changed(player_index)
 
 func _on_GoButton_pressed(player_index: int) -> void :
 	if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):

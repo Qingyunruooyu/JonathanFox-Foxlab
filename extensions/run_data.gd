@@ -13,6 +13,9 @@ var foxlab_scapegoat_no_hurt = [[], [], [], []]
 
 #面具相关，面具成功触发时发出信号
 signal foxlab_sec_char_changed(new_characters, player_index)
+#刷新商店的道具/武器仓库界面
+signal foxlab_item_gear_changed(player_index)
+signal foxlab_weapon_gear_changed(player_index)
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)

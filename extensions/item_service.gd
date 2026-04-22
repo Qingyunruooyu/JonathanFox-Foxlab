@@ -222,7 +222,11 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 	return ._get_rand_item_for_wave(wave, player_index, type, args)
 
 func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: int) -> Array:
-	if not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
+	# 武器栏升级优先
+	var weapon_slot_upgrades = RunData.get_player_effect(Keys.weapon_slot_upgrades_hash, player_index)
+	var current_weapon_slots = RunData.get_player_effect(Keys.weapon_slot_hash, player_index)
+	if (weapon_slot_upgrades > 0 and current_weapon_slots < weapon_slot_upgrades) or \
+		not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
 		return .get_upgrades(level, number, old_upgrades, player_index)
 
 	var owned_items: Array = RunData.get_player_items(player_index)

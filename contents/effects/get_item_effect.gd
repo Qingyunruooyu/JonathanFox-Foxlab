@@ -17,6 +17,7 @@ func apply(player_index: int) -> void:
 		for _i in range(value):
 			RunData.add_item(item_to_add, player_index)
 			is_item_added = true
+		RunData.emit_signal("foxlab_item_gear_changed", player_index)
 
 func _remove_item(player_index: int, item_id_hash: int, rm_count: int) -> int :
 	if RunData.get_nb_item(item_id_hash, player_index) > 0:
@@ -39,6 +40,8 @@ func unapply(player_index: int) -> void:
 				return
 	else:
 		_remove_item(player_index, key_hash, 0)
+
+	RunData.emit_signal("foxlab_item_gear_changed", player_index)
 
 func serialize() -> Dictionary:
 	var serialized =.serialize()

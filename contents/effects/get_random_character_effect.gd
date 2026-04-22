@@ -99,6 +99,7 @@ func apply(player_index: int) -> void:
 		RunData.add_item(item, player_index)
 		#DebugService.log_data("add item " + item.my_id)
 		prev_items.append([item.my_id_hash, item.curse_factor])
+
 	for weapon in meta.weapons:
 		var weapon_to_add = RunData.add_weapon(weapon, player_index)
 		prev_items.append(weapon_to_add)
@@ -123,13 +124,15 @@ func apply(player_index: int) -> void:
 
 	_after_transform(player_index, stack_effect)
 
-
 func _after_transform(player_index: int, stack_effect: Array) -> void:
 	stack_effect[1] = false
 	#DebugService.log_data("end transform, stack: %d" % [stack_effect[0]])
 	if stack_effect[0] > 0:
 		stack_effect[0] -= 1
 		apply(player_index)
+	else:
+		RunData.emit_signal("foxlab_item_gear_changed", player_index)
+		RunData.emit_signal("foxlab_weapon_gear_changed", player_index)
 
 func _duplicate_weapon(player_index: int):
 	var effects =  RunData.get_player_effects(player_index)

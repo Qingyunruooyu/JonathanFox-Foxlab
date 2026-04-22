@@ -37,7 +37,7 @@ func curse_item(item_data: ItemParentData, player_index: int, turn_randomization
 			var effect_modifier: = _get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
 			var override = false
 			var overriden_sign = Sign.POSITIVE
-			if effect.get_id() == "foxlab_effect_get_rand_weapon":
+			if effect.get_id() == "foxlab_get_rand_weapon":
 				max_effect_modifier = max(max_effect_modifier, effect_modifier)
 				var extra_effect = Effect.new()
 				extra_effect.key = "stat_luck"
@@ -49,9 +49,9 @@ func curse_item(item_data: ItemParentData, player_index: int, turn_randomization
 			elif effect.custom_key_hash == Utils.foxlab_heal_when_kill_nearby_hash:
 				max_effect_modifier = max(max_effect_modifier, effect_modifier)
 				effect.value2 = _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
-			elif effect.get_id() == "foxlab_effect_stat_query":
+			elif effect.get_id() == "foxlab_stat_query":
 				effect_to_move.push_back(effect)
-			elif effect.get_id() == "foxlab_effect_get_rand_character":
+			elif effect.get_id() == "foxlab_get_rand_character":
 				max_effect_modifier = max(max_effect_modifier, effect_modifier)
 				effect.value2 = sqrt(effect.value2 * _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)) as int
 

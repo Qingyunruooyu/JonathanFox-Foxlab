@@ -34,9 +34,10 @@ func apply(player_index: int) -> void:
 	RunData.add_weapon(meta.weapon, player_index)
 	if meta.is_const_weapon:
 		RunData.add_tracked_value(player_index, Utils.item_foxlab_buddhas_hand_hash, 1)
-	if  meta.item != null:
+	if meta.item != null:
 		RunData.add_item(meta.item, player_index)
 		meta.item = null
+		RunData.emit_signal("foxlab_item_gear_changed", player_index)
 	meta.weapon = null
 
 	_after_buddhas_hand(player_index, stack_effect)
@@ -46,6 +47,8 @@ func _after_buddhas_hand(player_index: int, stack_effect: Array) -> void:
 	if stack_effect[0] > 0:
 		stack_effect[0] -= 1
 		apply(player_index)
+	else:
+		RunData.emit_signal("foxlab_weapon_gear_changed", player_index)
 
 func unapply(_player_index: int) -> void:
 	pass
@@ -86,8 +89,11 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		var ref_weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index))
 		weapon = ItemService.get_element(ItemService.weapons, ref_weapon.my_id_hash).duplicate()
 	else:
-		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args).duplicate()
-
+		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
+		# for debug
+		# while not weapon is WeaponData:
+		# 	weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
+		weapon = weapon.duplicate()
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
 		var melee_stats = weapon.stats.duplicate()
 		melee_stats.deal_dmg_on_return = true
@@ -126,15 +132,16 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 
 	var begin_effect = NullEffect.new()
 	var new_effects := [begin_effect]
-	for effect in item_for_effect.effects:
-		effect = effect.duplicate()
-		new_effects.append(effect)
-		if  effect is SwapMaxMinStatEffect: # axolotl
-			effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
-		elif effect.get_id() == get_id():
-			effect.debug_item_name = []
-		else:
-			RunData.foxlab_adjust_weapon_effect(effect, weapon)
+	if meta.item == null:
+		for effect in item_for_effect.effects:
+			effect = effect.duplicate()
+			new_effects.append(effect)
+			if effect is SwapMaxMinStatEffect: # axolotl
+				effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
+			elif effect.get_id() == get_id():
+				effect.debug_item_name = []
+			else:
+				RunData.foxlab_adjust_weapon_effect(effect, weapon)
 
 	meta.weapon_id = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 	if weapon.is_cursed:
@@ -160,6 +167,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		meta.extra_item_id += "([color=#%s]+%s[/color])" % [ ProgressData.settings.color_negative, tr("WEAPON_BRICK")]
 		begin_effect.key += "(+%s)" % [tr("WEAPON_BRICK")]
 		meta.is_const_weapon = 0
+		weapon.effects.append_array(new_effects)
 	elif meta.item == null:
 		begin_effect.custom_key = "foxlab_const_effect_begin"
 		begin_effect.custom_key_hash = Utils.foxlab_const_effect_begin_hash
@@ -168,9 +176,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		end_effect.custom_key = "foxlab_const_effect_end"
 		end_effect.custom_key_hash = Utils.foxlab_const_effect_end_hash
 		new_effects.append(end_effect)
-
-	if meta.item == null:
 		weapon.effects.append_array(new_effects)
+
 	return weapon
 
 

@@ -87,10 +87,8 @@ FOXLAB_RANDOM_ENEMY_NAME,随机时空敌人,Enemies of Random Spacetime
 CHARACTER_FOXLAB_BOUNTY_HUNTER,赏金猎人,Bounty Hunter
 EFFECT_FOXLAB_LEVEL_UP_BONUS_CRATE,升级有{0}宝箱,{0} crate when you level up
 EFFECT_FOXLAB_EXTRA_BOSS,下场敌袭额外出现{0}个[color=#FF8C00]{2}[/color],Extra {0} [color=#FF8C00]{2}[/color] appear during the next wave
-EFFECT_FOXLAB_WANTED_ITEM,每个箱子中有16%几率发现至少1{1},16% chance of finding at least 1 {1} in a crate
-EFFECT_FOXLAB_WANTED_ITEM_WITH_STARTING,初始拥有2{1}，每个箱子中有29%几率发现至少1{1},"You start with 2 {1}, 16% chance of finding at least 1 {1} in a crate"
 ITEM_FOXLAB_WANTED,通缉令,WANTED
-ITEM_FOXLAB_WANTED_BAT,通缉令,WANTED
+ITEM_FOXLAB_WANTED_MONK,通缉令,WANTED
 ITEM_FOXLAB_ENCHANTED_EYES,天眼,Enchanted Eyes
 ENEMY_GOLD_DROPS,%敌人掉落的材料,% Enemy Gold Grops
 EFFECT_FOXLAB_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT,每持有{2}异种{3}有{0}{1}[{4}],{0} {1} for every {2} different {3} you have [{4}]

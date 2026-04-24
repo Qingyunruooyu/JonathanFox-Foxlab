@@ -229,6 +229,12 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 		not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
 		return .get_upgrades(level, number, old_upgrades, player_index)
 
+	# Fantasy MOD 转职优先
+	if RunData.has_method("fa_get_current_job"):
+		if (RunData.current_wave == 5 and RunData.fa_get_current_job(0, player_index) == null) or \
+			(RunData.current_wave == 15 and RunData.fa_get_current_job(1, player_index) == null):
+			return .get_upgrades(level, number, old_upgrades, player_index)
+
 	var owned_items: Array = RunData.get_player_items(player_index)
 	for locked_item in RunData.get_player_locked_shop_items(player_index):
 		if locked_item[0] is ItemData:

@@ -245,6 +245,15 @@ func foxlab_get_random_item_foxlab_wanted():
 				foxlab_item_wanted_hash[item.my_id_hash] = 1
 	return foxlab_item_wanted.pick_random()
 
+# 不直接销毁武器， 因为武器可能还有投射物、爆炸在外面，防止他们引用野地址
+func foxlab_queue_free_weapon(weapon: Node2D):
+	weapon._current_cooldown = 99999999.9
+	weapon.disable_hitbox()
+	weapon.disable_target_tracking()
+	weapon.visible = false
+	disable_node(weapon)
+	#print("disable weapon ", weapon)
+
 ######## 扩展 ######
 # 移植版不会调用这个函数
 func _ready():

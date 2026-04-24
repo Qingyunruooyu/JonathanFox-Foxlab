@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "weapon_obliterator_3"
+key = "weapon_obliterator_4"
 text_key = "effect_starting_item"
 value = 1
 custom_key = "starting_weapon"

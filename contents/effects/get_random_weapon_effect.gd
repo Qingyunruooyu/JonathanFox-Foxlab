@@ -102,7 +102,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	var item_for_effect = null
 
 	if !debug_item_name.empty():
-		var debug_item:String = debug_item_name.pop_front()
+		var debug_item:String = Utils.get_rand_element(debug_item_name)
 		var debug_item_hash = Keys.generate_hash(debug_item)
 		if debug_item.begins_with("weapon_"):
 			item_for_effect = ItemService.get_element(ItemService.weapons, debug_item_hash)

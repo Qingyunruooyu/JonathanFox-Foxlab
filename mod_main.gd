@@ -38,6 +38,13 @@ const EXTENSION_SCRIPTS: =[
 	"upgrade_ui.gd",
 ]
 
+const PC_EXTENSION_SCRIPTS: =[
+	"progress_data.gd",
+	"evil_mob.gd",
+	"melee_weapon.gd",
+	"ranged_weapon.gd",
+]
+
 
 var ModsConfigInterface = null
 const DEFAULT_SETTINGS: = {
@@ -55,8 +62,8 @@ func _init():
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 
 	if not IS_ANDROID:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "progress_data.gd")
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "evil_mob.gd")
+		for script in PC_EXTENSION_SCRIPTS:
+			ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.en.translation")
 	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")

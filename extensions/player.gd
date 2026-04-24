@@ -179,6 +179,10 @@ func apply_items_effects() -> void :
 	legs.visible = true
 
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
+	if not ItemService.foxlab_is_android:
+		.on_weapon_wanted_to_break(weapon, gold_dropped)
+		return
+
 	if not current_weapons.has(weapon):
 		return
 
@@ -193,10 +197,8 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 
 	SoundManager.play(Utils.get_rand_element(WeaponService.breaking_sounds), - 15, 0.1, true)
 
-	weapon._current_cooldown = 99999999.9
-	weapon.visible = false
-	weapon.disable_hitbox()
-	weapon.disable_target_tracking()
+	Utils.foxlab_queue_free_weapon(weapon)
+
 	.on_weapon_wanted_to_break(weapon, gold_dropped)
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:

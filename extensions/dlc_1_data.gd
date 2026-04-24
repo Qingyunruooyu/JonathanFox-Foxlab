@@ -22,38 +22,41 @@ func curse_item(item_data: ItemParentData, player_index: int, turn_randomization
 				extra_effects.append(effect)
 		if structure_effect:
 			structure_effect.effects = extra_effects
-	elif item_data.my_id_hash == Utils.item_foxlab_enchanted_eyes_hash:
-		var effect_modifier: = _get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
-		max_effect_modifier = max(max_effect_modifier, effect_modifier)
-		var extra_effect = Effect.new()
-		extra_effect.key = "crate_chance"
-		extra_effect.key_hash = Keys.crate_chance_hash
-		extra_effect.value = foxlab_enchanted_eyes_crate_chance
-		extra_effect.effect_sign = Sign.POSITIVE
-		extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
-		ret.effects.insert(ret.effects.size() - 2, extra_effect)
 	else:
 		for effect in ret.effects:
-			var effect_modifier: = _get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
+			var effect_modifier = _get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
 			var override = false
 			var overriden_sign = Sign.POSITIVE
-			if effect.get_id() == "foxlab_get_rand_weapon":
-				max_effect_modifier = max(max_effect_modifier, effect_modifier)
-				var extra_effect = Effect.new()
-				extra_effect.key = "stat_luck"
-				extra_effect.key_hash = Keys.stat_luck_hash
-				extra_effect.value = treasure_map_luck
-				extra_effect.effect_sign = Sign.POSITIVE
-				extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
-				new_effects.append(extra_effect)
-			elif effect.custom_key_hash == Utils.foxlab_heal_when_kill_nearby_hash:
-				max_effect_modifier = max(max_effect_modifier, effect_modifier)
-				effect.value2 = _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
-			elif effect.get_id() == "foxlab_stat_query":
-				effect_to_move.push_back(effect)
-			elif effect.get_id() == "foxlab_get_rand_character":
-				max_effect_modifier = max(max_effect_modifier, effect_modifier)
-				effect.value2 = sqrt(effect.value2 * _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)) as int
+			var id: String = effect.get_id()
+			var cskey: int = effect.custom_key_hash
+			match [id, cskey]:
+				[_, Keys.extra_item_in_crate_hash]:
+					if effect.key_hash == Utils.item_foxlab_wanted_hash:
+						max_effect_modifier = max(max_effect_modifier, effect_modifier)
+						var extra_effect = Effect.new()
+						extra_effect.key = "crate_chance"
+						extra_effect.key_hash = Keys.crate_chance_hash
+						extra_effect.value = foxlab_enchanted_eyes_crate_chance
+						extra_effect.effect_sign = Sign.POSITIVE
+						extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
+						ret.effects.insert(ret.effects.size() - 1, extra_effect)
+				["foxlab_get_rand_weapon", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var extra_effect = Effect.new()
+					extra_effect.key = "stat_luck"
+					extra_effect.key_hash = Keys.stat_luck_hash
+					extra_effect.value = treasure_map_luck
+					extra_effect.effect_sign = Sign.POSITIVE
+					extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
+					new_effects.append(extra_effect)
+				[_, Utils.foxlab_heal_when_kill_nearby_hash]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					effect.value2 = _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
+				["foxlab_stat_query", _]:
+					effect_to_move.push_back(effect)
+				["foxlab_get_rand_character", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					effect.value2 = sqrt(effect.value2 * _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)) as int
 
 	ret.curse_factor = max_effect_modifier
 

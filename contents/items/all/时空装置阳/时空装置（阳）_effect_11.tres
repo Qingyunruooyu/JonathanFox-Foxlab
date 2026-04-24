@@ -15,9 +15,8 @@ arg_key = "FOXLAB_ABYSS_ENEMY_NAME"
 script = ExtResource( 1 )
 key = "foxlab_extra_abyss_enemies"
 text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
-value = 4
+value = 9
 custom_key = "stats_next_wave"
 storage_method = 1
 effect_sign = 2
 custom_args = [ SubResource( 1 ) ]
-

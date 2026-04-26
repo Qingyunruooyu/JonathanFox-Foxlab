@@ -1,11 +1,11 @@
 extends "res://ui/menus/ingame/upgrades_ui_player_container.gd"
 
-var _foxlab_item_popup = null
+onready var _foxlab_item_popup = $"%ItemPopup"
 
 func _ready():
-	if has_meta("item_popup"):
-		_foxlab_item_popup = get_meta("item_popup")
-	else:
+	if player_index >= RunData.get_player_count():
+		return
+	if _foxlab_item_popup == null:
 		# 加这个Control让界面不要晃动
 		var ctrl = Control.new()
 		add_child(ctrl)
@@ -13,6 +13,7 @@ func _ready():
 		_foxlab_item_popup = popup.instance()
 		ctrl.add_child(_foxlab_item_popup)
 		_foxlab_item_popup.visible = false
+		_foxlab_item_popup.player_index = player_index
 
 	for ui in _get_upgrade_uis():
 		ui.connect("foxlab_hovered", self, "on_upgrade_hovered")
@@ -35,6 +36,7 @@ func on_upgrade_hovered(upgrade_data: UpgradeData, control: Control):
 func on_item_hovered():
 	if _item_data is ItemData:
 		_foxlab_item_popup.display_item_data(_item_data, _item_description._name)
+		# 只显示佛手等道具的备注信息，因为本体信息是_item_description显示的
 		_foxlab_item_popup._panel.hide()
 
 func on_item_left():

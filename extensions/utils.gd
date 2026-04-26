@@ -192,7 +192,7 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 	for groups in [zone_data.groups_data_in_all_waves, zone_data.horde_groups]:
 		if get_chance_success(extra_group_chance):
 			ret_groups.append(get_rand_element(groups))
-	if get_chance_success(extra_group_chance):
+	if get_chance_success(extra_group_chance / 2.0):
 		if foxlab_gaster_group == null:
 			# preload会提前加载enemy.gd，导致兼容性问题
 			foxlab_gaster_group = load("res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres")

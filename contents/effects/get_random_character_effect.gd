@@ -78,7 +78,7 @@ func apply(player_index: int) -> void:
 
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
-	RunData.emit_signal("foxlab_sec_char_changed", meta.chars, player_index)
+	var icons_to_pop = meta.chars.duplicate()
 	var prev_items = meta.prevs
 	# always place ConvertStatEffect of characters ahead
 	var convert_stats_half_wave:Array = RunData.get_player_effect(Keys.convert_stats_half_wave_hash, player_index)
@@ -110,7 +110,9 @@ func apply(player_index: int) -> void:
 	RunData.add_tracked_value(player_index, Utils.item_foxlab_mask_hash, 1)
 
 	if RunData.get_player_weapons_ref(player_index).size() > 0 and Utils.get_chance_success(transform_chance / 100.0):
-		_duplicate_weapon(player_index)
+		var weapon_duplicated = _duplicate_weapon(player_index)
+		if weapon_duplicated:
+			icons_to_pop.append(weapon_duplicated)
 
 	var is_vagabond_on1 = RunData.get_player_effect_bool(Keys.all_weapons_count_for_sets_hash, player_index)
 	if is_vagabond_on0 != is_vagabond_on1:
@@ -122,6 +124,7 @@ func apply(player_index: int) -> void:
 	RunData.get_player_effect(Utils.foxlab_mask_history_hash, player_index).append(history)
 	meta.names = ""
 
+	RunData.emit_signal("foxlab_sec_char_changed", icons_to_pop, player_index)
 	_after_transform(player_index, stack_effect)
 
 func _after_transform(player_index: int, stack_effect: Array) -> void:
@@ -139,7 +142,7 @@ func _duplicate_weapon(player_index: int):
 	var upgrade_enabled = effects[Utils.fox_faceless_enable_upgrade_on_transform_hash]
 	var upgrade_wave = effects[Utils.fox_faceless_upgrade_on_transform_wave_hash]
 	if  not upgrade_enabled or RunData.current_wave == upgrade_wave:
-		return
+		return null
 
 	#DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
 	effects[Utils.fox_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if RunData.is_wave_started() else 1
@@ -159,6 +162,7 @@ func _duplicate_weapon(player_index: int):
 	RunData.add_weapon(weapon, player_index)
 	#DebugService.log_data("duplicate weapon " + weapon.my_id)
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_faceless_hash, 1)
+	return weapon
 
 func cleanup(player_index: int) -> void:
 	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）

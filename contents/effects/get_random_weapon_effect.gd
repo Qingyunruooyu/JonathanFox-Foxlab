@@ -91,8 +91,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	else:
 		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
 		# for debug
-		# while not weapon is WeaponData:
-		# 	weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
+		while not weapon is WeaponData:
+			weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
 		weapon = weapon.duplicate()
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
 		var melee_stats = weapon.stats.duplicate()

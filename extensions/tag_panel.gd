@@ -15,9 +15,10 @@ func set_data(tag: String) -> bool:
 	match name:
 		"ITEM_FOXLAB_BUDDHAS_HAND":
 			var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]
-			_tag_effects.bbcode_text += "\n[color=#ff8c00]" + meta.weapon_id + "[/color]"
-			_tag_effects.bbcode_text += "\n" + meta.weapon.get_weapon_stats_text(player_index)
-			_tag_effects.bbcode_text += "\n" + meta.weapon.get_effects_text(player_index)
+			if meta.weapon:
+				_tag_effects.bbcode_text += "\n[color=#ff8c00]" + meta.weapon_id + "[/color]"
+				_tag_effects.bbcode_text += "\n" + meta.weapon.get_weapon_stats_text(player_index)
+				_tag_effects.bbcode_text += "\n" + meta.weapon.get_effects_text(player_index)
 			if meta.item:
 				_tag_effects.bbcode_text += "\n[color=#ff8c00]" + tr(meta.item.name) + "[/color]"
 				_tag_effects.bbcode_text += "\n" + meta.item.get_effects_text(player_index)

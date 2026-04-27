@@ -395,8 +395,21 @@ func _on_EntitySpawner_players_spawned(players: Array) -> void :
 		for _i in range(Utils.get_stat(Utils.foxlab_extra_abyss_enemies_hash, player_index) as int):
 			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_ABYSS"))
 			extra_enemies += 1
+
 		for _i in range(Utils.get_stat(Utils.foxlab_extra_bosses_hash, player_index) as int):
 			_wave_manager.add_groups(Utils.foxlab_pickup_random_bosses())
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_unknown_elites_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(true))
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_elites_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(false))
+
+		var extra_loot_aliens = Utils.get_stat(Utils.foxlab_extra_loot_aliens_hash, player_index) as int
+		if extra_loot_aliens > 0:
+			_wave_manager.add_groups(Utils.foxlab_generate_loot_alien_group_data(extra_loot_aliens, _wave_timer))
+		var extra_evil_mobs = Utils.get_stat(Utils.foxlab_extra_evil_mobs_hash, player_index) as int
+		if extra_evil_mobs > 0:
+			_wave_manager.add_groups(Utils.foxlab_generate_evil_mob_group_data(extra_evil_mobs))
+
 	_is_horde_wave = (extra_enemies > 4)
 
 func on_upgrade_selected(upgrade_data: UpgradeData, upgrade: UpgradesUI.UpgradeToProcess) -> void :

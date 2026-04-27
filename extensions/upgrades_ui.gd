@@ -27,6 +27,6 @@ func _check_extra_items_in_crate_effect(player_index: int) -> void :
 		_extra_items_to_process[player_index].shuffle()
 		for i in _extra_items_to_process[player_index].size():
 			if _extra_items_to_process[player_index][i] == Utils.item_foxlab_wanted_hash:
-				_extra_items_to_process[player_index][i] = Utils.foxlab_get_random_item_foxlab_wanted().my_id_hash
+				_extra_items_to_process[player_index][i] = Utils.foxlab_get_random_item_foxlab_wanted(player_index).my_id_hash
 
 

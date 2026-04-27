@@ -219,6 +219,7 @@ func _on_tree_exited() -> void :
 
 	var wave_reset_count: = 0
 	for player_index in RunData.get_player_count():
+		foxlab_current_shop_item_pos[player_index] = [null, null]
 		RunData.foxlab_forget_item_entry(player_index)
 		if not RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
 			continue

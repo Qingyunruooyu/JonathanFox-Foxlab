@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "foxlab_extra_loot_aliens"
-text_key = "effect_extra_loot_aliens_next_wave"
-value = 4
-custom_key = "stats_next_wave"
-storage_method = 1
+key = "enemy_gold_drops"
+text_key = "effect_enemy_gold_drops"
+value = 3
+custom_key = ""
+storage_method = 0
 effect_sign = 3
 custom_args = [  ]

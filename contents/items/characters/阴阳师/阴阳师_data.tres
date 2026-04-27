@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=31 format=2]
+[gd_resource type="Resource" load_steps=30 format=2]
 
 [ext_resource path="res://weapons/ranged/medical_gun/1/medical_gun_data.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_3.tres" type="Resource" id=2]
@@ -19,7 +19,6 @@
 [ext_resource path="res://weapons/melee/claw/1/claw_data.tres" type="Resource" id=17]
 [ext_resource path="res://weapons/ranged/icicle/1/icicle_data.tres" type="Resource" id=18]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=19]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_6.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_0.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_2.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_1.tres" type="Resource" id=23]
@@ -40,7 +39,7 @@ icon = ExtResource( 26 )
 name = "CHARACTER_FOXLAB_YINYANG"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 21 ), ExtResource( 23 ), ExtResource( 22 ), ExtResource( 2 ), ExtResource( 24 ), ExtResource( 20 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 25 ) ]
+effects = [ ExtResource( 21 ), ExtResource( 23 ), ExtResource( 22 ), ExtResource( 2 ), ExtResource( 24 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 25 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

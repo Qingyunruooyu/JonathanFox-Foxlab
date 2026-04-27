@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://items/global/effect.gd" type="Script" id=1]
 [ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
@@ -9,13 +9,13 @@ arg_index = 2
 arg_sign = 2
 arg_value = 2
 arg_format = 0
-arg_key = "EVIL_MOB_NAME"
+arg_key = "FOXLAB_UNKNOWN_ELITE_NAME"
 
 [resource]
 script = ExtResource( 1 )
-key = "foxlab_extra_evil_mobs"
-text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
-value = 2
+key = "foxlab_extra_unknown_elites"
+text_key = "EFFECT_FOXLAB_EXTRA_BOSS"
+value = 1
 custom_key = "stats_next_wave"
 storage_method = 1
 effect_sign = 3

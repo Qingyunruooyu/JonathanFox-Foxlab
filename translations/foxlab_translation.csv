@@ -8,6 +8,7 @@ FOXLAB_DISABLE_CHARACTERS,禁用FoxLab角色（重启游戏生效）,Ban FoxLab 
 FOXLAB_CURSED_TEXT,被诅咒,Cursed
 EFFECT_FOXLAB_GET_ITEM,你将获得{0}{1},You will get {0} {1}
 CORRUPTED_TREE_NAME,被腐蚀的树,Corrupted Tree
+FOXLAB_UNKNOWN_ELITE_NAME,漏网精英怪,Unregistered elite
 HORDES_NAME,怪潮,Enemy Hordes
 CHARACTER_FOXLAB_JELLYFISH,水母,Jellyfish
 STAT_FOXLAB_ARMOR_DODGE_HARVESTING,护甲/闪避/收获,Armor/Dodge/Harvesting
@@ -91,6 +92,7 @@ ITEM_FOXLAB_WANTED,通缉令,WANTED
 ITEM_FOXLAB_WANTED_MONK,通缉令,WANTED
 ITEM_FOXLAB_ENCHANTED_EYES,天眼,Enchanted Eyes
 ENEMY_GOLD_DROPS,%敌人掉落的材料,% Enemy Gold Grops
+FOXLAB_WANTED_FOUND,找到通缉令：{0},WANTED found: {0}
 EFFECT_FOXLAB_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT,每持有{2}异种{3}有{0}{1}[{4}],{0} {1} for every {2} different {3} you have [{4}]
 CHARACTER_FOXLAB_GOLEM_NINJA,傀儡忍者,Golem Ninja
 ITEM_FOXLAB_OMNIC_CRISIS,智械危机,Omnic Crisis

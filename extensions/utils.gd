@@ -19,7 +19,7 @@ var foxlab_extra_crash_zone_enemies_hash: int = Keys.generate_hash("foxlab_extra
 var foxlab_extra_abyss_enemies_hash: int = Keys.generate_hash("foxlab_extra_abyss_enemies")
 var foxlab_extra_loot_aliens_hash: int = Keys.generate_hash("foxlab_extra_loot_aliens")
 var foxlab_extra_evil_mobs_hash: int = Keys.generate_hash("foxlab_extra_evil_mobs")
-var fox_poet_next_curse_chance_hash: int = Keys.generate_hash("fox_poet_next_curse_chance")
+var foxlab_poet_next_curse_chance_hash: int = Keys.generate_hash("foxlab_poet_next_curse_chance")
 var foxlab_troubleshooter_crisis_num_hash: int = Keys.generate_hash("foxlab_troubleshooter_crisis_num")
 var foxlab_troubleshooter_temp_hash: int = Keys.generate_hash("foxlab_troubleshooter_temp")
 var foxlab_dante_states_hash: int = Keys.generate_hash("foxlab_dante_states")
@@ -31,14 +31,14 @@ var foxlab_cultivator_reset_hash: int = Keys.generate_hash("foxlab_cultivator_re
 var foxlab_extra_bosses_hash: int = Keys.generate_hash("foxlab_extra_bosses")
 var foxlab_extra_elites_hash: int = Keys.generate_hash("foxlab_extra_elites")
 var foxlab_extra_unknown_elites_hash: int = Keys.generate_hash("foxlab_extra_unknown_elites")
-var fox_wave_started_hash: int = Keys.generate_hash("fox_wave_started")
-var fox_faceless_enable_upgrade_on_transform_hash: int = Keys.generate_hash("fox_faceless_enable_upgrade_on_transform")
-var fox_faceless_upgrade_on_transform_wave_hash: int = Keys.generate_hash("fox_faceless_upgrade_on_transform_wave")
-var fox_faceless_convert_stat_characters_hash: int = Keys.generate_hash("fox_faceless_convert_stat_characters")
-var fox_faceless_transform_stack_hash: int = Keys.generate_hash("fox_faceless_transform_stack")
+var foxlab_wave_started_hash: int = Keys.generate_hash("foxlab_wave_started")
+var foxlab_faceless_enable_upgrade_on_transform_hash: int = Keys.generate_hash("foxlab_faceless_enable_upgrade_on_transform")
+var foxlab_faceless_upgrade_on_transform_wave_hash: int = Keys.generate_hash("foxlab_faceless_upgrade_on_transform_wave")
+var foxlab_faceless_convert_stat_characters_hash: int = Keys.generate_hash("foxlab_faceless_convert_stat_characters")
+var foxlab_faceless_transform_stack_hash: int = Keys.generate_hash("foxlab_faceless_transform_stack")
 var foxlab_mask_history_hash: int=Keys.generate_hash("foxlab_mask_history")
 var foxlab_buddhas_hand_stack_hash: int = Keys.generate_hash("foxlab_buddhas_hand_stack")
-var fox_convert_remainder_end_of_wave_hash: int = Keys.generate_hash("fox_convert_remainder_end_of_wave")
+var foxlab_convert_remainder_end_of_wave_hash: int = Keys.generate_hash("foxlab_convert_remainder_end_of_wave")
 var foxlab_temp_stats_on_structure_crit_hash: int = Keys.generate_hash("foxlab_temp_stats_on_structure_crit")
 var foxlab_landmines_on_death_chance_hash: int = Keys.generate_hash("foxlab_landmines_on_death_chance")
 var foxlab_effect_receive_item_at_wave_hash: int = Keys.generate_hash("foxlab_effect_receive_item_at_wave")
@@ -250,9 +250,12 @@ func foxlab_pickup_random_elites(is_unknown: bool) -> Array:
 	var group = preload("res://zones/common/elite/group_elite.tres").duplicate()
 	var wave_unit_data = WaveUnitData.new()
 	wave_unit_data.type = EntityType.BOSS
-	if is_unknown and not foxlab_unknown_elites.empty():
-		wave_unit_data.unit_scene = foxlab_unknown_elites.pick_random()
-	else:
+	if is_unknown:
+		if foxlab_item_wanted.empty():
+			foxlab_collect_item_foxlab_wanted()
+		if not foxlab_unknown_elites.empty():
+			wave_unit_data.unit_scene = foxlab_unknown_elites.pick_random()
+	if wave_unit_data.unit_scene == null:
 		wave_unit_data.unit_scene = ItemService.elites.pick_random().scene
 	group.wave_units_data.append(wave_unit_data)
 	return [group]
@@ -275,41 +278,41 @@ func foxlab_generate_evil_mob_group_data(num: int)->Array:
 					if "evil_mob" in unit.unit_scene_name:
 						var my_unit = unit.duplicate()
 						my_unit.spawn_chance = 1.0
-						my_unit.min_number = 1
-						my_unit.max_number = 1
 						foxlab_evil_mob_units.append(my_unit)
 	var group = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/zones/inplace_operation/group_evil_mob.tres").duplicate()
 	for i in num:
 		group.wave_units_data.append(foxlab_evil_mob_units.pick_random())
 	return [group]
 
+func foxlab_collect_item_foxlab_wanted():
+	var unknown_wanted_item = null
+	var elite_ids = {}
+	for item in ItemService.items:
+		if item.name == "ITEM_FOXLAB_WANTED":
+			if item.my_id_hash == item_foxlab_wanted_unknown_hash:
+				unknown_wanted_item = item
+				continue
+			foxlab_item_wanted.append(item)
+			foxlab_item_wanted_hash[item.my_id_hash] = 1
+			for effect in item.effects:
+				if effect.custom_key_hash == Keys.extra_enemies_next_wave_hash:
+					elite_ids[effect.key2_hash] = 1
+	if unknown_wanted_item and foxlab_item_wanted.size() < ItemService.elites.size():
+		for elite in ItemService.elites:
+			if not elite.my_id_hash in elite_ids:
+				foxlab_unknown_elites.append(elite.scene)
+		if not foxlab_unknown_elites.empty():
+			foxlab_item_wanted.append(unknown_wanted_item)
+			foxlab_item_wanted_hash[unknown_wanted_item.my_id_hash] = 1
+
 func foxlab_get_random_item_foxlab_wanted(player_index: int):
 	if foxlab_item_wanted.empty():
-		var unknown_wanted_item = null
-		var elite_ids = {}
-		for item in ItemService.items:
-			if item.name == "ITEM_FOXLAB_WANTED":
-				if item.my_id_hash == item_foxlab_wanted_unknown_hash:
-					unknown_wanted_item = item
-					continue
-				foxlab_item_wanted.append(item)
-				foxlab_item_wanted_hash[item.my_id_hash] = 1
-				for effect in item.effects:
-					if effect.custom_key_hash == Keys.extra_enemies_next_wave_hash:
-						elite_ids[effect.key2_hash] = 1
-		if unknown_wanted_item and foxlab_item_wanted.size() < ItemService.elites.size():
-			for elite in ItemService.elites:
-				if not elite.my_id_hash in elite_ids:
-					foxlab_unknown_elites.append(elite.scene)
-			if not foxlab_unknown_elites.empty():
-				foxlab_item_wanted.append(unknown_wanted_item)
-				foxlab_item_wanted_hash[unknown_wanted_item.my_id_hash] = 1
-	if RunData.get_nb_item(item_foxlab_enchanted_eyes_hash, player_index):
+		foxlab_collect_item_foxlab_wanted()
+	if RunData.get_nb_item(item_foxlab_enchanted_eyes_hash, player_index) > 0:
 		RunData.add_tracked_value(player_index, item_foxlab_enchanted_eyes_hash, 1)
-	if RunData.get_nb_item(character_foxlab_bounty_hunter_hash, player_index):
+	if RunData.get_nb_item(character_foxlab_bounty_hunter_hash, player_index) > 0:
 		RunData.add_tracked_value(player_index, character_foxlab_bounty_hunter_hash, 1)
 	return foxlab_item_wanted.pick_random()
-
 
 # 不直接销毁武器， 因为武器可能还有投射物、爆炸在外面，防止他们引用野地址
 func foxlab_queue_free_weapon(weapon: Node2D):
@@ -364,7 +367,7 @@ func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> v
 	# 敌袭结束时，在恶魔转换执行之前执行尾数转换
 	if permanent: #敌袭结束
 		foxlab_multiply_stats(RunData.get_player_effect(foxlab_multiply_stats_end_of_wave_hash, player_index), player_index, permanent)
-		convert_remainder(RunData.get_player_effect(fox_convert_remainder_end_of_wave_hash, player_index), player_index)
+		convert_remainder(RunData.get_player_effect(foxlab_convert_remainder_end_of_wave_hash, player_index), player_index)
 		for effect in RunData.get_player_effect(foxlab_always_convert_stats_end_of_wave_hash, player_index):
 			.convert_stats([effect], player_index, permanent)
 	else: #敌袭中途

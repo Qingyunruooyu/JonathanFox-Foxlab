@@ -55,7 +55,7 @@ func try_generate(player_index: int):
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
 	# [变身堆栈数，正在变身否]
-	var stack_effect:Array = effects[Utils.fox_faceless_transform_stack_hash]
+	var stack_effect:Array = effects[Utils.foxlab_faceless_transform_stack_hash]
 	if stack_effect[1]:
 		stack_effect[0] += 1
 		#DebugService.log_data("add transform stack: %d" % [stack_effect[0]])
@@ -139,13 +139,13 @@ func _after_transform(player_index: int, stack_effect: Array) -> void:
 
 func _duplicate_weapon(player_index: int):
 	var effects =  RunData.get_player_effects(player_index)
-	var upgrade_enabled = effects[Utils.fox_faceless_enable_upgrade_on_transform_hash]
-	var upgrade_wave = effects[Utils.fox_faceless_upgrade_on_transform_wave_hash]
+	var upgrade_enabled = effects[Utils.foxlab_faceless_enable_upgrade_on_transform_hash]
+	var upgrade_wave = effects[Utils.foxlab_faceless_upgrade_on_transform_wave_hash]
 	if  not upgrade_enabled or RunData.current_wave == upgrade_wave:
 		return null
 
 	#DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
-	effects[Utils.fox_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if RunData.is_wave_started() else 1
+	effects[Utils.foxlab_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if RunData.is_wave_started() else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	#附魔后加一个价值， 避免建造者的炮塔不识货
 	weapon.value += 1
@@ -249,7 +249,7 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
 	if ItemService.characters.size() != ItemService.get_foxlab_transform_characters().size():
 		return true
-	var convert_stat_dict = RunData.get_player_effect(Utils.fox_faceless_convert_stat_characters_hash, 0)
+	var convert_stat_dict = RunData.get_player_effect(Utils.foxlab_faceless_convert_stat_characters_hash, 0)
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
 	_get_convert_stat_result(candidate, convert_stat_dict)

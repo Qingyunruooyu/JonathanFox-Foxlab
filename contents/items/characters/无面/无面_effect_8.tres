@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "fox_faceless_upgrade_on_transform_wave"
+key = "foxlab_faceless_upgrade_on_transform_wave"
 text_key = "EFFECT_FOXLAB_WEAPON_DUPLICATION"
 value = 10
 custom_key = ""

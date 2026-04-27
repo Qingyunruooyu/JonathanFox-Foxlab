@@ -53,7 +53,7 @@ func get_args(_player_index: int) -> Array:
 			var items: Array = RunData.get_player_effect(key_hash, _player_index)
 			return [tr("FOXLAB_DISABLE") if items.empty() else ", ".join(items), tr(key.to_upper())]
 		10: #无面是否能复制武器
-			var upgrade_wave =  RunData.get_player_effect(Utils.fox_faceless_upgrade_on_transform_wave_hash, _player_index)
+			var upgrade_wave =  RunData.get_player_effect(Utils.foxlab_faceless_upgrade_on_transform_wave_hash, _player_index)
 			var txt = ""
 			if upgrade_wave == RunData.current_wave:
 				txt =  "[color=#%s]%s[/color]" % [ProgressData.settings.color_negative, tr("EFFECT_FOXLAB_FACELESS_DISABLE")]

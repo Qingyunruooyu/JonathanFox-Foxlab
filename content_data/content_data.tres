@@ -196,7 +196,7 @@ tracked_items = {
 "item_foxlab_tracker": 0
 }
 effect_keys_with_weapon_stats = [ "foxlab_ball_lightning", "foxlab_projectile_on_hit" ]
-effect_keys_full_serialization = [ "foxlab_always_convert_stats_end_of_wave", "foxlab_always_convert_stats_half_wave", "fox_convert_remainder_end_of_wave" ]
+effect_keys_full_serialization = [ "foxlab_always_convert_stats_end_of_wave", "foxlab_always_convert_stats_half_wave", "foxlab_convert_remainder_end_of_wave" ]
 translation_keys_needing_operator = {
 "bounce": [ 0 ],
 "bounce_damage": [ 0 ],

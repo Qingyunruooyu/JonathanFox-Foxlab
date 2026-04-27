@@ -209,7 +209,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_gain_enemy_damage_hash: 0,
 			Utils.foxlab_gain_structure_percent_damage_hash:0,
 			Utils.foxlab_item_steal_warmhole_spawn_hash:0,
-			Utils.fox_poet_next_curse_chance_hash: 0,
+			Utils.foxlab_poet_next_curse_chance_hash: 0,
 			Utils.foxlab_troubleshooter_crisis_num_hash: 0,
 			Utils.foxlab_troubleshooter_temp_hash:0,
 			Utils.foxlab_dante_states_hash: 0,
@@ -218,15 +218,15 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_shop_vip_hash: 0,
 			Utils.foxlab_cultivator_level_hash: 0,
 			Utils.foxlab_cultivator_reset_hash: 0,
-			Utils.fox_wave_started_hash: 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
-			Utils.fox_faceless_enable_upgrade_on_transform_hash:0,
-			Utils.fox_faceless_upgrade_on_transform_wave_hash:Utils.LARGE_NUMBER,
+			Utils.foxlab_wave_started_hash: 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
+			Utils.foxlab_faceless_enable_upgrade_on_transform_hash:0,
+			Utils.foxlab_faceless_upgrade_on_transform_wave_hash:Utils.LARGE_NUMBER,
 			#ConvertStatEffect存在短路行为，如果两个角色都有这个效果，则不兼容，不允许同时变身
-			Utils.fox_faceless_convert_stat_characters_hash:{},
-			Utils.fox_faceless_transform_stack_hash:[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
+			Utils.foxlab_faceless_convert_stat_characters_hash:{},
+			Utils.foxlab_faceless_transform_stack_hash:[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
 			Utils.foxlab_mask_history_hash: [],
 			Utils.foxlab_buddhas_hand_stack_hash:[0, false], #如果佛手给的武器有佛手效果，避免嵌套
-			Utils.fox_convert_remainder_end_of_wave_hash:[],
+			Utils.foxlab_convert_remainder_end_of_wave_hash:[],
 			Utils.foxlab_temp_stats_on_structure_crit_hash: [], # 被删掉的原版词条
 			Utils.foxlab_landmines_on_death_chance_hash: [],
 			Utils.foxlab_effect_receive_item_at_wave_hash: [], # 改自brolab的两个特殊机制词条

@@ -125,7 +125,7 @@ EFFECT_FOXLAB_LOSE,失去,Lose
 EFFECT_FOXLAB_GAIN,获得,Gain
 EFFECT_FOXLAB_ALL_OR_NOTHING,武器单次攻击[color=#FF8C00]直接[/color]杀死{3}/{4}敌人，分别{5}/{6}等量{1},{5}/{6} equivalent {1} for killing {3}/{4} enemies by a [color=#FF8C00]direct[/color] weapon attack
 CHARACTER_FOXLAB_POET,诗人,Poet
-FOX_POET_NEXT_CURSE_CHANCE,%下个商店锁定物诅咒率,% Chance to Curse Locked Next Wave
+FOXLAB_POET_NEXT_CURSE_CHANCE,%下个商店锁定物诅咒率,% Chance to Curse Locked Next Wave
 CURSE_LOCKED_ITEMS,%锁定物诅咒率,% Chance to Curse Locked
 EFFECT_STAT_ON_EVERY_STEP_VALID_LOWEST_TWO,每在一波袭击中前进{2}步，离开[color=#FF8C00]下个商店[/color]时{0}几率诅咒锁定物品（取低2位）,{0} chance (take the last 2 digits) of cursing what's locked when leaving the [color=#FF8C00]next shop[/color] for every {2} steps you take during a wave
 CHARACTER_FOXLAB_TROUBLESHOOTER,排险者,Troubleshooter

@@ -12,7 +12,7 @@ func is_fox_ignored_stats(stat: int):
 	return stat in Utils.foxlab_ignored_floating_stat_hash
 
 func on_stat_added(stat: int, value: int, db_mod: float, player_index: int, pos_sounds: Array = stat_pos_sounds, neg_sounds: Array = stat_neg_sounds) -> void :
-	if stat == Utils.fox_poet_next_curse_chance_hash and not players[player_index].dead:
+	if stat == Utils.foxlab_poet_next_curse_chance_hash and not players[player_index].dead:
 		var current = RunData.get_player_effect(stat, player_index) % 100
 		display(str(current) + "%", players[player_index].global_position, Utils.CURSE_COLOR, ItemService.get_stat_icon(Keys.curse_locked_items_hash))
 		if current < value:

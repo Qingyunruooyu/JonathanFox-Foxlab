@@ -172,7 +172,7 @@ func on_wave_start(timer: WaveTimer) -> void :
 		get_player_effects(i)[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
 	DebugService.log_data("foxlab_shop_effects_checked: set false")
 	#公牛等没有武器的角色，不会执行add_starting_items_and_weapons
-	effects[Utils.fox_wave_started_hash] = 1
+	effects[Utils.foxlab_wave_started_hash] = 1
 	ItemService.foxlab_add_pet_structure_stats()
 
 func get_next_level_xp_needed(player_index) -> float:
@@ -202,14 +202,14 @@ func add_starting_items_and_weapons() -> void :
 #	assert(foxlab_item_recycle_test())
 	var effects = get_player_effects(0)
 	.add_starting_items_and_weapons()
-	effects[Utils.fox_wave_started_hash] = 1
+	effects[Utils.foxlab_wave_started_hash] = 1
 	foxlab_remembered_items = [ [], [], [], [] ]
 	foxlab_remembered_weapons = [ [], [], [], [] ]
 	foxlab_shop_items = [ [], [], [], [] ]
 	ItemService.foxlab_add_pet_structure_stats()
 
 func is_wave_started() -> bool:
-	return get_player_effect_bool(Utils.fox_wave_started_hash, 0)
+	return get_player_effect_bool(Utils.foxlab_wave_started_hash, 0)
 
 var FOXLAB_ELITE_CHARS = [Keys.generate_hash("character_foxlab_war_master"),
 						Keys.generate_hash("character_foxlab_survivor"),

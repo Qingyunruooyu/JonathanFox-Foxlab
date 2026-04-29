@@ -140,6 +140,7 @@ var foxlab_ignored_floating_stat_hash = {
 	foxlab_cultivator_level_hash: 0,
 	}
 var foxlab_primary_stat_gain_map = {}
+var foxlab_stats_in_container = []
 var foxlab_structure_stats = {
 		Keys.structure_range_hash: Keys.stat_structure_range_hash,
 		Keys.structure_percent_damage_hash: Keys.stat_structure_percent_damage_hash
@@ -323,9 +324,28 @@ func foxlab_queue_free_weapon(weapon: Node2D):
 	disable_node(weapon)
 	#print("disable weapon ", weapon)
 
+func foxlab_get_stats_in_container():
+	if foxlab_stats_in_container.empty():
+		var stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()
+		get_tree().root.add_child(stats_container)
+		stats_container.visible = false
+		if stats_container._primary_stats != null and stats_container._secondary_stats != null:
+			for container in [stats_container._primary_stats, stats_container._secondary_stats]:
+				foxlab_stats_in_container.append([])
+				var stats = foxlab_stats_in_container.back()
+				for stat in container.get_children():
+					if stat.visible:
+						stats.append(stat.key_hash)
+		stats_container.queue_free()
+	return foxlab_stats_in_container
+
+
 ######## 扩展 ######
-# 移植版不会调用这个函数
-func _ready():
+func reset_stat_keys() -> void :
+	.reset_stat_keys()
+	foxlab_stats_in_container.clear()
+	foxlab_primary_stat_gain_map.clear()
+	foxlab_get_stats_in_container()
 	_foxlab_init_primary_stat_gain_map()
 
 func average_all_player_stats(stat_hsh: int) -> float:

@@ -80,6 +80,7 @@ func _ready():
 func initialize_mod():
 	var mod_data = load("res://mods-unpacked/%s/content_data/content_data.tres" % [MOD_NAME])
 	mod_data.add_resources(foxlab_current_settings)
+	Utils.reset_stat_keys()
 	ItemService.init_unlocked_pool()
 	RunData.reset()
 	ProgressData.load_game_file()

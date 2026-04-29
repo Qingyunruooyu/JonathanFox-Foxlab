@@ -127,9 +127,6 @@ func _foxlab_should_check_mutation(player_index: int)-> bool:
 	return false
 
 func foxlab_mutation_ready():
-	if Utils.foxlab_primary_stat_gain_map.empty():
-		Utils._foxlab_init_primary_stat_gain_map()
-
 	for i in RunData.get_player_count():
 		foxlab_should_check_mutation[i] = _foxlab_should_check_mutation(i)
 		if foxlab_should_check_mutation[i]:
@@ -360,7 +357,7 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 				var num = effect[2]
 				if num <= 0:
 					foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]] += 1
-					num = max(1, RunData.get_player_effect(effect[0], player_index))
+					num = max(1, abs(RunData.get_player_effect(effect[0], player_index)))
 					num_killed = foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]]
 				if num_killed % (num as int) == 0:
 					if effect.size() > 3:

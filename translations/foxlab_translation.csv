@@ -241,7 +241,6 @@ ITEM_FOXLAB_TOCK_TICK,复往,Tock Tick
 EFFECT_FOXLAB_ITEM_START_WAVE,敌袭开始时获得{2}{1},Get {2} {1} at the start of waves
 STAT_LEVELS,目前等级,Current Level
 EFFECT_FOXLAB_STARTING_ITEM_LIMITED,初始拥有{0}{1}（第{2}波结束后失效）,You start with {0} {1} (stop working at wave {2})
-EFFECT_FOXLAB_TICK_TOCK_TOOLTIP,如果你开了修改属性布局的模组，{1}仍以原版布局为准,{1} always moves stats according to vanilla layout even if you subscribe any Mod that changes Stats layout
 EFFECT_FOXLAB_TICK_TOCK,获得此道具后，[color=#FF8C00]主要[/color]和[color=#FF8C00]次要[/color]属性面板的数值会分别整体[color=#FF8C00]上移[/color]一行（顶行属性会转到底行）,Move upward digits in [color=#FF8C00]Primary[/color] and [color=#FF8C00]Secondary[/color] stat panel when you get this item (Top row goes to bottom)
 EFFECT_FOXLAB_TOCK_TICK,获得此道具后，[color=#FF8C00]主要[/color]和[color=#FF8C00]次要[/color]属性面板的数值会分别整体[color=#FF8C00]下移[/color]一行（底行属性会转到顶行）,Move downward digits in [color=#FF8C00]Primary[/color] and [color=#FF8C00]Secondary[/color] stat panel when you get this item (Bottom row goes to top)
 CHARACTER_FOXLAB_SURVIVOR,砺练者,Survivor

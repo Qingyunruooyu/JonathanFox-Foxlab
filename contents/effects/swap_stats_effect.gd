@@ -1,34 +1,27 @@
 extends "res://items/global/effect.gd"
 
-export(Array, String)  var stats_swapped = ["stat_max_hp", "stat_max_hp"]
-
-var stats_swapped_hash = []
-
 static func get_id() -> String:
-	return "foxlab_swap_stat"
-
-func duplicate(subresources := false) -> Resource:
-	var duplication = .duplicate(subresources)
-	if stats_swapped_hash.empty() and not stats_swapped.empty():
-		stats_swapped_hash = Utils.convert_to_hash_array(stats_swapped)
-	duplication.stats_swapped_hash = self.stats_swapped_hash
-	return duplication
-
-func _generate_hashes() -> void:
-	._generate_hashes()
-	stats_swapped_hash = Utils.convert_to_hash_array(stats_swapped)
+	return "foxlab_swap_stats"
 
 func apply(player_index: int) -> void:
-	var left_stat_key = stats_swapped_hash[0]
-	var right_stat_key = stats_swapped_hash[1]
+	var stats_in_container = Utils.foxlab_get_stats_in_container()
+	for stats in stats_in_container:
+		var range_seq = null
+		if value >= 0:
+			range_seq = range(0, stats.size() - 1)
+		else:
+			range_seq = range(stats.size() - 2, -1, -1)
+		for i in range_seq:
+			swap_stat(stats[i], stats[i+1], player_index)
 
+static func swap_stat(left_stat_key: int, right_stat_key: int, player_index: int)->bool:
 	var left_stat_gain = RunData.get_stat_gain(left_stat_key, player_index)
 	if left_stat_gain == 0:
-		return
+		return false
 	var right_stat_gain = RunData.get_stat_gain(right_stat_key, player_index)
 	if right_stat_gain == 0:
-		return
-
+		return false
+	print("swap ", Keys.hash_to_string[left_stat_key], ", ", Keys.hash_to_string[right_stat_key])
 	var effects = RunData.get_player_effects(player_index)
 	var left_stat_temp = TempStats.get_stat(left_stat_key, player_index)
 	var right_stat_temp = TempStats.get_stat(right_stat_key, player_index)
@@ -44,20 +37,7 @@ func apply(player_index: int) -> void:
 	effects[left_stat_key] = new_left_permanent
 	effects[right_stat_key] = new_right_permanent
 	Utils.reset_stat_cache(player_index)
+	return true
 
 func unapply(_player_index: int) -> void:
 	pass
-
-func serialize() -> Dictionary:
-	var serialized = .serialize()
-
-	serialized.stats_swapped = stats_swapped
-
-	return serialized
-
-
-func deserialize_and_merge(serialized: Dictionary) -> void:
-	.deserialize_and_merge(serialized)
-
-	stats_swapped = serialized.stats_swapped if "stats_swapped" in serialized else []
-	stats_swapped_hash = Utils.convert_to_hash_array(stats_swapped)

@@ -27,6 +27,7 @@ func _foxlab_ready() -> void:
 	var mod_settings:Dictionary = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME).foxlab_current_settings
 	config_settings.merge(mod_settings)
 	foxlab_data.add_resources(config_settings)
+	Utils.reset_stat_keys()
 	ItemService.init_unlocked_pool()
 	RunData.reset()
 	load_game_file()

@@ -141,6 +141,7 @@ var foxlab_ignored_floating_stat_hash = {
 	}
 var foxlab_primary_stat_gain_map = {}
 var foxlab_stats_in_container = []
+var foxlab_primary_stat_level_up_map = {}
 var foxlab_structure_stats = {
 		Keys.structure_range_hash: Keys.stat_structure_range_hash,
 		Keys.structure_percent_damage_hash: Keys.stat_structure_percent_damage_hash
@@ -324,6 +325,23 @@ func foxlab_queue_free_weapon(weapon: Node2D):
 	disable_node(weapon)
 	#print("disable weapon ", weapon)
 
+func foxlab_get_primary_stat_level_up_map():
+	if foxlab_primary_stat_level_up_map.empty():
+		var primary_stats = Utils.foxlab_get_stats_in_container()[0]
+		var empty_effect = Effect.new()
+		for upgrade in ItemService.get_pool(0, ItemService.TierData.UPGRADES):
+			if upgrade.effects.size() == 1:
+				var effect = upgrade.effects[0]
+				if effect.custom_key_hash == Keys.empty_hash and effect.key_hash in primary_stats and effect.get_id() == empty_effect.get_id():
+					if not effect.key_hash in foxlab_primary_stat_level_up_map:
+						foxlab_primary_stat_level_up_map[effect.key_hash] = effect.value
+						print(tr(upgrade.get_name_text()))
+		for stat in primary_stats:
+			if not stat in foxlab_primary_stat_level_up_map:
+				foxlab_primary_stat_level_up_map[stat] = 1
+				print(tr(Keys.hash_to_string[stat].to_upper()))
+	return foxlab_primary_stat_level_up_map
+
 func foxlab_get_stats_in_container():
 	if foxlab_stats_in_container.empty():
 		var stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()
@@ -344,8 +362,8 @@ func foxlab_get_stats_in_container():
 func reset_stat_keys() -> void :
 	.reset_stat_keys()
 	foxlab_stats_in_container.clear()
+	foxlab_primary_stat_level_up_map.clear()
 	foxlab_primary_stat_gain_map.clear()
-	foxlab_get_stats_in_container()
 	_foxlab_init_primary_stat_gain_map()
 
 func average_all_player_stats(stat_hsh: int) -> float:

@@ -22,7 +22,7 @@ ITEM_FOXLAB_TORTOISE_SHELL,龟甲,Tortoise shell
 STAT_FOXLAB_BASE_DAMAGE,工程学和近战/远程/元素伤害,Engineering and Melee/Ranged/Elemental Damage
 EFFECT_FOXLAB_ON_HIT_DOUBLE,受到攻击时，{0}{1}、{2}{3}直至敌袭结束,"{0} {1}, {2} {3} when you take damage until the end of the wave"
 CHARACTER_FOXLAB_RAMPAGING_VAGABOND,暴走流浪汉,Rampaging Vagabond
-EFFECT_FOXLAB_VAGABOND_FRUIT_POS,捡起水果时有{2}概率增强自己,{2} chance to enhance youself when you pick up a fruit
+EFFECT_FOXLAB_VAGABOND_FRUIT_POS,捡起水果时有{0}概率增强自己,{0} chance to enhance youself when you pick up a fruit
 EFFECT_FOXLAB_VAGABOND_FRUIT_NEG,捡起水果时有{2}概率使刷新和物品变贵,{2} chance to make reroll or items more expensive when you pick up a fruit
 EFFECT_FOXLAB_FOOD_PRICE,{0}部分[color=#FF8C00]食物类[/color]道具价格,{0} price of some [color=#FF8C00]Food[/color] item
 CHARACTER_FOXLAB_MOM,鬼妈,Mom

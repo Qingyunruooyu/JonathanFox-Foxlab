@@ -1,15 +1,13 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/items/double_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/primary_stats_on_fruit_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "stat_max_hp"
+key = ""
 text_key = "EFFECT_FOXLAB_VAGABOND_FRUIT_POS"
-value = 3
-custom_key = "stats_on_fruit"
+value = 1
+custom_key = ""
 storage_method = 1
 effect_sign = 3
 custom_args = [  ]
-value2 = 1.0
-sum_strategy = 0

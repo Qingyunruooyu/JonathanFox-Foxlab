@@ -336,13 +336,12 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, args)
 	if not _cleaning_up and args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
 		var player_index = args.killed_by_player_index
-		var player:Player = _players[player_index]
 		for near_effect in RunData.get_player_effect(Utils.foxlab_heal_when_kill_nearby_hash, player_index):
 			if not Utils.get_chance_success(near_effect[2] / 100.0):
 				continue
+			var player = _players[player_index]
 			var dist_to_player = enemy.global_position.distance_squared_to(player.global_position)
-			if dist_to_player <= Utils.FOXLAB_BASE_NEARBY_KILL_DIST * Utils.FOXLAB_BASE_NEARBY_KILL_DIST and \
-				WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index):
+			if dist_to_player <= pow(Utils.FOXLAB_BASE_NEARBY_KILL_DIST + WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index), 2):
 				if player.on_healing_effect(1, Utils.item_foxlab_inner_indomitable_hash) <= 0:
 					RunData.add_gold(1, player_index)
 					RunData.add_tracked_value(player_index, Utils.item_foxlab_inner_indomitable_hash, 1, 1)

@@ -243,6 +243,7 @@ STAT_LEVELS,目前等级,Current Level
 EFFECT_FOXLAB_STARTING_ITEM_LIMITED,初始拥有{0}{1}（第{2}波结束后失效）,You start with {0} {1} (stop working at wave {2})
 EFFECT_FOXLAB_TICK_TOCK,获得此道具后，[color=#FF8C00]主要[/color]和[color=#FF8C00]次要[/color]属性面板的数值会分别整体[color=#FF8C00]上移[/color]一行（顶行属性会转到底行）,Move upward digits in [color=#FF8C00]Primary[/color] and [color=#FF8C00]Secondary[/color] stat panel when you get this item (Top row goes to bottom)
 EFFECT_FOXLAB_TOCK_TICK,获得此道具后，[color=#FF8C00]主要[/color]和[color=#FF8C00]次要[/color]属性面板的数值会分别整体[color=#FF8C00]下移[/color]一行（底行属性会转到顶行）,Move downward digits in [color=#FF8C00]Primary[/color] and [color=#FF8C00]Secondary[/color] stat panel when you get this item (Bottom row goes to top)
+EFFECT_FOXLAB_STAT_IGNORE_IN_SWAP,数值移动会跳过修改减少100%的属性：,Stats whose modifications are reduced by 100% are ignored in moving:
 CHARACTER_FOXLAB_SURVIVOR,砺练者,Survivor
 ITEM_FOXLAB_SLOW_AND_STEADY_WINS,水滴石穿,Slow and Steady Wins
 EFFECT_FOXLAB_EXTRA_BOSSES_WITH_CHANCE,随机挑选{1}个最终头目，下场敌袭期间每{0}秒每个头目各有{2}几率登场,"Randomly pick up {1} final Bosses, {2} chance individually for them to appear for every {0} seconds during the next wave"

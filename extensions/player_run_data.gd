@@ -22,6 +22,42 @@ static func init_foxlab_stats() -> Dictionary:
 			Utils.item_foxlab_eggs_hash: 0,
 		}
 
+# 这个函数是因为JSON文件不区分int 和float，而Effect序列化/反序列化中，只有value成员做了特殊处理，强制转成int，其他
+# int成员反序列化回来时（如DoubleValueEffect、PercentDamageEffect等），会当做float类型，如果这些effect的apply又是直接
+# append一个array，那么unapply的时候，尽管数值相等，但类型不相同，导致unapply实际上无事发生
+func _foxlab_adjust_non_float_to_int(item_data):
+	for item_effect in item_data.effects:
+		var orig_effect = null
+		if Utils.foxlab_effect_id_dict.has(item_effect.get_id()):
+			orig_effect = Utils.foxlab_effect_id_dict[item_effect.get_id()]
+		else:
+			# 节约一点资源，StructureEffect和PetEffect是append(self)类型，实际上不会涉及
+			if "is_pet" in item_effect or "is_structure" in item_effect:
+				Utils.foxlab_effect_id_dict[item_effect.get_id()] = null
+				continue
+			var found = false
+			for effect in ItemService.effects:
+				if effect.get_id() == item_effect.get_id():
+					orig_effect = effect
+					Utils.foxlab_effect_id_dict[item_effect.get_id()] = orig_effect
+					found = true
+					break
+			if not found:
+				Utils.foxlab_effect_id_dict[item_effect.get_id()] = null
+
+		if orig_effect == null:
+			continue
+
+		var need_adjust = false
+		for prop in orig_effect.get_script_property_list():
+			var name = prop["name"]
+			var value = item_effect.get(name)
+			if value is float and prop["type"] == TYPE_INT:
+				print("item: %s, effect: %s, member: %s changed from float to int: %d" % [item_data.my_id, item_effect.get_id(), name, value])
+				item_effect.set(name, int(value))
+				need_adjust = true
+		if not need_adjust:
+			Utils.foxlab_effect_id_dict[item_effect.get_id()] = null
 
 func _foxlab_deserialize_item(items: Array, item_dict:Dictionary):
 	var item_data = ItemService.get_element_safe(items, item_dict.my_id)
@@ -30,6 +66,7 @@ func _foxlab_deserialize_item(items: Array, item_dict:Dictionary):
 	if item_data != null:
 		item_data = item_data.duplicate()
 		item_data.deserialize_and_merge(item_dict)
+		_foxlab_adjust_non_float_to_int(item_data)
 		return item_data
 	return null
 
@@ -151,11 +188,17 @@ func deserialize(data: Dictionary):
 	if not memory.empty():
 		for key in memory.keys():
 			effects[key] = memory[key]
+
+	for item in items:
+		_foxlab_adjust_non_float_to_int(item)
+	for weapon in weapons:
+		_foxlab_adjust_non_float_to_int(weapon)
 	return self
 
 # 切换面具角色需要移除的角色/道具，如果是对象类型（构筑物、爆炸、恶魔等），像武器一样能正确地回收
 func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> void :
 	var prev_items = []
+	var already_added = {}
 	for meta in foxlab_mask_meta:
 		for prev in meta.prevs:
 			if prev is Array: # [id_hash, curse_factor]
@@ -173,19 +216,24 @@ func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> 
 				if item_data.my_id_hash == prev_items[i][0]  or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_items[i][0] in Keys.item_builder_turret_n_hash):
 					items_indices[i] = item_data
 					elements.push_back(item_data)
+					already_added[item_data] = true
 					break
 
 			if items_indices.size() == prev_items.size():
 				break
 
-	var builder_turret_items = []
+	var struct_pet_hash = {}
+	var struct_pet_items = []
 	for item_data in items:
-		if item_data.my_id_hash in Keys.item_builder_turret_n_hash and not item_data in elements:
-			builder_turret_items.push_back(item_data)
-	if not builder_turret_items.empty():
+		# 实际上ItemExplodingEffect、ConvertStatsEffect等也需要，但为了效率、foxlab不会遇到需要收回这类道具的情况
+		if not item_data.my_id_hash in struct_pet_hash:
+			struct_pet_hash[item_data.my_id_hash] = item_data.is_pet_item() or item_data.is_structure_item()
+		if struct_pet_hash[item_data.my_id_hash] and not item_data in already_added:
+			struct_pet_items.push_back(item_data)
+	if not struct_pet_items.empty():
 		if prev_items.empty():
 			elements = elements.duplicate()
-		elements.append_array(builder_turret_items)
+		elements.append_array(struct_pet_items)
 
 	._cache_effect_hashes(elements, weapon_effect_hashes)
 

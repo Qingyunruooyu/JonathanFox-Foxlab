@@ -160,6 +160,9 @@ var foxlab_gaster_group = null
 
 var foxlab_evil_mob_units = []
 
+#反序列化之后，物品回收相关，快速查找effect id对应的effect对象
+var foxlab_effect_id_dict = {}
+
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
 	if player_index != RunData.DUMMY_PLAYER_INDEX :
@@ -223,29 +226,34 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 			break;
 	return ret_groups
 
+const FOXLAB_EXTRA_BOSS_PATH = "res://mods-unpacked/Alexandre-BeyondDanger/content/enemies/boss/architect/architect.tscn"
 func foxlab_pickup_random_bosses() -> Array:
-	var bosses = ItemService.bosses
-	if bosses.size() > FOXLAB_BOSS_SPAWN_NUM:
-		bosses = bosses.duplicate()
-		bosses.shuffle()
-		var bosses_tmp = []
-		for i in FOXLAB_BOSS_SPAWN_NUM:
-			bosses_tmp.append(bosses[i])
-		bosses = bosses_tmp
-	elif bosses.size() < FOXLAB_BOSS_SPAWN_NUM:
-		bosses = bosses.duplicate()
-		while bosses.size() < FOXLAB_BOSS_SPAWN_NUM:
-			bosses.append(Utils.get_rand_element(ItemService.bosses))
+	var bosses = ItemService.bosses.duplicate()
+	var extra_boss = null
+	if ResourceLoader.exists(FOXLAB_EXTRA_BOSS_PATH):
+		extra_boss = load(FOXLAB_EXTRA_BOSS_PATH)
+		bosses.append({"scene": extra_boss})
 
+	if bosses.size() != FOXLAB_BOSS_SPAWN_NUM:
+		if bosses.size() > FOXLAB_BOSS_SPAWN_NUM:
+			bosses.shuffle()
+			bosses = bosses.slice(0, FOXLAB_BOSS_SPAWN_NUM - 1)
+		else:
+			while bosses.size() < FOXLAB_BOSS_SPAWN_NUM:
+				bosses.append(Utils.get_rand_element(ItemService.bosses))
+
+	assert(bosses.size() == FOXLAB_BOSS_SPAWN_NUM)
 	var group = preload("res://zones/common/elite/group_elite.tres").duplicate()
 	group.repeating_interval = FOXLAB_BOSS_INTERVAL
 	group.repeating = 999
+	var units = []
 	for boss in bosses:
 		var wave_unit_data = WaveUnitData.new()
 		wave_unit_data.type = EntityType.BOSS
 		wave_unit_data.spawn_chance = FOXLAB_BOSS_SPAWN_CHANCE / 100.0
 		wave_unit_data.unit_scene = boss.scene
-		group.wave_units_data.append(wave_unit_data)
+		units.append(wave_unit_data)
+	group.wave_units_data = units
 	return [group]
 
 func foxlab_pickup_random_elites(is_unknown: bool) -> Array:
@@ -259,7 +267,7 @@ func foxlab_pickup_random_elites(is_unknown: bool) -> Array:
 			wave_unit_data.unit_scene = foxlab_unknown_elites.pick_random()
 	if wave_unit_data.unit_scene == null:
 		wave_unit_data.unit_scene = ItemService.elites.pick_random().scene
-	group.wave_units_data.append(wave_unit_data)
+	group.wave_units_data = [wave_unit_data]
 	return [group]
 
 func foxlab_generate_loot_alien_group_data(num: int, wave_timer)->Array:

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/items/stat_gains_modification_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/primary_stat_gains_modification_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
@@ -11,5 +11,5 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
+stats_exception = [ "stat_curse" ]
 stat_displayed = "STAT_FOXLAB_PRIMARY_EXCEPT_CURSE"
-stats_modified = [ "stat_percent_damage", "stat_ranged_damage", "stat_melee_damage", "stat_elemental_damage", "stat_max_hp", "stat_luck", "stat_armor", "stat_crit_chance", "stat_harvesting", "stat_speed", "stat_range", "stat_engineering", "stat_dodge", "stat_attack_speed", "stat_hp_regeneration", "stat_lifesteal" ]

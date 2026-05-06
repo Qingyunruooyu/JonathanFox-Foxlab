@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=151 format=2]
+[gd_resource type="Resource" load_steps=154 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
@@ -150,6 +150,9 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/通缉令未知/通缉令_data.tres" type="Resource" id=148]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/odd_eyed_effect.gd" type="Script" id=149]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/primary_stats_on_fruit_effect.gd" type="Script" id=150]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/gain_stat_for_primary_stat_item.gd" type="Script" id=151]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/all_or_nothing_effect.gd" type="Script" id=152]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/primary_stat_gains_modification_effect.gd" type="Script" id=153]
 
 [resource]
 script = ExtResource( 1 )
@@ -161,7 +164,7 @@ upgrades = [  ]
 consumables = [  ]
 elites = [  ]
 difficulties = [  ]
-effects = [ ExtResource( 6 ), ExtResource( 116 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 147 ), ExtResource( 125 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 124 ), ExtResource( 112 ), ExtResource( 145 ), ExtResource( 120 ), ExtResource( 118 ), ExtResource( 149 ), ExtResource( 150 ), ExtResource( 126 ), ExtResource( 135 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 146 ), ExtResource( 104 ), ExtResource( 117 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 121 ), ExtResource( 106 ) ]
+effects = [ ExtResource( 152 ), ExtResource( 6 ), ExtResource( 116 ), ExtResource( 2 ), ExtResource( 113 ), ExtResource( 147 ), ExtResource( 125 ), ExtResource( 151 ), ExtResource( 114 ), ExtResource( 107 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 124 ), ExtResource( 112 ), ExtResource( 145 ), ExtResource( 120 ), ExtResource( 118 ), ExtResource( 149 ), ExtResource( 150 ), ExtResource( 153 ), ExtResource( 126 ), ExtResource( 135 ), ExtResource( 105 ), ExtResource( 103 ), ExtResource( 146 ), ExtResource( 104 ), ExtResource( 117 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 121 ), ExtResource( 106 ) ]
 stats = [ ExtResource( 131 ), ExtResource( 133 ), ExtResource( 129 ), ExtResource( 138 ), ExtResource( 140 ), ExtResource( 128 ), ExtResource( 130 ), ExtResource( 139 ), ExtResource( 137 ), ExtResource( 143 ), ExtResource( 142 ), ExtResource( 132 ), ExtResource( 108 ), ExtResource( 141 ), ExtResource( 136 ), ExtResource( 134 ) ]
 extra_banned_item = {
 "consumable": [ "item_foxlab_omnic_crisis" ],

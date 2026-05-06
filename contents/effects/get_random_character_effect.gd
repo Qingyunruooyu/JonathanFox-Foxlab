@@ -6,7 +6,7 @@ const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
 const VALUE_BASE = 2
 # character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_foxlab_survivor, character_foxlab_infernal_machine
-# character_foxlab_architect
+# character_foxlab_architect, character_foxlab_trap_master, character_foxlab_alchemist
 var debug_item_name: Array = []
 var curse_character: bool = false
 

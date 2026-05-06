@@ -7,6 +7,9 @@ func apply(_player_index: int) -> void:
 	pass
 
 func unapply(player_index: int) -> void:
+	call_deferred("deferred_unapply", player_index)
+
+func deferred_unapply(player_index) -> void:
 	var player_items_raw:Array = RunData.get_player_items_ref(player_index)
 	 #要移除的往往是新获得的物品
 	var items_to_remove: = []

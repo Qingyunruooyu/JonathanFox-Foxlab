@@ -222,18 +222,9 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 	return ._get_rand_item_for_wave(wave, player_index, type, args)
 
 func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: int) -> Array:
-	# 武器栏升级优先
-	var weapon_slot_upgrades = RunData.get_player_effect(Keys.weapon_slot_upgrades_hash, player_index)
-	var current_weapon_slots = RunData.get_player_effect(Keys.weapon_slot_hash, player_index)
-	if (weapon_slot_upgrades > 0 and current_weapon_slots < weapon_slot_upgrades) or \
-		not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
-		return .get_upgrades(level, number, old_upgrades, player_index)
-
-	# Fantasy MOD 转职优先
-	if RunData.has_method("fa_get_current_job"):
-		if (RunData.current_wave == 5 and RunData.fa_get_current_job(0, player_index) == null) or \
-			(RunData.current_wave == 15 and RunData.fa_get_current_job(1, player_index) == null):
-			return .get_upgrades(level, number, old_upgrades, player_index)
+	var upgrades = .get_upgrades(level, number, old_upgrades, player_index)
+	if not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
+		return upgrades
 
 	var owned_items: Array = RunData.get_player_items(player_index)
 	for locked_item in RunData.get_player_locked_shop_items(player_index):
@@ -244,22 +235,19 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 	for upgrade in old_upgrades:
 		if upgrade.has_meta("foxlab_item"):
 			args.excluded_items.push_back([upgrade.get_meta("foxlab_item"), 0])
-	if level % 5 == 0:
-		if level >= 25:
-			args.fixed_tier = Tier.LEGENDARY
-		elif level == 5:
-			args.fixed_tier =  Tier.UNCOMMON
-		else:
-			args.fixed_tier = Tier.RARE
 	var items_ret = []
-	for i in number:
-		var item = _get_rand_item_for_wave(level, player_index, TierData.ITEMS, args)
-		args.excluded_items.push_back([item, 0])
-		var upgrade = UpgradeData.new()
-		upgrade.icon = item.icon
-		upgrade.deserialize_and_merge(item.serialize())
-		upgrade.upgrade_id = item.my_id
-		upgrade.upgrade_id_hash = item.my_id_hash
-		upgrade.set_meta("foxlab_item", item)
-		items_ret.append(upgrade)
+	for base_upgrade in upgrades:
+		if base_upgrade.upgrade_id_hash == weapon_slot_upgrade_data.upgrade_id_hash:
+			items_ret.append(base_upgrade)
+		else:
+			args.fixed_tier = base_upgrade.tier
+			var item = _get_rand_item_for_wave(level, player_index, TierData.ITEMS, args)
+			args.excluded_items.push_back([item, 0])
+			var upgrade = UpgradeData.new()
+			upgrade.icon = item.icon
+			upgrade.deserialize_and_merge(item.serialize())
+			upgrade.upgrade_id = item.my_id
+			upgrade.upgrade_id_hash = item.my_id_hash
+			upgrade.set_meta("foxlab_item", item)
+			items_ret.append(upgrade)
 	return items_ret

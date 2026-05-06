@@ -21,7 +21,7 @@ func apply(player_index: int) -> void:
 
 func _remove_item(player_index: int, item_id_hash: int, rm_count: int) -> int :
 	if RunData.get_nb_item(item_id_hash, player_index) > 0:
-		var item_to_rm =  ItemService.get_element(ItemService.items, item_id_hash)
+		var item_to_rm =  ItemService.get_element(RunData.get_player_items_ref(player_index), item_id_hash)
 		while rm_count < value and RunData.get_nb_item(item_id_hash, player_index) > 0:
 			RunData.remove_item(item_to_rm, player_index)
 			rm_count = rm_count + 1
@@ -30,7 +30,9 @@ func _remove_item(player_index: int, item_id_hash: int, rm_count: int) -> int :
 func unapply(player_index: int) -> void:
 	if not is_item_added:
 		return
+	call_deferred("deferred_unapply", player_index)
 
+func deferred_unapply(player_index) -> void:
 	if key_hash in Keys.item_builder_turret_n_hash:
 		var rm_count = 0
 		for i in range(4):

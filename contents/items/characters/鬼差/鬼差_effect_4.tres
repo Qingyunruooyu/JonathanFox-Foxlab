@@ -36,6 +36,6 @@ custom_key = ""
 storage_method = 0
 effect_sign = 1
 custom_args = [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ]
-nb_stat_scaled = 12.0
+nb_stat_scaled = 12
 stat_scaled = "materials"
 perm_stats_only = false

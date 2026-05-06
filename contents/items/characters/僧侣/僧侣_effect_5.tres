@@ -11,5 +11,5 @@ custom_key = "gain_stat_for_every_step_after_equip"
 storage_method = 1
 effect_sign = 3
 custom_args = [  ]
-value2 = 150.0
+value2 = 150
 sum_strategy = 0

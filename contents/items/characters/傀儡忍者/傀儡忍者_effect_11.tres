@@ -8,6 +8,6 @@ key = "crit_chance_cap"
 text_key = "effect_crit_chance_cap"
 value = 15
 custom_key = ""
-storage_method = 2.0
+storage_method = 2
 effect_sign = 1
 custom_args = [  ]

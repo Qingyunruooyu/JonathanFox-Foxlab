@@ -8,6 +8,6 @@ key = "item_foxlab_angel"
 text_key = "[EMPTY]"
 value = -2
 custom_key = "increase_tier_on_reroll"
-storage_method = 1.0
+storage_method = 1
 effect_sign = 2
 custom_args = [  ]

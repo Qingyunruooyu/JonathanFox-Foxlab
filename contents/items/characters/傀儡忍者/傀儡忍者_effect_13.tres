@@ -13,4 +13,4 @@ effect_sign = 3
 custom_args = [  ]
 pct_converted = 0.99
 to_stat = "no_heal"
-to_value = -1.0
+to_value = -1

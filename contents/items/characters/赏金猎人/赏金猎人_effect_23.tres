@@ -28,6 +28,6 @@ custom_key = ""
 storage_method = 0
 effect_sign = 0
 custom_args = [ SubResource( 2 ), SubResource( 1 ) ]
-nb_stat_scaled = 2.0
+nb_stat_scaled = 2
 stat_scaled = "legendary_item"
 perm_stats_only = false

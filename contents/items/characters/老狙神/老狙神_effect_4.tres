@@ -11,6 +11,6 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-weapon_type = 0.0
+weapon_type = 0
 stat_displayed_name = ""
 stat_name = "max_range"

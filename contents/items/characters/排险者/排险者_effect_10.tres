@@ -13,4 +13,4 @@ effect_sign = 2
 custom_args = [  ]
 pct_converted = 50.0
 to_stat = "minimum_weapons_in_shop"
-to_value = 1.0
+to_value = 1

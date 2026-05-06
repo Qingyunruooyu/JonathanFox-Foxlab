@@ -13,4 +13,4 @@ effect_sign = 3
 custom_args = [  ]
 pct_converted = 17.0
 to_stat = "weapon_slot"
-to_value = 2.0
+to_value = 2

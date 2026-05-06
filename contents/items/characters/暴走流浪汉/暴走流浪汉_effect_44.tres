@@ -11,5 +11,5 @@ custom_key = "stats_on_fruit"
 storage_method = 1
 effect_sign = 3
 custom_args = [  ]
-value2 = 1.0
+value2 = 1
 sum_strategy = 0

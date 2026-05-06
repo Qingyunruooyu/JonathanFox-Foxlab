@@ -8,6 +8,6 @@ key = "stat_percent_damage"
 text_key = "EFFECT_FOXLAB_UPGRADE_RANDOM_WEAPON"
 value = -100
 custom_key = "upgrade_random_weapon"
-storage_method = 4.0
+storage_method = 4
 effect_sign = 3
 custom_args = [  ]

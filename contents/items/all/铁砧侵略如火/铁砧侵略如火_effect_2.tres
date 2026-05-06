@@ -8,6 +8,6 @@ key = "extra_loot_aliens_next_wave"
 text_key = "effect_upgrade_random_weapon"
 value = 1
 custom_key = "upgrade_random_weapon"
-storage_method = 4.0
+storage_method = 4
 effect_sign = 3
 custom_args = [  ]

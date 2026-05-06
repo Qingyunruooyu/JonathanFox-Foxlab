@@ -11,5 +11,5 @@ custom_key = "temp_stats_while_moving"
 storage_method = 1
 effect_sign = 3
 custom_args = [  ]
-value2 = 15.0
+value2 = 15
 sum_strategy = 0

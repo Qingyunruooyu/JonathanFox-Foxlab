@@ -36,6 +36,6 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ]
-nb_stat_scaled = 14.0
+nb_stat_scaled = 14
 stat_scaled = "stat_curse"
 perm_stats_only = false

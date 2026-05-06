@@ -13,4 +13,4 @@ effect_sign = 3
 custom_args = [  ]
 pct_converted = 50.0
 to_stat = "knockback"
-to_value = 0.0
+to_value = 0

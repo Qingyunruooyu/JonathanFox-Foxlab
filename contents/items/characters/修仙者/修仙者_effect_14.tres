@@ -13,4 +13,4 @@ effect_sign = 2
 custom_args = [  ]
 pct_converted = 50.0
 to_stat = "gain_stat_elemental_damage"
-to_value = 10.0
+to_value = 10

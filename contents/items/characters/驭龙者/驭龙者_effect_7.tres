@@ -17,6 +17,6 @@ key = "item_foxlab_spacetime_anchor"
 text_key = "effect_guaranteed_shop_item"
 value = 1
 custom_key = "guaranteed_shop_items"
-storage_method = 4.0
+storage_method = 4
 effect_sign = 0
 custom_args = [ SubResource( 11 ) ]

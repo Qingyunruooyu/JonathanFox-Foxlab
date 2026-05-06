@@ -11,5 +11,5 @@ custom_key = "gain_stat_when_attack_killed_enemies"
 storage_method = 1
 effect_sign = 2
 custom_args = [  ]
-value2 = 10.0
+value2 = 10
 sum_strategy = 0

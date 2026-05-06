@@ -8,6 +8,6 @@ key = "foxlab_item_steal_warmhole_spawn"
 text_key = "EFFECT_FOXLAB_ITEM_STEAL_WARMHOLE_SPAWN"
 value = 2
 custom_key = ""
-storage_method = 0.0
+storage_method = 0
 effect_sign = 2
 custom_args = [  ]

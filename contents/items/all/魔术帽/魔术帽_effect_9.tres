@@ -17,6 +17,6 @@ key = "max_weapon_tier"
 text_key = "[EMPTY]"
 value = 1
 custom_key = ""
-storage_method = 0.0
+storage_method = 0
 effect_sign = 2
 custom_args = [ SubResource( 1 ) ]

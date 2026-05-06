@@ -8,6 +8,6 @@ key = "xp_gain"
 text_key = "effect_upgrade_random_weapon"
 value = 20
 custom_key = "upgrade_random_weapon"
-storage_method = 4.0
+storage_method = 4
 effect_sign = 0
 custom_args = [  ]

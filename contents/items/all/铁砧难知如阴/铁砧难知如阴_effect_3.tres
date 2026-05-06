@@ -8,6 +8,6 @@ key = "dodge_cap"
 text_key = "effect_upgrade_random_weapon"
 value = 5
 custom_key = "upgrade_random_weapon"
-storage_method = 4.0
+storage_method = 4
 effect_sign = 3
 custom_args = [  ]

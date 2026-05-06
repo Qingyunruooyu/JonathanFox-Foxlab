@@ -13,4 +13,4 @@ effect_sign = 1
 custom_args = [  ]
 pct_converted = 100.0
 to_stat = "dodge_cap"
-to_value = 70.0
+to_value = 70

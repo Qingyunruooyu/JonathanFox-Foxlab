@@ -36,6 +36,6 @@ custom_key = ""
 storage_method = 0
 effect_sign = 5
 custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ]
-nb_stat_scaled = 1.0
+nb_stat_scaled = 1
 stat_scaled = "item_foxlab_tortoise_shell"
 perm_stats_only = false

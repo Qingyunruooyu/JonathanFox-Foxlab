@@ -8,6 +8,6 @@ key = "stronger_elites_on_kill"
 text_key = ""
 value = 5
 custom_key = ""
-storage_method = 0.0
+storage_method = 0
 effect_sign = 1
 custom_args = [  ]

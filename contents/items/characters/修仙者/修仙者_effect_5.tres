@@ -13,4 +13,4 @@ effect_sign = 5
 custom_args = [  ]
 pct_converted = 100.0
 to_stat = "stat_curse"
-to_value = -2.0
+to_value = -2

@@ -8,6 +8,6 @@ key = "stat_percent_damage"
 text_key = ""
 value = 25
 custom_key = ""
-storage_method = 0.0
+storage_method = 0
 effect_sign = 0
 custom_args = [  ]

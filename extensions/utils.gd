@@ -139,8 +139,11 @@ var foxlab_ignored_floating_stat_hash = {
 	foxlab_cultivator_reset_hash: 0,
 	foxlab_cultivator_level_hash: 0,
 	}
+# primary stat gain -> primary stat
 var foxlab_primary_stat_gain_map = {}
+# stats in order of stat panel
 var foxlab_stats_in_container = []
+# tier COMMON level up value of primary (defaults to 1)
 var foxlab_primary_stat_level_up_map = {}
 var foxlab_structure_stats = {
 		Keys.structure_range_hash: Keys.stat_structure_range_hash,
@@ -192,6 +195,7 @@ func _foxlab_init_primary_stat_gain_map():
 		foxlab_primary_stat_gain_map[Keys.generate_hash(gain_stat)] = stat
 
 ####### 生成敌人相关 ##########
+const FOXLAB_DRAGON_FISH_PATH = "res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres"
 func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 	var ret_groups = []
 	var extra_group_chance = 0.01
@@ -206,12 +210,13 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 	for groups in [zone_data.groups_data_in_all_waves, zone_data.horde_groups]:
 		if get_chance_success(extra_group_chance):
 			ret_groups.append(get_rand_element(groups))
-	if get_chance_success(extra_group_chance / 2.0):
-		if foxlab_gaster_group == null:
-			# preload会提前加载enemy.gd，导致兼容性问题
-			foxlab_gaster_group = load("res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres")
-		ret_groups.append(foxlab_gaster_group)
-		ret_groups.append(foxlab_gaster_group)
+	if ResourceLoader.exists(FOXLAB_DRAGON_FISH_PATH):
+		if get_chance_success(extra_group_chance / 2.0):
+			if foxlab_gaster_group == null:
+				# preload会提前加载enemy.gd，导致兼容性问题
+				foxlab_gaster_group = load(FOXLAB_DRAGON_FISH_PATH)
+			ret_groups.append(foxlab_gaster_group)
+			ret_groups.append(foxlab_gaster_group)
 	# var min_wave = min(9, RunData.current_wave) as int
 	# var max_wave = clamp(RunData.current_wave*2.5, 1, zone_data.waves_data.size()) as int
 	var min_wave = 11
@@ -369,6 +374,10 @@ func foxlab_get_stats_in_container():
 ######## 扩展 ######
 func reset_stat_keys() -> void :
 	.reset_stat_keys()
+	foxlab_item_wanted.clear()
+	foxlab_item_wanted_hash.clear()
+	foxlab_unknown_elites.clear()
+	foxlab_evil_mob_units.clear()
 	foxlab_stats_in_container.clear()
 	foxlab_primary_stat_level_up_map.clear()
 	foxlab_primary_stat_gain_map.clear()

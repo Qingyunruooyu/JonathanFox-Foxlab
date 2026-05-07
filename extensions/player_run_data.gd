@@ -250,6 +250,9 @@ static func init_stats(all_null_values: bool = false)->Dictionary:
 static func init_effects()->Dictionary:
 	if (not Utils == null) :
 		var vanilla_effects = .init_effects()
+		for gain_stat in Utils.foxlab_primary_stat_gain_map:
+			if not gain_stat in vanilla_effects:
+				vanilla_effects[gain_stat] = 0
 		var new_effects: = {
 			Utils.foxlab_gain_xp_gain_hash: 0,
 			Utils.foxlab_gain_enemy_health_hash: 0,

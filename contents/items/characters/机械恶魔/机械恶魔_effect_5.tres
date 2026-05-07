@@ -16,5 +16,5 @@ to_stat = "structure_attack_speed"
 to_value = 1
 offset = 0
 keep_value = -1
-to_stat_scaling = 1
+to_stat_scaling = 1.0
 is_negative_key = false

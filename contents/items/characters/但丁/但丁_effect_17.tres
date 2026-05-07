@@ -1,16 +1,17 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://effects/items/convert_stat_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/task_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/task_effects/dante_penalty_effect.tres" type="Resource" id=2]
 
 [resource]
 script = ExtResource( 1 )
 key = "foxlab_dante_states"
 text_key = "[EMPTY]"
-value = 1
-custom_key = "convert_stats_end_of_wave"
+value = 2
+custom_key = "foxlab_dante_penalty"
 storage_method = 1
 effect_sign = 2
 custom_args = [  ]
-pct_converted = 50.0
-to_stat = "gain_stat_max_hp"
-to_value = -200
+sub_effects = [ ExtResource( 2 ) ]
+max_execs = 1
+comparison = 0

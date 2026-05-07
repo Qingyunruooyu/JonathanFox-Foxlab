@@ -21,8 +21,8 @@ func get_args(_player_index: int) -> Array:
 func serialize() -> Dictionary:
 	var serialized = .serialize()
 
-	serialized.offset = offset
-	serialized.keep_value = keep_value
+	serialized.offset = str(offset)
+	serialized.keep_value = str(keep_value)
 	serialized.to_stat_scaling = to_stat_scaling
 	serialized.is_negative_key = is_negative_key
 
@@ -33,7 +33,7 @@ func deserialize_and_merge(serialized: Dictionary) -> void:
 	.deserialize_and_merge(serialized)
 
 	offset = serialized.offset as int
-	keep_value = serialized.keep_value if "keep_value" in serialized else -1
+	keep_value = serialized.keep_value as int
 	to_stat_scaling = serialized.to_stat_scaling
 	is_negative_key = serialized.is_negative_key
 

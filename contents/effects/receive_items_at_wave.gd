@@ -43,9 +43,9 @@ func serialize() -> Dictionary:
 	var serialized = .serialize()
 
 	serialized["foxlab_receive_item_id"] = foxlab_receive_item_id
-	serialized["foxlab_receive_item_wave"] = foxlab_receive_item_wave
+	serialized["foxlab_receive_item_wave"] = str(foxlab_receive_item_wave)
 	serialized["foxlab_cursed_item"] = foxlab_cursed_item
-	serialized["foxlab_receive_item_end_wave"] = foxlab_receive_item_end_wave
+	serialized["foxlab_receive_item_end_wave"] = str(foxlab_receive_item_end_wave)
 
 	return serialized
 
@@ -55,9 +55,9 @@ func deserialize_and_merge(effect: Dictionary) -> void:
 
 	foxlab_receive_item_id = effect.get("foxlab_receive_item_id", "item_acid")
 	foxlab_receive_item_id_hash = Keys.generate_hash(foxlab_receive_item_id)
-	foxlab_receive_item_wave = effect.get("foxlab_receive_item_wave", 5)
+	foxlab_receive_item_wave = effect.get("foxlab_receive_item_wave", 5) as int
 	foxlab_cursed_item = effect.get("foxlab_cursed_item", false)
-	foxlab_receive_item_end_wave = effect.get("foxlab_receive_item_end_wave", -1)
+	foxlab_receive_item_end_wave = effect.get("foxlab_receive_item_end_wave", -1) as int
 
 
 func get_args(_player_index: int) -> Array:

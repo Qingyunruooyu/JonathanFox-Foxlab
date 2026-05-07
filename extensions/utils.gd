@@ -20,14 +20,15 @@ var foxlab_extra_abyss_enemies_hash: int = Keys.generate_hash("foxlab_extra_abys
 var foxlab_extra_loot_aliens_hash: int = Keys.generate_hash("foxlab_extra_loot_aliens")
 var foxlab_extra_evil_mobs_hash: int = Keys.generate_hash("foxlab_extra_evil_mobs")
 var foxlab_poet_next_curse_chance_hash: int = Keys.generate_hash("foxlab_poet_next_curse_chance")
+var foxlab_tasks_hash: int = Keys.generate_hash("foxlab_tasks")
 var foxlab_troubleshooter_crisis_num_hash: int = Keys.generate_hash("foxlab_troubleshooter_crisis_num")
 var foxlab_troubleshooter_temp_hash: int = Keys.generate_hash("foxlab_troubleshooter_temp")
 var foxlab_dante_states_hash: int = Keys.generate_hash("foxlab_dante_states")
+var foxlab_dante_penalty_hash: int = Keys.generate_hash("foxlab_dante_penalty")
 var foxlab_shop_point_hash: int = Keys.generate_hash("foxlab_shop_point")
 var foxlab_shop_point_upgrade_hash: int = Keys.generate_hash("foxlab_shop_point_upgrade")
 var foxlab_shop_vip_hash: int = Keys.generate_hash("foxlab_shop_vip")
 var foxlab_cultivator_level_hash: int = Keys.generate_hash("foxlab_cultivator_level")
-var foxlab_cultivator_reset_hash: int = Keys.generate_hash("foxlab_cultivator_reset")
 var foxlab_extra_bosses_hash: int = Keys.generate_hash("foxlab_extra_bosses")
 var foxlab_extra_elites_hash: int = Keys.generate_hash("foxlab_extra_elites")
 var foxlab_extra_unknown_elites_hash: int = Keys.generate_hash("foxlab_extra_unknown_elites")
@@ -136,7 +137,6 @@ var foxlab_ignored_floating_stat_hash = {
 	foxlab_shop_point_hash: 0,
 	foxlab_shop_point_upgrade_hash: 0,
 	foxlab_shop_vip_hash: 0,
-	foxlab_cultivator_reset_hash: 0,
 	foxlab_cultivator_level_hash: 0,
 	}
 # primary stat gain -> primary stat
@@ -370,6 +370,16 @@ func foxlab_get_stats_in_container():
 		stats_container.queue_free()
 	return foxlab_stats_in_container
 
+func foxlab_try_complete_tasks(player_index: int):
+	var effects = RunData.get_player_effects(player_index)
+	for task in effects[Utils.foxlab_tasks_hash]:
+		if (task.max_execs < 0 or effects[task.custom_key_hash] < task.max_execs):
+			var stat_value = RunData.get_stat(task.key_hash, player_index)
+			if (task.comparison >= 0 and stat_value >= task.value) or\
+				(task.comparison < 0 and stat_value < task.value):
+				effects[task.custom_key_hash] += 1
+				for effect in task.sub_effects:
+					effect.apply(player_index)
 
 ######## 扩展 ######
 func reset_stat_keys() -> void :
@@ -431,6 +441,9 @@ func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> v
 			.convert_stats([effect], player_index, permanent)
 
 	.convert_stats(stats, player_index, permanent)
+
+	if permanent:
+		foxlab_try_complete_tasks(player_index)
 
 func convert_remainder(stats: Array, player_index:int):
 	if stats.empty():

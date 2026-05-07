@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=38 format=2]
+[gd_resource type="Resource" load_steps=35 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_21.tres" type="Resource" id=2]
@@ -29,14 +29,11 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/dante_eyes.tres" type="Resource" id=28]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_14.tres" type="Resource" id=29]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_15.tres" type="Resource" id=30]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_19.tres" type="Resource" id=31]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_0.tres" type="Resource" id=33]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_1.tres" type="Resource" id=35]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_18.tres" type="Resource" id=36]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_3.tres" type="Resource" id=37]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_12.tres" type="Resource" id=39]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_17.tres" type="Resource" id=41]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/但丁/但丁_effect_20.tres" type="Resource" id=42]
 
 [resource]
 script = ExtResource( 9 )
@@ -47,7 +44,7 @@ icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_DANTE"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 37 ), ExtResource( 27 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 4 ), ExtResource( 39 ), ExtResource( 25 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 5 ), ExtResource( 41 ), ExtResource( 36 ), ExtResource( 31 ), ExtResource( 42 ), ExtResource( 2 ), ExtResource( 6 ), ExtResource( 3 ) ]
+effects = [ ExtResource( 37 ), ExtResource( 27 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 4 ), ExtResource( 39 ), ExtResource( 25 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 5 ), ExtResource( 41 ), ExtResource( 2 ), ExtResource( 6 ), ExtResource( 3 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

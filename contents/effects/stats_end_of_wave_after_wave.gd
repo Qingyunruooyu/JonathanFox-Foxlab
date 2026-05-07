@@ -11,8 +11,8 @@ static func get_id() -> String:
 func serialize() -> Dictionary:
 	var serialized = .serialize()
 
-	serialized["starting_wave"] = starting_wave
-	serialized["end_wave"] = end_wave
+	serialized["starting_wave"] = str(starting_wave)
+	serialized["end_wave"] = str(end_wave)
 
 	return serialized
 
@@ -20,8 +20,8 @@ func serialize() -> Dictionary:
 func deserialize_and_merge(effect: Dictionary) -> void:
 	.deserialize_and_merge(effect)
 
-	starting_wave = effect.get("starting_wave", 6)
-	end_wave = effect.get("end_wave", 19)
+	starting_wave = effect.get("starting_wave", 6) as int
+	end_wave = effect.get("end_wave", 19) as int
 
 
 func apply(player_index: int) -> void:

@@ -24,13 +24,7 @@ func _get_transform_chance(player_index: int) -> float:
 	return  max(armor * value2, MIN_TRANSFORM_CHANCE)
 
 func _can_character_be_modified(character: CharacterData) -> bool:
-	if character.resource_path.begins_with("res://items/") or character.resource_path.begins_with("res://dlcs/"):
-		for effect in character.effects:
-			# cyborg, demon
-			if effect is ConvertStatEffect and effect.custom_key_hash == Keys.convert_stats_end_of_wave_hash:
-				return false
-		return true
-	return false
+	return (character.resource_path.begins_with("res://items/") or character.resource_path.begins_with("res://dlcs/"))
 
 func _update_character_bg(character: CharacterData) -> CharacterData:
 	var diff_info = ProgressData.get_character_difficulty_info(character.my_id_hash, RunData.current_zone)

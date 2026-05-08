@@ -137,7 +137,7 @@ EFFECT_FOXLAB_NEXT_WAVE,下波,"Next wave "
 EFFECT_FOXLAB_CRISIS,箱子中各有{0}几率发现3种[color=#FF8C00]危机[/color],{0} chance of finding [color=#FF8C00]Crisis[/color] of 3 kinds in a crate
 EXTRA_LOOT_ALIENS,每波战利品外星人{0},{0} Loot Aliens Each Wave
 EFFECT_FOXLAB_MUTATION,首次持有9危机完成敌袭，激活以下效果（当前{0}）：,You'll active the effects when you survive a wave with 9 crises (currently {0}):
-EFFECT_FOXLAB_MUTATION_DESTROY_WEAPONS,[color=#FF8C00]首次[/color]进入商店时销毁所有武器,Destroy all weapons the [color=#FF8C00]first time [/color]you enter the shop
+EFFECT_FOXLAB_MUTATION_DESTROY_WEAPONS,[color=#FF8C00]首次[/color]敌袭结束时销毁所有武器,Destroy all weapons the [color=#FF8C00]first time [/color]you survive a wave
 CHARACTER_FOXLAB_INVESTOR,股民,Investor
 EFFECT_FOXLAB_PURCHASING_POWER,购买力,Purchasing power
 GAIN_STAT_MAX_HP,% [color=#FF8C00]最大生命值[/color]的修改,% [color=#FF8C00]Max HP[/color] Modification

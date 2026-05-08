@@ -15,3 +15,4 @@ custom_args = [  ]
 sub_effects = [ ExtResource( 2 ) ]
 max_execs = 1
 comparison = 0
+default_text_mode = true

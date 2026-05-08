@@ -16,9 +16,9 @@ func get_args(_player_index: int) -> Array:
 			return [str(RunData.get_player_effect(key_hash, _player_index)), tr(key.to_upper())]
 		4: # 效果而非属性，负数置为0
 			return [str(max(0, RunData.get_player_effect(key_hash, _player_index))), tr(key.to_upper())]
-		5: # 效果而非属性，反向布尔，排险者的异变
+		5: # 效果而非属性，带颜色布尔
 			var state_crisis = ""
-			if RunData.get_player_effect(key_hash, _player_index) < 0:
+			if RunData.get_player_effect(key_hash, _player_index) > 0:
 				state_crisis = "[color=#%s]%s[/color]" % [ProgressData.settings.color_positive, tr("FOXLAB_ENABLE")]
 			else:
 				state_crisis = "[color=#%s]%s[/color]" % [ProgressData.settings.color_negative, tr("FOXLAB_DISABLE")]

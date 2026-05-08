@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "destroy_weapons"
-text_key = "[EMPTY]"
-value = -1
-custom_key = "stats_end_of_wave"
-storage_method = 1
-effect_sign = 2
+key = "extra_loot_aliens"
+text_key = ""
+value = -2
+custom_key = ""
+storage_method = 0
+effect_sign = 1
 custom_args = [  ]

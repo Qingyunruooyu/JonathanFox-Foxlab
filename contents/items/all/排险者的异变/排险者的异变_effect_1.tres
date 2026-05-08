@@ -1,13 +1,25 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=10 format=2]
 
-[ext_resource path="res://effects/weapons/null_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/task_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/mini_weapon_in_shop_effect_3.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/trees_effect_5.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/weapon_tier_effect_4.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/less_loot_aliens_effect_7.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/weapon_slot_effect_2.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/next_level_xp_needed_effect_6.tres" type="Resource" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/destroy_weapons_effect_0.tres" type="Resource" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/primary_stat_gain_effect_1.tres" type="Resource" id=9]
 
 [resource]
 script = ExtResource( 1 )
-key = ""
-text_key = "EFFECT_FOXLAB_MUTATION_DESTROY_WEAPONS"
-value = 0
-custom_key = ""
-storage_method = 0
+key = "foxlab_troubleshooter_crisis_num"
+text_key = "[EMPTY]"
+value = 9
+custom_key = "foxlab_troubleshooter_mutate"
+storage_method = 1
 effect_sign = 3
 custom_args = [  ]
+sub_effects = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ) ]
+max_execs = 1
+comparison = 1
+default_text_mode = false

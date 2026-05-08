@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "foxlab_troubleshooter_crisis_num"
+key = "foxlab_troubleshooter_mutate"
 text_key = "EFFECT_FOXLAB_MUTATION"
 value = 5
 custom_key = ""

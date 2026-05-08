@@ -263,7 +263,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_poet_next_curse_chance_hash: 0,
 			Utils.foxlab_tasks_hash: [],
 			Utils.foxlab_troubleshooter_crisis_num_hash: 0,
-			Utils.foxlab_troubleshooter_temp_hash:0,
+			Utils.foxlab_troubleshooter_mutate_hash:0,
 			Utils.foxlab_dante_states_hash: 0,
 			Utils.foxlab_dante_penalty_hash: 0,
 			Utils.foxlab_shop_point_hash: 0,

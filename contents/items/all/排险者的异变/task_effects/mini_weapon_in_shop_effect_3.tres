@@ -1,10 +1,10 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/weapons/null_effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = ""
+key = "minimum_weapons_in_shop"
 text_key = "effect_minimum_weapon_in_shop"
 value = 1
 custom_key = ""

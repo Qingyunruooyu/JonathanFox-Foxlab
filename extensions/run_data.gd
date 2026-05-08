@@ -104,7 +104,7 @@ func foxlab_forget_item(player_index: int):
 			Utils.reset_stat_cache(player_index)
 			var effects: Array = weapon.effects
 			# 倒着找，只找最后一次记忆的效果段 （孟婆记忆面具，面具换掉孟婆从而保留的效果，不会失去）
-			for i in range(effects.size(), -1, -1):
+			for i in range(effects.size(), 0, -1):
 				if effects[i - 1].custom_key_hash == Utils.foxlab_remembered_effect_begin_hash:
 					while effects.size() >= i:
 						effects.pop_back().unapply(player_index)

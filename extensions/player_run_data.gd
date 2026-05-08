@@ -198,42 +198,34 @@ func deserialize(data: Dictionary):
 # 切换面具角色需要移除的角色/道具，如果是对象类型（构筑物、爆炸、恶魔等），像武器一样能正确地回收
 func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> void :
 	var prev_items = []
-	var already_added = {}
 	for meta in foxlab_mask_meta:
 		for prev in meta.prevs:
 			if prev is Array: # [id_hash, curse_factor]
 				prev_items.append(prev)
 
-	if not prev_items.empty():
-		elements = elements.duplicate()
-		var items_indices:Dictionary = {}
-		for index in range(items.size(), 0, -1):
-			var item_data = items[index - 1]
-			for i in range(prev_items.size()):
-				if items_indices.has(i) or item_data.curse_factor != prev_items[i][1]:
-					continue
-
-				if item_data.my_id_hash == prev_items[i][0]  or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_items[i][0] in Keys.item_builder_turret_n_hash):
-					items_indices[i] = item_data
-					elements.push_back(item_data)
-					already_added[item_data] = true
-					break
-
-			if items_indices.size() == prev_items.size():
-				break
-
 	var struct_pet_hash = {}
-	var struct_pet_items = []
+	var cache_items = []
 	for item_data in items:
 		# 实际上ItemExplodingEffect、ConvertStatsEffect等也需要，但为了效率、foxlab不会遇到需要收回这类道具的情况
 		if not item_data.my_id_hash in struct_pet_hash:
 			struct_pet_hash[item_data.my_id_hash] = item_data.is_pet_item() or item_data.is_structure_item()
-		if struct_pet_hash[item_data.my_id_hash] and not item_data in already_added:
-			struct_pet_items.push_back(item_data)
-	if not struct_pet_items.empty():
-		if prev_items.empty():
-			elements = elements.duplicate()
-		elements.append_array(struct_pet_items)
+
+		var is_prev = false
+		for i in range(prev_items.size()):
+			if prev_items[i][1] != item_data.curse_factor:
+				continue
+			var prev_item_hash = prev_items[i][0] as int
+			if item_data.my_id_hash == prev_item_hash or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_item_hash in Keys.item_builder_turret_n_hash):
+				cache_items.append(item_data)
+				prev_items.remove(i)
+				is_prev = true
+				break
+		if not is_prev and struct_pet_hash[item_data.my_id_hash]:
+			cache_items.push_back(item_data)
+
+	if not cache_items.empty():
+		elements = elements.duplicate()
+		elements.append_array(cache_items)
 
 	._cache_effect_hashes(elements, weapon_effect_hashes)
 

@@ -208,8 +208,17 @@ func cleanup(player_index: int) -> void:
 		for i in range(prev_items.size()):
 			if items_to_remove.has(i) or item_data.curse_factor != prev_items[i][1]:
 				continue
-
-			if item_data.my_id_hash == prev_items[i][0] or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_items[i][0] in Keys.item_builder_turret_n_hash) :
+			var item_hash = prev_items[i][0] as int
+			if item_data.my_id_hash == item_hash or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and item_hash in Keys.item_builder_turret_n_hash):
+				# 从存档反序列化恢复的游戏，如果初始物品相同且有构筑物等append(self)的效果，需要找到第一个相同的，才不会错位（例如炼丹师+陷阱大师的地雷）
+				# 这是由于RunData.remove_item写得有问题，里面erase的item和unapply_item_effect的item可能不是同一个，只是序列化之后的结果相同
+				# 同理，RunData.remove_weapon也有这个问题，erase的weapon和unapply_item_effect的weapon不一样
+				# 比如只装备6个白扳手，存档退出游戏，然后重进游戏，乱序卖掉其中几个，回到主菜单再回到商店，卖掉所有的，很有可能进游戏之后还有炮塔
+				if RunData.get_nb_item(item_data.my_id_hash, player_index) > 1 and (item_data.is_structure_item() or item_data.is_pet_item()):
+					for same_item in player_items_raw:
+						if same_item.my_id_hash == item_data.my_id_hash and same_item.curse_factor == item_data.curse_factor:
+							item_data = same_item
+							break
 				items_to_remove[i] = item_data
 				items_to_remove_order.push_back(item_data)
 				break

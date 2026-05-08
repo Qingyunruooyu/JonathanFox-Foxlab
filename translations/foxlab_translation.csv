@@ -155,7 +155,6 @@ FOXLAB_PROJECTILE_ON_HIT_NUM,受击投射物,projectiles on hit
 EFFECT_FOXLAB_EXPLODE_ON_OVERKILL,敌人受到{3}其最大生命值伤害会爆炸，造成{1}（{2}）伤害,Enemies taking {3} their max health as damage explode for {1} ({2}) damage
 EFFECT_FOXLAB_APPLY_ONLY,当你获得此道具时，永久{0}{1},{0} {1} permanently when you get this item
 CHARACTER_FOXLAB_WAR_MASTER,善战者,War Master
-EFFECT_FOXLAB_MINIMUM_WEAPONS_IN_SHOP,商店通常销售{0}把武器,Shops always sell at least {0} weapons
 EFFECT_FOXLAB_UPGRADE_RANDOM_WEAPON,进入商店时随机升级一把武器。如果无法升级则{0}{1},A random weapon is upgraded when entering a shop. {0} {1} if you have no weapon to upgrade
 EFFECT_FOXLAB_ANVIL,箱子中有{0}几率发现[color=#FF8C00]7[/color]种{1}，进入商店时，{1}按获得顺序依次判定,"{0} chance of finding [color=#FF8C00]7[/color] kinds of {1}; when entering a shop, {1} take effect by obtaining order"
 LIVING_ENEMY,存活敌人,Living Enemy
@@ -213,7 +212,7 @@ FOXLAB_SHOP_VIP,会员等级,VIP Level
 DIFFERENT_ITEM,异种道具,Different Items
 DUPLICATE_ITEM,复制品,Duplicates
 EFFECT_FOXLAB_GAIN_STAT_FOR_EQUIPPED_ITEM_WITH_STAT,每获得[color=#FF8C00]直接[/color]{3}的道具有{0}{1},{0} {1} when getting an item that [color=#FF8C00]literally[/color] {3}
-EFFECT_FOXLAB_SHOPAHOLIC,敌袭结束积分≧[color=#FF8C00]10[/color]时会员升级，{4}{2}、{5}{6},"VIP levels up when Points ≧ [color=#FF8C00]10[/color] at wave end, then {4} {2}, {5} {6}"
+EFFECT_FOXLAB_SHOPAHOLIC,敌袭结束{1}≧{0}时会员升级，{2}{3}、{4}{5},"VIP levels up when {1} ≧ {0} at wave end, then {2} {3}, {4} {5}"
 CHARACTER_FOXLAB_SCHRODINGERS_CAT,薛定谔的猫,Schrödinger's Cat
 EFFECT_FOXLAB_CAT_SHOP_EFFECT,"进入商店时：有{0}几率窃取{1}到{2}次；
 有{3}几率无法锁定，此前锁定的物品购买后[color=#FF8C00]仍被锁定[/color]；

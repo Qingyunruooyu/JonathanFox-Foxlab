@@ -263,11 +263,10 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_poet_next_curse_chance_hash: 0,
 			Utils.foxlab_tasks_hash: [],
 			Utils.foxlab_troubleshooter_crisis_num_hash: 0,
-			Utils.foxlab_troubleshooter_mutate_hash:0,
+			Utils.item_foxlab_trouble_mutation_hash:0,
 			Utils.foxlab_dante_states_hash: 0,
 			Utils.foxlab_dante_penalty_hash: 0,
 			Utils.foxlab_shop_point_hash: 0,
-			Utils.foxlab_shop_point_upgrade_hash: 0,
 			Utils.foxlab_shop_vip_hash: 0,
 			Utils.foxlab_cultivator_level_hash: 0,
 			Utils.foxlab_wave_started_hash: 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加

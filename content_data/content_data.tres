@@ -240,6 +240,7 @@ translation_keys_needing_operator = {
 "effect_foxlab_on_hit_double": [ 0, 2 ],
 "effect_foxlab_reactor": [ 5 ],
 "effect_foxlab_scapegoat_no_heal": [ 0 ],
+"effect_foxlab_shopaholic": [ 2, 4 ],
 "effect_foxlab_spawn_landmine_chance": [ 0 ],
 "effect_foxlab_specific_weapon_class_price": [ 0 ],
 "effect_foxlab_stats_on_frozen_enemy_kill": [ 0 ],

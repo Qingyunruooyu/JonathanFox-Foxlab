@@ -22,11 +22,10 @@ var foxlab_extra_evil_mobs_hash: int = Keys.generate_hash("foxlab_extra_evil_mob
 var foxlab_poet_next_curse_chance_hash: int = Keys.generate_hash("foxlab_poet_next_curse_chance")
 var foxlab_tasks_hash: int = Keys.generate_hash("foxlab_tasks")
 var foxlab_troubleshooter_crisis_num_hash: int = Keys.generate_hash("foxlab_troubleshooter_crisis_num")
-var foxlab_troubleshooter_mutate_hash: int = Keys.generate_hash("foxlab_troubleshooter_mutate")
+var item_foxlab_trouble_mutation_hash: int = Keys.generate_hash("item_foxlab_trouble_mutation")
 var foxlab_dante_states_hash: int = Keys.generate_hash("foxlab_dante_states")
 var foxlab_dante_penalty_hash: int = Keys.generate_hash("foxlab_dante_penalty")
 var foxlab_shop_point_hash: int = Keys.generate_hash("foxlab_shop_point")
-var foxlab_shop_point_upgrade_hash: int = Keys.generate_hash("foxlab_shop_point_upgrade")
 var foxlab_shop_vip_hash: int = Keys.generate_hash("foxlab_shop_vip")
 var foxlab_cultivator_level_hash: int = Keys.generate_hash("foxlab_cultivator_level")
 var foxlab_extra_bosses_hash: int = Keys.generate_hash("foxlab_extra_bosses")
@@ -131,9 +130,6 @@ var foxlab_ignored_floating_stat_hash = {
 	Keys.next_level_xp_needed_hash: 0,
 	Keys.items_price_hash: 0,
 	Keys.reroll_price_hash: 0,
-	foxlab_shop_point_hash: 0,
-	foxlab_shop_point_upgrade_hash: 0,
-	foxlab_shop_vip_hash: 0,
 	}
 # primary stat gain -> primary stat
 var foxlab_primary_stat_gain_map = {}
@@ -368,12 +364,14 @@ func foxlab_get_stats_in_container():
 
 func foxlab_try_complete_tasks(player_index: int):
 	var effects = RunData.get_player_effects(player_index)
+	if effects[Utils.foxlab_tasks_hash].empty():
+		return
 	for task in effects[Utils.foxlab_tasks_hash]:
 		if (task.max_execs < 0 or effects[task.custom_key_hash] < task.max_execs):
 			var stat_value = RunData.get_stat(task.key_hash, player_index)
 			if (task.comparison >= 0 and stat_value >= task.value) or\
 				(task.comparison < 0 and stat_value < task.value):
-				effects[task.custom_key_hash] += 1
+				RunData.add_stat(task.custom_key_hash, 1, player_index)
 				for effect in task.sub_effects:
 					effect.apply(player_index)
 

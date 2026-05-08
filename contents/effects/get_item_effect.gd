@@ -21,8 +21,8 @@ func apply(player_index: int) -> void:
 
 func _remove_item(player_index: int, item_id_hash: int, rm_count: int) -> int :
 	if RunData.get_nb_item(item_id_hash, player_index) > 0:
-		var item_to_rm =  ItemService.get_element(RunData.get_player_items_ref(player_index), item_id_hash)
 		while rm_count < value and RunData.get_nb_item(item_id_hash, player_index) > 0:
+			var item_to_rm =  ItemService.get_element(RunData.get_player_items_ref(player_index), item_id_hash)
 			RunData.remove_item(item_to_rm, player_index)
 			rm_count = rm_count + 1
 	return rm_count

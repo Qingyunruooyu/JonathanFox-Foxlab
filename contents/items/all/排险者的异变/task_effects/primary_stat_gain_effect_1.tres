@@ -11,5 +11,5 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-stat_displayed = "STAT_FOXLAB_PRIMARY"
 stats_exception = [  ]
+stat_displayed = "STAT_FOXLAB_PRIMARY"

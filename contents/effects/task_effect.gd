@@ -16,6 +16,14 @@ func apply(player_index: int) -> void:
 func unapply(player_index: int) -> void:
 	RunData.get_player_effect(Utils.foxlab_tasks_hash, player_index).erase(self)
 
+func get_args(player_index: int) -> Array:
+	var args = .get_args(player_index)
+
+	for sub_effect in sub_effects:
+		args.append_array(sub_effect.get_args(player_index))
+
+	return args
+
 func serialize() -> Dictionary:
 	var serialized = .serialize()
 	var serialized_sub_effects := []

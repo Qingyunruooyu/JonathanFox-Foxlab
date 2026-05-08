@@ -1,7 +1,6 @@
-[gd_resource type="Resource" load_steps=31 format=2]
+[gd_resource type="Resource" load_steps=30 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/善战者/善战者_effect_14.tres" type="Resource" id=2]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/善战者/善战者_effect_1.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/善战者/善战者_effect_12.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/善战者/善战者_effect_15.tres" type="Resource" id=5]
 [ext_resource path="res://items/characters/apprentice/apprentice_eyes_appearance.tres" type="Resource" id=6]
@@ -40,7 +39,7 @@ icon = ExtResource( 31 )
 name = "CHARACTER_FOXLAB_WAR_MASTER"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 3 ), ExtResource( 23 ), ExtResource( 21 ), ExtResource( 20 ), ExtResource( 24 ), ExtResource( 30 ), ExtResource( 28 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ) ]
+effects = [ ExtResource( 23 ), ExtResource( 21 ), ExtResource( 20 ), ExtResource( 24 ), ExtResource( 30 ), ExtResource( 28 ), ExtResource( 22 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

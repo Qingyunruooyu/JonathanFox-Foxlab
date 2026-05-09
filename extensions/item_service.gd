@@ -236,8 +236,9 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 		if upgrade.has_meta("foxlab_item"):
 			args.excluded_items.push_back([upgrade.get_meta("foxlab_item"), 0])
 	var items_ret = []
+	var stats_upgrade_map = Utils.foxlab_get_primary_stat_level_up_map()[1]
 	for base_upgrade in upgrades:
-		if base_upgrade.upgrade_id_hash == weapon_slot_upgrade_data.upgrade_id_hash:
+		if not base_upgrade.upgrade_id_hash in stats_upgrade_map:
 			items_ret.append(base_upgrade)
 		else:
 			args.fixed_tier = base_upgrade.tier

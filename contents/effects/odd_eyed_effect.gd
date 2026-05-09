@@ -4,7 +4,7 @@ static func get_id() -> String:
 	return "foxlab_odd_eyes"
 
 func apply_effects_core(player_index: int, apply: bool):
-	var level_up_map = Utils.foxlab_get_primary_stat_level_up_map()
+	var level_up_map = Utils.foxlab_get_primary_stat_level_up_map()[0]
 	var stats_in_panel = Utils.foxlab_get_stats_in_container()[0]
 	var effect = DoubleKeyValueEffect.new()
 	effect.custom_key_hash = Keys.gain_stat_for_equipped_item_with_stat_hash

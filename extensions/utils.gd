@@ -135,8 +135,9 @@ var foxlab_ignored_floating_stat_hash = {
 var foxlab_primary_stat_gain_map = {}
 # stats in order of stat panel
 var foxlab_stats_in_container = []
-# tier COMMON level up value of primary (defaults to 1)
-var foxlab_primary_stat_level_up_map = {}
+# 0: tier COMMON level up value of primary (defaults to 1)
+# 1: basic upgrade id
+var foxlab_primary_stat_level_up_map = []
 var foxlab_structure_stats = {
 		Keys.structure_range_hash: Keys.stat_structure_range_hash,
 		Keys.structure_percent_damage_hash: Keys.stat_structure_percent_damage_hash
@@ -332,18 +333,21 @@ func foxlab_queue_free_weapon(weapon: Node2D):
 
 func foxlab_get_primary_stat_level_up_map():
 	if foxlab_primary_stat_level_up_map.empty():
+		foxlab_primary_stat_level_up_map = [{}, {}]
+		var level_up_value_map = foxlab_primary_stat_level_up_map[0]
+		var level_up_id_map = foxlab_primary_stat_level_up_map[1]
 		var primary_stats = Utils.foxlab_get_stats_in_container()[0]
-		var empty_effect = Effect.new()
 		for upgrade in ItemService.get_pool(0, ItemService.TierData.UPGRADES):
 			if upgrade.effects.size() == 1:
 				var effect = upgrade.effects[0]
-				if effect.custom_key_hash == Keys.empty_hash and effect.key_hash in primary_stats and effect.get_id() == empty_effect.get_id():
-					if not effect.key_hash in foxlab_primary_stat_level_up_map:
-						foxlab_primary_stat_level_up_map[effect.key_hash] = effect.value
+				if effect.custom_key_hash == Keys.empty_hash and effect.key_hash in primary_stats and effect.get_id() == Effect.get_id():
+					if not effect.key_hash in level_up_value_map:
+						level_up_value_map[effect.key_hash] = effect.value
+						level_up_id_map[upgrade.upgrade_id_hash] = 1
 						print(tr(upgrade.get_name_text()))
 		for stat in primary_stats:
-			if not stat in foxlab_primary_stat_level_up_map:
-				foxlab_primary_stat_level_up_map[stat] = 1
+			if not stat in level_up_value_map:
+				level_up_value_map[stat] = 1
 				print(tr(Keys.hash_to_string[stat].to_upper()))
 	return foxlab_primary_stat_level_up_map
 

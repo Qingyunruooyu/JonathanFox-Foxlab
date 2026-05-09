@@ -13,13 +13,13 @@ arg_key = ""
 
 [resource]
 script = ExtResource( 2 )
-key = "explosion_damage"
-text_key = "EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT"
-value = 3
+key = "stat_speed"
+text_key = "EFFECT_GAIN_STAT_FOR_EVERY_STAT"
+value = 1
 custom_key = ""
 storage_method = 0
 effect_sign = 0
 custom_args = [ SubResource( 1 ) ]
 nb_stat_scaled = 2
 stat_scaled = "stat_percent_damage"
-perm_stats_only = true
+perm_stats_only = false

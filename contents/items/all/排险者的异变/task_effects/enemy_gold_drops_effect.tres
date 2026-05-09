@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "crate_chance"
-text_key = ""
-value = 40
+key = "enemy_gold_drops"
+text_key = "effect_enemy_gold_drops"
+value = -20
 custom_key = ""
 storage_method = 0
 effect_sign = 3

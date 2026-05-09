@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=38 format=2]
+[gd_resource type="Resource" load_steps=37 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_clothes.tres" type="Resource" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_feather.tres" type="Resource" id=10]
@@ -33,7 +33,6 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_35.tres" type="Resource" id=55]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_37.tres" type="Resource" id=56]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_33.tres" type="Resource" id=57]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_34.tres" type="Resource" id=58]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_effect_38.tres" type="Resource" id=59]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/购物狂_icon.png" type="Texture" id=60]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/shopaholic_nose.tres" type="Resource" id=61]
@@ -47,7 +46,7 @@ icon = ExtResource( 60 )
 name = "CHARACTER_FOXLAB_SHOPAHOLIC"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 29 ), ExtResource( 37 ), ExtResource( 35 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 51 ), ExtResource( 57 ), ExtResource( 58 ), ExtResource( 55 ), ExtResource( 54 ), ExtResource( 56 ), ExtResource( 59 ), ExtResource( 36 ) ]
+effects = [ ExtResource( 29 ), ExtResource( 37 ), ExtResource( 35 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 51 ), ExtResource( 57 ), ExtResource( 55 ), ExtResource( 54 ), ExtResource( 56 ), ExtResource( 59 ), ExtResource( 36 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
@@ -56,8 +55,8 @@ curse_factor = 0.0
 max_nb = -1
 item_appearances = [ ExtResource( 9 ), ExtResource( 49 ), ExtResource( 10 ), ExtResource( 50 ), ExtResource( 61 ) ]
 tags = [  ]
-wanted_tags = [ "stat_percent_damage" ]
+wanted_tags = [  ]
 banned_item_groups = [  ]
-banned_items = [ "item_peacock", "item_scar", "item_celery_tea", "item_bean_teacher" ]
+banned_items = [  ]
 starting_weapons = [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ]
 starting_items = [  ]

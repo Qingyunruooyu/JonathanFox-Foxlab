@@ -16,7 +16,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/河鲀_effect_12.tres" type="Resource" id=14]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/pufferfish_appearance.tres" type="Resource" id=15]
 [ext_resource path="res://items/all/metal_plate/metal_plate_data.tres" type="Resource" id=16]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=17]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=17]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/河鲀_effect_14.tres" type="Resource" id=18]
 [ext_resource path="res://items/all/dynamite/dynamite_data.tres" type="Resource" id=19]
 

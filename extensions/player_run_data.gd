@@ -185,6 +185,8 @@ func deserialize(data: Dictionary):
 
 	.deserialize(data)
 
+	appearances.clear()
+
 	if not memory.empty():
 		for key in memory.keys():
 			effects[key] = memory[key]

@@ -21,4 +21,4 @@ effects = [ ExtResource( 1 ) ]
 spawn_in_center = -1
 spawn_around_player = -1
 can_be_grouped = false
-is_pet = false
+is_pet = true

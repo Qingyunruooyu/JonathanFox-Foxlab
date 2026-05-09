@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "instant_gold_attracting"
-text_key = "EFFECT_INSTANT_GOLD_ATTRACTING"
-value = -50
+key = "boosted_wanted_item_tag"
+text_key = "[EMPTY]"
+value = 1
 custom_key = ""
-storage_method = 0
+storage_method = 2
 effect_sign = 3
 custom_args = [  ]

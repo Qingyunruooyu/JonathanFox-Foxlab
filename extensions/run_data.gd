@@ -234,3 +234,9 @@ func revert_all_selections() -> void :
 	.revert_all_selections()
 	for player_index in range(get_player_count()):
 		tracked_item_effects[player_index] = init_tracked_effects()
+
+func get_player_appearances(player_index: int) -> Array:
+	if players_data[player_index].appearances.empty():
+		for item in get_player_items_ref(player_index):
+			add_item_displayed(item, player_index)
+	return .get_player_appearances(player_index)

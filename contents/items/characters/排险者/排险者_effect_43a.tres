@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 key = "increase_material_value"
 text_key = "EFFECT_FOXLAB_INCREASE_MATERIAL_VALUE"
-value = -67
+value = -99
 custom_key = ""
 storage_method = 0
 effect_sign = 3

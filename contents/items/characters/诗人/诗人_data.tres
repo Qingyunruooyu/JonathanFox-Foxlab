@@ -1,8 +1,7 @@
-[gd_resource type="Resource" load_steps=33 format=2]
+[gd_resource type="Resource" load_steps=32 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/诗人/诗人_effect_4.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/诗人/诗人_effect_11.tres" type="Resource" id=2]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/诗人/诗人_effect_8.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/诗人/诗人_effect_0.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/诗人/poet_eyes.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/诗人/诗人_effect_2.tres" type="Resource" id=6]
@@ -42,7 +41,7 @@ icon = ExtResource( 29 )
 name = "CHARACTER_FOXLAB_POET"
 tier = 0
 value = 1.0
-effects = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 1 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 3 ), ExtResource( 28 ), ExtResource( 30 ), ExtResource( 2 ) ]
+effects = [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 1 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 28 ), ExtResource( 30 ), ExtResource( 2 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

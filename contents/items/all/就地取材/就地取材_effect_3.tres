@@ -18,5 +18,5 @@ text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
 value = 2
 custom_key = "stats_next_wave"
 storage_method = 1
-effect_sign = 3
+effect_sign = 2
 custom_args = [ SubResource( 1 ) ]

@@ -1,7 +1,8 @@
 extends "res://singletons/item_service.gd"
 
 ######## 全局杀敌 ######
-var foxlab_kill_nearby_icon;
+var foxlab_kill_nearby_icon
+var foxlab_seed_data
 
 ######## 武器池 ########
 var foxlab_pet_structure_stats_added = false
@@ -24,6 +25,7 @@ func _ready() -> void :
 
 func _foxlab_init_resources():
 	foxlab_kill_nearby_icon = get_element(items, Utils.item_foxlab_inner_indomitable_hash).icon
+	foxlab_seed_data = load("res://mods-unpacked/JonathanFox-FoxLab/contents/consumables/seed/seed_data.tres")
 
 func _foxlab_init_configs():
 	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")

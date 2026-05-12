@@ -210,3 +210,10 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 		if _foxlab_has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from is Enemy:
 			foxlab_manage_projectile_on_hit()
 	return ret
+
+func _on_ItemAttractArea_area_entered(item: Item) -> void:
+	._on_ItemAttractArea_area_entered(item)
+	if item is Consumable and item.consumable_data.my_id_hash == Utils.consumable_foxlab_seed_hash and\
+		item.attracted_by == null:
+		item.attracted_by = self
+		item.set_physics_process(true)

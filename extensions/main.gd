@@ -232,6 +232,33 @@ func foxlab_spawn_crate(unit: Unit) -> bool:
 		return true
 	return false
 
+func foxlab_spawn_seed(unit: Unit):
+	var consumable_to_spawn: ConsumableData = ItemService.foxlab_seed_data.duplicate()
+	var effects = []
+	for effect in consumable_to_spawn.effects:
+		if effect.get_id() == "foxlab_seed":
+			effects.append(effect.duplicate())
+			effects.back().enemy_to_spawn = Utils.foxlab_enemy_id_scene_map[unit.pool_id]
+		else:
+			effects.append(effect)
+	consumable_to_spawn.effects = effects
+
+	var consumable: Consumable = get_node_from_pool(_consumable_pool_id, _consumables_container)
+	if consumable == null:
+		consumable = consumable_scene.instance()
+		_consumables_container.call_deferred("add_child", consumable)
+		var _error = consumable.connect("picked_up", self, "on_consumable_picked_up")
+		yield(consumable, "ready")
+
+	consumable.already_picked_up = false
+	consumable.consumable_data = consumable_to_spawn
+	consumable.set_texture(unit.stats.icon)
+	var pos: = unit.global_position
+	var dist: = rand_range(150, 200 + unit.stats.gold_spread)
+	var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
+	consumable.drop(pos, rand_range(0.25*PI, 1.75*PI), push_back_destination)
+	_consumables.push_back(consumable)
+
 #面具弹出相关
 func _on_foxlab_sec_char_changed(new_characters, player_index):
 	var pos = _players[player_index].global_position - Vector2(0, 50)
@@ -248,6 +275,17 @@ func _foxlab_process_frozen_unit_kill(unit: Node2D, player_index: int):
 			for effect in frozen_effect:
 				RunData.add_stat(effect[0], effect[1], player_index)
 				RunData.add_tracked_value(player_index, Utils.character_foxlab_stargazer_hash, effect[1])
+
+func _foxlab_enemy_interact(enemy: Node2D):
+	var sum: = 0
+	for player_index in RunData.get_player_count():
+		var value = RunData.get_player_effect(Utils.foxlab_enemy_interact_hash, player_index)
+		if value > 0:
+			foxlab_spawn_seed(enemy)
+			RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, value)
+			sum += value
+	if sum > 0:
+		on_player_wanted_to_spawn_gold(sum, enemy.global_position, 100)
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
@@ -334,6 +372,8 @@ func _on_HalfWaveTimer_timeout() -> void :
 
 func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, args)
+	if not args.cleaning_up and args.from is Enemy:
+		_foxlab_enemy_interact(enemy)
 	if not _cleaning_up and args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
 		var player_index = args.killed_by_player_index
 		for near_effect in RunData.get_player_effect(Utils.foxlab_heal_when_kill_nearby_hash, player_index):
@@ -373,6 +413,11 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 func _on_EntitySpawner_enemy_spawned(enemy: Enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)
 	var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
+
+func _on_EntitySpawner_enemy_respawned(enemy: Enemy) -> void :
+	._on_EntitySpawner_enemy_respawned(enemy)
+	if enemy.source_spawner is Enemy:
+		_foxlab_enemy_interact(enemy)
 
 func _on_EntitySpawner_neutral_spawned(neutral: Neutral) -> void :
 	._on_EntitySpawner_neutral_spawned(neutral)

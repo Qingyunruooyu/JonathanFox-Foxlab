@@ -5,6 +5,8 @@ const FOXLAB_FROZEN_SPEED = 40
 const FOXLAB_BOSS_SPAWN_CHANCE = 25
 const FOXLAB_BOSS_SPAWN_NUM = 4
 const FOXLAB_BOSS_INTERVAL = 30
+const FOXLAB_SEED_DURATION = 5
+const FOXLAB_LIVING_ENEMY_DURATION_BOOST = 25
 
 # Effects
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
@@ -23,6 +25,7 @@ var foxlab_poet_next_curse_chance_hash: int = Keys.generate_hash("foxlab_poet_ne
 var foxlab_tasks_hash: int = Keys.generate_hash("foxlab_tasks")
 var foxlab_troubleshooter_crisis_num_hash: int = Keys.generate_hash("foxlab_troubleshooter_crisis_num")
 var item_foxlab_trouble_mutation_hash: int = Keys.generate_hash("item_foxlab_trouble_mutation")
+var foxlab_enemy_interact_hash: int = Keys.generate_hash("foxlab_enemy_interact")
 var foxlab_dante_states_hash: int = Keys.generate_hash("foxlab_dante_states")
 var foxlab_dante_penalty_hash: int = Keys.generate_hash("foxlab_dante_penalty")
 var foxlab_shop_point_hash: int = Keys.generate_hash("foxlab_shop_point")
@@ -85,7 +88,7 @@ var foxlab_const_effect_end_hash: int = Keys.generate_hash("foxlab_const_effect_
 # remembered weapon effects that will be forgotten at wave end
 var foxlab_remembered_effect_begin_hash: int = Keys.generate_hash("foxlab_remembered_effect_begin")
 
-# tracking items
+# items
 var character_foxlab_bloody_wolf_hash: int = Keys.generate_hash("character_foxlab_bloody_wolf")
 var character_foxlab_faceless_hash: int = Keys.generate_hash("character_foxlab_faceless")
 var character_foxlab_ghost_envoy_hash: int = Keys.generate_hash("character_foxlab_ghost_envoy")
@@ -115,6 +118,8 @@ var item_foxlab_faceless_guide_hash: int = Keys.generate_hash("item_foxlab_facel
 var item_foxlab_enchanted_eyes_hash: int = Keys.generate_hash("item_foxlab_enchanted_eyes")
 var item_foxlab_wanted_hash: int = Keys.generate_hash("item_foxlab_wanted")
 var item_foxlab_wanted_unknown_hash: int = Keys.generate_hash("item_foxlab_wanted_unknown")
+var item_foxlab_salvation_hash: int = Keys.generate_hash("item_foxlab_salvation")
+var consumable_foxlab_seed_hash: int = Keys.generate_hash("consumable_foxlab_seed")
 
 # enemy names
 var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")
@@ -144,7 +149,7 @@ var foxlab_structure_stats = {
 	}
 var foxlab_enemy_stats = [Keys.enemy_damage_hash, Keys.enemy_health_hash, Keys.enemy_speed_hash]
 
-var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character_foxlab_refactor_hash, item_foxlab_reactor_hash, character_foxlab_goat_keeper_hash]
+var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character_foxlab_refactor_hash, item_foxlab_reactor_hash, character_foxlab_goat_keeper_hash, item_foxlab_salvation_hash]
 
 var foxlab_keys_raw_text = [foxlab_mask_history_hash, foxlab_previous_remembered_names_hash]
 
@@ -156,6 +161,9 @@ var foxlab_gaster_group = null
 
 var foxlab_evil_mob_units = []
 
+var foxlab_enemy_id_scene_map = {}
+
+
 #反序列化之后，物品回收相关，快速查找effect id对应的effect对象
 var foxlab_effect_id_dict = {}
 
@@ -165,19 +173,22 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 		for i in RunData.tracked_item_effects[player_index][item_id].size():
 			var tracked_count = RunData.tracked_item_effects[player_index][item_id][i]
 
-			var tracking_text_to_use = tracking_text
-
-			if item_id == Utils.item_foxlab_inner_indomitable_hash and i == 1:
-				tracking_text_to_use = "MATERIALS_GAINED"
-			elif item_id == Utils.character_foxlab_refactor_hash and i == 1:
-				tracking_text_to_use = "FOXLAB_MODIFICATION_GAINED"
-			elif item_id == Utils.item_foxlab_reactor_hash:
-				if i == 1:
+			var tracking_text_to_use
+			match [item_id, i]:
+				[Utils.item_foxlab_inner_indomitable_hash, 1]:
+					tracking_text_to_use = "MATERIALS_GAINED"
+				[Utils.character_foxlab_refactor_hash, 1]:
+					tracking_text_to_use = "FOXLAB_MODIFICATION_GAINED"
+				[Utils.item_foxlab_reactor_hash, 1]:
 					tracking_text_to_use = "FOXLAB_BOSSES_INVOKED"
-				elif i == 2:
+				[Utils.item_foxlab_reactor_hash, 2]:
 					tracking_text_to_use = "FOXLAB_BOSSES_RESURRECTED"
-			elif item_id == Utils.character_foxlab_goat_keeper_hash and i == 1:
-				tracking_text_to_use = "FOXLAB_CRATES_DROPPED"
+				[Utils.character_foxlab_goat_keeper_hash, 1]:
+					tracking_text_to_use = "FOXLAB_CRATES_DROPPED"
+				[Utils.item_foxlab_salvation_hash, 1]:
+					tracking_text_to_use = "FOXLAB_SEEDS_ACTIVATED"
+				_:
+					tracking_text_to_use = tracking_text
 
 			text += "\n[color=#" + Utils.SECONDARY_FONT_COLOR.to_html() + "]" + Text.text(tracking_text_to_use.to_upper(), [Text.get_formatted_number(tracked_count)]) + "[/color]"
 	return text

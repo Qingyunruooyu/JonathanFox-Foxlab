@@ -326,3 +326,6 @@ CHARACTER_FOXLAB_STARGAZER,观星者,Stargazer
 EFFECT_FOXLAB_STATS_ON_FROZEN_ENEMY_KILL,击杀[color=#FF8C00]瞬时速度[/color]＜{2}的目标有{0}{1},{0}{1} after killing an object who's [color=#FF8C00]instantaneous speed[/color] < {2}
 EFFECT_FOXLAB_ITEM_UPGRADE,升级时不会提升属性，但可选择一个道具,You choose an item when you level up instead of a stat upgrade
 EFFECT_FOXLAB_INSTANT_POISONED_ATTRACTING,有{0}概率立即吸收掉落的有毒消耗品,{0} chance to instantly attract a poisoned consumable when it’s dropped
+ITEM_FOXLAB_SALVATION,超度,Salvation
+EFFECT_FOXLAB_ENEMY_INTERACT,当一个敌人被敌人召唤或杀死时，你在附近掉落{0}个材料和1个{3}秒后死亡的种子，每{2}{1}增加1秒种子寿命；拾取种子的玩家召唤一个该敌人的克隆,"When an enemy is spawned or killed by an enemy, you drop {0} materials and 1 seed there; the seed dies {3} seconds later, and every {2} {1} make it live 1 second longer; When a player pick it up, he spawns a clone of the enemy"
+FOXLAB_SEEDS_ACTIVATED,激活的种子：{0},Seeds activated: {0}

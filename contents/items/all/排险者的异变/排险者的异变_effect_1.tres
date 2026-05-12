@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=11 format=2]
+[gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/task_effect.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/mini_weapon_in_shop_effect_3.tres" type="Resource" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/destroy_weapons_effect_0.tres" type="Resource" id=8]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/primary_stat_gain_effect_1.tres" type="Resource" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/enemy_gold_drops_effect.tres" type="Resource" id=10]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/排险者的异变/task_effects/salvation_effect.tres" type="Resource" id=11]
 
 [resource]
 script = ExtResource( 1 )
@@ -20,7 +21,7 @@ custom_key = "item_foxlab_trouble_mutation"
 storage_method = 1
 effect_sign = 2
 custom_args = [  ]
-sub_effects = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 10 ) ]
+sub_effects = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 11 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 10 ) ]
 max_execs = 1
 comparison = 1
 default_text_mode = false

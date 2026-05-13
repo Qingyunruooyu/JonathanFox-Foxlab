@@ -25,7 +25,9 @@ func on_enemy_charmed(enemy: Entity) -> void :
 func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = null, source = null, charmed_by: int = - 1) -> KinematicBody2D:
 	if args.type == EntityType.ENEMY or args.type == EntityType.BOSS:
 		if not scene.get_instance_id() in Utils.foxlab_enemy_id_scene_map:
-			Utils.foxlab_enemy_id_scene_map[scene.get_instance_id()] = scene
+			var effect = load("res://mods-unpacked/JonathanFox-FoxLab/contents/consumables/seed/seed_effect.gd").new()
+			effect.enemy_to_spawn = scene
+			Utils.foxlab_enemy_id_scene_map[scene.get_instance_id()] = effect
 
 	var entity = .spawn_entity(scene, args, data, source, charmed_by)
 	if ItemService.foxlab_is_android and entity is Enemy and entity.enemy_id_hash == Utils.foxlab_evil_mob_hash:

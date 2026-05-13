@@ -31,6 +31,11 @@ func set_data(tag: String) -> bool:
 				_tag_effects.bbcode_text += "\n[color=#ff8c00]" + tr(character.name) + "[/color]"
 				_tag_effects.bbcode_text += "\n" + character.get_effects_text(player_index)
 
+		"ITEM_FOXLAB_SALVATION":
+			_tag_effects.bbcode_text += "\n" + Text.text(tr("FOXLAB_SEED_DESCRIPTION"), \
+			[str(Utils.FOXLAB_SEED_PER_SECOND), str(Utils.FOXLAB_LIVING_ENEMY_DURATION_BOOST), tr("LIVING_ENEMY"), str(Utils.FOXLAB_SEED_DURATION)],\
+			[Effect.Sign.POSITIVE, Effect.Sign.POSITIVE, Effect.Sign.POSITIVE, Effect.Sign.POSITIVE])
+
 	if RunData.is_coop_run:
 		if _tag_effects.text.length() >= 300:
 			_tag_effects.add_font_override("normal_font", small_font)

@@ -16,12 +16,17 @@ var foxlab_mutate_boost = [null, null, null, null]
 #贯通改为反弹相关
 var foxlab_original_piercing = [0, 0, 0, 0]
 
+#超度相关
+var foxlab_seed_timers = []
+var foxlab_seed_numbers = [Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND]
+
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	foxlab_receive_item_stat_ready()
 	foxlab_mutation_ready()
 	foxlab_piercing_is_bounce_ready()
 	foxlab_gain_stat_every_killed_enemies_ready()
+	foxlab_seed_timers_ready()
 
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
@@ -134,8 +139,27 @@ func foxlab_mutation_ready():
 			foxlab_mutate_boost[i].hp_boost = ItemService.foxlab_enemy_boost_args.hp_boost
 			foxlab_mutate_boost[i].damage_boost = ItemService.foxlab_enemy_boost_args.damage_boost
 
+func foxlab_seed_timers_ready():
+	var timer_wait_time: = 1.0
+	var player_count: int = RunData.get_player_count()
+	var timer_delay: = timer_wait_time / player_count
+	for player_index in RunData.get_player_count():
+		if RunData.get_player_effect_bool(Utils.foxlab_enemy_interact_hash, player_index):
+			var timer = Timer.new()
+			timer.wait_time = timer_wait_time
+			timer.autostart = true
+			foxlab_seed_timers.append(timer)
+			timer.connect("timeout", self, "_on_foxlab_seed_timer_timeout", [player_index])
+			add_child(timer)
+			if not get_tree().current_scene.name == "GutRunner":
+				yield(get_tree().create_timer(timer_delay), "timeout")
+
+func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
+	foxlab_seed_numbers[player_index] = 0
+
 func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
 		 _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
+	enemy._die_args_unit.from = args.from
 	if args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count():
 		return
 
@@ -232,13 +256,16 @@ func foxlab_spawn_crate(unit: Unit) -> bool:
 		return true
 	return false
 
-func foxlab_spawn_seed(unit: Unit):
+func foxlab_spawn_seed(unit: Unit, player_index: int):
+	if foxlab_seed_numbers[player_index] >= Utils.FOXLAB_SEED_PER_SECOND:
+		return
+	foxlab_seed_numbers[player_index] += 1
+
 	var consumable_to_spawn: ConsumableData = ItemService.foxlab_seed_data.duplicate()
 	var effects = []
 	for effect in consumable_to_spawn.effects:
 		if effect.get_id() == "foxlab_seed":
-			effects.append(effect.duplicate())
-			effects.back().enemy_to_spawn = Utils.foxlab_enemy_id_scene_map[unit.pool_id]
+			effects.append(Utils.foxlab_enemy_id_scene_map[unit.pool_id])
 		else:
 			effects.append(effect)
 	consumable_to_spawn.effects = effects
@@ -258,6 +285,7 @@ func foxlab_spawn_seed(unit: Unit):
 	var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
 	consumable.drop(pos, rand_range(0.25*PI, 1.75*PI), push_back_destination)
 	_consumables.push_back(consumable)
+	RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, 1, 1)
 
 #面具弹出相关
 func _on_foxlab_sec_char_changed(new_characters, player_index):
@@ -275,17 +303,73 @@ func _foxlab_process_frozen_unit_kill(unit: Node2D, player_index: int):
 			for effect in frozen_effect:
 				RunData.add_stat(effect[0], effect[1], player_index)
 				RunData.add_tracked_value(player_index, Utils.character_foxlab_stargazer_hash, effect[1])
-
+#超度
 func _foxlab_enemy_interact(enemy: Node2D):
 	var sum: = 0
 	for player_index in RunData.get_player_count():
 		var value = RunData.get_player_effect(Utils.foxlab_enemy_interact_hash, player_index)
 		if value > 0:
-			foxlab_spawn_seed(enemy)
-			RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, value)
+			RunData.add_gold(-value, player_index)
+			foxlab_spawn_seed(enemy, player_index)
+			RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, value, 0)
 			sum += value
 	if sum > 0:
 		on_player_wanted_to_spawn_gold(sum, enemy.global_position, 100)
+
+# 本波额外敌人
+func foxlab_process_extra_enemies():
+	var extra_enemies = 0
+	for player_index in _players.size():
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_enemies_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data())
+			extra_enemies += 1
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_crash_zone_enemies_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_CRASH_ZONE"))
+			extra_enemies += 1
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_abyss_enemies_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_ABYSS"))
+			extra_enemies += 1
+
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_bosses_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_bosses())
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_unknown_elites_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(true))
+		for _i in range(Utils.get_stat(Utils.foxlab_extra_elites_hash, player_index) as int):
+			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(false))
+
+		var extra_loot_aliens = Utils.get_stat(Utils.foxlab_extra_loot_aliens_hash, player_index) as int
+		if extra_loot_aliens > 0:
+			_wave_manager.add_groups(Utils.foxlab_generate_loot_alien_group_data(extra_loot_aliens, _wave_timer))
+		var extra_evil_mobs = Utils.get_stat(Utils.foxlab_extra_evil_mobs_hash, player_index) as int
+		if extra_evil_mobs > 0:
+			_wave_manager.add_groups(Utils.foxlab_generate_evil_mob_group_data(extra_evil_mobs))
+
+	_is_horde_wave = (extra_enemies > 4)
+
+#待处理的经验，亏欠的生命值
+func foxlab_process_pending_states():
+	for player_index in _players.size():
+		var effects = RunData.get_player_effects(player_index)
+		var pending_xp = effects[Utils.foxlab_pending_xp_hash]
+		if pending_xp > 0:
+			RunData.add_xp(pending_xp, player_index)
+		effects[Utils.foxlab_pending_xp_hash] = 0
+
+		var player = _players[player_index]
+		if player.foxlab_process_lost_hp():
+			_on_player_health_updated(player, player.current_stats.health, player.max_stats.health)
+
+func foxlab_get_item(item_id_hash: int, num: int, player_index: int):
+	var item_data = ItemService.get_item_from_id(item_id_hash)
+	if not item_data == null:
+		for _i in num:
+			var actual_item_data = ItemService.apply_item_effect_modifications(item_data, player_index)
+			if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
+				for effect in actual_item_data.effects:
+					if effect is SwapMaxMinStatEffect:
+						effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
+			RunData.add_item(actual_item_data, player_index)
+		_floating_text_manager.display_icon(num, item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, _players[player_index].global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
@@ -294,18 +378,8 @@ func _on_WaveTimer_timeout() -> void :
 		if gain_effects.empty() or RunData.foxlab_scapegoat_no_hurt[player_index].empty():
 			continue
 		for gain_effect in gain_effects:
-			# Cache
-			var _item = ItemService.get_item_from_id(Keys.item_alien_eyes_hash)
-			var item_data = ItemService.get_element(ItemService.items, gain_effect[0])
-			if not item_data == null:
-				for _i in gain_effect[1]:
-					var actual_item_data = ItemService.apply_item_effect_modifications(item_data, player_index)
-					if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
-						for effect in actual_item_data.effects:
-							if effect is SwapMaxMinStatEffect:
-								effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
-					RunData.add_item(actual_item_data, player_index)
-				_floating_text_manager.display_icon(gain_effect[1], item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, _players[player_index].global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)
+			foxlab_get_item(gain_effect[0], gain_effect[1], player_index)
+
 	._on_WaveTimer_timeout()
 	for player_index in range(RunData.get_player_count()):
 		if foxlab_original_piercing[player_index]:
@@ -372,6 +446,7 @@ func _on_HalfWaveTimer_timeout() -> void :
 
 func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, args)
+	# print("killer: ", args.from, "is enemy: ", args.from is Enemy)
 	if not args.cleaning_up and args.from is Enemy:
 		_foxlab_enemy_interact(enemy)
 	if not _cleaning_up and args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
@@ -425,36 +500,25 @@ func _on_EntitySpawner_neutral_spawned(neutral: Neutral) -> void :
 
 func _on_EntitySpawner_players_spawned(players: Array) -> void :
 	._on_EntitySpawner_players_spawned(players)
-	var extra_enemies = 0
-	for player_index in _players.size():
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_enemies_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data())
-			extra_enemies += 1
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_crash_zone_enemies_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_CRASH_ZONE"))
-			extra_enemies += 1
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_abyss_enemies_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_ABYSS"))
-			extra_enemies += 1
-
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_bosses_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_bosses())
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_unknown_elites_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(true))
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_elites_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(false))
-
-		var extra_loot_aliens = Utils.get_stat(Utils.foxlab_extra_loot_aliens_hash, player_index) as int
-		if extra_loot_aliens > 0:
-			_wave_manager.add_groups(Utils.foxlab_generate_loot_alien_group_data(extra_loot_aliens, _wave_timer))
-		var extra_evil_mobs = Utils.get_stat(Utils.foxlab_extra_evil_mobs_hash, player_index) as int
-		if extra_evil_mobs > 0:
-			_wave_manager.add_groups(Utils.foxlab_generate_evil_mob_group_data(extra_evil_mobs))
-
-	_is_horde_wave = (extra_enemies > 4)
+	foxlab_process_extra_enemies()
+	foxlab_process_pending_states()
 
 func on_upgrade_selected(upgrade_data: UpgradeData, upgrade: UpgradesUI.UpgradeToProcess) -> void :
 	if upgrade_data.has_meta("foxlab_item"):
 		RunData.add_item(upgrade_data.get_meta("foxlab_item"), upgrade.player_index)
 	else:
 		.on_upgrade_selected(upgrade_data, upgrade)
+
+func clean_up_room() -> void :
+	.clean_up_room()
+	for timer in foxlab_seed_timers:
+		if timer is Timer:
+			timer.stop()
+
+func _on_player_health_updated(player: Player, current_val: int, max_val: int) -> void :
+	._on_player_health_updated(player, current_val, max_val)
+	var lost_hp = RunData.get_player_effect(Utils.foxlab_lost_hp_hash, player.player_index)
+	if lost_hp > 0:
+		var life_label:Label = _players_ui[player.player_index].life_label
+		if life_label.visible:
+			life_label.text = str(-lost_hp) + " | " + life_label.text

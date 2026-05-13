@@ -6,7 +6,8 @@ const FOXLAB_BOSS_SPAWN_CHANCE = 25
 const FOXLAB_BOSS_SPAWN_NUM = 4
 const FOXLAB_BOSS_INTERVAL = 30
 const FOXLAB_SEED_DURATION = 5
-const FOXLAB_LIVING_ENEMY_DURATION_BOOST = 25
+const FOXLAB_LIVING_ENEMY_DURATION_BOOST = 15
+const FOXLAB_SEED_PER_SECOND = 4
 
 # Effects
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
@@ -81,6 +82,12 @@ var foxlab_gain_scapegoat_no_hurt_hash: int = Keys.generate_hash("foxlab_gain_sc
 var foxlab_stats_on_frozen_enemy_kill_hash: int = Keys.generate_hash("foxlab_stats_on_frozen_enemy_kill")
 var foxlab_item_upgrade_hash: int = Keys.generate_hash("foxlab_item_upgrade")
 var foxlab_instant_poisoned_attracting_hash: int = Keys.generate_hash("foxlab_instant_poisoned_attracting")
+var foxlab_add_xp_on_getting_gold_hash: int = Keys.generate_hash("foxlab_add_xp_on_getting_gold")
+var foxlab_pending_xp_hash: int = Keys.generate_hash("foxlab_pending_xp")
+var foxlab_lost_hp_on_losing_gold_hash: int = Keys.generate_hash("foxlab_lost_hp_on_losing_gold")
+var foxlab_lost_hp_hash: int = Keys.generate_hash("foxlab_lost_hp")
+var foxlab_charm_all_when_fully_heal_hash: int = Keys.generate_hash("foxlab_charm_all_when_fully_heal")
+var foxlab_charm_all_items_hash: int = Keys.generate_hash("foxlab_charm_all_items")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -149,8 +156,6 @@ var foxlab_structure_stats = {
 	}
 var foxlab_enemy_stats = [Keys.enemy_damage_hash, Keys.enemy_health_hash, Keys.enemy_speed_hash]
 
-var foxlab_multi_tracking_items = [item_foxlab_inner_indomitable_hash, character_foxlab_refactor_hash, item_foxlab_reactor_hash, character_foxlab_goat_keeper_hash, item_foxlab_salvation_hash]
-
 var foxlab_keys_raw_text = [foxlab_mask_history_hash, foxlab_previous_remembered_names_hash]
 
 var foxlab_item_wanted = []
@@ -167,6 +172,8 @@ var foxlab_object_effect_item = {}
 
 #反序列化之后，物品回收相关，快速查找effect id对应的effect对象
 var foxlab_effect_id_dict = {}
+
+var foxlab_item_with_descrip = {item_foxlab_buddhas_hand_hash: 0, item_foxlab_mask_hash: 0, item_foxlab_salvation_hash: 0}
 
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
@@ -187,6 +194,8 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 				[Utils.character_foxlab_goat_keeper_hash, 1]:
 					tracking_text_to_use = "FOXLAB_CRATES_DROPPED"
 				[Utils.item_foxlab_salvation_hash, 1]:
+					tracking_text_to_use = "FOXLAB_SEEDS_DROPPED"
+				[Utils.item_foxlab_salvation_hash, 2]:
 					tracking_text_to_use = "FOXLAB_SEEDS_ACTIVATED"
 				_:
 					tracking_text_to_use = tracking_text
@@ -400,8 +409,7 @@ func foxlab_item_has_object_effect(item_data) -> bool:
 		foxlab_object_effect_item[item_data.my_id_hash] = false
 		for effect in item_data.effects:
 			var checking_key_hash = (effect.key_hash if effect.custom_key_hash == Keys.empty_hash else effect.custom_key_hash)
-			if checking_key_hash != Keys.empty_hash and \
-				(checking_key_hash in RunData.effect_keys_full_serialization or checking_key_hash in RunData.effect_keys_with_weapon_stats):
+			if checking_key_hash != Keys.empty_hash and checking_key_hash in RunData.effect_keys_full_serialization:
 					foxlab_object_effect_item[item_data.my_id_hash] = true
 					break
 	return foxlab_object_effect_item[item_data.my_id_hash]

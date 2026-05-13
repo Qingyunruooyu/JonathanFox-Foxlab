@@ -150,11 +150,26 @@ func get_foxlab_buddhas_hand_meta(player_index: int):
 func get_foxlab_mask_meta(player_index: int):
 	return players_data[player_index].foxlab_mask_meta
 
+func foxlab_process_gold(value: int, player_index: int):
+	if value > 0:
+		if RunData.get_player_effect_bool(Utils.foxlab_add_xp_on_getting_gold_hash, player_index):
+			if wave_in_progress:
+				add_xp(value, player_index)
+			else:
+				RunData.get_player_effects(player_index)[Utils.foxlab_pending_xp_hash] += value
+	elif value < 0:
+		if RunData.get_player_effect_bool(Utils.foxlab_lost_hp_on_losing_gold_hash, player_index):
+			RunData.get_player_effects(player_index)[Utils.foxlab_lost_hp_hash] -= value
+
 ###### 扩展 ######
 func _reset_per_wave_properties() -> void :
 	._reset_per_wave_properties()
 	foxlab_is_midnight = [false, false, false, false]
 	foxlab_scapegoat_no_hurt = [[], [], [], []]
+
+func add_gold(value: int, player_index: int) -> void :
+	.add_gold(value, player_index)
+	foxlab_process_gold(value, player_index)
 
 func remove_gold(value: int, player_index: int) -> void :
 	var player_data = players_data[player_index]
@@ -163,6 +178,7 @@ func remove_gold(value: int, player_index: int) -> void :
 		emit_signal("gold_changed", player_data.gold, player_index)
 	else:
 		.remove_gold(value, player_index)
+	foxlab_process_gold(-value, player_index)
 
 func on_wave_start(timer: WaveTimer) -> void :
 	.on_wave_start(timer)
@@ -240,3 +256,6 @@ func get_player_appearances(player_index: int) -> Array:
 		for item in get_player_items_ref(player_index):
 			add_item_displayed(item, player_index)
 	return .get_player_appearances(player_index)
+
+func get_player_current_health(player_index: int) -> int:
+	return .get_player_current_health(player_index) - RunData.get_player_effect(Utils.foxlab_lost_hp_hash, player_index)

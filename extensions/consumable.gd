@@ -15,6 +15,7 @@ func drop(pos: Vector2, p_rotation: float, p_push_back_destiation: Vector2) -> v
 		if effect.get_id() == "foxlab_seed":
 			yield(get_tree().create_timer(Utils.FOXLAB_SEED_DURATION + RunData.current_living_enemies / Utils.FOXLAB_LIVING_ENEMY_DURATION_BOOST), "timeout")
 			if not already_picked_up:
+				# 没来得及拾取，变成敌方单位
 				# effect.apply(-1)
 				already_picked_up = true
 				main._consumables.erase(self)

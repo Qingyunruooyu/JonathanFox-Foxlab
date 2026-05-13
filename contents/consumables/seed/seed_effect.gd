@@ -15,7 +15,7 @@ func apply(player_index: int) -> void :
 	if player_index >= 0:
 		source_spawner = main._players[player_index]
 		pos = ZoneService.get_rand_pos_in_area(Vector2(source_spawner.global_position.x, source_spawner.global_position.y), 200)
-		RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, 1, 1)
+		RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, 1, 2)
 	else:
 		pos = ZoneService.get_rand_pos()
 	entity_spawner.on_enemy_wanted_to_spawn_an_enemy(enemy_to_spawn, pos, source_spawner, player_index)

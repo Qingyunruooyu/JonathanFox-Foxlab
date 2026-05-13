@@ -16,6 +16,7 @@ var foxlab_enemy_stats_on_hit = []
 var _foxlab_projectile_on_hit_effects = []
 var _foxlab_has_projectile_on_hit = false
 
+var _foxlab_has_charmed_all = false
 
 func _ready() -> void :
 	if _foxlab_has_curse():
@@ -39,6 +40,8 @@ func _ready() -> void :
 			_foxlab_has_projectile_on_hit = true
 			for effect in projectile_on_hit_effect[4]:
 				_foxlab_projectile_on_hit_effects.append(load(effect))
+
+	_foxlab_has_charmed_all = RunData.get_player_effect(Utils.foxlab_charm_all_when_fully_heal_hash, player_index).empty()
 
 func _foxlab_has_curse():
 	if RunData.get_player_character(player_index).is_cursed:
@@ -104,6 +107,17 @@ func foxlab_manage_projectile_on_hit() -> void:
 			self,
 			args
 		)
+
+func foxlab_process_lost_hp() -> bool:
+	var effects = RunData.get_player_effects(player_index)
+	var lost_hp = effects[Utils.foxlab_lost_hp_hash]
+	if lost_hp > 0:
+		var prev_health = current_stats.health
+		current_stats.health = max(1, current_stats.health - lost_hp) as int
+		if current_stats.health != prev_health:
+			effects[Utils.foxlab_lost_hp_hash] -= prev_health - current_stats.health
+			return  true
+	return false
 
 ############ 函数扩展 #########
 #　修复官方bug
@@ -217,3 +231,39 @@ func _on_ItemAttractArea_area_entered(item: Item) -> void:
 		item.attracted_by == null:
 		item.attracted_by = self
 		item.set_physics_process(true)
+
+func heal(value: int, is_from_torture: bool = false) -> int:
+	var value_healed = .heal(value, is_from_torture)
+	if value_healed > 0:
+		foxlab_process_lost_hp()
+	return value_healed
+
+func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_torture: bool = false) -> int:
+	var value_healed = .on_healing_effect(value, tracking_key, from_torture)
+	if value_healed > 0 and !_foxlab_has_charmed_all\
+		and current_stats.health >= (Utils.get_capped_stat(Keys.stat_max_hp_hash, player_index) as int):
+			_foxlab_has_charmed_all = true
+			var charm_all_effect = RunData.get_player_effect(Utils.foxlab_charm_all_when_fully_heal_hash, player_index)
+			if not charm_all_effect.empty():
+				var main = Utils.get_scene_node()
+				var play_sound =false
+				if not cleaning_up:
+					play_sound = true
+					for enemy in main._entity_spawner.get_all_enemies():
+						if not enemy is Boss:
+							enemy.set_charmed(player_index)
+				var hit_protection0 = RunData.get_player_effect(Keys.hit_protection_hash, player_index)
+				for effect in charm_all_effect:
+					var item_id_hash = effect[0]
+					var items_got:Dictionary = RunData.get_player_effect(Utils.foxlab_charm_all_items_hash, player_index)
+					var item_times = items_got.get_or_add(item_id_hash, 0)
+					if Utils.get_chance_success(1.0/(1.0 + item_times)):
+						main.foxlab_get_item(item_id_hash, effect[1], player_index)
+						items_got[item_id_hash] += effect[1]
+						play_sound = true
+				var hit_protection1 = RunData.get_player_effect(Keys.hit_protection_hash, player_index)
+				if hit_protection1 > hit_protection0:
+					_hit_protection += (hit_protection1 - hit_protection0)
+				if play_sound:
+					SoundManager.play(preload("res://ui/sounds/Shield 4.mp3"))
+	return value_healed

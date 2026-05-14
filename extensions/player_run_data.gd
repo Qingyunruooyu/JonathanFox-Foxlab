@@ -205,13 +205,8 @@ func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> 
 			if prev is Array: # [id_hash, curse_factor]
 				prev_items.append(prev)
 
-	var struct_pet_hash = {}
 	var cache_items = []
 	for item_data in items:
-		# 实际上ItemExplodingEffect、ConvertStatsEffect等也需要，但为了效率、foxlab不会遇到需要收回这类道具的情况
-		if not item_data.my_id_hash in struct_pet_hash:
-			struct_pet_hash[item_data.my_id_hash] = item_data.is_pet_item() or item_data.is_structure_item()
-
 		var is_prev = false
 		for i in range(prev_items.size()):
 			if prev_items[i][1] != item_data.curse_factor:
@@ -222,7 +217,7 @@ func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> 
 				prev_items.remove(i)
 				is_prev = true
 				break
-		if not is_prev and struct_pet_hash[item_data.my_id_hash]:
+		if not is_prev and Utils.foxlab_item_has_object_effect(item_data):
 			cache_items.push_back(item_data)
 
 	if not cache_items.empty():

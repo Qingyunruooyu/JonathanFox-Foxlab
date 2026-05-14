@@ -163,6 +163,7 @@ var foxlab_evil_mob_units = []
 
 var foxlab_enemy_id_scene_map = {}
 
+var foxlab_object_effect_item = {}
 
 #反序列化之后，物品回收相关，快速查找effect id对应的effect对象
 var foxlab_effect_id_dict = {}
@@ -389,6 +390,21 @@ func foxlab_try_complete_tasks(player_index: int):
 				RunData.add_stat(task.custom_key_hash, 1, player_index)
 				for effect in task.sub_effects:
 					effect.apply(player_index)
+
+func foxlab_item_has_object_effect(item_data) -> bool:
+	if item_data.my_id_hash in foxlab_object_effect_item:
+		return foxlab_object_effect_item[item_data.my_id_hash]
+	if item_data.is_structure_item() or item_data.is_pet_item():
+		foxlab_object_effect_item[item_data.my_id_hash] = true
+	else:
+		foxlab_object_effect_item[item_data.my_id_hash] = false
+		for effect in item_data.effects:
+			var checking_key_hash = (effect.key_hash if effect.custom_key_hash == Keys.empty_hash else effect.custom_key_hash)
+			if checking_key_hash != Keys.empty_hash and \
+				(checking_key_hash in RunData.effect_keys_full_serialization or checking_key_hash in RunData.effect_keys_with_weapon_stats):
+					foxlab_object_effect_item[item_data.my_id_hash] = true
+					break
+	return foxlab_object_effect_item[item_data.my_id_hash]
 
 ######## 扩展 ######
 func reset_stat_keys() -> void :

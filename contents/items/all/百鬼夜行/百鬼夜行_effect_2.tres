@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "res://dlcs/dlc_1/zones/abyss/004/d5_group_1.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/haunted_night/junkie.tres"
 text_key = "[EMPTY]"
-value = 4
+value = 2
 custom_key = "extra_enemies_next_wave"
 storage_method = 1
 effect_sign = 2

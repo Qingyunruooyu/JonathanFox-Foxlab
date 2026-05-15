@@ -157,7 +157,7 @@ func foxlab_seed_timers_ready():
 func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
 	foxlab_seed_numbers[player_index] = 0
 
-func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
+func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
 		 _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	enemy._die_args_unit.from = args.from
 	if args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count():
@@ -180,13 +180,13 @@ func _on_enemy_took_damage_foxlab(enemy: Enemy, _value: int, _knockback_directio
 	if not enemy.is_boosted and foxlab_should_check_mutation[args.from_player_index]:
 		foxlab_process_enemy_mutate(enemy, args)
 
-func _on_neutral_took_damage_foxlab(neutral: Neutral, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, \
+func _on_neutral_took_damage_foxlab(neutral, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, \
 	_is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	if neutral._pending_die and args.from_player_index >= 0 and args.from_player_index < RunData.get_player_count():
 		_foxlab_process_frozen_unit_kill(neutral, args.from_player_index)
 
 
-func foxlab_process_enemy_mutate(enemy: Enemy, args: TakeDamageArgs):
+func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
 	if is_instance_valid(args.hitbox):
 		for effect in args.hitbox.from.effects if args.hitbox.from is Structure else args.hitbox.effects:
@@ -235,7 +235,7 @@ func foxlab_gain_stat_every_killed_enemies_ready():
 				foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]] = 0
 
 # ref: func spawn_consumables(unit: Unit)，但是只要判定掉落消耗品，就会掉落箱子
-func foxlab_spawn_crate(unit: Unit) -> bool:
+func foxlab_spawn_crate(unit) -> bool:
 	var consumable_to_spawn: ConsumableData = ItemService.get_consumable_to_drop(unit, 1.0)
 	if consumable_to_spawn != null and consumable_to_spawn.my_id_hash in [Keys.consumable_item_box_hash, Keys.consumable_legendary_item_box_hash]:
 		var consumable: Consumable = get_node_from_pool(_consumable_pool_id, _consumables_container)
@@ -248,15 +248,15 @@ func foxlab_spawn_crate(unit: Unit) -> bool:
 		consumable.already_picked_up = false
 		consumable.consumable_data = consumable_to_spawn
 		consumable.set_texture(consumable_to_spawn.icon)
-		var pos: = unit.global_position
-		var dist: = rand_range(50, 100 + unit.stats.gold_spread)
+		var pos = unit.global_position
+		var dist = rand_range(50, 100 + unit.stats.gold_spread)
 		var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
 		consumable.drop(pos, 0, push_back_destination)
 		_consumables.push_back(consumable)
 		return true
 	return false
 
-func foxlab_spawn_seed(unit: Unit, player_index: int):
+func foxlab_spawn_seed(unit, player_index: int):
 	if foxlab_seed_numbers[player_index] >= Utils.FOXLAB_SEED_PER_SECOND:
 		return
 	foxlab_seed_numbers[player_index] += 1
@@ -280,7 +280,7 @@ func foxlab_spawn_seed(unit: Unit, player_index: int):
 	consumable.already_picked_up = false
 	consumable.consumable_data = consumable_to_spawn
 	consumable.set_texture(unit.stats.icon)
-	var pos: = unit.global_position
+	var pos = unit.global_position
 	var dist: = rand_range(150, 200 + unit.stats.gold_spread)
 	var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
 	consumable.drop(pos, rand_range(0.25*PI, 1.75*PI), push_back_destination)
@@ -444,7 +444,7 @@ func _on_HalfWaveTimer_timeout() -> void :
 
 	EntityService.reset_cache()
 
-func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
+func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, args)
 	# print("killer: ", args.from, "is enemy: ", args.from is Enemy)
 	if not args.cleaning_up and args.from is Enemy:
@@ -485,16 +485,16 @@ func _on_enemy_died(enemy: Enemy, args: Entity.DieArgs) -> void :
 						foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]] = 0
 
 
-func _on_EntitySpawner_enemy_spawned(enemy: Enemy) -> void :
+func _on_EntitySpawner_enemy_spawned(enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)
 	var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
 
-func _on_EntitySpawner_enemy_respawned(enemy: Enemy) -> void :
+func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 	._on_EntitySpawner_enemy_respawned(enemy)
 	if enemy.source_spawner is Enemy:
 		_foxlab_enemy_interact(enemy)
 
-func _on_EntitySpawner_neutral_spawned(neutral: Neutral) -> void :
+func _on_EntitySpawner_neutral_spawned(neutral) -> void :
 	._on_EntitySpawner_neutral_spawned(neutral)
 	var _error_took_damage = neutral.connect("took_damage", self, "_on_neutral_took_damage_foxlab")
 
@@ -503,7 +503,7 @@ func _on_EntitySpawner_players_spawned(players: Array) -> void :
 	foxlab_process_extra_enemies()
 	foxlab_process_pending_states()
 
-func on_upgrade_selected(upgrade_data: UpgradeData, upgrade: UpgradesUI.UpgradeToProcess) -> void :
+func on_upgrade_selected(upgrade_data: UpgradeData, upgrade) -> void :
 	if upgrade_data.has_meta("foxlab_item"):
 		RunData.add_item(upgrade_data.get_meta("foxlab_item"), upgrade.player_index)
 	else:
@@ -515,7 +515,7 @@ func clean_up_room() -> void :
 		if timer is Timer:
 			timer.stop()
 
-func _on_player_health_updated(player: Player, current_val: int, max_val: int) -> void :
+func _on_player_health_updated(player, current_val: int, max_val: int) -> void :
 	._on_player_health_updated(player, current_val, max_val)
 	var lost_hp = RunData.get_player_effect(Utils.foxlab_lost_hp_hash, player.player_index)
 	if lost_hp > 0:

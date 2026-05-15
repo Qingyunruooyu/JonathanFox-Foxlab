@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "res://dlcs/dlc_1/zones/abyss/015/d4_group_pufferfish_begin.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/pufferfish/group_0.tres"
 text_key = "[EMPTY]"
 value = 5
 custom_key = "extra_enemies_next_wave"

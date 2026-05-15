@@ -13,9 +13,9 @@ arg_key = "HORDES_NAME"
 
 [resource]
 script = ExtResource( 1 )
-key = "res://zones/zone_1/015/group_6.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/haunted_night/hordes.tres"
 text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
-value = 2
+value = 1
 custom_key = "extra_enemies_next_wave"
 storage_method = 1
 effect_sign = 2

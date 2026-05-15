@@ -13,9 +13,9 @@ arg_key = "LAMPREY_NAME"
 
 [resource]
 script = ExtResource( 1 )
-key = "res://zones/zone_1/000_hordes/group_5.tres"
+key = "res://mods-unpacked/JonathanFox-FoxLab/contents/zones/haunted_night/lamprey.tres"
 text_key = "EFFECT_FOXLAB_EXTRA_ENEMIES_WITH_NAME"
-value = 1
+value = 4
 custom_key = "extra_enemies_next_wave"
 storage_method = 1
 effect_sign = 2

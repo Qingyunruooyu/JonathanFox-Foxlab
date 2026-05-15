@@ -76,11 +76,11 @@ func _on_tracking_enemy_charmed(target: Node):
 	_on_tracking_enemy_died(target, Utils.default_die_args)
 
 # 召回前不会锁定敌人
-func _on_cur_player_took_damage(_enemy: Enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, _args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
+func _on_cur_player_took_damage(_enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, _is_protected: bool, _armor_did_something: bool, _args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	if _value > 0 and _is_idle():
 		_in_assembling = true
 
-func _on_cur_player_died(_player: Player, _args: Entity.DieArgs) -> void :
+func _on_cur_player_died(_player, _args: Entity.DieArgs) -> void :
 	assert(_player == _current_player)
 	if _current_player.is_connected("took_damage", self, "_on_cur_player_took_damage"):
 		_current_player.disconnect("took_damage", self, "_on_cur_player_took_damage")

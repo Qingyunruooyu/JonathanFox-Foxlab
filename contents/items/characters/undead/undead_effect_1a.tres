@@ -11,5 +11,3 @@ custom_key = "foxlab_charm_all_when_fully_heal"
 storage_method = 1
 effect_sign = 3
 custom_args = [  ]
-value2 = 0
-sum_strategy = 0

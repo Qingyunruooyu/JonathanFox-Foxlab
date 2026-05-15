@@ -14,5 +14,5 @@ func get_args(player_index: int) -> Array:
 	var stat_value = Utils.get_capped_stat(stat_hsh, player_index) as int
 	var items_got:Dictionary = RunData.get_player_effect(Utils.foxlab_charm_all_items_hash, player_index)
 	# 初始的概率100%，每通过此法拿到一个，概率多除以1
-	var chance = stepify(100.0 / (1.0 + items_got.get_or_add(key_hash, 0)), 1.0)
+	var chance = stepify(100.0 / (1.0 + items_got.get_or_add(key_hash, 0)), 0.01)
 	return [str(value), tr(key.to_upper()), str(stat_value), tr("STAT_MAX_HP"), str(chance)]

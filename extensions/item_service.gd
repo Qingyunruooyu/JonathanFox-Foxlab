@@ -128,7 +128,7 @@ func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int
 	var boss_factor = boss_spawned_this_wave / nb_reactor
 	return (boss_factor < (1 + max(0, (RunData.current_wave -3 ) / 10)) and Utils.get_chance_success(FOXLAB_BOSS_CHANCE / (1 + boss_factor)))
 
-func foxlab_spawn_random_enemy(enemy: Enemy, boss_spawned_this_wave: int, player_index: int) -> int:
+func foxlab_spawn_random_enemy(enemy, boss_spawned_this_wave: int, player_index: int) -> int:
 	var new_boss_num = 0
 	var charmed_by = player_index if Utils.get_chance_success(FOXLAB_CHARM_CHANCE) else enemy.get_charmed_by_player_index()
 	var pos = ZoneService.get_rand_pos_in_area(Vector2(enemy.global_position.x, enemy.global_position.y), 200)

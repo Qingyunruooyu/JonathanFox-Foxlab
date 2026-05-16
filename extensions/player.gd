@@ -250,7 +250,7 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 				if not cleaning_up:
 					play_sound = true
 					for enemy in main._entity_spawner.get_all_enemies():
-						if not enemy is Boss:
+						if not enemy is Boss and not enemy.is_loot and enemy.can_be_charmed:
 							enemy.set_charmed(player_index)
 				var hit_protection0 = RunData.get_player_effect(Keys.hit_protection_hash, player_index)
 				for effect in charm_all_effect:

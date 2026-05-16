@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=31 format=2]
+[gd_resource type="Resource" load_steps=30 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_7.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_3a.tres" type="Resource" id=2]
@@ -21,7 +21,6 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_1.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_4.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/ghost_envoy_bg.tres" type="Resource" id=22]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_5.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/鬼差_effect_6.tres" type="Resource" id=24]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/ghost_envoy_right_hat.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼差/ghost_envoy_left_hat.tres" type="Resource" id=26]
@@ -40,8 +39,8 @@ icon = ExtResource( 31 )
 name = "CHARACTER_FOXLAB_GHOST_ENVOY"
 tier = 0
 value = 1
-effects = [ ExtResource( 20 ), ExtResource( 32 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 1 ), ExtResource( 3 ) ]
-tracking_text = "FOXLAB_GHOST_MATERIALS_GAINED"
+effects = [ ExtResource( 20 ), ExtResource( 32 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 21 ), ExtResource( 24 ), ExtResource( 1 ), ExtResource( 3 ) ]
+tracking_text = "MATERIALS_GAINED"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
 is_cursed = false

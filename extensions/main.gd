@@ -491,7 +491,7 @@ func _on_EntitySpawner_enemy_spawned(enemy) -> void :
 
 func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 	._on_EntitySpawner_enemy_respawned(enemy)
-	if enemy.source_spawner is Enemy:
+	if is_instance_valid(enemy.source_spawner) and enemy.source_spawner is Enemy:
 		_foxlab_enemy_interact(enemy)
 
 func _on_EntitySpawner_neutral_spawned(neutral) -> void :

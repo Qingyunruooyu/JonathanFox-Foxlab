@@ -365,11 +365,11 @@ func foxlab_get_primary_stat_level_up_map():
 					if not effect.key_hash in level_up_value_map:
 						level_up_value_map[effect.key_hash] = effect.value
 						level_up_id_map[upgrade.upgrade_id_hash] = 1
-						print(tr(upgrade.get_name_text()))
+						# print(tr(upgrade.get_name_text()))
 		for stat in primary_stats:
 			if not stat in level_up_value_map:
 				level_up_value_map[stat] = 1
-				print(tr(Keys.hash_to_string[stat].to_upper()))
+				# print(tr(Keys.hash_to_string[stat].to_upper()))
 	return foxlab_primary_stat_level_up_map
 
 func foxlab_get_stats_in_container():

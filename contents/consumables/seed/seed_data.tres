@@ -1,14 +1,10 @@
-[gd_resource type="Resource" load_steps=10 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://items/consumables/consumable_data.gd" type="Script" id=1]
 [ext_resource path="res://ui/icons/misc/horde_icon.png" type="Texture" id=2]
-[ext_resource path="res://items/materials/water_drop_drip_single_01.wav" type="AudioStream" id=4]
-[ext_resource path="res://items/materials/water_drop_drip_single_03.wav" type="AudioStream" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/consumables/seed/seed_sound.wav" type="AudioStream" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/consumables/seed/seed_effect.tres" type="Resource" id=6]
-[ext_resource path="res://items/materials/water_drop_drip_single_02.wav" type="AudioStream" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/consumables/seed/seed_effect _1.tres" type="Resource" id=8]
-[ext_resource path="res://items/materials/water_drop_drip_single_04.wav" type="AudioStream" id=9]
-[ext_resource path="res://items/materials/water_drop_drip_single_05.wav" type="AudioStream" id=10]
 
 [resource]
 script = ExtResource( 1 )
@@ -29,4 +25,4 @@ max_nb = -1
 item_appearances = [  ]
 tags = [  ]
 to_be_processed_at_end_of_wave = false
-pickup_sounds = [ ExtResource( 4 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 10 ) ]
+pickup_sounds = [ ExtResource( 3 ) ]

@@ -175,6 +175,32 @@ var foxlab_effect_id_dict = {}
 
 var foxlab_item_with_descrip = {item_foxlab_buddhas_hand_hash: 0, item_foxlab_mask_hash: 0, item_foxlab_salvation_hash: 0}
 
+var foxlab_item_pinned_in_inventory = {
+		item_foxlab_faceless_guide_hash: 0,
+		item_foxlab_mask_hash: 0,
+		item_foxlab_trouble_mutation_hash: 0,
+		Keys.generate_hash("item_foxlab_refactor_mutation"): 0,
+		item_foxlab_ball_lightning_0_hash: 0,
+		item_foxlab_ball_lightning_1_hash: 0,
+		item_foxlab_ball_lightning_2_hash: 0,
+		item_foxlab_ball_lightning_3_hash: 0,
+		item_foxlab_demon_hash: 0,
+		item_foxlab_angel_hash: 0,
+		Keys.generate_hash("item_foxlab_devil_trigger"): 0,
+		Keys.generate_hash("item_foxlab_magical_hat"): 0,
+		item_foxlab_split_hash: 0,
+		item_foxlab_eggs_hash: 0,
+		item_foxlab_stargazer_hash: 0,
+		Keys.generate_hash("item_foxlab_spacetime_machine_yang"): 0,
+		Keys.generate_hash("item_foxlab_spacetime_machine_yin"): 0,
+		Keys.generate_hash("item_foxlab_expand"): 0,
+		Keys.generate_hash("item_foxlab_shrink"): 0,
+		Keys.item_builder_turret_n_hash[0]: 0,
+		Keys.item_builder_turret_n_hash[1]: 0,
+		Keys.item_builder_turret_n_hash[2]: 0,
+		Keys.item_builder_turret_n_hash[3]: 0,
+}
+
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
 	if player_index != RunData.DUMMY_PLAYER_INDEX :

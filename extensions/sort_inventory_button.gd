@@ -1,15 +1,25 @@
 extends "res://ui/menus/pages/sort_inventory_button.gd"
 
+func foxlab_need_pin(elements: Array) -> bool:
+	var has_character = false
+	var has_item = false
+	for element in elements:
+		match element.item.get_category():
+			Category.CHARACTER:
+				has_character = true
+			Category.ITEM:
+				has_item = true
+			_:
+				return false
+		if has_character and has_item:
+			return true
+	return false
+
 func _sort_inventory(index: int = - 10, _inventory: Inventory = null):
 	._sort_inventory(index, _inventory)
-	var push_character_ahead = false
-	for i in range(RunData.get_player_count()):
-		if RunData.get_player_character(i) and RunData.get_nb_item(Utils.item_foxlab_mask_hash, i) > 0:
-			push_character_ahead = true
-			break
-	if push_character_ahead:
-		for element_instance in inventory_to_sort.get_children():
-			if element_instance.item is CharacterData or \
-				element_instance.item.my_id_hash in [Utils.item_foxlab_mask_hash, Utils.item_foxlab_faceless_guide_hash]\
-				 or  element_instance.item.my_id_hash in Keys.item_builder_turret_n_hash:
-				inventory_to_sort.move_child(element_instance, 0)
+	var elements = inventory_to_sort.get_children()
+	if elements.size() > inventory_to_sort.columns and foxlab_need_pin(elements):
+		for i in range(elements.size() - 1, -1, -1):
+			var element = elements[i]
+			if element.item.get_category() == Category.CHARACTER or element.item.my_id_hash in Utils.foxlab_item_pinned_in_inventory:
+				inventory_to_sort.move_child(element, 0)

@@ -36,6 +36,7 @@ const EXTENSION_SCRIPTS: =[
 	"catling_gun.gd",
 	"upgrades_ui_player_container.gd",
 	"upgrade_ui.gd",
+	"jellyshield.gd",
 ]
 
 const PC_EXTENSION_SCRIPTS: =[

@@ -160,6 +160,8 @@ func foxlab_process_gold(value: int, player_index: int):
 	elif value < 0:
 		if RunData.get_player_effect_bool(Utils.foxlab_lost_hp_on_losing_gold_hash, player_index):
 			RunData.get_player_effects(player_index)[Utils.foxlab_lost_hp_hash] -= value
+			if wave_in_progress:
+				emit_signal("healing_effect", 0, player_index, Keys.empty_hash)
 
 ###### 扩展 ######
 func _reset_per_wave_properties() -> void :

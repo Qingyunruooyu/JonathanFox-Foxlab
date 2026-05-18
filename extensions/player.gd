@@ -116,7 +116,8 @@ func foxlab_process_lost_hp() -> bool:
 		current_stats.health = max(1, current_stats.health - lost_hp) as int
 		if current_stats.health != prev_health:
 			effects[Utils.foxlab_lost_hp_hash] -= prev_health - current_stats.health
-			return  true
+			emit_signal("health_updated", self, current_stats.health, max_stats.health)
+			return true
 	return false
 
 ############ 函数扩展 #########
@@ -232,14 +233,9 @@ func _on_ItemAttractArea_area_entered(item: Item) -> void:
 		item.attracted_by = self
 		item.set_physics_process(true)
 
-func heal(value: int, is_from_torture: bool = false) -> int:
-	var value_healed = .heal(value, is_from_torture)
-	if value_healed > 0:
-		foxlab_process_lost_hp()
-	return value_healed
-
 func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_torture: bool = false) -> int:
 	var value_healed = .on_healing_effect(value, tracking_key, from_torture)
+	foxlab_process_lost_hp()
 	if value_healed > 0 and !_foxlab_has_charmed_all\
 		and current_stats.health >= (Utils.get_capped_stat(Keys.stat_max_hp_hash, player_index) as int):
 			_foxlab_has_charmed_all = true

@@ -1,6 +1,15 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/charm_all_enemies_effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 4
+arg_sign = 5
+arg_value = 0
+arg_format = 0
+arg_key = ""
 
 [resource]
 script = ExtResource( 1 )
@@ -10,4 +19,4 @@ value = 1
 custom_key = "foxlab_charm_all_when_fully_heal"
 storage_method = 1
 effect_sign = 3
-custom_args = [  ]
+custom_args = [ SubResource( 1 ) ]

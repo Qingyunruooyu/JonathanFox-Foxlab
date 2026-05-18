@@ -325,15 +325,15 @@ CHARACTER_FOXLAB_STARGAZER,观星者,Stargazer
 EFFECT_FOXLAB_STATS_ON_FROZEN_ENEMY_KILL,击杀[color=#FF8C00]瞬时速度[/color]＜{2}的目标有{0}{1},{0}{1} after killing an object who's [color=#FF8C00]instantaneous speed[/color] < {2}
 EFFECT_FOXLAB_ITEM_UPGRADE,升级时不会提升属性，但可选择一个道具,You choose an item when you level up instead of a stat upgrade
 EFFECT_FOXLAB_INSTANT_POISONED_ATTRACTING,有{0}概率立即吸收掉落的有毒消耗品,{0} chance to instantly attract a poisoned consumable when it’s dropped
-ITEM_FOXLAB_SALVATION,超度（测试中）,Salvation (Testing)
-TAG_DESCRIPTION_ITEM_FOXLAB_SALVATION,超度产生的种子是消耗品，基础治疗量为0。,Seed by Salvation is a Consumable whose base healing point is 0.
+ITEM_FOXLAB_SALVATION,超度,Salvation
+TAG_DESCRIPTION_ITEM_FOXLAB_SALVATION,超度产生的种子，在消耗性治疗＞3时可治疗。,Seed by Salvation can heal when your Consumable Heal > 3.
 FOXLAB_SEED_DESCRIPTION,一名玩家每秒最多掉落{0}个种子，基础寿命为{3}秒，每{1}{2}增加1秒种子的寿命，拾取种子的玩家会召唤一个对应的友方单位,"One player can drop at most {0} Seeds/s; Seed can live for {3}s, and every {1} {2} make Seed live 1s more; Play that picks up a Seed spawns an friendly unit"
 EFFECT_FOXLAB_ENEMY_INTERACT,当敌人被敌人召唤/杀死时，你扣除{0}个材料并在它附近掉落等量材料和1个{1}秒寿命的种子,"When an enemy is spawned/killed by an enemy, you lose {0} materials then drop equivalent materials and 1 Seed nearby; the Seed dies {1}s later"
 FOXLAB_SEEDS_DROPPED,掉落的种子：{0},Seeds dropped: {0}
 FOXLAB_SEEDS_ACTIVATED,激活的种子：{0},Seeds activated: {0}
-CHARACTER_FOXLAB_UNDEAD,亡灵（测试中）,Undead (Testing)
-EFFECT_FOXLAB_LOST_HP_ON_LOSING_GOLD,每当失去材料时，你亏欠等量生命值（视为已损失）,You'll owe equal health (treated as missing health) on losing materials
-EFFECT_FOXLAB_ADD_XP_ON_GETTING_GOLD,每当获得材料时，你获得等量经验,You'll get equal XP on getting materials
-FOXLAB_PENDING_XP,待获得的经验,Pending XP
-FOXLAB_LOST_HP,亏欠的生命值,Health you owe
-EFFECT_FOXLAB_CHARM_ALL_WHEN_FULLY_HEAL,每次敌袭首次治疗至{3}（{2}）时，魅惑当前所有非头目敌人并有{4}概率{0}{1},Once per wave when you're healed to {3} ({2}): charm all living enemies (except BOSSes) and {4} chance to {0} {1}
+CHARACTER_FOXLAB_UNDEAD,亡灵,Undead
+EFFECT_FOXLAB_LOST_HP_ON_LOSING_GOLD,每当失去材料时，你流失等量生命值,You'll lose an equal amount of health on losing materials
+EFFECT_FOXLAB_ADD_XP_ON_GETTING_GOLD,每当获得材料时，你获得等量经验,You'll gain an equal amount of XP on getting materials
+FOXLAB_PENDING_XP,待获得经验,Pending XP to gain
+FOXLAB_LOST_HP,待流失生命值,Pending health to lose
+EFFECT_FOXLAB_CHARM_ALL_WHEN_FULLY_HEAL,每次敌袭首次治疗至{3}（{2}）时，魅惑所有普通敌人并有{4}概率{0}{1},Once per wave when you're healed to {3} ({2}): charm all common enemies and {4} chance to {0} {1}

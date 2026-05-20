@@ -4,6 +4,9 @@ extends "res://singletons/item_service.gd"
 var foxlab_kill_nearby_icon
 var foxlab_seed_data
 
+######## 观星者新皮肤 #####
+var foxlab_stargazer_new_app
+
 ######## 武器池 ########
 var foxlab_pet_structure_stats_added = false
 var foxlab_weapons_spawning_structure = {}
@@ -26,6 +29,7 @@ func _ready() -> void :
 func _foxlab_init_resources():
 	foxlab_kill_nearby_icon = get_element(items, Utils.item_foxlab_inner_indomitable_hash).icon
 	foxlab_seed_data = load("res://mods-unpacked/JonathanFox-FoxLab/contents/consumables/seed/seed_data.tres")
+	foxlab_stargazer_new_app = load("res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/stargazer/stargazer_appearance_upgraded.tres")
 
 func _foxlab_init_configs():
 	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
@@ -239,7 +243,10 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 			args.excluded_items.push_back([upgrade.get_meta("foxlab_item"), 0])
 	var items_ret = []
 	var stats_upgrade_map = Utils.foxlab_get_primary_stat_level_up_map()[1]
+	var all_legendary = true
 	for base_upgrade in upgrades:
+		if base_upgrade.tier != Tier.LEGENDARY:
+			all_legendary = false
 		if not base_upgrade.upgrade_id_hash in stats_upgrade_map:
 			items_ret.append(base_upgrade)
 		else:
@@ -253,4 +260,9 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 			upgrade.upgrade_id_hash = item.my_id_hash
 			upgrade.set_meta("foxlab_item", item)
 			items_ret.append(upgrade)
+	if all_legendary and RunData.get_nb_item(Utils.character_foxlab_stargazer_hash, player_index) > 0:
+		var player_appearances_ref: Array = RunData.players_data[player_index].appearances
+		if not foxlab_stargazer_new_app in player_appearances_ref:
+			player_appearances_ref.append(foxlab_stargazer_new_app)
+			player_appearances_ref.sort_custom(Sorter, "sort_depth_ascending")
 	return items_ret

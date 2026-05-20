@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=9 format=2]
+[gd_resource type="Resource" load_steps=10 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/膨胀/膨胀_icon.png" type="Texture" id=1]
 [ext_resource path="res://items/global/item_data.gd" type="Script" id=4]
@@ -8,6 +8,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/膨胀/膨胀_effect_2.tres" type="Resource" id=8]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/膨胀/膨胀_effect_6.tres" type="Resource" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/膨胀/膨胀_effect_7.tres" type="Resource" id=10]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/膨胀/expand_appearance.tres" type="Resource" id=11]
 
 [resource]
 script = ExtResource( 4 )
@@ -25,5 +26,5 @@ unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
 max_nb = 1
-item_appearances = [  ]
+item_appearances = [ ExtResource( 11 ) ]
 tags = [  ]

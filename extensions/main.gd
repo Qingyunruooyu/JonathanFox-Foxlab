@@ -68,6 +68,7 @@ func foxlab_receive_item_stat_ready():
 							if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
 								for effect in actual_item_data.effects:
 									if effect is SwapMaxMinStatEffect:
+										effect.has_been_applied = false
 										effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
 							RunData.add_item(actual_item_data, player_index)
 
@@ -367,6 +368,7 @@ func foxlab_get_item(item_id_hash: int, num: int, player_index: int):
 			if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
 				for effect in actual_item_data.effects:
 					if effect is SwapMaxMinStatEffect:
+						effect.has_been_applied = false
 						effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
 			RunData.add_item(actual_item_data, player_index)
 		_floating_text_manager.display_icon(num, item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, _players[player_index].global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)

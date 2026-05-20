@@ -22,18 +22,22 @@ func apply(player_index: int) -> void:
 		for i in range_seq:
 			swap_stat(stats_to_swap[i], stats_to_swap[i+1], player_index)
 
+static func get_stat_value(stat_key: int, player_index: int):
+	return WeaponService.get_structure_attack_speed(player_index) if stat_key == Keys.structure_attack_speed_hash else Utils.get_stat(stat_key, player_index)
+
 static func swap_stat(left_stat_key: int, right_stat_key: int, player_index: int):
 	var left_stat_gain = RunData.get_stat_gain(left_stat_key, player_index)
 	var right_stat_gain = RunData.get_stat_gain(right_stat_key, player_index)
-	print("swap ", Keys.hash_to_string[left_stat_key], ", ", Keys.hash_to_string[right_stat_key])
+	# print("swap ", Keys.hash_to_string[left_stat_key], ", ", Keys.hash_to_string[right_stat_key])
 	var effects = RunData.get_player_effects(player_index)
+
+	# RunData + TempStats + (LinkedStats (+ structures_cooldown_reduction)) = stat value
+	var left_stat_value = get_stat_value(left_stat_key, player_index)
+	var right_stat_value = get_stat_value(right_stat_key, player_index)
 	var left_stat_temp = TempStats.get_stat(left_stat_key, player_index)
 	var right_stat_temp = TempStats.get_stat(right_stat_key, player_index)
-	var left_stat_linked = LinkedStats.get_stat(left_stat_key, player_index)
-	var right_stat_linked = LinkedStats.get_stat(right_stat_key, player_index)
-
-	var left_stat_value = Utils.get_stat(left_stat_key, player_index)
-	var right_stat_value = Utils.get_stat(right_stat_key, player_index)
+	var left_stat_linked = left_stat_value - left_stat_temp - RunData.get_stat(left_stat_key, player_index)
+	var right_stat_linked = right_stat_value - right_stat_temp - RunData.get_stat(right_stat_key, player_index)
 
 	var new_left_permanent = (right_stat_value - left_stat_temp - left_stat_linked) / left_stat_gain
 	var new_right_permanent = (left_stat_value - right_stat_temp - right_stat_linked) / right_stat_gain

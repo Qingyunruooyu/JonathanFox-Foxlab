@@ -137,6 +137,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			effect = effect.duplicate()
 			new_effects.append(effect)
 			if effect is SwapMaxMinStatEffect: # axolotl
+				effect.has_been_applied = false
 				effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
 			elif effect.get_id() == get_id():
 				effect.debug_item_name = []

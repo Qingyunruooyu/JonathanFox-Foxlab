@@ -145,6 +145,15 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	foxlab_current_shop_item_pos[player_index][0] = shop_item._button.rect_global_position
 	foxlab_current_shop_item_pos[player_index][1] = shop_item._button.rect_size.x / 2.0
 
+	# 同名但是诅咒系数不同的道具，如果不是从左往右买，就会错位。比如商店一个诅咒镜子和一个普通镜子，如果买普通镜子，会把排前面的诅咒镜子干掉
+	var items_pull_back = []
+	for item in _shop_items[player_index]:
+		if item[0].my_id_hash == shop_item.item_data.my_id_hash and item[0].curse_factor != shop_item.item_data.curse_factor:
+			items_pull_back.append(item)
+	for item in items_pull_back:
+		_shop_items[player_index].erase(item)
+		_shop_items[player_index].append(item)
+
 	.on_shop_item_bought(shop_item, player_index)
 	var item_data = shop_item.item_data
 

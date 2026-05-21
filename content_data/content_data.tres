@@ -316,3 +316,7 @@ translation_keys_needing_percent = {
 "effect_foxlab_wanted_item_with_starting": [ 0 ],
 "effect_stat_on_every_step_valid_lowest_two": [ 0 ]
 }
+weapon_characters = {
+"weapon_rail_gun_1": [ ExtResource( 110 ), ExtResource( 160 ), ExtResource( 102 ), ExtResource( 28 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 17 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 30 ), ExtResource( 34 ), ExtResource( 41 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 46 ), ExtResource( 102 ), ExtResource( 110 ), ExtResource( 127 ), ExtResource( 144 ) ],
+"weapon_rail_gun_2": [ ExtResource( 10 ), ExtResource( 109 ) ]
+}

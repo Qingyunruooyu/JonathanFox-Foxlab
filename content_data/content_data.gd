@@ -25,11 +25,27 @@ export (Array, String) var effect_keys_full_serialization = []
 export (Dictionary) var translation_keys_needing_operator = {}
 export (Dictionary) var translation_keys_needing_percent = {}
 
+# characters
+export (Dictionary) var weapon_characters = {}
+
 func modify_characters():
 	for tag in extra_banned_item.keys():
 		for character in ItemService.characters:
 			if tag in character.wanted_tags:
 				ProgressData._append_without_duplicates(character.banned_items, extra_banned_item[tag])
+
+	for weapon_id in weapon_characters:
+		var weapon = ItemService.get_element_safe(ItemService.weapons, weapon_id)
+		if weapon == null:
+			continue
+		for character_data in weapon_characters[weapon_id]:
+			var already_has_starting_weapon = false
+			for starting_weapon in character_data.starting_weapons:
+				if starting_weapon.my_id == weapon.my_id:
+					already_has_starting_weapon = true
+					break
+			if not already_has_starting_weapon:
+				character_data.starting_weapons.push_back(weapon)
 
 func add_stats():
 	for stat in stats:

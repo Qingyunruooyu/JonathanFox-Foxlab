@@ -152,7 +152,7 @@ func die(args: = Utils.default_die_args) -> void :
 		if not is_instance_valid(args.from):
 			if _is_burning:
 				_die_args_unit.from = ItemService.get_item_from_id(Keys.item_scared_sausage_hash)
-		elif args.from is Structure or args.from is Pet:
+		elif "player_index" in args.from and args.from.player_index >= 0 and args.from < RunData.get_player_count():
 			_die_args_unit.from = players_ref[args.from.player_index]
 		else:
 			_die_args_unit.from = args.from

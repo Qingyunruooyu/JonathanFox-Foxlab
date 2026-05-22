@@ -88,6 +88,7 @@ var foxlab_lost_hp_on_losing_gold_hash: int = Keys.generate_hash("foxlab_lost_hp
 var foxlab_lost_hp_hash: int = Keys.generate_hash("foxlab_lost_hp")
 var foxlab_charm_all_when_fully_heal_hash: int = Keys.generate_hash("foxlab_charm_all_when_fully_heal")
 var foxlab_charm_all_items_hash: int = Keys.generate_hash("foxlab_charm_all_items")
+var foxlab_extra_hit_hash: int = Keys.generate_hash("foxlab_extra_hit")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")

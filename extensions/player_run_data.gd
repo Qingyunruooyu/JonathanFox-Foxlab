@@ -310,6 +310,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_lost_hp_hash: 0,
 			Utils.foxlab_charm_all_when_fully_heal_hash: [],
 			Utils.foxlab_charm_all_items_hash: {},
+			Utils.foxlab_extra_hit_hash: 0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

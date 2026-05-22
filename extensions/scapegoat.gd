@@ -27,7 +27,7 @@ func _foxlab_ready():
 		_current_movement_behavior = _foxlab_movement_ins
 		add_child(_foxlab_movement_ins)
 
-func on_health_updated(_unit: Unit, current_val: int, max_val: int) -> void :
+func on_health_updated(_unit, current_val: int, max_val: int) -> void :
 	.on_health_updated(_unit, current_val, max_val)
 	if not RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index).empty() \
 		and current_val >= max_val:

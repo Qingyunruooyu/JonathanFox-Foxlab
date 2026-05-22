@@ -39,7 +39,7 @@ func curse_item(item_data: ItemParentData, player_index: int, turn_randomization
 						extra_effect.value = foxlab_enchanted_eyes_crate_chance
 						extra_effect.effect_sign = Sign.POSITIVE
 						extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
-						ret.effects.insert(ret.effects.size() - 1, extra_effect)
+						ret.effects.insert(1, extra_effect)
 				["foxlab_get_rand_weapon", _]:
 					max_effect_modifier = max(max_effect_modifier, effect_modifier)
 					var extra_effect = Effect.new()

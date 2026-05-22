@@ -19,6 +19,7 @@ var foxlab_original_piercing = [0, 0, 0, 0]
 #超度相关
 var foxlab_seed_timers = []
 var foxlab_seed_numbers = [Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND]
+var foxlab_next_gold_player: int
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
@@ -144,6 +145,7 @@ func foxlab_seed_timers_ready():
 	var timer_wait_time: = 1.0
 	var player_count: int = RunData.get_player_count()
 	var timer_delay: = timer_wait_time / player_count
+	foxlab_next_gold_player = Utils.randi() % RunData.get_player_count()
 	for player_index in RunData.get_player_count():
 		if RunData.get_player_effect_bool(Utils.foxlab_enemy_interact_hash, player_index):
 			var timer = Timer.new()
@@ -310,7 +312,8 @@ func _foxlab_enemy_interact(enemy: Node2D):
 	for player_index in RunData.get_player_count():
 		var value = RunData.get_player_effect(Utils.foxlab_enemy_interact_hash, player_index)
 		if value > 0:
-			RunData.add_gold(-value, player_index)
+			RunData.add_gold(-value, foxlab_next_gold_player)
+			foxlab_next_gold_player = (foxlab_next_gold_player + 1) % RunData.get_player_count()
 			foxlab_spawn_seed(enemy, player_index)
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, value, 0)
 			sum += value

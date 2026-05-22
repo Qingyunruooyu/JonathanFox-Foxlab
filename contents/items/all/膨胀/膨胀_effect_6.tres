@@ -12,4 +12,4 @@ storage_method = 0
 effect_sign = 3
 custom_args = [  ]
 stats_exception = [ "stat_curse", "stat_luck" ]
-stat_displayed = "STAT_FOXLAB_PRIMARY_EXCEPT_CURSE_LUCK"
+stat_displayed = "STAT_FOXLAB_PRIMARY"

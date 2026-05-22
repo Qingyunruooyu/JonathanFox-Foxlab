@@ -23,7 +23,16 @@ func unapply(player_index: int) -> void:
 			effects[stat_gain] -= value
 
 func get_args(_player_index: int) -> Array:
-	return [tr(stat_displayed.to_upper()), str(abs(value))]
+	var display_text = tr(stat_displayed.to_upper())
+	if not stats_exception.empty():
+		var exceptions = []
+		for stat in stats_exception:
+			if stat == "stat_curse":
+				exceptions.append("[color=#%s]%s[/color]" % [Utils.CURSE_COLOR.to_html(), tr("STAT_CURSE")])
+			else:
+				exceptions.append(tr(stat.to_upper()))
+		display_text += Text.text(tr("FOXLAB_EXCEPT"), ["/".join(exceptions)], [get_sign(effect_sign, value)])
+	return [display_text, str(abs(value))]
 
 func serialize() -> Dictionary:
 	var serialized = .serialize()

@@ -399,6 +399,10 @@ func foxlab_get_primary_stat_level_up_map():
 				# print(tr(Keys.hash_to_string[stat].to_upper()))
 	return foxlab_primary_stat_level_up_map
 
+func foxlab_is_vanilla_upgrade(upgrade_data:UpgradeData):
+	return upgrade_data.effects.size() == 1 and (upgrade_data.upgrade_id_hash in Utils.foxlab_get_primary_stat_level_up_map()[1] or\
+			upgrade_data.upgrade_id_hash == ItemService.weapon_slot_upgrade_data.upgrade_id_hash)
+
 func foxlab_get_stats_in_container():
 	if foxlab_stats_in_container.empty():
 		var stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()

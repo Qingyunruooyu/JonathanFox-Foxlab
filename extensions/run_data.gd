@@ -261,3 +261,17 @@ func get_player_appearances(player_index: int) -> Array:
 
 func get_player_current_health(player_index: int) -> int:
 	return .get_player_current_health(player_index) - RunData.get_player_effect(Utils.foxlab_lost_hp_hash, player_index)
+
+func get_player_sets(player_index: int) -> Array:
+	var sets = .get_player_sets(player_index)
+	# 开局选择道具而不是武器
+	if sets.empty():
+		var selected_item = players_data[player_index].selected_item
+		if selected_item != null:
+			# 道具是构筑物，视为工具（程序员、傀儡忍者、技术宅等）
+			if selected_item.is_structure_item():
+				sets.append(Keys.generate_hash("set_tool"))
+			# 其他，视为枪械（架构师）
+			else:
+				sets.append(Keys.generate_hash("set_gun"))
+	return sets

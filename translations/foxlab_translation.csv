@@ -5,6 +5,7 @@ FOXLAB_DISABLE_ITEMS_TOOLTIP,禁用后，只有角色强制召唤才会出现,"I
 FOXLAB_DISABLE_ITEMS,禁用FoxLab道具（重启游戏生效）,Ban FoxLab Items (restart game to apply)
 FOXLAB_DISABLE_CHARACTERS_TOOLTIP,禁用后，FoxLab角色中只有无面会出现在角色选择界面和面具的角色池,"If banned, only Faceless in FoxLab is selectable by player or Item Mask"
 FOXLAB_DISABLE_CHARACTERS,禁用FoxLab角色（重启游戏生效）,Ban FoxLab Characters(restart game to apply)
+FOXLAB_COOP_STEAL_HINT,双击{0}窃取物品,Double press {0} to steal item
 FOXLAB_CURSED_TEXT,被诅咒,Cursed
 EFFECT_FOXLAB_GET_ITEM,你将获得{0}{1},You will get {0} {1}
 CORRUPTED_TREE_NAME,被腐蚀的树,Corrupted Tree

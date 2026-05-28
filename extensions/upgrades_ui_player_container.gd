@@ -1,6 +1,6 @@
 extends "res://ui/menus/ingame/upgrades_ui_player_container.gd"
 
-onready var _foxlab_item_popup = $"%ItemPopup"
+onready var _foxlab_item_popup = get_node_or_null("%ItemPopup")
 
 var foxlab_current_ui = null
 

@@ -64,7 +64,7 @@ func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = nu
 		entity.gold_count = 0
 		entity.on_health_updated(entity, entity.current_stats.health, entity.max_stats.health)
 
-	if foxlab_should_connect_signal and args.type == EntityType.ENEMY or args.type == EntityType.BOSS and not entity.pool_id in foxlab_enemy_connected_signal:
+	if foxlab_should_connect_signal and (args.type == EntityType.ENEMY or args.type == EntityType.BOSS) and not entity.pool_id in foxlab_enemy_connected_signal:
 		var hurtbox = entity.get_node("Hurtbox")
 		if not hurtbox.is_connected("area_entered", self, "_on_foxlab_Hurtbox_entered"):
 			var _err = hurtbox.connect("area_entered", self, "_on_foxlab_Hurtbox_entered", [entity])

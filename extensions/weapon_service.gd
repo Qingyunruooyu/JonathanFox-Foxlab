@@ -1,5 +1,17 @@
 extends "res://singletons/weapon_service.gd"
+
 ### 扩展 ###
+func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service, is_structure: = false, is_special_spawn: = false, is_pet: = false) -> WeaponStats:
+	var new_stats = .init_base_stats(from_stats, player_index, args, is_structure, is_special_spawn, is_pet)
+	# 命中率超过100%反而会降低命中率，不合理
+	new_stats.accuracy = min(1.0, new_stats.accuracy)
+	# 原版中 构筑物+宠物 的道具，暴击率和生命窃取按构筑物来算了，比如布雷机器人要有一堆书才能暴击，并且无法生命窃取，这是不对的
+	if is_structure and is_pet:
+		var corrected_stats = .init_base_stats(from_stats, player_index, args, false, is_special_spawn, is_pet)
+		new_stats.lifesteal = corrected_stats.lifesteal
+		new_stats.crit_chance = corrected_stats.crit_chance
+	return new_stats
+
 func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service):
 	var new_stats = .init_melee_stats(from_stats, player_index, args)
 	new_stats.deal_dmg_on_return = from_stats.deal_dmg_on_return

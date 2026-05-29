@@ -252,7 +252,7 @@ EFFECT_FOXLAB_SLOW_ON_HIT,敌人受{1}伤害会暂时减速{0},Enemy is slowed {
 EFFECT_FOXLAB_SPAWN_LANDMINE_CHANCE,武器直接杀死敌人时有{0}几率生成1地雷,{0} chance to spawn a landmine if an enemy is killed directly by your weapon
 CHARACTER_FOXLAB_MONK,僧侣,Monk
 ITEM_FOXLAB_BUDDHAS_HAND,佛手,Buddha's Hand
-TAG_DESCRIPTION_ITEM_FOXLAB_BUDDHAS_HAND,佛手装备武器可以溢出武器栏,Buddha's Hand can give you weapons even when weapon slot is full
+TAG_DESCRIPTION_ITEM_FOXLAB_BUDDHAS_HAND,佛手装备武器可以溢出武器栏，武器的专属效果无法赋予：如磁轨炮、电击枪、鱼叉枪）,"Buddha's Hand can give you weapons even when weapon slot is full; Weapon unique effects can't work for other weapons (Rail Gun, Taser, Harpoon Gun, etc)."
 EFFECT_FOXLAB_BUDDHAS_HAND,你将装备1{0}（拥有{1}效果{2}）,"You'll equip a {0} with effect of {1}{2}"
 EFFECT_FOXLAB_BUDDHAS_HAND_HINT,，此效果有几率（受{0}影响）在武器升级时保留," (There's chance (affected by {0}) to keep the effect on weapon upgrade)"
 EFFECT_FOXLAB_BUDDHAS_HAND_BRICK,，武器升级后[color=#FF8C00]失去[/color]此效果," (The effect is [color=#FF8C00]lost[/color] on weapon upgrade)"
@@ -281,7 +281,7 @@ EFFECT_FOXLAB_WEAPON_TEXT_CURSED,[color=#ca61ff]诅咒[/color][color=#FF8C00]{1}
 ITEM_FOXLAB_MASK,面具,Mask
 TAG_DESCRIPTION_ITEM_FOXLAB_MASK,变身会替换你的次要角色,Replace secondary characters
 ITEM_FOXLAB_FACELESS_GUIDE,无面的指引,Faceless' Guide
-EFFECT_FOXLAB_FACELESS_GUIDE,无面复制的武器，[color=#FF8C00]主动升级（如铁砧）[/color]或点击[color=#FF8C00]此武器[/color]合成按钮，可[color=#FF8C00]保留[/color]额外效果,"The extra effects are [color=#FF8C00]kept[/color] if a modified weapon [color=#FF8C00]upgrades by itself (eg. Anvil)[/color] or is [color=#FF8C00]selected by you[/color] for combination"
+EFFECT_FOXLAB_FACELESS_GUIDE,无面复制的武器，[color=#FF8C00]主动升级（如铁砧）[/color]或点击[color=#FF8C00]此武器[/color]合成按钮，可[color=#FF8C00]保留[/color]额外效果（武器的专属效果对其他武器无效，如磁轨炮、电击枪、鱼叉枪）,"The extra effects are [color=#FF8C00]kept[/color] if a modified weapon [color=#FF8C00]upgrades by itself (eg. Anvil)[/color] or is [color=#FF8C00]selected by you[/color] for combination. Weapon unique effects can't work for other weapons (Rail Gun, Taser, Harpoon Gun, etc)."
 FOXLAB_MASK_HISTORY,变身历史,Transformation history
 CHARACTER_FOXLAB_REFACTOR,重构师,Refactor
 EFFECT_FOXLAB_REACTOR,生成一个核反应堆，产生{2}投射物，使投射物周围敌人减速，造成{0}（{1}）伤害,"Spawns a nuclear reactor that spawns {2} projectiles, dealing {0} ({1}) damage and slowing enemies around them"
@@ -339,3 +339,4 @@ FOXLAB_LOST_HP,待流失生命值,Pending health to lose
 EFFECT_FOXLAB_CHARM_ALL_WHEN_FULLY_HEAL,每次敌袭首次治疗至{3}（{2}）时，魅惑所有普通敌人并有{4}概率{0}{1},Once per wave when you're healed to {3} ({2}): charm all common enemies and {4} chance to {0} {1}
 CHARACTER_FOXLAB_BUTCHER,屠夫,Butcher
 EFFECT_FOXLAB_EXTRA_HIT,你的[color=#FF8C00]武器/宠物/投射物[/color]对敌人的碰撞会重复{0}次（投射物需足量贯通/反弹）,"Collision from your [color=#FF8C00]weapons/pets/projectiles[/color] to enemies will repeat for {0} times (Projectiles require enough piercing/bounce)"
+EFFECT_FOXLAB_TURRET_TARGET,你的攻击型炮塔会朝玩家射击,Your offensive turrets will aim at players

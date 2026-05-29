@@ -217,6 +217,7 @@ translation_keys_needing_operator = {
 "bounce_damage": [ 0 ],
 "crate_chance": [ 0 ],
 "dodge_cap": [ 0 ],
+"effect_accuracy": [ 0 ],
 "effect_bounce_on_crit_item": [ 0 ],
 "effect_foxlab_anvil": [ 0 ],
 "effect_foxlab_apply_only": [ 0 ],

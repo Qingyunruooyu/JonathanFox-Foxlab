@@ -21,6 +21,9 @@ var foxlab_seed_timers = []
 var foxlab_seed_numbers = [Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND]
 var foxlab_next_gold_player: int
 
+# 额外碰撞判定
+var foxlab_should_check_extra_hit = false
+
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	foxlab_receive_item_stat_ready()
@@ -28,6 +31,7 @@ func _ready():
 	foxlab_piercing_is_bounce_ready()
 	foxlab_gain_stat_every_killed_enemies_ready()
 	foxlab_seed_timers_ready()
+	foxlab_extra_hit_ready()
 
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
@@ -156,6 +160,12 @@ func foxlab_seed_timers_ready():
 			add_child(timer)
 			if not get_tree().current_scene.name == "GutRunner":
 				yield(get_tree().create_timer(timer_delay), "timeout")
+
+func foxlab_extra_hit_ready():
+	for i in RunData.get_player_count():
+		if RunData.get_player_effect_bool(Utils.foxlab_extra_hit_hash, i):
+			foxlab_should_check_extra_hit = true
+			break
 
 func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
 	foxlab_seed_numbers[player_index] = 0
@@ -376,6 +386,25 @@ func foxlab_get_item(item_id_hash: int, num: int, player_index: int):
 			RunData.add_item(actual_item_data, player_index)
 		_floating_text_manager.display_icon(num, item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, _players[player_index].global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)
 
+
+##### 重复判定伤害 #####
+func _on_foxlab_enemy_area_entered_deferred(hitbox: Area2D, enemy: Node2D):
+	if not enemy._pending_die and hitbox.active and hitbox.deals_damage and\
+		is_instance_valid(hitbox.from) and not hitbox.from is PlayerExplosion and\
+		hitbox.from.player_index != -1:
+		var extra_hit:int = RunData.get_player_effect(Utils.foxlab_extra_hit_hash, hitbox.from.player_index)
+		if extra_hit > 1:
+			var ignored_objects = hitbox.ignored_objects.duplicate()
+			for _i in extra_hit:
+				hitbox.ignored_objects.erase(enemy)
+				enemy.hurt_area_entered_deferred(hitbox)
+				if not hitbox.active:
+					break
+			hitbox.ignored_objects = ignored_objects
+
+func _on_foxlab_enemy_Hurtbox_entered(hitbox: Area2D, enemy: Node2D):
+	call_deferred("_on_foxlab_enemy_area_entered_deferred", hitbox, enemy)
+
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
@@ -493,6 +522,9 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 func _on_EntitySpawner_enemy_spawned(enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)
 	var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
+	if foxlab_should_check_extra_hit:
+		var hurtbox = enemy.get_node("Hurtbox")
+		var _err = hurtbox.connect("area_entered", self, "_on_foxlab_enemy_Hurtbox_entered", [enemy])
 
 func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 	._on_EntitySpawner_enemy_respawned(enemy)
@@ -507,6 +539,11 @@ func _on_EntitySpawner_players_spawned(players: Array) -> void :
 	._on_EntitySpawner_players_spawned(players)
 	foxlab_process_extra_enemies()
 	foxlab_process_pending_states()
+
+func _on_EntitySpawner_structure_spawned(structure) -> void :
+	._on_EntitySpawner_structure_spawned(structure)
+	if RunData.get_player_effect_bool(Utils.foxlab_turret_target_hash, structure.player_index) and EntityService.is_offensive(structure):
+		structure._range_shape.get_parent().collision_mask = Utils.PLAYER_BIT
 
 func on_upgrade_selected(upgrade_data: UpgradeData, upgrade) -> void :
 	if upgrade_data.has_meta("foxlab_item"):

@@ -150,14 +150,14 @@ func die(args: = Utils.default_die_args) -> void :
 		_die_args_unit.killing_blow_dmg_value = args.killing_blow_dmg_value
 		_die_args_unit.is_burning = args.is_burning
 		if not is_instance_valid(args.from):
-			if _is_burning:
+			if _is_burning or args.is_burning:
 				_die_args_unit.from = ItemService.get_item_from_id(Keys.item_scared_sausage_hash)
+		elif args.from is Enemy:
+			_die_args_unit.from = args.from
 		elif "player_index" in args.from and args.from.player_index >= 0 and args.from < RunData.get_player_count():
 			_die_args_unit.from = players_ref[args.from.player_index]
 		else:
 			_die_args_unit.from = args.from
-		if _die_args_unit.has_meta("is_bullet_hell"):
-			_die_args_unit.is_bullet_hell = args.is_bullet_hell
 		args = _die_args_unit
 		reset_to_default = true
 	.die(args)
@@ -240,7 +240,7 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 		for stats in foxlab_enemy_stats_on_hit:
 			EntityService.factor_cache.erase(stats)
 		var hitbox = args.hitbox
-		if _foxlab_has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from is Enemy:
+		if _foxlab_has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from.player_index == -1:
 			foxlab_manage_projectile_on_hit()
 	return ret
 

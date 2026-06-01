@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=20 format=2]
+[gd_resource type="Resource" load_steps=22 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/pufferfish_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/河鲀_effect_0.tres" type="Resource" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=17]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/河鲀/河鲀_effect_14.tres" type="Resource" id=18]
 [ext_resource path="res://items/all/dynamite/dynamite_data.tres" type="Resource" id=19]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/收缩/收缩_data.tres" type="Resource" id=20]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/膨胀/膨胀_data.tres" type="Resource" id=21]
 
 [resource]
 script = ExtResource( 17 )
@@ -43,4 +45,4 @@ banned_item_groups = [  ]
 banned_items = [ "item_jelly", "item_nail", "item_crystal", "item_coffee", "item_seashell", "item_foxlab_omnic_crisis", "item_extra_stomach" ]
 banned_upgrades = [  ]
 starting_weapons = [  ]
-starting_items = [ ExtResource( 8 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 19 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 16 ) ]
+starting_items = [ ExtResource( 8 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 19 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 16 ), ExtResource( 21 ), ExtResource( 20 ) ]

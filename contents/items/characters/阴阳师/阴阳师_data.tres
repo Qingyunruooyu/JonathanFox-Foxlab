@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=30 format=2]
+[gd_resource type="Resource" load_steps=32 format=2]
 
 [ext_resource path="res://weapons/ranged/medical_gun/1/medical_gun_data.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_3.tres" type="Resource" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://weapons/melee/claw/1/claw_data.tres" type="Resource" id=17]
 [ext_resource path="res://weapons/ranged/icicle/1/icicle_data.tres" type="Resource" id=18]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=19]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/时空装置阴/时空装置（阴）_data.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_0.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_2.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_effect_1.tres" type="Resource" id=23]
@@ -29,6 +30,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/阴阳师/阴阳师_eyes_app.tres" type="Resource" id=28]
 [ext_resource path="res://weapons/melee/spiky_shield/1/spiky_shield_data.tres" type="Resource" id=29]
 [ext_resource path="res://weapons/melee/scissors/1/scissors_data.tres" type="Resource" id=30]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/时空装置阳/时空装置（阳）_data.tres" type="Resource" id=31]
 
 [resource]
 script = ExtResource( 7 )
@@ -53,4 +55,4 @@ banned_item_groups = [  ]
 banned_items = [ "item_bag" ]
 banned_upgrades = [  ]
 starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 19 ), ExtResource( 1 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 18 ) ]
-starting_items = [  ]
+starting_items = [ ExtResource( 20 ), ExtResource( 31 ) ]

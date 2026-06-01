@@ -5,6 +5,10 @@ var foxlab_buddhas_hand_meta = []
 # 面具相关
 var foxlab_mask_meta = []
 
+# 刚从存档恢复的游戏，道具外观数据和道具数据里面的外观数据实际上不是同一个对象了，回收的时候不会回收到外观
+# 反序列化的时候，把这个标记置为true，重新添加外观
+var foxlab_resumed_app = false
+
 static func init_foxlab_stats() -> Dictionary:
 	return {
 			Keys.stat_levels_hash: 0,
@@ -104,6 +108,9 @@ func duplicate():
 				copy.foxlab_mask_meta[i][key] = meta[key]
 			else: # duplicate the Array
 				copy.foxlab_mask_meta[i][key] = meta[key].duplicate()
+
+	copy.foxlab_resumed_app = foxlab_resumed_app
+
 	return copy
 
 func serialize() -> Dictionary:
@@ -185,6 +192,8 @@ func deserialize(data: Dictionary):
 
 	.deserialize(data)
 
+	# 进入游戏后重新添加外观
+	foxlab_resumed_app = true
 	appearances.clear()
 
 	if not memory.empty():

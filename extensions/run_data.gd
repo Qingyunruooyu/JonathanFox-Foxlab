@@ -254,9 +254,10 @@ func revert_all_selections() -> void :
 		tracked_item_effects[player_index] = init_tracked_effects()
 
 func get_player_appearances(player_index: int) -> Array:
-	if players_data[player_index].appearances.empty():
+	if players_data[player_index].foxlab_resumed_app:
 		for item in get_player_items_ref(player_index):
 			add_item_displayed(item, player_index)
+		players_data[player_index].foxlab_resumed_app = false
 	return .get_player_appearances(player_index)
 
 func get_player_current_health(player_index: int) -> int:

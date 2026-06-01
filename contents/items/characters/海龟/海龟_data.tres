@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=32 format=2]
+[gd_resource type="Resource" load_steps=33 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/turtle_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/海龟/海龟_effect_1.tres" type="Resource" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/海龟/海龟_effect_0.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/海龟/海龟_effect_2.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/海龟/turtle_appearance.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/龟甲/龟甲_data.tres" type="Resource" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=8]
 [ext_resource path="res://weapons/ranged/double_barrel_shotgun/1/double_barrel_shotgun_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=10]
@@ -55,4 +56,4 @@ banned_item_groups = [ "melee_damage", "ranged_damage", "melee_and_ranged_damage
 banned_items = [ "item_mutation", "item_charcoal", "item_gnome", "item_handcuffs", "item_foxlab_omnic_crisis", "item_torture" ]
 banned_upgrades = [ "upgrade_elemental_damage", "upgrade_melee_damage", "upgrade_engineering", "upgrade_ranged_damage" ]
 starting_weapons = [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 29 ), ExtResource( 30 ) ]
-starting_items = [  ]
+starting_items = [ ExtResource( 7 ) ]

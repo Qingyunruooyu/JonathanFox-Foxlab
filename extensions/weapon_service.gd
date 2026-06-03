@@ -19,6 +19,8 @@ func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: Wea
 
 func _set_common_ranged_stats(new_stats: RangedWeaponStats, from_stats: RangedWeaponStats, player_index: int):
 	._set_common_ranged_stats(new_stats, from_stats, player_index)
+	new_stats.increase_projectile_speed_with_range = from_stats.increase_projectile_speed_with_range
+
 	if not RunData.get_player_effect_bool(Utils.foxlab_piercing_is_bounce_hash, player_index):
 		return
 	var piercing = new_stats.piercing

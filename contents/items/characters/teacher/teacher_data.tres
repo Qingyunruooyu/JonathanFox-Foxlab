@@ -1,0 +1,48 @@
+[gd_resource type="Resource" load_steps=22 format=2]
+
+[ext_resource path="res://items/characters/character_data.gd" type="Script" id=1]
+[ext_resource path="res://items/all/tyler/tyler_data.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_0.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_1.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_hair.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_mouth.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_2.tres" type="Resource" id=7]
+[ext_resource path="res://weapons/melee/wrench/2/wrench_2_data.tres" type="Resource" id=8]
+[ext_resource path="res://weapons/melee/screwdriver/2/screwdriver_2_data.tres" type="Resource" id=9]
+[ext_resource path="res://items/all/bot_o_mine/bot_o_mine.tres" type="Resource" id=10]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/spoon/2/spoon_2_data.tres" type="Resource" id=11]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/tracker/tracker_data.tres" type="Resource" id=12]
+[ext_resource path="res://items/all/alien_eyes/alien_eyes_data.tres" type="Resource" id=13]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_0a.tres" type="Resource" id=14]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/war_hammer/3/war_hammer_3_data.tres" type="Resource" id=15]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_icon.png" type="Texture" id=16]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_eyes.tres" type="Resource" id=17]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_pencil.tres" type="Resource" id=18]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_3.tres" type="Resource" id=21]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_3a.tres" type="Resource" id=26]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_4.tres" type="Resource" id=27]
+
+[resource]
+script = ExtResource( 1 )
+my_id = "character_foxlab_teacher"
+unlocked_by_default = true
+can_be_looted = true
+icon = ExtResource( 16 )
+name = "CHARACTER_FOXLAB_TEACHER"
+tier = 0
+value = 1
+effects = [ ExtResource( 3 ), ExtResource( 14 ), ExtResource( 4 ), ExtResource( 7 ), ExtResource( 21 ), ExtResource( 26 ), ExtResource( 27 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = -1
+item_appearances = [ ExtResource( 17 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 18 ) ]
+tags = [  ]
+wanted_tags = [ "stat_engineering", "structure" ]
+banned_item_groups = [  ]
+banned_items = [  ]
+banned_upgrades = [ "upgrade_elemental_damage", "upgrade_melee_damage", "upgrade_percent_damage", "upgrade_ranged_damage" ]
+starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 15 ) ]
+starting_items = [ ExtResource( 12 ), ExtResource( 10 ), ExtResource( 2 ), ExtResource( 13 ) ]

@@ -339,4 +339,7 @@ FOXLAB_LOST_HP,待流失生命值,Pending health to lose
 EFFECT_FOXLAB_CHARM_ALL_WHEN_FULLY_HEAL,每次敌袭首次治疗至{3}（{2}）时，魅惑所有普通敌人并有{4}概率{0}{1},Once per wave when you're healed to {3} ({2}): charm all common enemies and {4} chance to {0} {1}
 CHARACTER_FOXLAB_BUTCHER,屠夫,Butcher
 EFFECT_FOXLAB_EXTRA_HIT,你的[color=#FF8C00]武器/宠物/投射物[/color]对敌人的碰撞会重复{0}次（投射物需足量贯通/反弹）,"Collision from your [color=#FF8C00]weapons/pets/projectiles[/color] to enemies will repeat for {0} times (Projectiles require enough piercing/bounce)"
-EFFECT_FOXLAB_TURRET_TARGET,你的攻击型炮塔会朝玩家射击,Your offensive turrets will aim at players
+CHARACTER_FOXLAB_TEACHER,教师,Teacher
+EFFECT_FOXLAB_TURRET_TARGET,攻击型炮塔只朝玩家射击,Offensive turrets only aim at players
+EFFECT_FOXLAB_BOUNCE_PLAYER_PROJECTILE,你会反弹友方的攻击型投射物,You can bounce allied projectiles that are offensive
+FOXLAB_LIVING_STRUCTURE,存活构筑物,Living Structure

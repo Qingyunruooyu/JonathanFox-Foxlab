@@ -321,6 +321,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_charm_all_items_hash: {},
 			Utils.foxlab_extra_hit_hash: 0,
 			Utils.foxlab_turret_target_hash: 0,
+			Utils.foxlab_bounce_player_projectile_hash: 0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

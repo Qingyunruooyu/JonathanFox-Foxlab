@@ -17,6 +17,9 @@ signal foxlab_sec_char_changed(new_characters, player_index)
 signal foxlab_item_gear_changed(player_index)
 signal foxlab_weapon_gear_changed(player_index)
 
+# 当前存活的构筑物（包括宠物类构筑物）
+var foxlab_current_living_structures: = 0
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	# DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
@@ -166,6 +169,7 @@ func foxlab_process_gold(value: int, player_index: int):
 ###### 扩展 ######
 func _reset_per_wave_properties() -> void :
 	._reset_per_wave_properties()
+	foxlab_current_living_structures = 0
 	foxlab_is_midnight = [false, false, false, false]
 	foxlab_scapegoat_no_hurt = [[], [], [], []]
 
@@ -270,9 +274,15 @@ func get_player_sets(player_index: int) -> Array:
 		var selected_item = players_data[player_index].selected_item
 		if selected_item != null:
 			# 道具是构筑物，视为工具（程序员、傀儡忍者、技术宅等）
-			if selected_item.is_structure_item():
+			if selected_item.is_structure_item() or "structure" in selected_item.tags:
 				sets.append(Keys.generate_hash("set_tool"))
 			# 其他，视为枪械（架构师）
 			else:
 				sets.append(Keys.generate_hash("set_gun"))
 	return sets
+
+func get_scaling_bonus(value: int, stat_scaled: String, nb_stat_scaled: int, perm_stats_only: bool, player_index: int) -> int:
+	if stat_scaled == "foxlab_living_structure":
+		var actual_nb_scaled = RunData.foxlab_current_living_structures as float
+		return int(value * (actual_nb_scaled / nb_stat_scaled))
+	return .get_scaling_bonus(value, stat_scaled, nb_stat_scaled, perm_stats_only, player_index)

@@ -37,4 +37,7 @@ func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = nu
 		entity.gold_count = 0
 		entity.on_health_updated(entity, entity.current_stats.health, entity.max_stats.health)
 
+	if args.type == EntityType.PET and data.is_structure:
+		RunData.foxlab_current_living_structures += 1
+
 	return entity

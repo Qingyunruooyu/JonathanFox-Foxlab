@@ -18,9 +18,19 @@ var _foxlab_has_projectile_on_hit = false
 
 var _foxlab_has_charmed_all = false
 
+var _foxlab_bounce_box:Area2D = null
+
 func _ready() -> void :
 	if _foxlab_has_curse():
 		foxlab_add_curse_particle()
+	foxlab_ball_ligntning_ready()
+	foxlab_enemy_temp_stats_on_hit_ready()
+	foxlab_projectile_on_hit_ready()
+	foxlab_bounce_player_projectile_ready()
+	_foxlab_has_charmed_all = RunData.get_player_effect(Utils.foxlab_charm_all_when_fully_heal_hash, player_index).empty()
+	call_deferred("foxlab_connect_jelly_shields")
+
+func foxlab_ball_ligntning_ready():
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
 	if ball_lightning_effect.size() > 0 and ball_lightning_effect[0] > 0:
 		_foxlab_ball_lightning_timer = Timer.new()
@@ -29,11 +39,13 @@ func _ready() -> void :
 		add_child(_foxlab_ball_lightning_timer)
 		_foxlab_ball_lightning_timer.start()
 
+func foxlab_enemy_temp_stats_on_hit_ready():
 	var temp_stats_on_hit_effect = RunData.get_player_effect(Keys.temp_stats_on_hit_hash, player_index)
 	for temp_stat_on_hit in temp_stats_on_hit_effect:
 			if temp_stat_on_hit[0] in Utils.foxlab_enemy_stats:
 				foxlab_enemy_stats_on_hit.push_back(temp_stat_on_hit[0])
 
+func foxlab_projectile_on_hit_ready():
 	var projectile_on_hit_effect: Array = RunData.get_player_effect(Utils.foxlab_projectile_on_hit_hash, player_index)
 	if not projectile_on_hit_effect.empty() and \
 		projectile_on_hit_effect[0] + RunData.get_player_effect(Utils.foxlab_projectile_on_hit_num_hash, player_index) > 0:
@@ -41,9 +53,93 @@ func _ready() -> void :
 			for effect in projectile_on_hit_effect[4]:
 				_foxlab_projectile_on_hit_effects.append(load(effect))
 
-	_foxlab_has_charmed_all = RunData.get_player_effect(Utils.foxlab_charm_all_when_fully_heal_hash, player_index).empty()
+func foxlab_bounce_player_projectile_ready():
+	if RunData.get_player_effect_bool(Utils.foxlab_bounce_player_projectile_hash, player_index):
+		_foxlab_bounce_box = load("res://overlap/hurtbox.tscn").instance()
+		add_child(_foxlab_bounce_box)
+		_foxlab_bounce_box.position =_hurtbox.position
+		_foxlab_bounce_box.collision_mask = Utils.PLAYER_PROJECTILES_BIT | Utils.PET_PROJECTILES_BIT
+		var collision = _foxlab_bounce_box._collision
+		collision.position = _hurtbox._collision.position
+		collision.shape = _hurtbox._collision.shape
 
-	call_deferred("foxlab_connect_jelly_shields")
+		_foxlab_bounce_box.connect("area_entered", self, "_on_foxlab_bounce_box_area_entered")
+
+func _on_foxlab_bounce_box_area_entered(hitbox: Area2D) -> void :
+	call_deferred("foxlab_bounce_area_entered_deferred", hitbox)
+
+func foxlab_bounce_area_entered_deferred(hitbox: Area2D) -> void:
+	if get_parent() == null or not hitbox.active or not hitbox.deals_damage or hitbox.ignored_objects.has(self) or _pending_die:
+		return
+	var source = hitbox.get_parent()
+	if source is PlayerProjectile and source._weapon_stats.can_bounce:
+		# 这个反弹需要能随机到BOSS头上，如果用_entity_spawner_ref.get_rand_enemy就不会随机到BOSS了
+		var target = Utils.get_rand_element(_entity_spawner_ref.get_all_enemies())
+		var direction = (target.global_position - source.global_position).angle() if target != null else rand_range( - PI, PI)
+
+		var stats = source._weapon_stats
+		var base_speed = stats.projectile_speed
+		source._max_range = source.INFINITE_RANGE
+		var velocity_scalar = source.velocity.length()
+		if stats.increase_projectile_speed_with_range:
+			stats.projectile_speed = clamp(base_speed + (base_speed / 300.0) * source._max_range, 50, 6000) as int
+			velocity_scalar *= stats.projectile_speed / (base_speed as float)
+
+		source.velocity = Vector2.RIGHT.rotated(direction) * velocity_scalar
+		source.rotation = source.velocity.angle()
+
+		source._set_time_until_max_range()
+		stats.projectile_speed = base_speed
+		foxlab_process_player_projectile_effects(hitbox)
+
+	elif "velocity" in source: # 敌人投射物
+		# 这个反弹需要能随机到BOSS头上，如果用_entity_spawner_ref.get_rand_enemy就不会随机到BOSS了
+		var target = Utils.get_rand_element(_entity_spawner_ref.get_all_enemies())
+		var direction = (target.global_position - source.global_position).angle() if target != null else rand_range( - PI, PI)
+		source.velocity = Vector2.RIGHT.rotated(direction) * source.velocity.length()
+		source.rotation = source.velocity.angle()
+
+func foxlab_process_player_projectile_effects(hitbox: Area2D):
+	var from = hitbox.from if is_instance_valid(hitbox.from) else null
+	var from_player_index = from.player_index if (from != null and from.player_index != - 1) else RunData.DUMMY_PLAYER_INDEX
+	for effect in hitbox.effects:
+		if effect is ExplodingEffect:
+			if Utils.get_chance_success(effect.chance):
+				_explode_args_unit.pos = global_position
+				_explode_args_unit.damage = hitbox.damage
+				_explode_args_unit.accuracy = hitbox.accuracy
+				_explode_args_unit.crit_chance = hitbox.crit_chance
+				_explode_args_unit.crit_damage = hitbox.crit_damage
+				_explode_args_unit.burning_data = hitbox.burning_data
+				_explode_args_unit.scaling_stats = hitbox.scaling_stats
+				_explode_args_unit.from_player_index = from_player_index
+				_explode_args_unit.is_healing = hitbox.is_healing
+				_explode_args_unit.damage_tracking_key_hash = hitbox.damage_tracking_key_hash
+
+				var explosion = WeaponService.explode(effect, _explode_args_unit)
+				if from != null and from is Weapon:
+					explosion.connect("hit_something", from, "on_weapon_hit_something", [explosion._hitbox])
+					if not explosion.is_connected("killed_something", from, "on_killed_something"):
+						explosion.connect("killed_something", from, "on_killed_something", [explosion._hitbox])
+
+	if hitbox.projectiles_on_hit.size() > 0:
+		for i in hitbox.projectiles_on_hit[0]:
+			_spawn_projectile_args.from_player_index = from_player_index
+			var projectile = WeaponService.manage_special_spawn_projectile(
+				self,
+				hitbox.projectiles_on_hit[1],
+				rand_range( - PI, PI),
+				hitbox.projectiles_on_hit[2],
+				_entity_spawner_ref,
+				from,
+				_spawn_projectile_args
+			)
+			if from != null and from is Weapon and not projectile.is_connected("hit_something", from, "on_weapon_hit_something"):
+				projectile.connect("hit_something", from, "on_weapon_hit_something", [projectile._hitbox])
+			if projectile.is_node_ready():
+				projectile.set_ignored_objects([self])
+			else:
+				projectile.call_deferred("set_ignored_objects", [self])
 
 func foxlab_connect_jelly_shields():
 	for jelly in jellyshields:
@@ -196,6 +292,8 @@ func _clean_up() -> void :
 	if _foxlab_ball_lightning_timer:
 		_foxlab_ball_lightning_timer.stop()
 		_foxlab_ball_lightning_timer.paused = true
+	if _foxlab_bounce_box:
+		_foxlab_bounce_box.disable()
 
 func apply_items_effects() -> void :
 	.apply_items_effects()

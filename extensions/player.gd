@@ -265,9 +265,7 @@ func die(args: = Utils.default_die_args) -> void :
 		Utils.default_die_args.killing_blow_dmg_value = 0
 		Utils.default_die_args.is_burning = false
 		Utils.default_die_args.from = null
-		if Utils.default_die_args.has_meta("is_bullet_hell"):
-			Utils.default_die_args.is_bullet_hell = false
-
+		Utils.default_die_args.is_bullet_hell = false
 
 func add_weapon(weapon: WeaponData, pos: int) -> void :
 	.add_weapon(weapon, pos)

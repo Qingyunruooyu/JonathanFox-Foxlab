@@ -460,11 +460,6 @@ func reset_stat_keys() -> void :
 	foxlab_primary_stat_gain_map.clear()
 	_foxlab_init_primary_stat_gain_map()
 
-func average_all_player_stats(stat_hsh: int) -> float:
-	var value = .average_all_player_stats(stat_hsh)
-	# 负诅咒导致敌人生命值和伤害变成1
-	return max(0, value) if stat_hsh == Keys.stat_curse_hash else value
-
 func foxlab_multiply_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
 	if stats.empty():
 		return

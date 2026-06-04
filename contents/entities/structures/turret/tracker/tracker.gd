@@ -20,9 +20,6 @@ func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [],
 	_players = players_ref.duplicate()
 	if Utils.get_chance_success(0.5):
 		_orbit_speed = -_orbit_speed
-	call_deferred("init_player_ability")
-
-func init_player_ability():
 	_current_player = _players[player_index]
 	_foxlab_connect_signals(player_index)
 	_players.shuffle()

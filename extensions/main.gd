@@ -414,11 +414,11 @@ func foxlab_change_turret_target(structure: Node2D):
 		_err = detect_range.connect("body_exited", self, "_on_foxlab_turret_Range_body_exited", [structure])
 
 func _on_foxlab_turret_Range_body_entered(body: Node, turret: Node) -> void :
-	turret.add_outline(Utils.CHARM_COLOR)
-	body.connnect("died", self, "_on_foxlab_turret_target_died", [turret])
+	turret.add_outline(Color.skyblue)
+	var _err = body.connect("died", self, "_on_foxlab_turret_target_died", [turret])
 
 func _on_foxlab_turret_Range_body_exited(body: Node, turret: Node) -> void :
-	body.disconnnect("died", self, "_on_foxlab_turret_target_died", [turret])
+	body.disconnect("died", self, "_on_foxlab_turret_target_died")
 	call_deferred("_foxlab_remove_turret_outline", turret)
 
 func _on_foxlab_turret_target_died(_target: Node, _args: Entity.DieArgs, turret: Node) -> void :
@@ -426,10 +426,7 @@ func _on_foxlab_turret_target_died(_target: Node, _args: Entity.DieArgs, turret:
 
 func _foxlab_remove_turret_outline(turret: Node) -> void:
 	if turret._targets_in_range.empty():
-		turret.remove_outline(Utils.CHARM_COLOR)
-
-func _on_foxlab_EntitySpawner_structure_respawned(_structure) -> void :
-	RunData.foxlab_current_living_structures += 1
+		turret.remove_outline(Color.skyblue)
 
 func _on_foxlab_structure_died(_structure, _die_args) -> void:
 	RunData.foxlab_current_living_structures -= 1
@@ -574,6 +571,10 @@ func _on_EntitySpawner_structure_spawned(structure) -> void :
 	var _error_died = structure.connect("died", self, "_on_foxlab_structure_died")
 	if RunData.get_player_effect_bool(Utils.foxlab_turret_target_hash, structure.player_index):
 		call_deferred("foxlab_change_turret_target", structure)
+
+func _on_EntitySpawner_structure_respawned(structure):
+	._on_EntitySpawner_structure_respawned(structure)
+	RunData.foxlab_current_living_structures += 1
 
 func on_upgrade_selected(upgrade_data: UpgradeData, upgrade) -> void :
 	if upgrade_data.has_meta("foxlab_item"):

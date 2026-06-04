@@ -5,9 +5,10 @@ var foxlab_buddhas_hand_meta = []
 # 面具相关
 var foxlab_mask_meta = []
 
-# 刚从存档恢复的游戏，道具外观数据和道具数据里面的外观数据实际上不是同一个对象了，回收的时候不会回收到外观
-# 反序列化的时候，把这个标记置为true，重新添加外观
-var foxlab_resumed_app = false
+# 1.刚从存档恢复的游戏，道具外观数据和道具数据里面的外观数据实际上不是同一个对象了，回收的时候不会回收到外观
+# 反序列化的时候，把这个标记置为true，重新添加外观;
+# 2.移植版进游戏除了无面都没有脸，手动添加
+var foxlab_resumed_app = true
 
 static func init_foxlab_stats() -> Dictionary:
 	return {

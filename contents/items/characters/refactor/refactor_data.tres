@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=31 format=2]
+[gd_resource type="Resource" load_steps=32 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/refactor/refactor_icon.png" type="Texture" id=1]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/brick/1/brick_data.tres" type="Resource" id=2]
@@ -30,6 +30,7 @@
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=28]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/lute/1/lute_data.tres" type="Resource" id=29]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/flute/1/flute_data.tres" type="Resource" id=30]
+[ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=31]
 
 [resource]
 script = ExtResource( 13 )
@@ -53,5 +54,5 @@ wanted_tags = [ "stat_curse", "enemy_interact" ]
 banned_item_groups = [  ]
 banned_items = [ "item_crystal", "item_coffee", "item_community_support", "item_statue", "item_retromations_hoodie" ]
 banned_upgrades = [ "upgrade_attack_speed" ]
-starting_weapons = [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 16 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 2 ), ExtResource( 21 ), ExtResource( 9 ), ExtResource( 8 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 28 ) ]
+starting_weapons = [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 16 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 2 ), ExtResource( 21 ), ExtResource( 9 ), ExtResource( 8 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 28 ), ExtResource( 31 ) ]
 starting_items = [  ]

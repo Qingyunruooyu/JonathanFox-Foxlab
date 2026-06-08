@@ -1,7 +1,13 @@
 extends "res://singletons/weapon_service.gd"
 
+const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_MELEE = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/jellyfish_explode_melee_effect.tres"
+const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/jellyfish_explode_ranged_effect.tres"
+
+var _foxlab_weapon_class_explode_args = WeaponServiceInitStatsArgs.new()
+
 ### 扩展 ###
 func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service, is_structure: = false, is_special_spawn: = false, is_pet: = false) -> WeaponStats:
+	args = foxlab_add_weapon_class_explode_stats(from_stats, player_index, args)
 	var new_stats = .init_base_stats(from_stats, player_index, args, is_structure, is_special_spawn, is_pet)
 	# 命中率超过100%反而会降低命中率，不合理
 	new_stats.accuracy = min(1.0, new_stats.accuracy)
@@ -55,3 +61,30 @@ func foxlab_spawn_landmines_on_enemy_death_count(hitbox: Hitbox, was_burning: bo
 		if weapon_did_stat_damage or burning_did_stat_damage:
 			landmine_count += 1
 	return landmine_count
+
+func foxlab_add_weapon_class_explode_stats(from_stats:WeaponStats, player_index: int, args:WeaponServiceInitStatsArgs) -> WeaponServiceInitStatsArgs:
+	if args.sets.empty():
+		return args
+	var explode_sets = RunData.get_player_effect(Utils.foxlab_weapon_class_explode_hash, player_index)
+	if explode_sets.empty():
+		return args
+	# 武器实际的效果在player.gd里面添加了
+	for effect in args.effects:
+		if effect.custom_key_hash == Utils.foxlab_weapon_class_explode_hash:
+			return args
+
+	# 这个实际上只是为了装备上显示正确的伤害
+	for set_id in explode_sets:
+		for set in args.sets:
+			if set.my_id_hash == set_id:
+				var explode_effect = null
+				if from_stats is MeleeWeaponStats:
+					explode_effect = load(FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_MELEE)
+				else:
+					explode_effect = load(FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED)
+				_foxlab_weapon_class_explode_args.sets = args.sets
+				_foxlab_weapon_class_explode_args.from = args.from
+				_foxlab_weapon_class_explode_args.effects = args.effects.duplicate()
+				_foxlab_weapon_class_explode_args.effects.append(explode_effect)
+				return _foxlab_weapon_class_explode_args
+	return args

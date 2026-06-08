@@ -3,18 +3,18 @@ extends Resource
 # ItemService
 export (Array, Resource) var characters = []
 export (Array, Resource) var items = []
-export (Array, Resource) var weapons = []
-export (Array, Resource) var sets = []
-export (Array, Resource) var upgrades = []
-export (Array, Resource) var consumables = []
-export (Array, Resource) var elites = []
-export (Array, Resource) var difficulties = []
+# export (Array, Resource) var weapons = []
+# export (Array, Resource) var sets = []
+# export (Array, Resource) var upgrades = []
+# export (Array, Resource) var consumables = []
+# export (Array, Resource) var elites = []
+# export (Array, Resource) var difficulties = []
 export (Array, Resource) var effects = []
 export (Array, Resource) var stats = []
 export (Dictionary) var extra_banned_item = {} #给原版和其他MOD角色按tag添加物品禁用
 
 # ChallengeService
-export (Array, Resource) var challenges = []
+# export (Array, Resource) var challenges = []
 
 # RunData
 export (Dictionary) var tracked_items = {}
@@ -24,6 +24,11 @@ export (Array, String) var effect_keys_full_serialization = []
 # Text
 export (Dictionary) var translation_keys_needing_operator = {}
 export (Dictionary) var translation_keys_needing_percent = {}
+
+# EffectBehaviorService
+# export(Array, Resource) var scene_effect_behaviors = []
+# export(Array, Resource) var enemy_effect_behaviors = []
+export(Array, Resource) var player_effect_behaviors = []
 
 # characters
 export (Dictionary) var weapon_characters = {}
@@ -76,6 +81,10 @@ func add_resources(settings: Dictionary):
 
 	Text.keys_needing_operator.merge(translation_keys_needing_operator)
 	Text.keys_needing_percent.merge(translation_keys_needing_percent)
+
+	# ProgressData._append_without_duplicates(EffectBehaviorService.scene_effect_behaviors, scene_effect_behaviors)
+	# ProgressData._append_without_duplicates(EffectBehaviorService.enemy_effect_behaviors, enemy_effect_behaviors)
+	ProgressData._append_without_duplicates(EffectBehaviorService.player_effect_behaviors, player_effect_behaviors)
 
 	if OS.get_name() == "Android":
 		modify_characters()

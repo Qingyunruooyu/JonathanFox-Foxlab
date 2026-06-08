@@ -12,6 +12,7 @@ CORRUPTED_TREE_NAME,被腐蚀的树,Corrupted Tree
 FOXLAB_UNKNOWN_ELITE_NAME,漏网精英怪,Unregistered elite
 HORDES_NAME,怪潮,Enemy Hordes
 CHARACTER_FOXLAB_JELLYFISH,水母,Jellyfish
+EFFECT_FOXLAB_WEAPON_CLASS_EXPLODE,使用{0}类武器命中时会爆炸,{0} weapons explode on hit
 STAT_FOXLAB_ARMOR_DODGE_HARVESTING,护甲/闪避/收获,Armor/Dodge/Harvesting
 CHARACTER_FOXLAB_PROGRAMMER,程序员,Programmer
 EFFECT_FOXLAB_PROGRAMMER,{0}{1}敌袭结束后用于增强构筑物,{0} {1} are used for enhancing structures at the end of a wave
@@ -92,6 +93,7 @@ ITEM_FOXLAB_WANTED,通缉令,WANTED
 ITEM_FOXLAB_WANTED_MONK,通缉令,WANTED
 ITEM_FOXLAB_ENCHANTED_EYES,天眼,Enchanted Eyes
 ENEMY_GOLD_DROPS,%敌人掉落的材料,% Enemy Gold Grops
+GOLD_DROPS,%掉落的材料,% Gold Grops
 FOXLAB_WANTED_FOUND,找到通缉令：{0},WANTED found: {0}
 EFFECT_FOXLAB_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT,每持有{2}异种{3}有{0}{1}[{4}],{0} {1} for every {2} different {3} you have [{4}]
 CHARACTER_FOXLAB_GOLEM_NINJA,傀儡忍者,Golem Ninja

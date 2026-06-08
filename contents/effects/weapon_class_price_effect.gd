@@ -28,5 +28,5 @@ func unapply(player_index: int) -> void:
 	apply_effects_core(player_index, false)
 
 func get_args(_player_index: int) -> Array:
-	var set = ItemService.get_set(key_hash)
-	return [str(value), tr(set.name)]
+	var set_name = tr(ItemService.get_set(key_hash).name)
+	return [str(value), set_name]

@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "knockback_aura"
-text_key = "EFFECT_KNOCKBACK_AURA_PLURAL"
+key = "foxlab_knockback_aura"
+text_key = "effect_knockback_aura"
 value = 1
 custom_key = ""
 storage_method = 2

@@ -234,6 +234,32 @@ func foxlab_process_lost_hp() -> bool:
 			return true
 	return false
 
+func foxlab_add_weapon_particle(cur_weapon: Weapon):
+	if not cur_weapon.muzzle.get_children().empty():
+		return
+
+	for effect in cur_weapon.effects:
+		if "burning_data" in effect:
+			var instance = foxlab_burning_particle.instance()
+			cur_weapon.muzzle.add_child(instance)
+			return
+
+	for effect in cur_weapon.effects:
+		if effect.custom_key_hash == Utils.foxlab_remembered_effect_begin_hash:
+			var instance = foxlab_scepter_particle.instance()
+			cur_weapon.muzzle.add_child(instance)
+			return
+
+
+func foxlab_weapon_class_explode(cur_weapon: Weapon, weapon_data: WeaponData):
+	for set_id in RunData.get_player_effect(Utils.foxlab_weapon_class_explode_hash, player_index):
+		for set in cur_weapon.weapon_sets:
+			if set.my_id_hash == set_id:
+				if weapon_data.type == WeaponType.MELEE:
+					cur_weapon.effects.append(load(WeaponService.FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_MELEE))
+				else:
+					cur_weapon.effects.append(load(WeaponService.FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED))
+
 ############ 函数扩展 #########
 #　修复官方bug
 func die(args: = Utils.default_die_args) -> void :
@@ -269,21 +295,9 @@ func die(args: = Utils.default_die_args) -> void :
 
 func add_weapon(weapon: WeaponData, pos: int) -> void :
 	.add_weapon(weapon, pos)
-	var cur_weapon = current_weapons.back()
-	if not cur_weapon.muzzle.get_children().empty():
-		return
-
-	for effect in cur_weapon.effects:
-		if "burning_data" in effect:
-			var instance = foxlab_burning_particle.instance()
-			cur_weapon.muzzle.add_child(instance)
-			return
-
-	for effect in cur_weapon.effects:
-		if effect.custom_key_hash == Utils.foxlab_remembered_effect_begin_hash:
-			var instance = foxlab_scepter_particle.instance()
-			cur_weapon.muzzle.add_child(instance)
-			return
+	var cur_weapon = current_weapons[pos]
+	foxlab_add_weapon_particle(cur_weapon)
+	foxlab_weapon_class_explode(cur_weapon, weapon)
 
 func _clean_up() -> void :
 	._clean_up()

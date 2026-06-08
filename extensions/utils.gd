@@ -92,6 +92,8 @@ var foxlab_extra_hit_hash: int = Keys.generate_hash("foxlab_extra_hit")
 var foxlab_turret_target_hash: int = Keys.generate_hash("foxlab_turret_target")
 var foxlab_bounce_player_projectile_hash: int = Keys.generate_hash("foxlab_bounce_player_projectile")
 var foxlab_living_structure_hash: int = Keys.generate_hash("foxlab_living_structure")
+var foxlab_weapon_class_explode_hash: int = Keys.generate_hash("foxlab_weapon_class_explode")
+var foxlab_knockback_aura_hash: int = Keys.generate_hash("foxlab_knockback_aura")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -279,7 +281,7 @@ const FOXLAB_EXTRA_BOSS_PATH = "res://mods-unpacked/Alexandre-BeyondDanger/conte
 func foxlab_pickup_random_bosses() -> Array:
 	var bosses = ItemService.bosses.duplicate()
 	var extra_boss = null
-	if ResourceLoader.exists(FOXLAB_EXTRA_BOSS_PATH):
+	if not ItemService.foxlab_is_android and ResourceLoader.exists(FOXLAB_EXTRA_BOSS_PATH):
 		extra_boss = load(FOXLAB_EXTRA_BOSS_PATH)
 		bosses.append({"scene": extra_boss})
 

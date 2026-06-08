@@ -26,7 +26,6 @@ var foxlab_should_check_extra_hit = false
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
-	_err = _entity_spawner.connect("structure_respawned", self, "_on_foxlab_EntitySpawner_structure_respawned")
 	foxlab_receive_item_stat_ready()
 	foxlab_mutation_ready()
 	foxlab_piercing_is_bounce_ready()

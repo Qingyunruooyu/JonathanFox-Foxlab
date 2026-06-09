@@ -30,6 +30,8 @@ export (Dictionary) var translation_keys_needing_percent = {}
 # export(Array, Resource) var enemy_effect_behaviors = []
 export(Array, Resource) var player_effect_behaviors = []
 
+export(Array, Translation) var translations = []
+
 # characters
 export (Dictionary) var weapon_characters = {}
 
@@ -85,6 +87,9 @@ func add_resources(settings: Dictionary):
 	# ProgressData._append_without_duplicates(EffectBehaviorService.scene_effect_behaviors, scene_effect_behaviors)
 	# ProgressData._append_without_duplicates(EffectBehaviorService.enemy_effect_behaviors, enemy_effect_behaviors)
 	ProgressData._append_without_duplicates(EffectBehaviorService.player_effect_behaviors, player_effect_behaviors)
+
+	for translation in translations:
+		TranslationServer.add_translation(translation)
 
 	if OS.get_name() == "Android":
 		modify_characters()

@@ -4,7 +4,6 @@ extends Node
 const MOD_NAME:="JonathanFox-FoxLab"
 const MOD_PATH:="res://mods-unpacked/" + MOD_NAME + "/"
 const FOXLAB_EXTENSION_DIR: = MOD_PATH + "extensions/"
-const FOXLAB_TRANSLATION_DIR: = MOD_PATH + "translations/"
 var IS_ANDROID:bool = false
 
 const EXTENSION_SCRIPTS: =[
@@ -64,9 +63,6 @@ func _init():
 	if not IS_ANDROID:
 		for script in PC_EXTENSION_SCRIPTS:
 			ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
-
-	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.en.translation")
-	ModLoaderMod.add_translation(FOXLAB_TRANSLATION_DIR + "foxlab_translation.zh_Hans_CN.translation")
 
 func _ready():
 	call_deferred("_foxlab_init_configs")

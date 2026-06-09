@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=167 format=2]
+[gd_resource type="Resource" load_steps=180 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/convert_remainder_to_stat_effect.gd" type="Script" id=2]
@@ -166,6 +166,19 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/entity_price_effect.gd" type="Script" id=164]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/weapon_class_explode.gd" type="Script" id=165]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effect_behaviors/player/knockback_aura_effect_behavior.tres" type="Resource" id=166]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.pt.translation" type="Translation" id=167]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.zh_TW.translation" type="Translation" id=168]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.ko.translation" type="Translation" id=169]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.tr.translation" type="Translation" id=170]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.es.translation" type="Translation" id=171]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.de.translation" type="Translation" id=172]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.en.translation" type="Translation" id=173]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.it.translation" type="Translation" id=174]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.ja.translation" type="Translation" id=175]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.pl.translation" type="Translation" id=176]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.ru.translation" type="Translation" id=177]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.zh_Hans_CN.translation" type="Translation" id=178]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/translations/foxlab_translation.fr.translation" type="Translation" id=179]
 
 [resource]
 script = ExtResource( 1 )
@@ -317,5 +330,6 @@ translation_keys_needing_percent = {
 "effect_stat_on_every_step_valid_lowest_two": [ 0 ]
 }
 player_effect_behaviors = [ ExtResource( 166 ) ]
+translations = [ ExtResource( 172 ), ExtResource( 173 ), ExtResource( 171 ), ExtResource( 179 ), ExtResource( 174 ), ExtResource( 175 ), ExtResource( 169 ), ExtResource( 176 ), ExtResource( 167 ), ExtResource( 177 ), ExtResource( 170 ), ExtResource( 178 ), ExtResource( 168 ) ]
 weapon_characters = {
 }

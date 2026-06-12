@@ -13,9 +13,9 @@ arg_key = ""
 
 [resource]
 script = ExtResource( 2 )
-key = "stat_speed"
+key = "stat_luck"
 text_key = "effect_additional_weapon_bonus"
-value = -15
+value = -25
 custom_key = "additional_weapon_effects"
 storage_method = 1
 effect_sign = 1

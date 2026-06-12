@@ -325,6 +325,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_bounce_player_projectile_hash: 0,
 			Utils.foxlab_weapon_class_explode_hash: [],
 			Utils.foxlab_knockback_aura_hash: 0,
+			Utils.foxlab_get_item_on_weapon_break_hash: []
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

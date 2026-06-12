@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/items/double_value_effect.gd" type="Script" id=1]
+[ext_resource path="res://effects/items/double_key_value_effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "extra_loot_aliens_next_wave"
-text_key = "EFFECT_STAT_ON_EVERY_STEP"
+key = "item_foxlab_buddhas_hand"
+text_key = "effect_foxlab_get_item_on_weapon_break"
 value = 1
-custom_key = "gain_stat_for_every_step_after_equip"
+custom_key = "foxlab_get_item_on_weapon_break"
 storage_method = 1
 effect_sign = 3
 custom_args = [  ]
-value2 = 150
-sum_strategy = 0
+key2 = "stat_luck"
+value2 = 33

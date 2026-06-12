@@ -177,6 +177,10 @@ func foxlab_add_curse_particle():
 
 func on_foxlab_ball_lightning_timeout() -> void :
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
+	if ball_lightning_effect.empty():
+		if _foxlab_ball_lightning_timer:
+			_foxlab_ball_lightning_timer.stop()
+			_foxlab_ball_lightning_timer.paused = true
 	var ball_lightning_stats = WeaponService.init_ranged_stats(ball_lightning_effect[1], player_index, true)
 	var tracking_key = Keys.empty_hash
 	for track_id in foxlab_ball_lighting_names:
@@ -260,6 +264,9 @@ func foxlab_weapon_class_explode(cur_weapon: Weapon, weapon_data: WeaponData):
 				else:
 					cur_weapon.effects.append(load(WeaponService.FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED))
 
+func foxlab_add_weapon(weapon: WeaponData):
+	add_weapon(weapon, current_weapons.size())
+
 ############ 函数扩展 #########
 #　修复官方bug
 func die(args: = Utils.default_die_args) -> void :
@@ -295,7 +302,7 @@ func die(args: = Utils.default_die_args) -> void :
 
 func add_weapon(weapon: WeaponData, pos: int) -> void :
 	.add_weapon(weapon, pos)
-	var cur_weapon = current_weapons[pos]
+	var cur_weapon = current_weapons.back()
 	foxlab_add_weapon_particle(cur_weapon)
 	foxlab_weapon_class_explode(cur_weapon, weapon)
 
@@ -322,27 +329,43 @@ func apply_items_effects() -> void :
 	legs.visible = true
 
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
+	var prev_weapons = current_weapons.size()
 	if not ItemService.foxlab_is_android:
 		.on_weapon_wanted_to_break(weapon, gold_dropped)
-		return
+	else:
+		if current_weapons.has(weapon):
+			emit_signal("wanted_to_spawn_gold", gold_dropped, weapon.global_position, 300)
+			var _r = RunData.remove_weapon_by_index(weapon.weapon_pos, player_index)
+			current_weapons.erase(weapon)
+			for current_weapon in current_weapons:
+				if current_weapon.weapon_pos > weapon.weapon_pos:
+					current_weapon.weapon_pos -= 1
+			SoundManager.play(Utils.get_rand_element(WeaponService.breaking_sounds), - 15, 0.1, true)
+			Utils.foxlab_queue_free_weapon(weapon)
+			.on_weapon_wanted_to_break(weapon, gold_dropped)
 
-	if not current_weapons.has(weapon):
-		return
-
-	emit_signal("wanted_to_spawn_gold", gold_dropped, weapon.global_position, 300)
-	var _r = RunData.remove_weapon_by_index(weapon.weapon_pos, player_index)
-
-	current_weapons.erase(weapon)
-
-	for current_weapon in current_weapons:
-		if current_weapon.weapon_pos > weapon.weapon_pos:
-			current_weapon.weapon_pos -= 1
-
-	SoundManager.play(Utils.get_rand_element(WeaponService.breaking_sounds), - 15, 0.1, true)
-
-	Utils.foxlab_queue_free_weapon(weapon)
-
-	.on_weapon_wanted_to_break(weapon, gold_dropped)
+	if current_weapons.size() < prev_weapons:
+		var get_item_on_break_effects = RunData.get_player_effect(Utils.foxlab_get_item_on_weapon_break_hash, player_index)
+		var main = Utils.get_scene_node()
+		var get_new_weapon = false
+		if not get_item_on_break_effects.empty():
+			for get_item_on_break_effect in get_item_on_break_effects:
+				var boost = Utils.get_stat(get_item_on_break_effect[2], player_index) / 100.0
+				var base_chance:float = get_item_on_break_effect[3] / 100.0
+				if boost >= 0:
+					base_chance = base_chance * (1 + boost)
+				else:
+					base_chance = base_chance / (1 + abs(boost))
+				if RunData.current_wave > RunData.nb_of_waves:
+					base_chance /= (1.0 + RunData.get_endless_factor())
+				base_chance = min(Utils.FOXLAB_GET_ITEM_ON_BREAK_MAX_CHANCE, base_chance)
+				if Utils.get_chance_success(base_chance):
+					main.foxlab_get_item(get_item_on_break_effect[0], get_item_on_break_effect[1], player_index)
+					get_new_weapon = true
+		if not get_new_weapon:
+			var floating_text_manager = main._floating_text_manager
+			floating_text_manager.display_icon(-1, weapon._original_sprite, floating_text_manager.stat_pos_sounds, \
+				floating_text_manager.stat_neg_sounds, global_position, floating_text_manager.direction, -10.0)
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	var ret = .take_damage(value, args)
@@ -391,3 +414,13 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 				if play_sound:
 					SoundManager.play(preload("res://ui/sounds/Shield 4.mp3"))
 	return value_healed
+
+func on_alien_eyes_timeout() -> void :
+	var alien_eyes_effect = RunData.get_player_effect(Keys.alien_eyes_hash, player_index)
+	# 唯一的异形眼球效果敌袭期间被回收
+	if not alien_eyes_effect.empty():
+		.on_alien_eyes_timeout()
+	elif _alien_eyes_timer:
+		print("alien eyes is cleaned")
+		_alien_eyes_timer.stop()
+		_alien_eyes_timer.paused = true

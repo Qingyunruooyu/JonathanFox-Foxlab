@@ -8,6 +8,7 @@ const FOXLAB_BOSS_INTERVAL = 30
 const FOXLAB_SEED_DURATION = 5
 const FOXLAB_LIVING_ENEMY_DURATION_BOOST = 15
 const FOXLAB_SEED_PER_SECOND = 4
+const FOXLAB_GET_ITEM_ON_BREAK_MAX_CHANCE = 0.81
 
 const FOXLAB_ENCHANTED_EYES_CRATE_CHANCE = 20
 var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Keys.generate_hash("item_foxlab_tracker")]
@@ -97,6 +98,7 @@ var foxlab_bounce_player_projectile_hash: int = Keys.generate_hash("foxlab_bounc
 var foxlab_living_structure_hash: int = Keys.generate_hash("foxlab_living_structure")
 var foxlab_weapon_class_explode_hash: int = Keys.generate_hash("foxlab_weapon_class_explode")
 var foxlab_knockback_aura_hash: int = Keys.generate_hash("foxlab_knockback_aura")
+var foxlab_get_item_on_weapon_break_hash: int = Keys.generate_hash("foxlab_get_item_on_weapon_break")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")

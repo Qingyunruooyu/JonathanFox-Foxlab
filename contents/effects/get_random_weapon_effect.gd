@@ -31,7 +31,18 @@ func apply(player_index: int) -> void:
 	try_generate(player_index)
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]
-	RunData.add_weapon(meta.weapon, player_index)
+	var new_weapon = RunData.add_weapon(meta.weapon, player_index)
+	if RunData.wave_in_progress:
+		var main = Utils.get_scene_node()
+		# 防止游戏结束重开的时候，scene_node其实不是main，而是end_run
+		if "_players" in main:
+			var player = main._players[player_index]
+			if not player.dead:
+				var floating_text_manager = main._floating_text_manager
+				player.call_deferred("foxlab_add_weapon", new_weapon)
+				floating_text_manager.display_icon(1, new_weapon.icon, floating_text_manager.stat_pos_sounds, \
+					floating_text_manager.stat_neg_sounds, player.global_position, floating_text_manager.direction, -10.0)
+
 	if meta.is_const_weapon:
 		RunData.add_tracked_value(player_index, Utils.item_foxlab_buddhas_hand_hash, 1)
 	if meta.item != null:

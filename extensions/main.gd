@@ -177,17 +177,9 @@ func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vect
 		return
 
 	if enemy._pending_die:
-		for _i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
-			var pos = _entity_spawner.get_spawn_pos_in_area(enemy.global_position, 200)
-			var queue = _entity_spawner.queues_to_spawn_structures[args.from_player_index]
-			queue.push_back([EntityType.STRUCTURE, landmines_effect.scene, pos, landmines_effect])
-
-		if _is_crit and args.hitbox.from is Structure :
-			for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
-				TempStats.add_stat(effect[0], effect[1], args.from_player_index)
-
+		foxlab_process_landmine_on_death(enemy, args)
+		foxlab_process_struct_crit_kill(_is_crit, args)
 		_foxlab_process_frozen_unit_kill(enemy, args.from_player_index)
-
 		return
 
 	if not enemy.is_boosted and foxlab_should_check_mutation[args.from_player_index]:
@@ -198,6 +190,16 @@ func _on_neutral_took_damage_foxlab(neutral, _value: int, _knockback_direction: 
 	if neutral._pending_die and args.from_player_index >= 0 and args.from_player_index < RunData.get_player_count():
 		_foxlab_process_frozen_unit_kill(neutral, args.from_player_index)
 
+func foxlab_process_landmine_on_death(enemy, args: TakeDamageArgs):
+	for _i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
+		var pos = _entity_spawner.get_spawn_pos_in_area(enemy.global_position, 200)
+		var queue = _entity_spawner.queues_to_spawn_structures[args.from_player_index]
+		queue.push_back([EntityType.STRUCTURE, landmines_effect.scene, pos, landmines_effect])
+
+func foxlab_process_struct_crit_kill(is_crit: bool, args: TakeDamageArgs):
+	if is_crit and args.hitbox.from is Structure :
+		for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
+			TempStats.add_stat(effect[0], effect[1], args.from_player_index)
 
 func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
@@ -515,6 +517,9 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 				continue
 			var player = _players[player_index]
 			var dist_to_player = enemy.global_position.distance_squared_to(player.global_position)
+			# 地雷、Bonk狗的爆炸可以监测，爆炸炮塔不行，原版代码没为受击之后触发的爆炸设置from，缺省设置成了PlayerExplosion
+			if args.from is Pet or args.from is Structure:
+				dist_to_player = min(enemy.global_position.distance_squared_to(args.from.global_position), dist_to_player)
 			if dist_to_player <= pow(Utils.FOXLAB_BASE_NEARBY_KILL_DIST + WeaponService.sum_scaling_stat_values([[near_effect[0], near_effect[1]/100.0]], player_index), 2):
 				if player.on_healing_effect(1, Utils.item_foxlab_inner_indomitable_hash) <= 0:
 					RunData.add_gold(1, player_index)

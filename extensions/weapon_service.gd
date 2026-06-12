@@ -42,6 +42,13 @@ func set_projectile_effects(base_effects: Array, player_index: int = - 1) -> Arr
 				effect.key_hash = Keys.bounce_on_crit_hash
 	return .set_projectile_effects(base_effects, player_index)
 
+func explode(effect: ExplodingEffect, args: WeaponServiceExplodeArgs) -> Node:
+	var instance = .explode(effect, args)
+	# 原版在start_explosion里面，又覆盖掉了from，影响狂骨判断伤害来源是不是构筑物/宠物
+	if args.from != null:
+		instance.set_from(args.from)
+	return instance
+
 ### 功能 ###
 func foxlab_spawn_landmines_on_enemy_death_count(hitbox: Hitbox, was_burning: bool, player_index: int) -> int:
 	var landmines_on_death_effects = RunData.get_player_effect(Utils.foxlab_landmines_on_death_chance_hash, player_index)

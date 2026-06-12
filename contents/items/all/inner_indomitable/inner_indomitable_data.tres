@@ -3,6 +3,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/inner_indomitable/inner_indomitable_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/inner_indomitable/inner_indomitable_effect_0.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/item_data.gd" type="Script" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/inner_indomitable/inner_indomitable_effect_1.tres" type="Resource" id=4]
 
 [resource]
 script = ExtResource( 3 )
@@ -13,7 +14,7 @@ icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_INNER_INDOMITABLE"
 tier = 2
 value = 80
-effects = [ ExtResource( 2 ) ]
+effects = [ ExtResource( 2 ), ExtResource( 4 ) ]
 tracking_text = "HEALTH_RECOVERED"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

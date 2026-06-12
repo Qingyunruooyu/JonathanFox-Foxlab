@@ -509,6 +509,8 @@ func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> v
 	if permanent:
 		foxlab_try_complete_tasks(player_index)
 
+	LinkedStats.reset_player(player_index)
+
 func convert_remainder(stats: Array, player_index:int):
 	if stats.empty():
 		return

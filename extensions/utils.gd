@@ -9,6 +9,9 @@ const FOXLAB_SEED_DURATION = 5
 const FOXLAB_LIVING_ENEMY_DURATION_BOOST = 15
 const FOXLAB_SEED_PER_SECOND = 4
 
+const FOXLAB_ENCHANTED_EYES_CRATE_CHANCE = 20
+var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Keys.generate_hash("item_foxlab_tracker")]
+
 # Effects
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
 var foxlab_gain_xp_gain_hash: int = Keys.generate_hash("gain_xp_gain")
@@ -449,6 +452,70 @@ func foxlab_item_has_object_effect(item_data) -> bool:
 					foxlab_object_effect_item[item_data.my_id_hash] = true
 					break
 	return foxlab_object_effect_item[item_data.my_id_hash]
+
+func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn_randomization_off: bool, min_modifier: float, ret: ItemParentData, dlc_data):
+	var max_effect_modifier = ret.curse_factor
+	var new_effects = []
+	var effect_to_move = []
+	if item_data.my_id_hash in FOXLAB_STRUCT_WITH_EFFECTS:
+		var structure_effect = null
+		var extra_effects = []
+		for effect in ret.effects:
+			if effect is StructureEffect:
+				structure_effect = effect
+			elif not (effect is CharmEffect and effect.value2 == 0 and effect.value == 0):
+				extra_effects.append(effect)
+		if structure_effect:
+			structure_effect.effects = extra_effects
+	else:
+		for effect in ret.effects:
+			var effect_modifier = dlc_data._get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
+			var override = false
+			var overriden_sign = Sign.POSITIVE
+			var id: String = effect.get_id()
+			var cskey: int = effect.custom_key_hash
+			match [id, cskey]:
+				[_, Keys.extra_item_in_crate_hash]:
+					if effect.key_hash == Utils.item_foxlab_wanted_hash:
+						max_effect_modifier = max(max_effect_modifier, effect_modifier)
+						var extra_effect = Effect.new()
+						extra_effect.key = "crate_chance"
+						extra_effect.key_hash = Keys.crate_chance_hash
+						extra_effect.value = FOXLAB_ENCHANTED_EYES_CRATE_CHANCE
+						extra_effect.effect_sign = Sign.POSITIVE
+						extra_effect.value = dlc_data._boost_effect_value_positively(extra_effect, effect_modifier)
+						ret.effects.insert(1, extra_effect)
+				["foxlab_get_rand_weapon", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var extra_effect = Effect.new()
+					extra_effect.key = "stat_luck"
+					extra_effect.key_hash = Keys.stat_luck_hash
+					extra_effect.value = dlc_data.treasure_map_luck
+					extra_effect.effect_sign = Sign.POSITIVE
+					extra_effect.value = dlc_data._boost_effect_value_positively(extra_effect, effect_modifier)
+					new_effects.append(extra_effect)
+				[_, Utils.foxlab_heal_when_kill_nearby_hash]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					effect.value2 = dlc_data._boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
+				["foxlab_stat_query", _]:
+					effect_to_move.push_back(effect)
+				["foxlab_get_rand_character", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					effect.value2 = sqrt(effect.value2 * dlc_data._boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)) as int
+
+	ret.curse_factor = max_effect_modifier
+
+	if not new_effects.empty():
+		var back = ret.effects.pop_back()
+		ret.effects.append_array(new_effects)
+		ret.effects.append(back)
+
+	if not effect_to_move.empty():
+		for effect in effect_to_move:
+			ret.effects.erase(effect)
+		ret.effects.append_array(effect_to_move)
+	return ret
+
 
 ######## 扩展 ######
 func reset_stat_keys() -> void :

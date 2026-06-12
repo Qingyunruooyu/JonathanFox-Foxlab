@@ -266,3 +266,11 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 			player_appearances_ref.append(foxlab_stargazer_new_app)
 			player_appearances_ref.sort_custom(Sorter, "sort_depth_ascending")
 	return items_ret
+
+func apply_item_effect_modifications(item: ItemParentData, player_index: int) -> ItemParentData:
+	var new_item = .apply_item_effect_modifications(item, player_index)
+	if foxlab_is_android and new_item.is_cursed:
+		var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+		if dlc:
+			new_item = Utils.foxlab_extra_curse_item(item, player_index, false, 0.0, new_item, dlc)
+	return new_item

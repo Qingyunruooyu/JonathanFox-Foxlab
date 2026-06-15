@@ -17,6 +17,7 @@ func apply(player_index: int) -> void:
 		for _i in range(value):
 			RunData.add_item(item_to_add, player_index)
 			is_item_added = true
+		RunData.emit_signal("foxlab_item_added", item_to_add, value, player_index)
 		RunData.emit_signal("foxlab_item_gear_changed", player_index)
 
 func _remove_item(player_index: int, item_id_hash: int, rm_count: int) -> int :

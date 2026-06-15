@@ -347,25 +347,16 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	if current_weapons.size() < prev_weapons:
 		var get_item_on_break_effects = RunData.get_player_effect(Utils.foxlab_get_item_on_weapon_break_hash, player_index)
 		var main = Utils.get_scene_node()
-		var get_new_weapon = false
+		RunData.emit_signal("foxlab_item_added", {"icon": weapon._original_sprite, "is_cursed": weapon.is_cursed}, -1, player_index)
 		if not get_item_on_break_effects.empty():
 			for get_item_on_break_effect in get_item_on_break_effects:
 				var boost = Utils.get_stat(get_item_on_break_effect[2], player_index) / 100.0
-				var base_chance:float = get_item_on_break_effect[3] / 100.0
-				if boost >= 0:
-					base_chance = base_chance * (1 + boost)
-				else:
-					base_chance = base_chance / (1 + abs(boost))
+				var base_chance:float = (get_item_on_break_effect[3] / 100.0) * (1 + boost)
 				if RunData.current_wave > RunData.nb_of_waves:
 					base_chance /= (1.0 + RunData.get_endless_factor())
 				base_chance = min(Utils.FOXLAB_GET_ITEM_ON_BREAK_MAX_CHANCE, base_chance)
 				if Utils.get_chance_success(base_chance):
 					main.foxlab_get_item(get_item_on_break_effect[0], get_item_on_break_effect[1], player_index)
-					get_new_weapon = true
-		if not get_new_weapon:
-			var floating_text_manager = main._floating_text_manager
-			floating_text_manager.display_icon(-1, weapon._original_sprite, floating_text_manager.stat_pos_sounds, \
-				floating_text_manager.stat_neg_sounds, global_position, floating_text_manager.direction, -10.0)
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	var ret = .take_damage(value, args)
@@ -399,7 +390,6 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 					for enemy in main._entity_spawner.get_all_enemies():
 						if not enemy is Boss and not enemy.is_loot and enemy.can_be_charmed:
 							enemy.set_charmed(player_index)
-				var hit_protection0 = RunData.get_player_effect(Keys.hit_protection_hash, player_index)
 				for effect in charm_all_effect:
 					var item_id_hash = effect[0]
 					var items_got:Dictionary = RunData.get_player_effect(Utils.foxlab_charm_all_items_hash, player_index)
@@ -408,9 +398,6 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 						main.foxlab_get_item(item_id_hash, effect[1], player_index)
 						items_got[item_id_hash] += effect[1]
 						play_sound = true
-				var hit_protection1 = RunData.get_player_effect(Keys.hit_protection_hash, player_index)
-				if hit_protection1 > hit_protection0:
-					_hit_protection += (hit_protection1 - hit_protection0)
 				if play_sound:
 					SoundManager.play(preload("res://ui/sounds/Shield 4.mp3"))
 	return value_healed

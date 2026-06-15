@@ -26,6 +26,8 @@ var foxlab_should_check_extra_hit = false
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
+	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
+	_err = RunData.connect("foxlab_item_added", self, "_on_foxlab_item_added")
 	foxlab_receive_item_stat_ready()
 	foxlab_mutation_ready()
 	foxlab_piercing_is_bounce_ready()
@@ -76,8 +78,7 @@ func foxlab_receive_item_stat_ready():
 										effect.has_been_applied = false
 										effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
 							RunData.add_item(actual_item_data, player_index)
-
-						_floating_text_manager.display_icon(receive_item_effect[0], item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, player.global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)
+						_on_foxlab_item_added(actual_item_data, receive_item_effect[0], player_index)
 
 						need_reset_player = true
 
@@ -116,7 +117,7 @@ func foxlab_receive_item_stat_ready():
 
 		if need_reset_player:
 			# 重置cache用，不然武器伤害之类的不会更新
-			RunData.add_stat(Keys.enemy_health_hash, 0, player_index)
+			RunData._are_player_stats_dirty[player_index] = true
 			player.update_player_stats(true)
 			if not full_health:
 				player.current_stats.health = min(pre_health, player.current_stats.health)
@@ -306,8 +307,45 @@ func foxlab_spawn_seed(unit, player_index: int):
 func _on_foxlab_sec_char_changed(new_characters, player_index):
 	var pos = _players[player_index].global_position - Vector2(0, 50)
 	for character in new_characters:
-		_floating_text_manager.display_icon(1, character.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, pos, _floating_text_manager.direction, -10.0)
+		var icon = character.icon
+		var icon_scale = Utils.foxlab_fit_item_icon_scale(character)
+		_floating_text_manager.display("", pos, Color.white, icon, _floating_text_manager.duration * 2, true,  _floating_text_manager.direction, false, icon_scale)
 		pos -= Vector2(30, 30)
+	SoundManager2D.play(Utils.get_rand_element(_floating_text_manager.stat_pos_sounds), pos, -10)
+
+#中途添加武器相关（佛手）
+func _on_foxlab_weapon_added(new_weapon: WeaponData, player_index: int):
+	var player = _players[player_index]
+	if player.dead or player.cleaning_up:
+		return
+
+	for effect in new_weapon.effects:
+		if effect.key_hash == Keys.hit_protection_hash and effect.value > 0 and effect.get_id() == Effect.get_id():
+			player._hit_protection += effect.value
+
+	foxlab_after_add_item({}, player_index)
+	player.call_deferred("foxlab_add_weapon", new_weapon)
+	_on_foxlab_item_added(new_weapon, 1, player_index)
+
+func _on_foxlab_item_added(new_item, item_count: int, player_index: int):
+	var player = _players[player_index]
+	var icon_scale = Utils.foxlab_fit_item_icon_scale(new_item)
+	var pos = player.global_position - 3 * _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
+	_floating_text_manager.players_add_stats_count[player_index] += 1
+	var text_str = ""
+	var color:Color
+	if item_count >= 0:
+		text_str = "+" + str(item_count)
+		color = Color(ProgressData.settings.color_positive)
+		SoundManager2D.play(Utils.get_rand_element(_floating_text_manager.stat_pos_sounds), player.global_position, -10)
+	else:
+		text_str = str(item_count)
+		color = Color(ProgressData.settings.color_negative)
+		SoundManager2D.play(Utils.get_rand_element(_floating_text_manager.stat_neg_sounds), player.global_position, -15)
+	if new_item.is_cursed:
+		color = Utils.CURSE_COLOR
+	_floating_text_manager.display(text_str, pos, color, new_item.icon,\
+			_floating_text_manager.duration * 2.5, true,  _floating_text_manager.direction, false, icon_scale, player_index)
 
 #击杀慢速敌人相关
 func _foxlab_process_frozen_unit_kill(unit: Node2D, player_index: int):
@@ -375,9 +413,34 @@ func foxlab_process_pending_states():
 		if player.foxlab_process_lost_hp():
 			_on_player_health_updated(player, player.current_stats.health, player.max_stats.health)
 
+# 只处理这几个简单的，其他还有非常多只在一开始就判定这一波要不要生效的，不再做处理了
+func foxlab_before_add_item(player_index: int) ->Dictionary:
+	var pre_states = {}
+	for stat in [Keys.hit_protection_hash, Keys.lose_hp_per_second_hash, Keys.temp_stats_per_interval_hash]:
+		pre_states[stat] = RunData.get_player_effect(stat, player_index)
+	return pre_states
+
+func foxlab_after_add_item(pre_states: Dictionary, player_index: int):
+	var player = _players[player_index]
+	for stat in [Keys.hit_protection_hash, Keys.lose_hp_per_second_hash, Keys.temp_stats_per_interval_hash]:
+		var new_effect = RunData.get_player_effect(stat, player_index)
+		match stat:
+			Keys.hit_protection_hash:
+				var old_effect = pre_states.get(stat)
+				if old_effect!= null and new_effect > old_effect:
+					player._hit_protection += (new_effect - old_effect)
+			Keys.lose_hp_per_second_hash:
+				if new_effect > 0 and player._lose_health_timer.is_stopped():
+					player._lose_health_timer.start()
+			Keys.temp_stats_per_interval_hash:
+				if not new_effect.empty() and player._one_second_timer.is_stopped():
+					player._one_second_timer.start()
+
 func foxlab_get_item(item_id_hash: int, num: int, player_index: int):
 	var item_data = ItemService.get_item_from_id(item_id_hash)
 	if not item_data == null:
+		var pre_states = foxlab_before_add_item(player_index)
+		var displayed_item = item_data
 		for _i in num:
 			var actual_item_data = ItemService.apply_item_effect_modifications(item_data, player_index)
 			if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
@@ -386,8 +449,10 @@ func foxlab_get_item(item_id_hash: int, num: int, player_index: int):
 						effect.has_been_applied = false
 						effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
 			RunData.add_item(actual_item_data, player_index)
-		_floating_text_manager.display_icon(num, item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, _players[player_index].global_position - Vector2(0, 50), _floating_text_manager.direction, -10.0)
-
+			if actual_item_data.is_cursed:
+				displayed_item = actual_item_data
+		foxlab_after_add_item(pre_states, player_index)
+		_on_foxlab_item_added(displayed_item, num, player_index)
 
 ##### 重复判定伤害 #####
 func _on_foxlab_enemy_area_entered_deferred(hitbox: Area2D, enemy: Node2D):

@@ -13,6 +13,9 @@ var foxlab_scapegoat_no_hurt = [[], [], [], []]
 
 #面具相关，面具成功触发时发出信号
 signal foxlab_sec_char_changed(new_characters, player_index)
+#佛手相关，敌袭过程中增加佛手，会同步增加武器到对局
+signal foxlab_weapon_added(new_weapon, player_index)
+signal foxlab_item_added(new_item, item_num, player_index)
 #刷新商店的道具/武器仓库界面
 signal foxlab_item_gear_changed(player_index)
 signal foxlab_weapon_gear_changed(player_index)
@@ -286,3 +289,11 @@ func get_scaling_bonus(value: int, stat_scaled: String, nb_stat_scaled: int, per
 		var actual_nb_scaled = RunData.foxlab_current_living_structures as float
 		return int(value * (actual_nb_scaled / nb_stat_scaled))
 	return .get_scaling_bonus(value, stat_scaled, nb_stat_scaled, perm_stats_only, player_index)
+
+func reset(restart: bool = false) -> void :
+	# 佛手、面具的幸运、护甲等属性重置
+	if restart:
+		current_wave = DebugService.starting_wave
+		TempStats.reset()
+		LinkedStats.reset()
+	.reset(restart)

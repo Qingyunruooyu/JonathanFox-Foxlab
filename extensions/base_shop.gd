@@ -60,16 +60,9 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 	else:
 		popup_pos.x += pos[1]
 		direction = Vector2(25, - 100)
-	var standard_icon_size =  ItemService.characters[0].icon.get_size()
 	for character in new_characters:
 		var icon = character.icon
-		var icon_scale = Vector2(0.5, 0.5)
-		var icon_size = icon.get_size()
-		if icon_size != standard_icon_size:
-			var max_dimension = max(icon_size.x, icon_size.y)
-			var scale_factor = standard_icon_size.x / max_dimension
-			icon_scale.x *= scale_factor
-			icon_scale.y *= scale_factor
+		var icon_scale = Utils.foxlab_fit_item_icon_scale(character)
 		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
 		popup_pos -= offset
 

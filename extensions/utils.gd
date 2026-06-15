@@ -214,30 +214,37 @@ var foxlab_item_pinned_in_inventory = {
 
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
-	if player_index != RunData.DUMMY_PLAYER_INDEX :
-		for i in RunData.tracked_item_effects[player_index][item_id].size():
-			var tracked_count = RunData.tracked_item_effects[player_index][item_id][i]
+	if player_index != RunData.DUMMY_PLAYER_INDEX:
+		var item_effect = RunData.tracked_item_effects[player_index][item_id]
+		if item_effect is Array:
+			for i in RunData.tracked_item_effects[player_index][item_id].size():
+				var tracked_count = RunData.tracked_item_effects[player_index][item_id][i]
 
-			var tracking_text_to_use
-			match [item_id, i]:
-				[Utils.item_foxlab_inner_indomitable_hash, 1]:
-					tracking_text_to_use = "MATERIALS_GAINED"
-				[Utils.character_foxlab_refactor_hash, 1]:
-					tracking_text_to_use = "FOXLAB_MODIFICATION_GAINED"
-				[Utils.item_foxlab_reactor_hash, 1]:
-					tracking_text_to_use = "FOXLAB_BOSSES_INVOKED"
-				[Utils.item_foxlab_reactor_hash, 2]:
-					tracking_text_to_use = "FOXLAB_BOSSES_RESURRECTED"
-				[Utils.character_foxlab_goat_keeper_hash, 1]:
-					tracking_text_to_use = "FOXLAB_CRATES_DROPPED"
-				[Utils.item_foxlab_salvation_hash, 1]:
-					tracking_text_to_use = "FOXLAB_SEEDS_DROPPED"
-				[Utils.item_foxlab_salvation_hash, 2]:
-					tracking_text_to_use = "FOXLAB_SEEDS_ACTIVATED"
-				_:
-					tracking_text_to_use = tracking_text
+				var tracking_text_to_use
+				match [item_id, i]:
+					[Utils.item_foxlab_inner_indomitable_hash, 1]:
+						tracking_text_to_use = "MATERIALS_GAINED"
+					[Utils.character_foxlab_refactor_hash, 1]:
+						tracking_text_to_use = "FOXLAB_MODIFICATION_GAINED"
+					[Utils.item_foxlab_reactor_hash, 1]:
+						tracking_text_to_use = "FOXLAB_BOSSES_INVOKED"
+					[Utils.item_foxlab_reactor_hash, 2]:
+						tracking_text_to_use = "FOXLAB_BOSSES_RESURRECTED"
+					[Utils.character_foxlab_goat_keeper_hash, 1]:
+						tracking_text_to_use = "FOXLAB_CRATES_DROPPED"
+					[Utils.item_foxlab_salvation_hash, 1]:
+						tracking_text_to_use = "FOXLAB_SEEDS_DROPPED"
+					[Utils.item_foxlab_salvation_hash, 2]:
+						tracking_text_to_use = "FOXLAB_SEEDS_ACTIVATED"
+					_:
+						tracking_text_to_use = tracking_text
 
-			text += "\n[color=#" + Utils.SECONDARY_FONT_COLOR.to_html() + "]" + Text.text(tracking_text_to_use.to_upper(), [Text.get_formatted_number(tracked_count)]) + "[/color]"
+				text += "\n[color=#" + Utils.SECONDARY_FONT_COLOR.to_html() + "]" + Text.text(tracking_text_to_use.to_upper(), [Text.get_formatted_number(tracked_count)]) + "[/color]"
+		else:
+			var after = ""
+			if item_id == Keys.item_fish_hook_hash:
+				after = "%"
+			text = "\n[color=#" + Utils.SECONDARY_FONT_COLOR.to_html() + "]" + Text.text(tracking_text.to_upper(), [Text.get_formatted_number(item_effect) + after]) + "[/color]"
 	return text
 
 func _foxlab_init_primary_stat_gain_map():
@@ -518,6 +525,17 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 		ret.effects.append_array(effect_to_move)
 	return ret
 
+func foxlab_fit_item_icon_scale(item) ->Vector2:
+	var standard_icon_size =  ItemService.characters[0].icon.get_size()
+	var icon:Texture = item.icon
+	var icon_scale = Vector2(0.5, 0.5)
+	var icon_size = icon.get_size()
+	if icon_size != standard_icon_size:
+		var max_dimension = max(icon_size.x, icon_size.y)
+		var scale_factor = standard_icon_size.x / max_dimension
+		icon_scale.x *= scale_factor
+		icon_scale.y *= scale_factor
+	return icon_scale
 
 ######## 扩展 ######
 func reset_stat_keys() -> void :

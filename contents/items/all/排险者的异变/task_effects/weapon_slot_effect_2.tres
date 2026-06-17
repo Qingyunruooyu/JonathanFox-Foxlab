@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 key = "weapon_slot_upgrades"
 text_key = "EFFECT_WEAPON_SLOT_UPGRADES"
-value = 12
+value = 9
 custom_key = ""
 storage_method = 0
 effect_sign = 3

@@ -283,7 +283,7 @@ func die(args: = Utils.default_die_args) -> void :
 				_die_args_unit.from = ItemService.get_item_from_id(Keys.item_scared_sausage_hash)
 		elif args.from is Enemy:
 			_die_args_unit.from = args.from
-		elif "player_index" in args.from and args.from.player_index >= 0 and args.from < RunData.get_player_count():
+		elif "player_index" in args.from and args.from.player_index >= 0 and args.from.player_index < RunData.get_player_count():
 			_die_args_unit.from = players_ref[args.from.player_index]
 		else:
 			_die_args_unit.from = args.from

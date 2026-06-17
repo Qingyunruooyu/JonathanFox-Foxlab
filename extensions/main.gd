@@ -180,6 +180,7 @@ func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vect
 	if enemy._pending_die:
 		foxlab_process_landmine_on_death(enemy, args)
 		foxlab_process_struct_crit_kill(_is_crit, args)
+		foxlab_process_explode_crit_kill(enemy, _is_crit, args, _hit_type)
 		_foxlab_process_frozen_unit_kill(enemy, args.from_player_index)
 		return
 
@@ -201,6 +202,21 @@ func foxlab_process_struct_crit_kill(is_crit: bool, args: TakeDamageArgs):
 	if is_crit and args.hitbox.from is Structure :
 		for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
 			TempStats.add_stat(effect[0], effect[1], args.from_player_index)
+
+# 尝试让爆炸也享受爆炸源的暴击打钱效果
+func foxlab_process_explode_crit_kill(enemy, is_crit: bool, args: TakeDamageArgs, hit_type: int):
+	if is_crit and args.hitbox.from is PlayerExplosion:
+		var gold_added = 0
+		for connection in args.hitbox.from.get_signal_connection_list("killed_something"):
+			if "effects" in connection.target:
+				for effect in connection.target.effects:
+					if effect.key_hash == Keys.gold_on_crit_kill_hash and randf() <= effect.value / 100.0:
+						gold_added += 1
+		if gold_added > 0:
+			RunData.add_gold(gold_added, args.from_player_index)
+			if hit_type == HitType.NORMAL:
+				_floating_text_manager.display("", enemy.global_position - Vector2(40, 0), Color.white, ItemService.get_icon(Keys.icon_gold_on_crit_kill_hash),\
+					 _floating_text_manager.duration, false, _floating_text_manager.direction, false)
 
 func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
@@ -330,7 +346,7 @@ func _on_foxlab_weapon_added(new_weapon: WeaponData, player_index: int):
 func _on_foxlab_item_added(new_item, item_count: int, player_index: int):
 	var player = _players[player_index]
 	var icon_scale = Utils.foxlab_fit_item_icon_scale(new_item)
-	var pos = player.global_position - 3 * _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
+	var pos = player.global_position - 1.5 * _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
 	_floating_text_manager.players_add_stats_count[player_index] += 1
 	var text_str = ""
 	var color:Color
@@ -460,7 +476,7 @@ func _on_foxlab_enemy_area_entered_deferred(hitbox: Area2D, enemy: Node2D):
 		is_instance_valid(hitbox.from) and not hitbox.from is PlayerExplosion and\
 		hitbox.from.player_index != -1:
 		var extra_hit:int = RunData.get_player_effect(Utils.foxlab_extra_hit_hash, hitbox.from.player_index)
-		if extra_hit > 1:
+		if extra_hit > 0:
 			var ignored_objects = hitbox.ignored_objects.duplicate()
 			for _i in extra_hit:
 				hitbox.ignored_objects.erase(enemy)
@@ -589,7 +605,8 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 				if player.on_healing_effect(1, Utils.item_foxlab_inner_indomitable_hash) <= 0:
 					RunData.add_gold(1, player_index)
 					RunData.add_tracked_value(player_index, Utils.item_foxlab_inner_indomitable_hash, 1, 1)
-					_floating_text_manager.display("", enemy.global_position, Color.white, ItemService.foxlab_kill_nearby_icon, _floating_text_manager.duration, false, _floating_text_manager.direction, false)
+					_floating_text_manager.display("", enemy.global_position - Vector2(40, 0), Color.white, ItemService.foxlab_kill_nearby_icon, \
+						_floating_text_manager.duration, false, _floating_text_manager.direction, false)
 
 		var effects = RunData.get_player_effect(Utils.foxlab_gain_stat_every_killed_enemies_hash, player_index)
 		if not effects.empty():

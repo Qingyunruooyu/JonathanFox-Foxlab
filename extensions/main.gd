@@ -28,6 +28,8 @@ func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
 	_err = RunData.connect("foxlab_item_added", self, "_on_foxlab_item_added")
+	_err = _end_wave_timer.connect("timeout", self, "_on_foxlab_EndWaveTimer_timeout")
+
 	foxlab_receive_item_stat_ready()
 	foxlab_mutation_ready()
 	foxlab_piercing_is_bounce_ready()
@@ -180,7 +182,6 @@ func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vect
 	if enemy._pending_die:
 		foxlab_process_landmine_on_death(enemy, args)
 		foxlab_process_struct_crit_kill(_is_crit, args)
-		foxlab_process_explode_crit_kill(enemy, _is_crit, args, _hit_type)
 		_foxlab_process_frozen_unit_kill(enemy, args.from_player_index)
 		return
 
@@ -202,21 +203,6 @@ func foxlab_process_struct_crit_kill(is_crit: bool, args: TakeDamageArgs):
 	if is_crit and args.hitbox.from is Structure :
 		for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
 			TempStats.add_stat(effect[0], effect[1], args.from_player_index)
-
-# 尝试让爆炸也享受爆炸源的暴击打钱效果
-func foxlab_process_explode_crit_kill(enemy, is_crit: bool, args: TakeDamageArgs, hit_type: int):
-	if is_crit and args.hitbox.from is PlayerExplosion:
-		var gold_added = 0
-		for connection in args.hitbox.from.get_signal_connection_list("killed_something"):
-			if "effects" in connection.target:
-				for effect in connection.target.effects:
-					if effect.key_hash == Keys.gold_on_crit_kill_hash and randf() <= effect.value / 100.0:
-						gold_added += 1
-		if gold_added > 0:
-			RunData.add_gold(gold_added, args.from_player_index)
-			if hit_type == HitType.NORMAL:
-				_floating_text_manager.display("", enemy.global_position - Vector2(40, 0), Color.white, ItemService.get_icon(Keys.icon_gold_on_crit_kill_hash),\
-					 _floating_text_manager.duration, false, _floating_text_manager.direction, false)
 
 func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
@@ -513,6 +499,12 @@ func _foxlab_remove_turret_outline(turret: Node) -> void:
 func _on_foxlab_structure_died(_structure, _die_args) -> void:
 	RunData.foxlab_current_living_structures -= 1
 
+func _on_foxlab_EndWaveTimer_timeout() -> void :
+	if not _is_wave_failed:
+		for player_index in range(RunData.get_player_count()):
+			if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
+				RunData.foxlab_forget_item(player_index)
+
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
@@ -528,13 +520,6 @@ func _on_WaveTimer_timeout() -> void :
 			var effects = RunData.get_player_effects(player_index)
 			effects[Keys.pierce_on_crit_hash] += foxlab_original_piercing[player_index]
 			effects[Keys.bounce_on_crit_hash] -= foxlab_original_piercing[player_index]
-
-func _on_EndWaveTimer_timeout() -> void :
-	if not _is_wave_failed:
-		for player_index in range(RunData.get_player_count()):
-			if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
-				RunData.foxlab_forget_item(player_index)
-	._on_EndWaveTimer_timeout()
 
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)
@@ -629,7 +614,6 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 					if effect[2] <= 0:
 #						DebugService.log_data("num: %d, num_killed: %d, total: %d" % [num, num_killed, foxlab_enemy_killed_this_wave[player_index]])
 						foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]] = 0
-
 
 func _on_EntitySpawner_enemy_spawned(enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)

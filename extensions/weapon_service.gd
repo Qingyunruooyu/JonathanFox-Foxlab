@@ -47,9 +47,44 @@ func explode(effect: ExplodingEffect, args: WeaponServiceExplodeArgs) -> Node:
 	# 原版在start_explosion里面，又覆盖掉了from，影响狂骨判断伤害来源是不是构筑物/宠物
 	if args.from != null:
 		instance.set_from(args.from)
+	var explosion_hitbox = instance._hitbox
+	explosion_hitbox.effects = [ ]
+	explosion_hitbox.set_knockback(Vector2.ZERO, 0.0, 0.0)
+	call_deferred("foxlab_add_weapon_effects_for_explosion", instance)
 	return instance
 
+func manage_special_spawn_projectile(
+	entity_from,
+	weapon_stats,
+	direction: float,
+	auto_target_enemy: bool,
+	entity_spawner_ref,
+	from: Node,
+	args = _default_spawn_projectile_args
+) -> Node:
+	var projectile = .manage_special_spawn_projectile(entity_from, weapon_stats, direction, auto_target_enemy, entity_spawner_ref, from, args)
+	if from is Weapon and from.effects.size() > 0 and not projectile.killed_something_connected:
+		call_deferred("foxlab_connect_signal_for_projectile", from, projectile)
+	return projectile
+
 ### 功能 ###
+func foxlab_connect_signal_for_projectile(weapon: Node, projectile: Node):
+	var _killed_sthing = projectile._hitbox.connect("killed_something", weapon, "on_killed_something", [projectile._hitbox])
+	projectile.killed_something_connected = true
+	for effect in weapon.effects:
+		if not effect is ExplodingEffect and not effect is ProjectilesOnHitEffect:
+			projectile._hitbox.effects.append(effect)
+
+func foxlab_add_weapon_effects_for_explosion(explosion: Node):
+	for connection in explosion.get_signal_connection_list("hit_something"):
+		if connection.target is Weapon:
+			var dst_hitbox = explosion._hitbox
+			var src_hitbox = connection.target._hitbox
+			for effect in connection.target.effects:
+				if not effect is ExplodingEffect and not effect is ProjectilesOnHitEffect:
+					dst_hitbox.effects.append(effect)
+			dst_hitbox.set_knockback(src_hitbox.knockback_direction, src_hitbox.knockback_amount, src_hitbox.knockback_piercing)
+
 func foxlab_spawn_landmines_on_enemy_death_count(hitbox: Hitbox, was_burning: bool, player_index: int) -> int:
 	var landmines_on_death_effects = RunData.get_player_effect(Utils.foxlab_landmines_on_death_chance_hash, player_index)
 	if landmines_on_death_effects.empty():

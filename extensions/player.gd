@@ -243,7 +243,7 @@ func foxlab_add_weapon_particle(cur_weapon: Weapon):
 		return
 
 	for effect in cur_weapon.effects:
-		if "burning_data" in effect:
+		if effect is BurningEffect:
 			var instance = foxlab_burning_particle.instance()
 			cur_weapon.muzzle.add_child(instance)
 			return

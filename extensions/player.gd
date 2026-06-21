@@ -2,7 +2,6 @@ extends "res://entities/units/player/player.gd"
 
 var foxlab_burning_particle = load("res://particles/burning/torch_burning_particles.tscn")
 var foxlab_scepter_particle = load("res://particles/ghost_scepter_particles.tscn")
-var foxlab_potato_texture = preload("res://entities/units/player/potato.png")
 var foxlab_transparent_texture = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png")
 var _foxlab_curse_particle =load("res://particles/curse/curse_enemy_particles.tscn")
 var _foxlab_curse_particle_instance = null
@@ -317,16 +316,12 @@ func _clean_up() -> void :
 func apply_items_effects() -> void :
 	.apply_items_effects()
 	for appearance in RunData.get_player_appearances(player_index):
-			if "foxlab_hide_potato" in appearance and appearance.foxlab_hide_potato:
-				var potato = $Animation / Sprite
-				potato.texture = foxlab_transparent_texture
-				var legs = $Animation/Legs
-				legs.visible = false
-				return
-	var potato = $Animation / Sprite
-	potato.texture = foxlab_potato_texture
-	var legs = $Animation/Legs
-	legs.visible = true
+		if appearance.get("foxlab_hide_potato"):
+			var potato = $Animation / Sprite
+			potato.texture = foxlab_transparent_texture
+			var legs = $Animation/Legs
+			legs.visible = false
+			return
 
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	var prev_weapons = current_weapons.size()

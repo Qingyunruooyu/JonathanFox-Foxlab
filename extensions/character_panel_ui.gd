@@ -16,19 +16,21 @@ func apply_items_appearance(all_items: Array) -> void :
 			all_items.append_array(meta.chars)
 		else:
 			all_items.append({"item_appearances": RunData.get_player_appearances(player_index)})
-	.apply_items_appearance(all_items)
-	for item in all_items:
-		for app in item.item_appearances:
-			if "foxlab_hide_potato" in app and app.foxlab_hide_potato:
-				var potato = $"%Character"/Sprite
-				potato.texture = foxlab_transparent_texture
-				var legs = $"%Character"/Legs
-				legs.visible = false
-				return
 
 	var potato = $"%Character"/Sprite
 	potato.texture = foxlab_potato_texture
 	var legs = $"%Character"/Legs
 	legs.visible = true
+
+	.apply_items_appearance(all_items)
+
+	for item in all_items:
+		for app in item.item_appearances:
+			if app.get("foxlab_hide_potato"):
+				potato.texture = foxlab_transparent_texture
+				legs.visible = false
+				return
+
+
 
 

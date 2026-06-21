@@ -16,6 +16,8 @@ func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponSer
 		var corrected_stats = .init_base_stats(from_stats, player_index, args, false, is_special_spawn, is_pet)
 		new_stats.lifesteal = corrected_stats.lifesteal
 		new_stats.crit_chance = corrected_stats.crit_chance
+
+	new_stats.crit_damage += Utils.get_stat(Utils.stat_foxlab_crit_damage_hash, player_index) / 100.0
 	return new_stats
 
 func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service):
@@ -63,15 +65,15 @@ func manage_special_spawn_projectile(
 	args = _default_spawn_projectile_args
 ) -> Node:
 	var projectile = .manage_special_spawn_projectile(entity_from, weapon_stats, direction, auto_target_enemy, entity_spawner_ref, from, args)
-	if from is Weapon and from.effects.size() > 0 and not projectile.killed_something_connected:
+	if (from is Weapon or from is BuilderTurret) and from.effects.size() > 0 and not projectile.killed_something_connected:
 		call_deferred("foxlab_connect_signal_for_projectile", from, projectile)
 	return projectile
 
 ### 功能 ###
-func foxlab_connect_signal_for_projectile(weapon: Node, projectile: Node):
-	var _killed_sthing = projectile._hitbox.connect("killed_something", weapon, "on_killed_something", [projectile._hitbox])
+func foxlab_connect_signal_for_projectile(from: Node, projectile: Node):
+	var _killed_sthing = projectile._hitbox.connect("killed_something", from, "on_killed_something", [projectile._hitbox])
 	projectile.killed_something_connected = true
-	for effect in weapon.effects:
+	for effect in from.effects:
 		if not effect is ExplodingEffect and not effect is ProjectilesOnHitEffect:
 			projectile._hitbox.effects.append(effect)
 

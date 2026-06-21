@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/task_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/task_effect/shadow_effect_dodge_cap.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧难知如阴/task_effect/shadow_effect_one_shot.tres" type="Resource" id=3]
+
+[resource]
+script = ExtResource( 1 )
+key = "stat_dodge"
+text_key = "EFFECT_FOXLAB_SHADOW"
+value = 100
+custom_key = "item_foxlab_shadow"
+storage_method = 1
+effect_sign = 0
+custom_args = [  ]
+sub_effects = [ ExtResource( 2 ), ExtResource( 3 ) ]
+max_execs = 1
+comparison = 1
+default_text_mode = false

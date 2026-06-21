@@ -266,6 +266,20 @@ func foxlab_weapon_class_explode(cur_weapon: Weapon, weapon_data: WeaponData):
 func foxlab_add_weapon(weapon: WeaponData):
 	add_weapon(weapon, current_weapons.size())
 
+func foxlab_one_shot_on_dodge(args: TakeDamageArgs):
+	var one_shot_effects = RunData.get_player_effect(Utils.foxlab_one_shot_on_dodge_hash, player_index)
+	if not one_shot_effects.empty() and args.hitbox != null and is_instance_valid(args.hitbox.from) and args.hitbox.from is Enemy:
+		var enemy = args.hitbox.from
+		for effect in one_shot_effects:
+			if Utils.get_chance_success(Utils.get_stat(effect[0], player_index) * effect[1] / 100.0):
+				enemy._take_damage_args_unit._init(player_index)
+				enemy._take_damage_args_unit.from = self
+				var damage_taken = enemy.take_damage(enemy.current_stats.health, enemy._take_damage_args_unit)
+				enemy._on_one_shotted(load("res://weapons/melee/vorpal_sword/2/vorpal_sword_2_effect_0.tres"))
+				RunData.add_tracked_value(player_index, Utils.item_foxlab_shadow_hash, damage_taken[1], 0)
+				RunData.add_tracked_value(player_index, Utils.item_foxlab_shadow_hash, 1, 1)
+				return
+
 ############ 函数扩展 #########
 #　修复官方bug
 func die(args: = Utils.default_die_args) -> void :
@@ -355,6 +369,8 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	var ret = .take_damage(value, args)
+	if ret[2]:
+		foxlab_one_shot_on_dodge(args)
 	if ret[1] > 0:
 		for stats in foxlab_enemy_stats_on_hit:
 			EntityService.factor_cache.erase(stats)

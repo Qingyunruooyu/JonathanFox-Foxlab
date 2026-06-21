@@ -21,6 +21,6 @@ is_lockable = true
 unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
-max_nb = 3
+max_nb = 5
 item_appearances = [  ]
 tags = [  ]

@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "stronger_loot_aliens_on_kill"
-text_key = ""
-value = 8
+key = "dodge_cap"
+text_key = "effect_dodge_cap"
+value = 85
 custom_key = ""
-storage_method = 0
-effect_sign = 1
+storage_method = 2
+effect_sign = 3
 custom_args = [  ]

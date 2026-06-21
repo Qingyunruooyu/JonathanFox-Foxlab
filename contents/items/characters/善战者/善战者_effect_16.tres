@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "extra_loot_aliens_next_wave"
+key = "stronger_elites_on_kill"
 text_key = "EFFECT_FOXLAB_STAT_QUERY"
 value = 3
 custom_key = ""

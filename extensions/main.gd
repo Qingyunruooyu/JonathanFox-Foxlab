@@ -2,6 +2,7 @@ extends "res://main.gd"
 
 #全局杀敌获得属性
 var foxlab_enemy_killed_this_wave := [0, 0, 0, 0]
+var foxlab_boss_killed_this_wave := [0, 0, 0, 0]
 #基于当前属性值的击杀（分段）
 var foxlab_enemy_killed_this_wave_piecewise := [{}, {}, {}, {}]
 var foxlab_gain_stat_every_killed_enemies := [{}, {}, {}, {}] #有上限限制的属性
@@ -614,6 +615,15 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 					if effect[2] <= 0:
 #						DebugService.log_data("num: %d, num_killed: %d, total: %d" % [num, num_killed, foxlab_enemy_killed_this_wave[player_index]])
 						foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]] = 0
+
+		effects = RunData.get_player_effect(Utils.foxlab_gain_stat_every_killed_bosses_hash, player_index)
+		if enemy is Boss and not effects.empty():
+			foxlab_boss_killed_this_wave[player_index] += 1
+			for effect in effects:
+				var num_killed = foxlab_boss_killed_this_wave[player_index]
+				var num = effect[2]
+				if num_killed % (num as int) == 0:
+					RunData.add_stat(effect[0], effect[1], player_index)
 
 func _on_EntitySpawner_enemy_spawned(enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)

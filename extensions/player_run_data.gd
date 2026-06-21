@@ -24,6 +24,7 @@ static func init_foxlab_stats() -> Dictionary:
 			Utils.item_foxlab_stargazer_hash: 0,
 			Utils.item_foxlab_split_hash: 0,
 			Utils.item_foxlab_eggs_hash: 0,
+			Utils.stat_foxlab_crit_damage_hash: 0,
 		}
 
 # 这个函数是因为JSON文件不区分int 和float，而Effect序列化/反序列化中，只有value成员做了特殊处理，强制转成int，其他
@@ -289,6 +290,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_multiply_stats_half_wave_hash:[],
 			Utils.foxlab_multiply_stats_end_of_wave_hash:[],
 			Utils.foxlab_gain_stat_every_killed_enemies_hash:[],
+			Utils.foxlab_gain_stat_every_killed_bosses_hash:[],
 			Utils.foxlab_increase_tier_on_rerolls_hash:0,
 			Utils.foxlab_force_remove_on_reroll_hash:[],
 			Utils.foxlab_ball_lightning_hash:[],
@@ -324,7 +326,9 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_bounce_player_projectile_hash: 0,
 			Utils.foxlab_weapon_class_explode_hash: [],
 			Utils.foxlab_knockback_aura_hash: 0,
-			Utils.foxlab_get_item_on_weapon_break_hash: []
+			Utils.foxlab_get_item_on_weapon_break_hash: [],
+			Utils.item_foxlab_shadow_hash: 0,
+			Utils.foxlab_one_shot_on_dodge_hash: [],
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

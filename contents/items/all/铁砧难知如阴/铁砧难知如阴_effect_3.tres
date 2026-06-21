@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "dodge_cap"
+key = "stat_dodge"
 text_key = "effect_upgrade_random_weapon"
-value = 5
+value = 10
 custom_key = "upgrade_random_weapon"
 storage_method = 4
 effect_sign = 3

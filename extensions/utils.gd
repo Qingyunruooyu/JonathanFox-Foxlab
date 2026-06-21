@@ -59,6 +59,7 @@ var foxlab_always_convert_stats_half_wave_hash: int = Keys.generate_hash("foxlab
 var foxlab_multiply_stats_half_wave_hash: int = Keys.generate_hash("foxlab_multiply_stats_half_wave")
 var foxlab_multiply_stats_end_of_wave_hash: int = Keys.generate_hash("foxlab_multiply_stats_end_of_wave")
 var foxlab_gain_stat_every_killed_enemies_hash: int = Keys.generate_hash("foxlab_gain_stat_every_killed_enemies")
+var foxlab_gain_stat_every_killed_bosses_hash: int = Keys.generate_hash("foxlab_gain_stat_every_killed_bosses")
 var foxlab_increase_tier_on_rerolls_hash: int = Keys.generate_hash("foxlab_increase_tier_on_rerolls")
 var foxlab_force_remove_on_reroll_hash: int = Keys.generate_hash("foxlab_force_remove_on_reroll")
 var foxlab_ball_lightning_hash: int = Keys.generate_hash("foxlab_ball_lightning")
@@ -99,6 +100,8 @@ var foxlab_living_structure_hash: int = Keys.generate_hash("foxlab_living_struct
 var foxlab_weapon_class_explode_hash: int = Keys.generate_hash("foxlab_weapon_class_explode")
 var foxlab_knockback_aura_hash: int = Keys.generate_hash("foxlab_knockback_aura")
 var foxlab_get_item_on_weapon_break_hash: int = Keys.generate_hash("foxlab_get_item_on_weapon_break")
+var foxlab_one_shot_on_dodge_hash: int = Keys.generate_hash("foxlab_one_shot_on_dodge")
+var stat_foxlab_crit_damage_hash: int = Keys.generate_hash("stat_foxlab_crit_damage")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -138,6 +141,7 @@ var item_foxlab_wanted_hash: int = Keys.generate_hash("item_foxlab_wanted")
 var item_foxlab_wanted_unknown_hash: int = Keys.generate_hash("item_foxlab_wanted_unknown")
 var item_foxlab_salvation_hash: int = Keys.generate_hash("item_foxlab_salvation")
 var consumable_foxlab_seed_hash: int = Keys.generate_hash("consumable_foxlab_seed")
+var item_foxlab_shadow_hash: int = Keys.generate_hash("item_foxlab_shadow")
 
 # enemy names
 var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")
@@ -210,6 +214,12 @@ var foxlab_item_pinned_in_inventory = {
 		Keys.item_builder_turret_n_hash[1]: 0,
 		Keys.item_builder_turret_n_hash[2]: 0,
 		Keys.item_builder_turret_n_hash[3]: 0,
+		Keys.generate_hash("item_foxlab_wind"): 0,
+		Keys.generate_hash("item_foxlab_forest"): 0,
+		Keys.generate_hash("item_foxlab_fire"): 0,
+		Keys.generate_hash("item_foxlab_mountain"): 0,
+		item_foxlab_shadow_hash: 0,
+		Keys.generate_hash("item_foxlab_thunder"): 0,
 }
 
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
@@ -236,6 +246,8 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 						tracking_text_to_use = "FOXLAB_SEEDS_DROPPED"
 					[Utils.item_foxlab_salvation_hash, 2]:
 						tracking_text_to_use = "FOXLAB_SEEDS_ACTIVATED"
+					[Utils.item_foxlab_shadow_hash, 1]:
+						tracking_text_to_use = "ONE_SHOT_COUNT"
 					_:
 						tracking_text_to_use = tracking_text
 

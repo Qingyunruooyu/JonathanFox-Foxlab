@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
-[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/stat_query_effect.gd" type="Script" id=1]
 [ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
 
 [sub_resource type="Resource" id=1]
@@ -14,9 +14,9 @@ arg_key = "stat_crit_damage"
 [resource]
 script = ExtResource( 1 )
 key = "stat_foxlab_crit_damage"
-text_key = "effect_upgrade_random_weapon"
-value = 8
-custom_key = "upgrade_random_weapon"
-storage_method = 4
-effect_sign = 3
+text_key = "EFFECT_FOXLAB_STAT_QUERY"
+value = 0
+custom_key = ""
+storage_method = 0
+effect_sign = 2
 custom_args = [ SubResource( 1 ) ]

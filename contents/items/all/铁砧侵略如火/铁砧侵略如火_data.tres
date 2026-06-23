@@ -1,6 +1,7 @@
-[gd_resource type="Resource" load_steps=6 format=2]
+[gd_resource type="Resource" load_steps=7 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧侵略如火/铁砧侵略如火_icon.png" type="Texture" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧侵略如火/铁砧侵略如火_effect_3.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧侵略如火/铁砧侵略如火_effect_1.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧侵略如火/铁砧侵略如火_effect_0.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/铁砧侵略如火/铁砧侵略如火_effect_2.tres" type="Resource" id=5]
@@ -15,7 +16,7 @@ icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_FIRE"
 tier = 3
 value = 1
-effects = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 5 ) ]
+effects = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 5 ), ExtResource( 2 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

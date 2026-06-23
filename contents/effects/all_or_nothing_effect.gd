@@ -1,9 +1,9 @@
-extends "res://items/global/effect.gd"
+extends "res://mods-unpacked/JonathanFox-FoxLab/contents/base_effects/batch_apply_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_all_or_nothing"
 
-func apply_effects_core(player_index: int, apply: bool):
+func apply_effects_core(player_index: int, call_func: String):
 	var effect = DoubleValueEffect.new()
 	effect.key_hash = key_hash
 	effect.key = key
@@ -14,15 +14,7 @@ func apply_effects_core(player_index: int, apply: bool):
 		effect.value = 2*i - 1
 		if i&1:
 			effect.value *= -1
-		if apply:
-			effect.apply(player_index)
-		else:
-			effect.unapply(player_index)
+		effect.call(call_func, player_index)
 
-func apply(player_index: int) -> void:
-	apply_effects_core(player_index, true)
-
-func unapply(player_index: int) -> void:
-	apply_effects_core(player_index, false)
 
 

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://projectiles/explosion.tscn" type="PackedScene" id=1]
+[ext_resource path="res://dlcs/dlc_1/enemies/pufferfish/PufferFish_single_pop.wav" type="AudioStream" id=2]
+
+[node name="PlayerExplosion" instance=ExtResource( 1 )]
+explosion_sounds = [ ExtResource( 2 ) ]
+sound_db_mod = 5
+
+[editable path="Hitbox"]

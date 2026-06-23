@@ -8,7 +8,7 @@
 script = ExtResource( 1 )
 key = "stat_dodge"
 text_key = "EFFECT_FOXLAB_SHADOW"
-value = 100
+value = 60
 custom_key = "item_foxlab_shadow"
 storage_method = 1
 effect_sign = 0

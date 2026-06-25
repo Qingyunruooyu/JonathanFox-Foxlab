@@ -365,7 +365,9 @@ func _foxlab_enemy_interact(enemy: Node2D):
 	for player_index in RunData.get_player_count():
 		var value = RunData.get_player_effect(Utils.foxlab_enemy_interact_hash, player_index)
 		if value > 0:
+			RunData.foxlab_current_picking_player = player_index
 			RunData.add_gold(-value, foxlab_next_gold_player)
+			RunData.foxlab_current_picking_player = -1
 			foxlab_next_gold_player = (foxlab_next_gold_player + 1) % RunData.get_player_count()
 			foxlab_spawn_seed(enemy, player_index)
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_salvation_hash, value, 0)
@@ -516,11 +518,19 @@ func _on_WaveTimer_timeout() -> void :
 			foxlab_get_item(gain_effect[0], gain_effect[1], player_index)
 
 	._on_WaveTimer_timeout()
+
 	for player_index in range(RunData.get_player_count()):
+		var effects = RunData.get_player_effects(player_index)
+
 		if foxlab_original_piercing[player_index]:
-			var effects = RunData.get_player_effects(player_index)
 			effects[Keys.pierce_on_crit_hash] += foxlab_original_piercing[player_index]
 			effects[Keys.bounce_on_crit_hash] -= foxlab_original_piercing[player_index]
+
+		var pending_material = effects[Utils.foxlab_pending_material_hash]
+		if pending_material != 0:
+			RunData.add_gold(pending_material, player_index)
+			RunData.emit_signal("stat_added", Keys.stat_materials_hash, pending_material, - 15.0, player_index)
+			effects[Utils.foxlab_pending_material_hash] = 0
 
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)
@@ -675,3 +685,8 @@ func _on_player_health_updated(player, current_val: int, max_val: int) -> void :
 		var life_label:Label = _players_ui[player.player_index].life_label
 		if life_label.visible:
 			life_label.text = str(-lost_hp) + " | " + life_label.text
+
+func on_gold_picked_up(gold: Node, player_index: int) -> void :
+	RunData.foxlab_current_picking_player = player_index
+	.on_gold_picked_up(gold, player_index)
+	RunData.foxlab_current_picking_player = -1

@@ -2,6 +2,8 @@ extends "res://ui/menus/shop/base_shop.gd"
 
 var foxlab_mask_success_sound = preload("res://entities/units/enemies/pursuer/sci-fi_code_fail_13.wav")
 var foxlab_current_shop_item_pos = [[null, null], [null, null], [null, null], [null, null]]
+var foxlab_pinned_weapon_element = [null, null, null, null]
+var foxlab_uncursed_weapon_element = [null, null, null, null]
 
 func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: int) -> void :
 	var player_items = RunData.get_player_items(p_player_index)
@@ -76,11 +78,49 @@ func _on_foxlab_weapon_gear_changed(player_index):
 	var weapons = RunData.get_player_weapons(player_index)
 	player_gear_container.call_deferred("set_weapons_data", weapons)
 
+func _on_foxlab_item_pin_button_pressed(weapon_data: WeaponData, player_index: int) -> void :
+	var inventory = _get_gear_container(player_index).weapons_container._elements
+	var target_element = null
+	for element in inventory.get_children():
+		if target_element == null and element.item == weapon_data:
+			target_element = element
+			element._baned.modulate = Color(ProgressData.settings.color_negative)
+			element._baned.modulate.a = 0.3
+			element._baned.visible = true
+		else:
+			element._baned.visible = false
+
+	if target_element:
+		foxlab_pinned_weapon_element[player_index] = target_element
+	_on_item_cancel_button_pressed(weapon_data, player_index)
+
+func foxlab_pin_weapon(weapon_data: WeaponData, player_index: int) -> void :
+	var element = foxlab_pinned_weapon_element[player_index]
+	if element:
+		# 名字相同但是不是同一把武器
+		if weapon_data.my_id_hash == element.item.my_id_hash and not(weapon_data == element.item):
+			var inventory = _get_gear_container(player_index).weapons_container._elements
+			# 原版合成逻辑：遍历到第一个诅咒状态不同的武器，break掉，开始合成
+			# 否则找最后一个同名武器
+			if weapon_data.is_cursed and element.item.is_cursed:
+				var target_weapon = element.item if element.item.curse_factor < weapon_data.curse_factor else weapon_data
+				target_weapon.is_cursed = false
+				foxlab_uncursed_weapon_element[player_index] = target_weapon
+			var target_index = 0 if weapon_data.is_cursed != element.item.is_cursed else inventory.get_child_count() - 1
+			inventory.move_child(element, target_index)
+		element._baned.visible = false
+		foxlab_pinned_weapon_element[player_index] = null
+
 ######### 扩展 #########
 func _ready() -> void :
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_item_gear_changed", self, "_on_foxlab_item_gear_changed")
 	_err = RunData.connect("foxlab_weapon_gear_changed", self, "_on_foxlab_weapon_gear_changed")
+
+	for player_index in RunData.get_player_count():
+		# 新按钮连接信号
+		var item_popup = _get_item_popup(player_index)
+		_err = item_popup.connect("foxlab_item_pin_button_pressed", self, "_on_foxlab_item_pin_button_pressed", [player_index])
 
 	if RunData.get_player_effect_bool(Utils.foxlab_shop_effects_checked_hash, 0):
 		DebugService.log_data("foxlab_shop_effects_checked: is true")
@@ -88,6 +128,7 @@ func _ready() -> void :
 	DebugService.log_data("foxlab_shop_effects_checked: is false")
 	ItemService.foxlab_just_enter_shop = [true, true, true, true]
 	for player_index in RunData.get_player_count():
+		# 建造者的炮塔更新
 		var struct_range = RunData.get_player_effect(Keys.structure_range_hash, player_index)
 		var new_level = BuilderTurret.get_level(struct_range)
 		var update_item = false
@@ -99,6 +140,7 @@ func _ready() -> void :
 		if update_item:
 			_on_foxlab_item_gear_changed(player_index)
 
+		# 保留随机一把武器
 		if RunData.get_player_effect_bool(Utils.foxlab_keep_random_weapon_hash, player_index) and RunData.get_player_weapons_ref(player_index).size() > 0:
 			var weapons = RunData.get_player_weapons(player_index)
 			var weapon_idx_to_keep = Utils.randi_range(0, weapons.size() - 1)
@@ -116,8 +158,12 @@ func _ready() -> void :
 	DebugService.log_data("foxlab_shop_effects_checked: set true")
 
 func _combine_weapon(weapon_data: WeaponData, player_index: int, is_upgrade: bool) -> void :
+	foxlab_pin_weapon(weapon_data, player_index)
 	foxlab_modify_weapon_upgrade(weapon_data)
 	._combine_weapon(weapon_data, player_index, is_upgrade)
+	if foxlab_uncursed_weapon_element[player_index]:
+		foxlab_uncursed_weapon_element[player_index].is_cursed = true
+		foxlab_uncursed_weapon_element[player_index] = null
 
 func on_shop_item_stolen(shop_item: ShopItem, player_index: int) -> void :
 	if _item_steals[player_index] > 0:

@@ -23,6 +23,8 @@ signal foxlab_weapon_gear_changed(player_index)
 # 当前存活的构筑物（包括宠物类构筑物）
 var foxlab_current_living_structures: = 0
 
+var foxlab_current_picking_player = -1
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	# DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
@@ -169,6 +171,9 @@ func foxlab_process_gold(value: int, player_index: int):
 			if wave_in_progress:
 				emit_signal("healing_effect", 0, player_index, Keys.empty_hash)
 
+func foxlab_is_wave_started() -> bool:
+	return get_player_effect_bool(Utils.foxlab_wave_started_hash, 0)
+
 ###### 扩展 ######
 func _reset_per_wave_properties() -> void :
 	._reset_per_wave_properties()
@@ -177,7 +182,14 @@ func _reset_per_wave_properties() -> void :
 	foxlab_scapegoat_no_hurt = [[], [], [], []]
 
 func add_gold(value: int, player_index: int) -> void :
-	.add_gold(value, player_index)
+	# 如果材料不是自己捡的，自己又是要控材料的角色，把材料先记着
+	# print("picking:", foxlab_current_picking_player, " value: ", value, " player: ", player_index, " ctrl: ", RunData.get_player_effect_bool(Utils.foxlab_material_ctrl_hash, player_index))
+	if foxlab_current_picking_player >= 0 and player_index != foxlab_current_picking_player and RunData.get_player_effect_bool(Utils.foxlab_material_ctrl_hash, player_index):
+		RunData.get_player_effects(player_index)[Utils.foxlab_pending_material_hash] += value
+		# print("pending")
+	else:
+		# print("adding")
+		.add_gold(value, player_index)
 	foxlab_process_gold(value, player_index)
 
 func remove_gold(value: int, player_index: int) -> void :
@@ -232,9 +244,6 @@ func add_starting_items_and_weapons() -> void :
 	foxlab_remembered_weapons = [ [], [], [], [] ]
 	foxlab_shop_items = [ [], [], [], [] ]
 	ItemService.foxlab_add_pet_structure_stats()
-
-func is_wave_started() -> bool:
-	return get_player_effect_bool(Utils.foxlab_wave_started_hash, 0)
 
 var FOXLAB_ELITE_CHARS = [Keys.generate_hash("character_foxlab_war_master"),
 						Keys.generate_hash("character_foxlab_survivor"),

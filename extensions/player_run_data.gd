@@ -329,6 +329,8 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_get_item_on_weapon_break_hash: [],
 			Utils.item_foxlab_shadow_hash: 0,
 			Utils.foxlab_one_shot_on_dodge_hash: [],
+			Utils.foxlab_pending_material_hash: 0,
+			Utils.foxlab_material_ctrl_hash: 0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

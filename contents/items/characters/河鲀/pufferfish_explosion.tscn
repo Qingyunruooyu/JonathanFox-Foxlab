@@ -5,6 +5,6 @@
 
 [node name="PlayerExplosion" instance=ExtResource( 1 )]
 explosion_sounds = [ ExtResource( 2 ) ]
-sound_db_mod = 5
+sound_db_mod = 5.0
 
 [editable path="Hitbox"]

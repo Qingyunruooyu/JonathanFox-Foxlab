@@ -102,6 +102,8 @@ var foxlab_knockback_aura_hash: int = Keys.generate_hash("foxlab_knockback_aura"
 var foxlab_get_item_on_weapon_break_hash: int = Keys.generate_hash("foxlab_get_item_on_weapon_break")
 var foxlab_one_shot_on_dodge_hash: int = Keys.generate_hash("foxlab_one_shot_on_dodge")
 var stat_foxlab_crit_damage_hash: int = Keys.generate_hash("stat_foxlab_crit_damage")
+var foxlab_material_ctrl_hash: int = Keys.generate_hash("foxlab_material_ctrl")
+var foxlab_pending_material_hash: int = Keys.generate_hash("foxlab_pending_material")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")

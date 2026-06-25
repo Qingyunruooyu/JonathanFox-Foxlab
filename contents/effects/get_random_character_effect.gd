@@ -60,7 +60,7 @@ func apply(player_index: int) -> void:
 	try_generate(player_index)
 	var transform_chance = _get_transform_chance(player_index)
 	#DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
-	var wave_started = RunData.is_wave_started()
+	var wave_started = RunData.foxlab_is_wave_started()
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
 		#DebugService.log_data("transform failed")
 		_after_transform(player_index, stack_effect)
@@ -139,7 +139,7 @@ func _duplicate_weapon(player_index: int):
 		return null
 
 	#DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
-	effects[Utils.foxlab_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if RunData.is_wave_started() else 1
+	effects[Utils.foxlab_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if RunData.foxlab_is_wave_started() else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	#附魔后加一个价值， 避免建造者的炮塔不识货
 	weapon.value += 1
@@ -160,7 +160,7 @@ func _duplicate_weapon(player_index: int):
 
 func cleanup(player_index: int) -> void:
 	# 防止游戏开始前的变身的初始物品，在这里被清理了，这些变身只添加角色，不添加初始物品（已经被游戏本体添加了）
-	if  not RunData.is_wave_started() :
+	if  not RunData.foxlab_is_wave_started() :
 		return
 	var metas = RunData.get_foxlab_mask_meta(player_index)
 	var prev_items = []
@@ -344,7 +344,7 @@ func _get_rand_chars(player_index: int) -> Array:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 
-		if RunData.is_wave_started():
+		if RunData.foxlab_is_wave_started():
 			for starting in container:
 				if starting is WeaponData:
 					meta.weapons.push_back(starting)

@@ -113,14 +113,18 @@ func foxlab_pin_weapon(weapon_data: WeaponData, player_index: int) -> void :
 
 ######### 扩展 #########
 func _ready() -> void :
-	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
-	_err = RunData.connect("foxlab_item_gear_changed", self, "_on_foxlab_item_gear_changed")
-	_err = RunData.connect("foxlab_weapon_gear_changed", self, "_on_foxlab_weapon_gear_changed")
+	if not RunData.is_connected("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed"):
+		var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
+	if not RunData.is_connected("foxlab_item_gear_changed", self, "_on_foxlab_item_gear_changed"):
+		var _err = RunData.connect("foxlab_item_gear_changed", self, "_on_foxlab_item_gear_changed")
+	if not RunData.is_connected("foxlab_weapon_gear_changed", self, "_on_foxlab_weapon_gear_changed"):
+		var _err = RunData.connect("foxlab_weapon_gear_changed", self, "_on_foxlab_weapon_gear_changed")
 
 	for player_index in RunData.get_player_count():
 		# 新按钮连接信号
 		var item_popup = _get_item_popup(player_index)
-		_err = item_popup.connect("foxlab_item_pin_button_pressed", self, "_on_foxlab_item_pin_button_pressed", [player_index])
+		if not item_popup.is_connected("foxlab_item_pin_button_pressed", self, "_on_foxlab_item_pin_button_pressed"):
+			var _err = item_popup.connect("foxlab_item_pin_button_pressed", self, "_on_foxlab_item_pin_button_pressed", [player_index])
 
 	if RunData.get_player_effect_bool(Utils.foxlab_shop_effects_checked_hash, 0):
 		DebugService.log_data("foxlab_shop_effects_checked: is true")

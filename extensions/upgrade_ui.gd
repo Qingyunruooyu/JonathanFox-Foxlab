@@ -10,10 +10,14 @@ func on_foxlab_upgrade_left():
 	emit_signal("foxlab_left")
 
 func _ready():
-	button.connect("focus_entered", self, "on_foxlab_upgrade_hovered")
-	button.connect("mouse_entered", self, "on_foxlab_upgrade_hovered")
-	button.connect("focus_exited", self, "on_foxlab_upgrade_left")
-	button.connect("mouse_exited", self, "on_foxlab_upgrade_left")
+	if not button.is_connected("focus_entered", self, "on_foxlab_upgrade_hovered"):
+		button.connect("focus_entered", self, "on_foxlab_upgrade_hovered")
+	if not button.is_connected("mouse_entered", self, "on_foxlab_upgrade_hovered"):
+		button.connect("mouse_entered", self, "on_foxlab_upgrade_hovered")
+	if not button.is_connected("focus_exited", self, "on_foxlab_upgrade_left"):
+		button.connect("focus_exited", self, "on_foxlab_upgrade_left")
+	if not button.is_connected("mouse_exited", self, "on_foxlab_upgrade_left"):
+		button.connect("mouse_exited", self, "on_foxlab_upgrade_left")
 
 func set_upgrade(p_upgrade_data: UpgradeData, player_index: int) -> void :
 	.set_upgrade(p_upgrade_data, player_index)

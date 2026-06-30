@@ -62,12 +62,12 @@ func set_data(data: Resource) -> void :
 	reload_data()
 
 func _on_tracking_enemy_died(target: Node, _args: Entity.DieArgs) -> void :
-	assert(target == _current_tracking_enemy)
 	if target.is_connected("died", self, "_on_tracking_enemy_died"):
 		target.disconnect("died", self, "_on_tracking_enemy_died")
 	if target.is_connected("charmed", self, "_on_tracking_enemy_charmed"):
 		target.disconnect("charmed", self, "_on_tracking_enemy_charmed")
-	_current_tracking_enemy = null
+	if _current_tracking_enemy == target:
+		_current_tracking_enemy = null
 
 func _on_tracking_enemy_charmed(target: Node):
 	_on_tracking_enemy_died(target, Utils.default_die_args)

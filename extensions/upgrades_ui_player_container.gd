@@ -18,13 +18,19 @@ func _ready():
 		_foxlab_item_popup.player_index = player_index
 
 	for ui in _get_upgrade_uis():
-		ui.connect("foxlab_hovered", self, "on_foxlab_upgrade_hovered")
-		ui.connect("foxlab_left", self, "on_foxlab_item_left")
+		if not ui.is_connected("foxlab_hovered", self, "on_foxlab_upgrade_hovered"):
+			ui.connect("foxlab_hovered", self, "on_foxlab_upgrade_hovered")
+		if not ui.is_connected("foxlab_left", self, "on_foxlab_item_left"):
+			ui.connect("foxlab_left", self, "on_foxlab_item_left")
 
-	_take_button.connect("focus_entered", self, "on_foxlab_item_hovered")
-	_take_button.connect("mouse_entered", self, "on_foxlab_item_hovered")
-	_take_button.connect("focus_exited", self, "on_foxlab_item_left")
-	_take_button.connect("mouse_exited", self, "on_foxlab_item_left")
+	if not _take_button.is_connected("focus_entered", self, "on_foxlab_item_hovered"):
+		_take_button.connect("focus_entered", self, "on_foxlab_item_hovered")
+	if not _take_button.is_connected("mouse_entered", self, "on_foxlab_item_hovered"):
+		_take_button.connect("mouse_entered", self, "on_foxlab_item_hovered")
+	if not _take_button.is_connected("focus_exited", self, "on_foxlab_item_left"):
+		_take_button.connect("focus_exited", self, "on_foxlab_item_left")
+	if not _take_button.is_connected("mouse_exited", self, "on_foxlab_item_left"):
+		_take_button.connect("mouse_exited", self, "on_foxlab_item_left")
 
 func on_foxlab_upgrade_hovered(upgrade_data: UpgradeData, control: Control):
 	foxlab_current_ui = control

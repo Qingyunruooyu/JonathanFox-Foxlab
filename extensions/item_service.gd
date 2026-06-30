@@ -37,7 +37,8 @@ func _foxlab_init_configs():
 	foxlab_is_android = foxlab_mod.IS_ANDROID
 	DebugService.log_data("run on andriod: " + str(foxlab_is_android))
 	if ModsConfigInterface:
-		ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
+		if not ModsConfigInterface.is_connected("setting_changed", self, "_on_setting_changed"):
+			ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
 		call_deferred("_foxlab_init_transform_characters")
 
 func _on_setting_changed(setting_name, _value, mod_name)->void :

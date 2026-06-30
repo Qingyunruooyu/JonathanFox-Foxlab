@@ -5,7 +5,5 @@
 *.translation
 *.mp3
 *.godot
-*.png
 *.webp
 *.stex
-*.wav

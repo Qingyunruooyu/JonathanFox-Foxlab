@@ -60,6 +60,16 @@ func get_args(_player_index: int) -> Array:
 			else:
 				txt =  "[color=#%s]%s[/color]" % [ProgressData.settings.color_positive, tr("EFFECT_FOXLAB_FACELESS_ENABLE")]
 			return [txt]
+		11: #最新的4个普通道具
+			var items_ref = RunData.get_player_items_ref(_player_index)
+			var item_names = [ ]
+			for i in range(items_ref.size() - 1, -1, -1):
+				var item_data = items_ref[i]
+				if item_data.can_be_looted and not item_data is CharacterData:
+					item_names.append(tr(item_data.name))
+					if item_names.size() >= 4:
+						break
+			return [tr("FOXLAB_DISABLE") if item_names.empty() else ", ".join(item_names), tr(key.to_upper())]
 		_:
 			return []
 

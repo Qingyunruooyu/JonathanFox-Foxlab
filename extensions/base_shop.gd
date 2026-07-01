@@ -56,6 +56,7 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 	var offset = Vector2(-30, 30)
 	var popup_pos = pos[0]
 	var direction: Vector2
+	var color = Color(ProgressData.settings.color_positive)
 	if RunData.is_coop_run:
 		popup_pos.x += 35
 		direction = Vector2(0, - 30)
@@ -65,7 +66,7 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 	for character in new_characters:
 		var icon = character.icon
 		var icon_scale = Utils.foxlab_fit_item_icon_scale(character)
-		_floating_text_manager.display("", popup_pos, Color.white, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
+		_floating_text_manager.display("+1", popup_pos, color, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
 		popup_pos -= offset
 
 func _on_foxlab_item_gear_changed(player_index):
@@ -199,12 +200,43 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 
 	.on_shop_item_bought(shop_item, player_index)
 	var item_data = shop_item.item_data
+	var has_hourglass = item_data.my_id_hash == Keys.item_hourglass_hash
 
 	if shop_item.value != 0 and RunData.get_player_effect_bool(Utils.foxlab_buy_item_increase_tier_hash, player_index):
 		if item_data.tier <= Tier.COMMON:
 			RunData.get_player_effects(player_index)[Utils.foxlab_buy_item_increase_tier_current_hash] -= 1
 		elif item_data.tier >= Tier.LEGENDARY:
 			RunData.get_player_effects(player_index)[Utils.foxlab_buy_item_increase_tier_current_hash] += 1
+
+	if shop_item.value != 0 and RunData.get_player_effect_bool(Utils.foxlab_bonus_item_on_bought_hash, player_index):
+		var items = [ ]
+		var player_gear_container = _get_gear_container(player_index)
+		var args = ItemService.GetRandItemForWaveArgs.new()
+		var owned_items: Array = RunData.get_player_items(player_index)
+		for shop_item_arr in get_player_shop_items(player_index):
+			if shop_item_arr[0] is ItemData:
+				owned_items.push_back(shop_item_arr[0])
+		args.owned_and_shop_items = owned_items
+		# 不可逆的道具排除掉
+		args.excluded_items = [[ItemService.get_item_from_id(Keys.item_axolotl_hash), 0], [ItemService.get_item_from_id(Utils.item_foxlab_mask_hash), 0]]
+		for i in RunData.get_player_effect(Utils.foxlab_bonus_item_on_bought_hash, player_index):
+			var item = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.ITEMS, args)
+			items.append(item)
+			RunData.add_item(item, player_index)
+			player_gear_container.items_container._elements.add_element(item, true)
+			args.owned_and_shop_items.append(item)
+			if item.my_id_hash == Keys.item_hourglass_hash:
+				has_hourglass = true
+		_on_foxlab_sec_char_changed(items, player_index)
+
+		_update_stats(player_index)
+		_get_shop_items_container(player_index).reload_shop_items()
+
+	if has_hourglass:
+		update_go_next_button_text()
+
+	if shop_item.value != 0:
+		RunData.get_player_effects(player_index)[Utils.foxlab_price_digit_hash] = (shop_item.value % 10) as int
 
 	if item_data.get_category() == Category.WEAPON and\
 		item_data.tier >= RunData.get_player_effect(Utils.foxlab_bonus_reroll_weapon_tier_hash, player_index):
@@ -255,6 +287,40 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 
 	._on_RerollButton_pressed(player_index)
 	player_effects[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
+
+	var lose_item_num = RunData.get_player_effect(Utils.foxlab_lose_item_on_reroll_hash, player_index)
+	if lose_item_num > 0:
+		var item_to_rm = [ ]
+		var items_ref = RunData.get_player_items_ref(player_index)
+		var has_hourglass = false
+		for i in range(items_ref.size() - 1, -1, -1):
+			var item_data = items_ref[i]
+			if item_data.can_be_looted and not item_data is CharacterData:
+				# 和 get_random_character_effect.gd 的 cleanup 同理
+				# 只是不检查构筑物或者宠物了，因为这里可能有其他append(self)的道具
+				if RunData.get_nb_item(item_data.my_id_hash, player_index) > 1:
+					for same_item in items_ref:
+						if same_item.my_id_hash == item_data.my_id_hash and same_item.curse_factor == item_data.curse_factor:
+							item_data = same_item
+							break
+				item_to_rm.append(item_data)
+				if item_to_rm.size() == lose_item_num:
+					break
+		for item in item_to_rm:
+			if item.my_id_hash == Keys.item_hourglass_hash:
+				has_hourglass = true
+			update_item = true
+			RunData.remove_item(item, player_index)
+			var reroll_button: = _get_reroll_button(player_index)
+			var pos = reroll_button.rect_global_position
+			if not RunData.is_coop_run:
+				pos.y += reroll_button.rect_size.y / 2
+			else:
+				pos.x += reroll_button.rect_size.x - 80
+			_floating_text_manager.display_icon(-1, item.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, pos, _floating_text_manager.direction)
+		if has_hourglass:
+			update_go_next_button_text()
+
 	if RunData.get_player_effect(Keys.weapon_slot_hash, player_index) != prev_weapon_slot:
 		_on_foxlab_weapon_gear_changed(player_index)
 
@@ -301,3 +367,16 @@ func _on_shop_item_focused(shop_item: ShopItem, player_index: int) -> void :
 func _on_shop_item_unfocused(shop_item: ShopItem, player_index: int) -> void :
 	._on_shop_item_unfocused(shop_item, player_index)
 	hide_tags(shop_item)
+
+func fill_shop_items(player_locked_items: Array, player_index: int, just_entered_shop: bool = false) -> void :
+	.fill_shop_items(player_locked_items, player_index, just_entered_shop)
+
+	if RunData.get_player_effect_bool(Utils.foxlab_curse_item_by_price_hash, player_index):
+		var pos = RunData.get_player_effect(Utils.foxlab_price_digit_hash, player_index) - 1
+		if pos >= 0 and pos < get_player_shop_items(player_index).size():
+			var item = get_player_shop_items(player_index)[pos]
+			for dlc_id in RunData.enabled_dlcs:
+				var dlc_data = ProgressData.get_dlc_data(dlc_id)
+				if dlc_data and dlc_data.has_method("curse_item"):
+					item[0] = dlc_data.curse_item(item[0], player_index)
+	RunData.get_player_effects(player_index)[Utils.foxlab_price_digit_hash] = 0

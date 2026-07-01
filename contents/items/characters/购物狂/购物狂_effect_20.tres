@@ -1,21 +1,13 @@
-[gd_resource type="Resource" load_steps=6 format=2]
+[gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/task_effect.gd" type="Script" id=1]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/task_effects/items_price_effect.tres" type="Resource" id=2]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/task_effects/point_reset_effect.tres" type="Resource" id=3]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/task_effects/point_set_effect.tres" type="Resource" id=4]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/购物狂/task_effects/crate_chance_effect.tres" type="Resource" id=5]
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = "foxlab_shop_point"
-text_key = "EFFECT_FOXLAB_SHOPAHOLIC"
-value = 10
-custom_key = "foxlab_shop_vip"
-storage_method = 1
-effect_sign = 3
+key = "foxlab_lose_item_on_reroll"
+text_key = "effect_foxlab_lose_item_on_reroll"
+value = 1
+custom_key = ""
+storage_method = 0
+effect_sign = 1
 custom_args = [  ]
-sub_effects = [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 4 ) ]
-max_execs = -1
-comparison = 1
-default_text_mode = true

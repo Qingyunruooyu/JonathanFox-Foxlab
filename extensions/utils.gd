@@ -104,6 +104,10 @@ var foxlab_one_shot_on_dodge_hash: int = Keys.generate_hash("foxlab_one_shot_on_
 var stat_foxlab_crit_damage_hash: int = Keys.generate_hash("stat_foxlab_crit_damage")
 var foxlab_material_ctrl_hash: int = Keys.generate_hash("foxlab_material_ctrl")
 var foxlab_pending_material_hash: int = Keys.generate_hash("foxlab_pending_material")
+var foxlab_bonus_item_on_bought_hash: int = Keys.generate_hash("foxlab_bonus_item_on_bought")
+var foxlab_lose_item_on_reroll_hash: int = Keys.generate_hash("foxlab_lose_item_on_reroll")
+var foxlab_curse_item_by_price_hash: int = Keys.generate_hash("foxlab_curse_item_by_price")
+var foxlab_price_digit_hash: int = Keys.generate_hash("foxlab_price_digit")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -262,9 +266,12 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 	return text
 
 func _foxlab_init_primary_stat_gain_map():
+	var effects = RunData.get_player_effects(RunData.DUMMY_PLAYER_INDEX)
 	for stat in _primary_stat_keys:
 		var gain_stat = "gain_" + Keys.hash_to_string[stat]
-		foxlab_primary_stat_gain_map[Keys.generate_hash(gain_stat)] = stat
+		var gain_stat_hash = Keys.generate_hash(gain_stat)
+		if gain_stat_hash in effects:
+			foxlab_primary_stat_gain_map[gain_stat_hash] = stat
 
 ####### 生成敌人相关 ##########
 const FOXLAB_DRAGON_FISH_PATH = "res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres"

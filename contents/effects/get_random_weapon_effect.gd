@@ -74,7 +74,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	var luck_chance:float = 1.0 + Utils.get_stat(key_hash, player_index) / 100.0
 	if RunData.current_wave > RunData.nb_of_waves:
 		luck_chance /= (1.0 + RunData.get_endless_factor())
-	var args := ItemService.GetRandItemForWaveArgs.new()
+	var args = ItemService.GetRandItemForWaveArgs.new()
 	args.increase_tier = value - 1
 	args.owned_and_shop_items = []
 	if RunData.get_nb_item(Keys.item_hourglass_hash, player_index) > 0:

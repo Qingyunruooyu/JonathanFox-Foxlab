@@ -12,17 +12,13 @@ func unapply(player_index: int) -> void:
 func deferred_unapply(player_index) -> void:
 	var player_items_raw:Array = RunData.get_player_items_ref(player_index)
 	 #要移除的往往是新获得的物品
-	var items_to_remove: = []
 	var count = 0
-	for index in range(player_items_raw.size(), 0, -1):
-		if count == value:
+	for index in range(player_items_raw.size() - 1, -1, -1):
+		if count >= value:
 			break
-		var item_data = player_items_raw[index - 1]
+		var item_data = player_items_raw[index]
 		if item_data.my_id_hash == key_hash and item_data.is_cursed == (value2 != 0):
-			items_to_remove.append(item_data)
+			#DebugService.log_data("take away " + item_data.my_id)
+			RunData.foxlab_remove_item_by_index(index, player_index)
 			count += 1
-
-	for item_data in items_to_remove:
-		#DebugService.log_data("take away " + item_data.my_id)
-		RunData.remove_item(item_data, player_index)
 

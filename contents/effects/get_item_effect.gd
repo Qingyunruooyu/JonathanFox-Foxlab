@@ -21,11 +21,15 @@ func apply(player_index: int) -> void:
 		RunData.emit_signal("foxlab_item_gear_changed", player_index)
 
 func _remove_item(player_index: int, item_id_hash: int, rm_count: int) -> int :
-	if RunData.get_nb_item(item_id_hash, player_index) > 0:
-		while rm_count < value and RunData.get_nb_item(item_id_hash, player_index) > 0:
-			var item_to_rm =  ItemService.get_element(RunData.get_player_items_ref(player_index), item_id_hash)
-			RunData.remove_item(item_to_rm, player_index)
-			rm_count = rm_count + 1
+	if rm_count < value and RunData.get_nb_item(item_id_hash, player_index) > 0:
+		var items_ref = RunData.get_player_items_ref(player_index)
+		for i in range(items_ref.size() - 1, -1, -1):
+			var item = items_ref[i]
+			if item_id_hash == item.my_id_hash and item.curse_factor == 0.0:
+				RunData.foxlab_remove_item_by_index(i, player_index)
+				rm_count = rm_count + 1
+				if not (rm_count < value and RunData.get_nb_item(item_id_hash, player_index) > 0):
+					break
 	return rm_count
 
 func unapply(player_index: int) -> void:

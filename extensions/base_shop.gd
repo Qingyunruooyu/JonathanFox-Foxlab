@@ -6,11 +6,12 @@ var foxlab_pinned_weapon_element = [null, null, null, null]
 var foxlab_uncursed_weapon_element = [null, null, null, null]
 
 func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: int) -> void :
-	var player_items = RunData.get_player_items(p_player_index)
+	var player_items_ref = RunData.get_player_items_ref(p_player_index)
 
-	for item in player_items:
+	for i in range(player_items_ref.size() - 1, -1, -1):
+		var item = player_items_ref[i]
 		if item.my_id_hash == Keys.item_builder_turret_n_hash[old_level]:
-			RunData.remove_item(item, p_player_index)
+			RunData.foxlab_remove_item_by_index(i, p_player_index)
 			break
 
 	var new_item = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
@@ -290,34 +291,26 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 
 	var lose_item_num = RunData.get_player_effect(Utils.foxlab_lose_item_on_reroll_hash, player_index)
 	if lose_item_num > 0:
-		var item_to_rm = [ ]
 		var items_ref = RunData.get_player_items_ref(player_index)
 		var has_hourglass = false
 		for i in range(items_ref.size() - 1, -1, -1):
 			var item_data = items_ref[i]
 			if item_data.can_be_looted and not item_data is CharacterData:
-				# 和 get_random_character_effect.gd 的 cleanup 同理
-				# 只是不检查构筑物或者宠物了，因为这里可能有其他append(self)的道具
-				if RunData.get_nb_item(item_data.my_id_hash, player_index) > 1:
-					for same_item in items_ref:
-						if same_item.my_id_hash == item_data.my_id_hash and same_item.curse_factor == item_data.curse_factor:
-							item_data = same_item
-							break
-				item_to_rm.append(item_data)
-				if item_to_rm.size() == lose_item_num:
+				if item_data.my_id_hash == Keys.item_hourglass_hash:
+					has_hourglass = true
+				update_item = true
+				RunData.foxlab_remove_item_by_index(i, player_index)
+				var reroll_button: = _get_reroll_button(player_index)
+				var pos = reroll_button.rect_global_position
+				if not RunData.is_coop_run:
+					pos.y += reroll_button.rect_size.y / 2
+				else:
+					pos.x += reroll_button.rect_size.x - 80
+				_floating_text_manager.display_icon(-1, item_data.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, pos, _floating_text_manager.direction)
+				lose_item_num -= 1
+				if lose_item_num <= 0:
 					break
-		for item in item_to_rm:
-			if item.my_id_hash == Keys.item_hourglass_hash:
-				has_hourglass = true
-			update_item = true
-			RunData.remove_item(item, player_index)
-			var reroll_button: = _get_reroll_button(player_index)
-			var pos = reroll_button.rect_global_position
-			if not RunData.is_coop_run:
-				pos.y += reroll_button.rect_size.y / 2
-			else:
-				pos.x += reroll_button.rect_size.x - 80
-			_floating_text_manager.display_icon(-1, item.icon, _floating_text_manager.stat_pos_sounds, _floating_text_manager.stat_neg_sounds, pos, _floating_text_manager.direction)
+		_update_stats(player_index)
 		if has_hourglass:
 			update_go_next_button_text()
 

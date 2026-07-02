@@ -96,7 +96,7 @@ func foxlab_forget_item(player_index: int):
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
 				# DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
-				remove_item(item, player_index)
+				foxlab_remove_item_from_end(item, player_index)
 				# DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:
@@ -173,6 +173,30 @@ func foxlab_process_gold(value: int, player_index: int):
 
 func foxlab_is_wave_started() -> bool:
 	return get_player_effect_bool(Utils.foxlab_wave_started_hash, 0)
+
+# 这个调用是为了避免原版remove_item，unapply和erase实际上不是同一个对象的问题
+func foxlab_remove_item_by_index(index: int, player_index: int) -> void :
+	var item = players_data[player_index].items.pop_at(index)
+	_update_item_caches(item, player_index)
+	unapply_item_effects(item, player_index)
+	remove_item_displayed(item, player_index)
+	update_item_related_effects(player_index)
+	LinkedStats.reset_player(player_index)
+
+	if item.replaced_by:
+		add_item(item.replaced_by, player_index)
+
+# item_data必须是已经在get_player_items_ref里的对象，这里为什么重写函数：
+# 从存档反序列化恢复的游戏，如果初始物品相同且有构筑物等append(self)的效果，需要找到第一个相同的，才不会错位（例如炼丹师+陷阱大师的地雷）
+# 这是由于RunData.remove_item写得有问题，里面erase的item和unapply_item_effect的item可能不是同一个，只是序列化之后的结果相同
+# 同理，RunData.remove_weapon也有这个问题，erase的weapon和unapply_item_effect的weapon不一样
+# 比如只装备6个白扳手，存档退出游戏，然后重进游戏，乱序卖掉其中几个，回到主菜单再回到商店，卖掉所有的，很有可能进游戏之后还有炮塔
+func foxlab_remove_item_from_end(item_data: ItemData, player_index: int) -> void:
+	var items = get_player_items_ref(player_index)
+	for i in range(items.size() - 1, -1, -1):
+		if item_data == items[i]:
+			foxlab_remove_item_by_index(i, player_index)
+			break
 
 ###### 扩展 ######
 func _reset_per_wave_properties() -> void :

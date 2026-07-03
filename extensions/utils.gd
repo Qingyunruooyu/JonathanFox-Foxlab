@@ -558,6 +558,9 @@ func foxlab_fit_item_icon_scale(item) ->Vector2:
 		icon_scale.y *= scale_factor
 	return icon_scale
 
+func foxlab_is_sellable_item(item_data: ItemData)->bool:
+	return item_data.can_be_looted and not item_data is CharacterData
+
 ######## 扩展 ######
 func reset_stat_keys() -> void :
 	.reset_stat_keys()

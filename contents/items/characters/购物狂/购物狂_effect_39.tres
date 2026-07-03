@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "category_item"
+key = "foxlab_lose_item_on_reroll"
 text_key = "EFFECT_FOXLAB_STAT_QUERY"
 value = 11
 custom_key = ""

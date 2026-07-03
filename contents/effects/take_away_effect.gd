@@ -21,4 +21,6 @@ func deferred_unapply(player_index) -> void:
 			#DebugService.log_data("take away " + item_data.my_id)
 			RunData.foxlab_remove_item_by_index(index, player_index)
 			count += 1
+	RunData.emit_signal("foxlab_item_gear_changed", player_index)
+
 

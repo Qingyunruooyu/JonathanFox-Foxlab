@@ -124,6 +124,28 @@ func foxlab_add_bonus_items(player_index: int):
 		_on_foxlab_item_added(items, player_index)
 		items.clear()
 
+func foxlab_remember_item(player_index: int) -> int:
+	RunData.foxlab_forget_item_entry(player_index)
+	if not RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
+		return 0
+	for item in RunData.locked_shop_items[player_index]:
+		RunData.foxlab_remember_item(item[0], player_index)
+	for item in RunData.foxlab_shop_items[player_index]:
+		if is_instance_valid(item) and item.active and not item.locked:
+			RunData.foxlab_remember_item(item.item_data, player_index)
+	RunData.foxlab_modify_weapon(player_index)
+	RunData.foxlab_update_remembered_item(player_index)
+
+	var effects = RunData.get_player_effects(player_index)
+	var hourglass_count = effects[Keys.item_hourglass_hash]
+	var wave_reset_count = 0
+	if hourglass_count > 0:
+		var source_item = RunData.get_player_item(Keys.item_hourglass_hash, player_index)
+		if source_item:
+			wave_reset_count += hourglass_count
+			RunData.remove_item(source_item, player_index)
+	return wave_reset_count
+
 ######### 扩展 #########
 func _ready() -> void :
 	if not RunData.is_connected("foxlab_sec_char_changed", self, "_on_foxlab_item_added"):
@@ -315,26 +337,7 @@ func _on_tree_exited() -> void :
 	var wave_reset_count: = 0
 	for player_index in RunData.get_player_count():
 		foxlab_current_shop_item_pos[player_index] = [null, null]
-
-		RunData.foxlab_forget_item_entry(player_index)
-		if not RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
-			continue
-		for item in RunData.locked_shop_items[player_index]:
-			RunData.foxlab_remember_item(item[0], player_index)
-		for item in RunData.foxlab_shop_items[player_index]:
-			if is_instance_valid(item) and item.active and not item.locked:
-				RunData.foxlab_remember_item(item.item_data, player_index)
-		RunData.foxlab_modify_weapon(player_index)
-		RunData.foxlab_update_remembered_item(player_index)
-
-		var effects = RunData.get_player_effects(player_index)
-		var hourglass_count = effects[Keys.item_hourglass_hash]
-		if hourglass_count > 0:
-			var source_item = RunData.get_player_item(Keys.item_hourglass_hash, player_index)
-			if source_item:
-				wave_reset_count += hourglass_count
-				RunData.remove_item(source_item, player_index)
-
+		wave_reset_count += foxlab_remember_item(player_index)
 		if RunData.get_player_effect_bool(Utils.foxlab_lose_item_on_reroll_hash, player_index) and\
 			not ProgressData.settings.no_item_appearance:
 				RunData.add_item_displayed(RunData.get_player_character(player_index), player_index)
@@ -364,6 +367,8 @@ func fill_shop_items(player_locked_items: Array, player_index: int, just_entered
 			if Utils.foxlab_is_sellable_item(item_data):
 				if item_data.my_id_hash == Keys.item_hourglass_hash:
 					has_hourglass = true
+				elif item_data.my_id_hash == Keys.item_axolotl_hash and item_data.effects.size() > 0 and "has_been_applied" in item_data.effects[0]:
+					item_data.effects[0].has_been_applied = false
 				update_item = true
 				RunData.foxlab_remove_item_by_index(i, player_index)
 				var reroll_button: = _get_reroll_button(player_index)

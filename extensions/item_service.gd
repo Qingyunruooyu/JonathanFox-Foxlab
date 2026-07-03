@@ -226,7 +226,11 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 	if type == TierData.WEAPONS and RunData.get_player_effect(Keys.remove_shop_items_hash, player_index).has(Keys.pet_hash):
 		args.excluded_items.append_array(foxlab_weapon_spawning_pet)
 
-	return ._get_rand_item_for_wave(wave, player_index, type, args)
+	# 非诅咒的蝾螈，刷新状态
+	var elt = ._get_rand_item_for_wave(wave, player_index, type, args)
+	if elt.my_id_hash == Keys.item_axolotl_hash and elt.effects.size() > 0 and "has_been_applied" in elt.effects[0]:
+		elt.effects[0].has_been_applied = false
+	return elt
 
 func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: int) -> Array:
 	var upgrades = .get_upgrades(level, number, old_upgrades, player_index)

@@ -22,6 +22,8 @@ signal foxlab_weapon_gear_changed(player_index)
 
 # 当前存活的构筑物（包括宠物类构筑物）
 var foxlab_current_living_structures: = 0
+#当前存活的敌人的种类数
+var foxlab_current_different_enemies: = 0
 
 var foxlab_current_picking_player = -1
 
@@ -202,6 +204,7 @@ func foxlab_remove_item_from_end(item_data: ItemData, player_index: int) -> void
 func _reset_per_wave_properties() -> void :
 	._reset_per_wave_properties()
 	foxlab_current_living_structures = 0
+	foxlab_current_different_enemies = 0
 	foxlab_is_midnight = [false, false, false, false]
 	foxlab_scapegoat_no_hurt = [[], [], [], []]
 
@@ -320,6 +323,9 @@ func get_player_sets(player_index: int) -> Array:
 func get_scaling_bonus(value: int, stat_scaled: String, nb_stat_scaled: int, perm_stats_only: bool, player_index: int) -> int:
 	if stat_scaled == "foxlab_living_structure":
 		var actual_nb_scaled = RunData.foxlab_current_living_structures as float
+		return int(value * (actual_nb_scaled / nb_stat_scaled))
+	elif stat_scaled == "foxlab_different_enemy":
+		var actual_nb_scaled = RunData.foxlab_current_different_enemies as float
 		return int(value * (actual_nb_scaled / nb_stat_scaled))
 	return .get_scaling_bonus(value, stat_scaled, nb_stat_scaled, perm_stats_only, player_index)
 

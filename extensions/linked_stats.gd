@@ -21,6 +21,9 @@ func reset_player(player_index: int) -> void :
 			if stat_scaled == Utils.foxlab_living_structure_hash:
 				actual_nb_scaled = RunData.foxlab_current_living_structures
 				update_for_player_every_half_sec[player_index] = true
+			elif stat_scaled == Utils.foxlab_different_enemy_hash:
+				actual_nb_scaled = RunData.foxlab_current_different_enemies
+				update_for_player_every_half_sec[player_index] = true
 			else:
 				if Utils.is_stat_key(stat_scaled):
 					update_for_player_every_half_sec[player_index] = true

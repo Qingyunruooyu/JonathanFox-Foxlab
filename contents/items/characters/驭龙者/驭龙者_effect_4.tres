@@ -1,16 +1,13 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-[ext_resource path="res://effects/items/weapon_type_bonus_effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
 
 [resource]
 script = ExtResource( 1 )
-key = ""
-text_key = "[EMPTY]"
-value = 10
+key = "enemy_gold_drops"
+text_key = "effect_enemy_gold_drops"
+value = -50
 custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-weapon_type = 1
-stat_displayed_name = "stat_damage"
-stat_name = "damage"

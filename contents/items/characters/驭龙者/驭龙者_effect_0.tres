@@ -1,13 +1,26 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
-[ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://effects/items/projectile_effect.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/loong_rider_projectile_stats.tres" type="Resource" id=2]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=3]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 3 )
+arg_index = 5
+arg_sign = 4
+arg_value = 2
+arg_format = 0
+arg_key = "10%"
 
 [resource]
 script = ExtResource( 1 )
-key = "weapon_obliterator_4"
-text_key = "effect_starting_item"
-value = 1
-custom_key = "starting_weapon"
-storage_method = 1
+key = "foxlab_projectile_on_enemy_type_change"
+text_key = "effect_foxlab_projectile_on_enemy_type_change"
+value = 2
+custom_key = ""
+storage_method = 0
 effect_sign = 3
-custom_args = [  ]
+custom_args = [ SubResource( 1 ) ]
+weapon_stats = ExtResource( 2 )
+auto_target_enemy = true
+cooldown = 3

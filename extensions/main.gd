@@ -25,6 +25,10 @@ var foxlab_next_gold_player: int
 # 额外碰撞判定
 var foxlab_should_check_extra_hit = false
 
+var foxlab_enemy_summary = {}
+var _foxlab_proj_on_death_stat_caches: = [null, null, null, null]
+var _foxlab_spawn_projectile_args = WeaponServiceSpawnProjectileArgs.new()
+
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
@@ -508,6 +512,45 @@ func _on_foxlab_EndWaveTimer_timeout() -> void :
 			if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
 				RunData.foxlab_forget_item(player_index)
 
+func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
+	RunData.foxlab_current_different_enemies += delta
+	for player in _players:
+		if player.dead:
+			continue
+		var player_index = player.player_index
+		var projectiles_on_death = RunData.get_player_effect(Utils.foxlab_projectile_on_enemy_type_change_hash, player_index)
+		if projectiles_on_death.empty():
+			continue
+
+		var bonus_damage = enemy.max_stats.health
+		var times = projectiles_on_death[3]
+		if bonus_damage <= times * player.max_stats.health:
+			continue
+		if enemy is Boss:
+			bonus_damage *= 0.1
+		var stats
+		if _foxlab_proj_on_death_stat_caches[player_index] != null:
+			stats = _foxlab_proj_on_death_stat_caches[player_index]
+		else:
+			stats = WeaponService.init_ranged_stats(projectiles_on_death[1], player_index, true)
+			_foxlab_proj_on_death_stat_caches[player_index] = stats
+		stats = stats.duplicate()
+		stats.damage += (bonus_damage as int)
+		SoundManager.play(Utils.get_rand_element(stats.shooting_sounds), 0, 0.1)
+		for i in projectiles_on_death[0]:
+			var auto_target_enemy: bool = projectiles_on_death[2]
+			_foxlab_spawn_projectile_args.damage_tracking_key_hash = Utils.character_foxlab_loong_rider_hash
+			_foxlab_spawn_projectile_args.from_player_index = player_index
+			var _projectile = WeaponService.manage_special_spawn_projectile(
+				player, 
+				stats, 
+				rand_range( - PI, PI), 
+				auto_target_enemy, 
+				_entity_spawner, 
+				player, 
+				_foxlab_spawn_projectile_args
+			)
+
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
@@ -584,10 +627,17 @@ func _on_HalfWaveTimer_timeout() -> void :
 
 func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, args)
+	if args.cleaning_up or _cleaning_up:
+		return
+
+	foxlab_enemy_summary[enemy.pool_id] -= 1
+	if foxlab_enemy_summary[enemy.pool_id] == 0:
+		foxlab_on_enemy_type_change(-1, enemy)
+
 	# print("killer: ", args.from, "is enemy: ", args.from is Enemy)
-	if not args.cleaning_up and args.from is Enemy:
+	if args.from is Enemy:
 		_foxlab_enemy_interact(enemy)
-	if not _cleaning_up and args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
+	if args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
 		var player_index = args.killed_by_player_index
 		for near_effect in RunData.get_player_effect(Utils.foxlab_heal_when_kill_nearby_hash, player_index):
 			if not Utils.get_chance_success(near_effect[2] / 100.0):
@@ -638,12 +688,18 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 func _on_EntitySpawner_enemy_spawned(enemy) -> void :
 	._on_EntitySpawner_enemy_spawned(enemy)
 	var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
+	if not enemy.pool_id in foxlab_enemy_summary:
+		foxlab_enemy_summary[enemy.pool_id] = 0
 	if foxlab_should_check_extra_hit:
 		var hurtbox = enemy.get_node("Hurtbox")
 		var _err = hurtbox.connect("area_entered", self, "_on_foxlab_enemy_Hurtbox_entered", [enemy])
 
 func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 	._on_EntitySpawner_enemy_respawned(enemy)
+	if foxlab_enemy_summary[enemy.pool_id] == 0:
+		foxlab_on_enemy_type_change(1, enemy)
+	foxlab_enemy_summary[enemy.pool_id] += 1
+
 	if is_instance_valid(enemy.source_spawner) and enemy.source_spawner is Enemy and enemy.get_charmed_by_player_index() == -1:
 		_foxlab_enemy_interact(enemy)
 
@@ -690,3 +746,7 @@ func on_gold_picked_up(gold: Node, player_index: int) -> void :
 	RunData.foxlab_current_picking_player = player_index
 	.on_gold_picked_up(gold, player_index)
 	RunData.foxlab_current_picking_player = -1
+
+func on_stats_updated(player_index: int) -> void :
+	.on_stats_updated(player_index)
+	_foxlab_proj_on_death_stat_caches[player_index] = null

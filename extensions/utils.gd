@@ -108,6 +108,8 @@ var foxlab_bonus_item_on_bought_hash: int = Keys.generate_hash("foxlab_bonus_ite
 var foxlab_lose_item_on_reroll_hash: int = Keys.generate_hash("foxlab_lose_item_on_reroll")
 var foxlab_curse_item_by_price_hash: int = Keys.generate_hash("foxlab_curse_item_by_price")
 var foxlab_price_digit_hash: int = Keys.generate_hash("foxlab_price_digit")
+var foxlab_different_enemy_hash: int = Keys.generate_hash("foxlab_different_enemy")
+var foxlab_projectile_on_enemy_type_change_hash: int = Keys.generate_hash("foxlab_projectile_on_enemy_type_change")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -129,6 +131,7 @@ var character_foxlab_turtle_hash: int = Keys.generate_hash("character_foxlab_tur
 var character_foxlab_goat_keeper_hash: int = Keys.generate_hash("character_foxlab_goat_keeper")
 var character_foxlab_stargazer_hash: int = Keys.generate_hash("character_foxlab_stargazer")
 var character_foxlab_bounty_hunter_hash: int = Keys.generate_hash("character_foxlab_bounty_hunter")
+var character_foxlab_loong_rider_hash: int = Keys.generate_hash("character_foxlab_loong_rider")
 var item_foxlab_angel_hash: int = Keys.generate_hash("item_foxlab_angel")
 var item_foxlab_ball_lightning_0_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_0")
 var item_foxlab_ball_lightning_1_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_1")

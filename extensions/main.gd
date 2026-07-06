@@ -518,12 +518,12 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 		if player.dead:
 			continue
 		var player_index = player.player_index
-		var projectiles_on_death = RunData.get_player_effect(Utils.foxlab_projectile_on_enemy_type_change_hash, player_index)
-		if projectiles_on_death.empty():
+		var projectiles_on_type_change = RunData.get_player_effect(Utils.foxlab_projectile_on_enemy_type_change_hash, player_index)
+		if projectiles_on_type_change.empty():
 			continue
 
 		var bonus_damage = enemy.max_stats.health
-		var times = projectiles_on_death[3]
+		var times = projectiles_on_type_change[3] / 100.0
 		if bonus_damage <= times * player.max_stats.health:
 			continue
 		if enemy is Boss:
@@ -532,13 +532,13 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 		if _foxlab_proj_on_death_stat_caches[player_index] != null:
 			stats = _foxlab_proj_on_death_stat_caches[player_index]
 		else:
-			stats = WeaponService.init_ranged_stats(projectiles_on_death[1], player_index, true)
+			stats = WeaponService.init_ranged_stats(projectiles_on_type_change[1], player_index, true)
 			_foxlab_proj_on_death_stat_caches[player_index] = stats
 		stats = stats.duplicate()
 		stats.damage += (bonus_damage as int)
-		SoundManager.play(Utils.get_rand_element(stats.shooting_sounds), 0, 0.1)
-		for i in projectiles_on_death[0]:
-			var auto_target_enemy: bool = projectiles_on_death[2]
+		stats.bounce += RunData.foxlab_current_different_enemies
+		for i in projectiles_on_type_change[0]:
+			var auto_target_enemy: bool = projectiles_on_type_change[2]
 			_foxlab_spawn_projectile_args.damage_tracking_key_hash = Utils.character_foxlab_loong_rider_hash
 			_foxlab_spawn_projectile_args.from_player_index = player_index
 			var _projectile = WeaponService.manage_special_spawn_projectile(

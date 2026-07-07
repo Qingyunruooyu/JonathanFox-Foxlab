@@ -26,6 +26,7 @@ var foxlab_next_gold_player: int
 var foxlab_should_check_extra_hit = false
 
 var foxlab_enemy_summary = {}
+var foxlab_enemy_hp_priority_queue = null
 var _foxlab_proj_on_death_stat_caches: = [null, null, null, null]
 var _foxlab_spawn_projectile_args = WeaponServiceSpawnProjectileArgs.new()
 
@@ -41,6 +42,7 @@ func _ready():
 	foxlab_gain_stat_every_killed_enemies_ready()
 	foxlab_seed_timers_ready()
 	foxlab_extra_hit_ready()
+	foxlab_enemy_hp_priority_queue_ready()
 
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
@@ -174,6 +176,14 @@ func foxlab_extra_hit_ready():
 		if RunData.get_player_effect_bool(Utils.foxlab_extra_hit_hash, i):
 			foxlab_should_check_extra_hit = true
 			break
+
+func foxlab_enemy_hp_priority_queue_ready():
+	for i in RunData.get_player_count():
+		var projectiles_on_type_change = RunData.get_player_effect(Utils.foxlab_projectile_on_enemy_type_change_hash, i)
+		if projectiles_on_type_change.empty():
+			continue
+		foxlab_enemy_hp_priority_queue = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/data_structs/priority_queue.gd").new()
+		break
 
 func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
 	foxlab_seed_numbers[player_index] = 0
@@ -514,6 +524,20 @@ func _on_foxlab_EndWaveTimer_timeout() -> void :
 
 func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 	RunData.foxlab_current_different_enemies += delta
+
+	if foxlab_enemy_hp_priority_queue:
+		if delta > 0:
+			# 血量越高优先级越高， 所以传入负血量，优先队列是优先级数字越低越靠前
+			foxlab_enemy_hp_priority_queue.push(enemy.pool_id, -enemy.stats.get_base_health(RunData.current_wave))
+		else:
+			foxlab_enemy_hp_priority_queue.pop(enemy.pool_id)
+
+		# 场上最强的敌人
+		if enemy.pool_id != foxlab_enemy_hp_priority_queue.top():
+			return
+	else:
+		return
+
 	for player in _players:
 		if player.dead:
 			continue
@@ -522,12 +546,13 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 		if projectiles_on_type_change.empty():
 			continue
 
-		var bonus_damage = enemy.max_stats.health
+		var enemy_max_hp = enemy.max_stats.health
 		var times = projectiles_on_type_change[3] / 100.0
-		if bonus_damage <= times * player.max_stats.health:
+		if enemy_max_hp < times * Utils.get_capped_stat(Keys.stat_max_hp_hash, player_index):
 			continue
+		var bonus_damage = enemy_max_hp
 		if enemy is Boss:
-			bonus_damage *= 0.1
+			bonus_damage *= projectiles_on_type_change[4] / 100.0
 		var stats
 		if _foxlab_proj_on_death_stat_caches[player_index] != null:
 			stats = _foxlab_proj_on_death_stat_caches[player_index]

@@ -289,9 +289,7 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 				break;
 	if zone_data == null:
 		zone_data = get_rand_element(ZoneService.zones)
-	for groups in [zone_data.groups_data_in_all_waves, zone_data.horde_groups]:
-		if get_chance_success(extra_group_chance):
-			ret_groups.append(get_rand_element(groups))
+
 	if ResourceLoader.exists(FOXLAB_DRAGON_FISH_PATH):
 		if get_chance_success(extra_group_chance / 2.0):
 			if foxlab_gaster_group == null:
@@ -310,7 +308,12 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 	for data in wave_data:
 		if not data.is_boss and data.min_difficulty <= RunData.current_difficulty and RunData.current_difficulty <= data.max_difficulty:
 			ret_groups.append(data)
-			break;
+			break
+
+	if RunData.current_wave >= min_wave:
+		for groups in [zone_data.groups_data_in_all_waves, zone_data.horde_groups]:
+			if get_chance_success(extra_group_chance):
+				ret_groups.append(get_rand_element(groups))
 	return ret_groups
 
 const FOXLAB_EXTRA_BOSS_PATH = "res://mods-unpacked/Alexandre-BeyondDanger/content/enemies/boss/architect/architect.tscn"

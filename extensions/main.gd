@@ -25,8 +25,10 @@ var foxlab_next_gold_player: int
 # 额外碰撞判定
 var foxlab_should_check_extra_hit = false
 
+var FoxLabPriorityQueue = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/data_structs/priority_queue.gd")
 var foxlab_enemy_summary = {}
 var foxlab_enemy_hp_priority_queue = null
+var foxlab_enemy_dmg_priority_queue = null
 var _foxlab_proj_on_death_stat_caches: = [null, null, null, null]
 var _foxlab_spawn_projectile_args = WeaponServiceSpawnProjectileArgs.new()
 
@@ -42,7 +44,7 @@ func _ready():
 	foxlab_gain_stat_every_killed_enemies_ready()
 	foxlab_seed_timers_ready()
 	foxlab_extra_hit_ready()
-	foxlab_enemy_hp_priority_queue_ready()
+	foxlab_enemy_priority_queue_ready()
 
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
@@ -177,13 +179,13 @@ func foxlab_extra_hit_ready():
 			foxlab_should_check_extra_hit = true
 			break
 
-func foxlab_enemy_hp_priority_queue_ready():
+func foxlab_enemy_priority_queue_ready():
 	for i in RunData.get_player_count():
 		var projectiles_on_type_change = RunData.get_player_effect(Utils.foxlab_projectile_on_enemy_type_change_hash, i)
-		if projectiles_on_type_change.empty():
-			continue
-		foxlab_enemy_hp_priority_queue = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/data_structs/priority_queue.gd").new()
-		break
+		if not projectiles_on_type_change.empty():
+			foxlab_enemy_hp_priority_queue = FoxLabPriorityQueue.new()
+			foxlab_enemy_dmg_priority_queue = FoxLabPriorityQueue.new()
+			break
 
 func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
 	foxlab_seed_numbers[player_index] = 0
@@ -525,17 +527,26 @@ func _on_foxlab_EndWaveTimer_timeout() -> void :
 func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 	RunData.foxlab_current_different_enemies += delta
 
+	if not is_instance_valid(enemy):
+		return
+
+	var strongest_enemy_changed = false
 	if foxlab_enemy_hp_priority_queue:
 		if delta > 0:
 			# 血量越高优先级越高， 所以传入负血量，优先队列是优先级数字越低越靠前
 			foxlab_enemy_hp_priority_queue.push(enemy.pool_id, -enemy.stats.get_base_health(RunData.current_wave))
-		else:
-			foxlab_enemy_hp_priority_queue.pop(enemy.pool_id)
+			foxlab_enemy_dmg_priority_queue.push(enemy.pool_id, -enemy.stats.get_base_damage(RunData.current_wave))
 
 		# 场上最强的敌人
-		if enemy.pool_id != foxlab_enemy_hp_priority_queue.top():
-			return
-	else:
+		strongest_enemy_changed = (enemy.pool_id == foxlab_enemy_hp_priority_queue.top() or\
+			 enemy.pool_id == foxlab_enemy_dmg_priority_queue.top() or\
+			 -enemy.stats.get_base_health(RunData.current_wave) == foxlab_enemy_hp_priority_queue.top_priority() or\
+			 -enemy.stats.get_base_damage(RunData.current_wave) == foxlab_enemy_dmg_priority_queue.top_priority())
+
+		if delta < 0:
+			foxlab_enemy_hp_priority_queue.remove(enemy.pool_id)
+			foxlab_enemy_dmg_priority_queue.remove(enemy.pool_id)
+	if not strongest_enemy_changed:
 		return
 
 	for player in _players:
@@ -550,9 +561,6 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 		var times = projectiles_on_type_change[3] / 100.0
 		if enemy_max_hp < times * Utils.get_capped_stat(Keys.stat_max_hp_hash, player_index):
 			continue
-		var bonus_damage = enemy_max_hp
-		if enemy is Boss:
-			bonus_damage *= projectiles_on_type_change[4] / 100.0
 		var stats
 		if _foxlab_proj_on_death_stat_caches[player_index] != null:
 			stats = _foxlab_proj_on_death_stat_caches[player_index]
@@ -560,16 +568,19 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 			stats = WeaponService.init_ranged_stats(projectiles_on_type_change[1], player_index, true)
 			_foxlab_proj_on_death_stat_caches[player_index] = stats
 		stats = stats.duplicate()
-		stats.damage += (bonus_damage as int)
 		stats.bounce += RunData.foxlab_current_different_enemies
 		for i in projectiles_on_type_change[0]:
 			var auto_target_enemy: bool = projectiles_on_type_change[2]
 			_foxlab_spawn_projectile_args.damage_tracking_key_hash = Utils.character_foxlab_loong_rider_hash
 			_foxlab_spawn_projectile_args.from_player_index = player_index
+			var direction = rand_range( - PI, PI)
+			if delta > 0:
+				auto_target_enemy = false
+				direction = (enemy.global_position - player.global_position).angle()
 			var _projectile = WeaponService.manage_special_spawn_projectile(
 				player, 
 				stats, 
-				rand_range( - PI, PI), 
+				direction,
 				auto_target_enemy, 
 				_entity_spawner, 
 				player, 

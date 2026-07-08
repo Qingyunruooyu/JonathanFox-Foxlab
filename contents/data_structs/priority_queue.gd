@@ -12,7 +12,7 @@ func push(item, priority):
 	_sift_up(_items.size() - 1)
 
 func pop():
-	if _items.is_empty():
+	if _items.empty():
 		return null
 
 	if _items.size() == 1:
@@ -26,18 +26,23 @@ func pop():
 	return result
 
 func top():
-	if _items.is_empty():
+	if _items.empty():
 		return null
 	return _items[0]
 
-func is_empty():
-	return _items.is_empty()
+func top_priority():
+	if _priorities.empty():
+		return null
+	return _priorities[0]
+
+func empty():
+	return _items.empty()
 
 func remove(item):
 	var index = _find_item_index(item)
 	if index == -1:
 		return false
-	
+
 	# 如果移除的是最后一个元素
 	if index == _items.size() - 1:
 		_items.pop_back()
@@ -47,11 +52,11 @@ func remove(item):
 	# 用最后一个元素替换要移除的元素
 	_items[index] = _items.pop_back()
 	_priorities[index] = _priorities.pop_back()
-	
+
 	# 调整堆结构
 	_sift_up(index)
 	_sift_down(index)
-	
+
 	return true
 
 func _find_item_index(item):

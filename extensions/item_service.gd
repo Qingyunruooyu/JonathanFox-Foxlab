@@ -220,7 +220,7 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 	if wave < 13 and type == TierData.ITEMS:
 		if foxlab_banned_items_earlier.empty():
 			for item_name in FOXLAB_BANNED_ITEM_NAMES_EARLIER:
-				if RunData.get_nb_item(Utils.character_foxlab_loong_rider_hash, player_index) > 1 and item_name == Keys.generate_hash("item_foxlab_spacetime_anchor"):
+				if RunData.get_nb_item(Utils.character_foxlab_loong_rider_hash, player_index) > 0 and item_name == Keys.generate_hash("item_foxlab_spacetime_anchor"):
 					continue
 				foxlab_banned_items_earlier.push_back([get_item_from_id(item_name), 0])
 		args.excluded_items.append_array(foxlab_banned_items_earlier)

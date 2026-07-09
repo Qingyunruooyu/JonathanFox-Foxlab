@@ -31,6 +31,7 @@ var foxlab_enemy_hp_priority_queue = null
 var foxlab_enemy_dmg_priority_queue = null
 var _foxlab_proj_on_death_stat_caches: = [null, null, null, null]
 var _foxlab_spawn_projectile_args = WeaponServiceSpawnProjectileArgs.new()
+var _foxlab_bullet_color_gradient:Gradient = null
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
@@ -185,6 +186,11 @@ func foxlab_enemy_priority_queue_ready():
 		if not projectiles_on_type_change.empty():
 			foxlab_enemy_hp_priority_queue = FoxLabPriorityQueue.new()
 			foxlab_enemy_dmg_priority_queue = FoxLabPriorityQueue.new()
+			_foxlab_bullet_color_gradient = Gradient.new()
+			var offsets = [0.0, 0.3, 0.55, 0.8, 1.0]
+			var colors = [Color("#EAE5E3"), Color("#A9BE7B"), Color("#F18f60"), Color("#CB523E"), Color("#822327")]
+			for p in offsets.size():
+				_foxlab_bullet_color_gradient.add_point(offsets[p], colors[p])
 			break
 
 func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
@@ -193,6 +199,12 @@ func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
 func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
 		 _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	enemy._die_args_unit.from = args.from
+
+	if enemy._pending_die:
+		foxlab_enemy_summary[enemy.pool_id] -= 1
+		if foxlab_enemy_summary[enemy.pool_id] == 0:
+			foxlab_on_enemy_type_change(-1, enemy)
+
 	if args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count():
 		return
 
@@ -524,6 +536,14 @@ func _on_foxlab_EndWaveTimer_timeout() -> void :
 			if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
 				RunData.foxlab_forget_item(player_index)
 
+func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int, ratio: float):
+	if not is_instance_valid(projectile):
+		return
+	projectile._bounce += bonus_bounce
+	var col: Color = _foxlab_bullet_color_gradient.interpolate(ratio)
+	projectile._sprite.material.set("shader_param/color_A", col)
+	projectile.get_node("%CPUParticles2D").modulate = col
+
 func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 	RunData.foxlab_current_different_enemies += delta
 
@@ -540,8 +560,8 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 		# 场上最强的敌人
 		strongest_enemy_changed = (enemy.pool_id == foxlab_enemy_hp_priority_queue.top() or\
 			 enemy.pool_id == foxlab_enemy_dmg_priority_queue.top() or\
-			 -enemy.stats.get_base_health(RunData.current_wave) == foxlab_enemy_hp_priority_queue.top_priority() or\
-			 -enemy.stats.get_base_damage(RunData.current_wave) == foxlab_enemy_dmg_priority_queue.top_priority())
+			 is_equal_approx(-enemy.stats.get_base_health(RunData.current_wave), foxlab_enemy_hp_priority_queue.top_priority()) or\
+			 is_equal_approx(-enemy.stats.get_base_damage(RunData.current_wave), foxlab_enemy_dmg_priority_queue.top_priority()) )
 
 		if delta < 0:
 			foxlab_enemy_hp_priority_queue.remove(enemy.pool_id)
@@ -558,8 +578,9 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 			continue
 
 		var enemy_max_hp = enemy.max_stats.health
-		var times = projectiles_on_type_change[3] / 100.0
-		if enemy_max_hp < times * Utils.get_capped_stat(Keys.stat_max_hp_hash, player_index):
+		var player_max_hp =  Utils.get_capped_stat(Keys.stat_max_hp_hash, player_index)
+		var times_player_max_hp = projectiles_on_type_change[3] / 100.0 * player_max_hp
+		if enemy_max_hp < times_player_max_hp:
 			continue
 		var stats
 		if _foxlab_proj_on_death_stat_caches[player_index] != null:
@@ -567,8 +588,9 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 		else:
 			stats = WeaponService.init_ranged_stats(projectiles_on_type_change[1], player_index, true)
 			_foxlab_proj_on_death_stat_caches[player_index] = stats
-		stats = stats.duplicate()
-		stats.bounce += RunData.foxlab_current_different_enemies
+
+		# hp ratio 在0到1范围内， 且enemy_max_hp越大，比例越大， 子弹颜色越高级
+		var hp_ratio = 1 - times_player_max_hp / enemy_max_hp
 		for i in projectiles_on_type_change[0]:
 			var auto_target_enemy: bool = projectiles_on_type_change[2]
 			_foxlab_spawn_projectile_args.damage_tracking_key_hash = Utils.character_foxlab_loong_rider_hash
@@ -577,7 +599,7 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 			if delta > 0:
 				auto_target_enemy = false
 				direction = (enemy.global_position - player.global_position).angle()
-			var _projectile = WeaponService.manage_special_spawn_projectile(
+			var projectile = WeaponService.manage_special_spawn_projectile(
 				player, 
 				stats, 
 				direction,
@@ -586,6 +608,7 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 				player, 
 				_foxlab_spawn_projectile_args
 			)
+			call_deferred("foxlab_modify_loong_rider_projectile", projectile, RunData.foxlab_current_different_enemies, hp_ratio)
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
@@ -666,10 +689,6 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 	if args.cleaning_up or _cleaning_up:
 		return
 
-	foxlab_enemy_summary[enemy.pool_id] -= 1
-	if foxlab_enemy_summary[enemy.pool_id] == 0:
-		foxlab_on_enemy_type_change(-1, enemy)
-
 	# print("killer: ", args.from, "is enemy: ", args.from is Enemy)
 	if args.from is Enemy:
 		_foxlab_enemy_interact(enemy)
@@ -726,15 +745,25 @@ func _on_EntitySpawner_enemy_spawned(enemy) -> void :
 	var _error_took_damage = enemy.connect("took_damage", self, "_on_enemy_took_damage_foxlab")
 	if not enemy.pool_id in foxlab_enemy_summary:
 		foxlab_enemy_summary[enemy.pool_id] = 0
+
+	# entityspawner 不会给boss发respawned信号，所以在这里判断
+	if enemy is Boss:
+		if foxlab_enemy_summary[enemy.pool_id] == 0:
+			foxlab_on_enemy_type_change(1, enemy)
+		foxlab_enemy_summary[enemy.pool_id] += 1
+
 	if foxlab_should_check_extra_hit:
 		var hurtbox = enemy.get_node("Hurtbox")
 		var _err = hurtbox.connect("area_entered", self, "_on_foxlab_enemy_Hurtbox_entered", [enemy])
 
 func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 	._on_EntitySpawner_enemy_respawned(enemy)
-	if foxlab_enemy_summary[enemy.pool_id] == 0:
-		foxlab_on_enemy_type_change(1, enemy)
-	foxlab_enemy_summary[enemy.pool_id] += 1
+
+	# 如果给boss发了respawned，这里要屏蔽，避免多加（比如反应堆召唤的会发）
+	if not enemy is Boss:
+		if foxlab_enemy_summary[enemy.pool_id] == 0:
+			foxlab_on_enemy_type_change(1, enemy)
+		foxlab_enemy_summary[enemy.pool_id] += 1
 
 	if is_instance_valid(enemy.source_spawner) and enemy.source_spawner is Enemy and enemy.get_charmed_by_player_index() == -1:
 		_foxlab_enemy_interact(enemy)

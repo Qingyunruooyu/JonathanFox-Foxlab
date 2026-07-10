@@ -187,7 +187,7 @@ func foxlab_enemy_priority_queue_ready():
 			foxlab_enemy_hp_priority_queue = FoxLabPriorityQueue.new()
 			foxlab_enemy_dmg_priority_queue = FoxLabPriorityQueue.new()
 			_foxlab_bullet_color_gradient = Gradient.new()
-			var offsets = [0.0, 0.3, 0.55, 0.8, 1.0]
+			var offsets = [0, 0.4, 0.7, 0.9, 0.98]
 			var colors = [Color("#EAE5E3"), Color("#A9BE7B"), Color("#F18f60"), Color("#CB523E"), Color("#822327")]
 			for p in offsets.size():
 				_foxlab_bullet_color_gradient.add_point(offsets[p], colors[p])
@@ -536,7 +536,7 @@ func _on_foxlab_EndWaveTimer_timeout() -> void :
 			if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
 				RunData.foxlab_forget_item(player_index)
 
-func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int, ratio: float, player_index: int):
+func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int, ratio: float, enemy: Node2D, player_index: int):
 	if not is_instance_valid(projectile):
 		return
 	projectile._bounce += bonus_bounce
@@ -544,10 +544,12 @@ func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int,
 	projectile._sprite.material.set_shader_param("color_A", col)
 	projectile._particles2D.modulate = col
 	if player_index >= 0:
-		var pos = _players[player_index].global_position
-		# pos = pos - _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
-		# _floating_text_manager.players_add_stats_count[player_index] += 1
-		_floating_text_manager.display(str((ratio * 100) as int) + " 卍", pos , col)
+		var pos = _players[0].global_position
+		pos = pos - _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
+		_floating_text_manager.players_add_stats_count[player_index] += 1
+		var scale = Utils.foxlab_fit_item_icon_scale(enemy.stats)
+		_floating_text_manager.display("卍", pos , col, enemy.stats.icon, _floating_text_manager.duration, false,\
+			 _floating_text_manager.direction, false, scale)
 
 func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 	RunData.foxlab_current_different_enemies += delta
@@ -598,13 +600,13 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 		var hp_ratio = 1 - times_player_max_hp / enemy_max_hp
 		var pos = player.global_position
 		if stats.shooting_sounds.size() > 0:
-			SoundManager2D.play(Utils.get_rand_element(stats.shooting_sounds), pos, stats.sound_db_mod * hp_ratio, 0.2)
+			SoundManager2D.play(Utils.get_rand_element(stats.shooting_sounds), pos, stats.sound_db_mod, 0.2)
 		var auto_target_enemy: bool = projectiles_on_type_change[2]
 		_foxlab_spawn_projectile_args.damage_tracking_key_hash = Utils.character_foxlab_loong_rider_hash
 		_foxlab_spawn_projectile_args.from_player_index = player_index
 		for i in projectiles_on_type_change[0]:
 			var direction = rand_range( - PI, PI)
-			if delta > 0: # 指向导致变化的敌人
+			if delta > 0 and not enemy is Boss: # 指向导致变化的敌人(BOSS不行，BOSS通过spawned激活的，此时BOSS的位置还未更新)
 				direction = (enemy.global_position - pos).angle()
 			elif auto_target_enemy:
 				var target = Utils.get_rand_element(_entity_spawner.get_all_enemies())
@@ -612,7 +614,8 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 					direction = (target.global_position - pos).angle()
 			_foxlab_spawn_projectile_args.knockback_direction = Vector2(cos(direction), sin(direction))
 			var projectile = WeaponService.spawn_projectile(pos, stats, direction, player, _foxlab_spawn_projectile_args)
-			foxlab_modify_loong_rider_projectile(projectile, RunData.foxlab_current_different_enemies, hp_ratio, player_index if i == 0 else -1)
+			foxlab_modify_loong_rider_projectile(projectile, RunData.foxlab_current_different_enemies, hp_ratio,
+				enemy, player_index if i == 0 else -1)
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :

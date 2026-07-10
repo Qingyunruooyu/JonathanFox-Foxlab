@@ -536,13 +536,18 @@ func _on_foxlab_EndWaveTimer_timeout() -> void :
 			if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
 				RunData.foxlab_forget_item(player_index)
 
-func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int, ratio: float):
+func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int, ratio: float, player_index: int):
 	if not is_instance_valid(projectile):
 		return
 	projectile._bounce += bonus_bounce
 	var col: Color = _foxlab_bullet_color_gradient.interpolate(ratio)
-	projectile._sprite.material.set("shader_param/color_A", col)
-	projectile.get_node("%CPUParticles2D").modulate = col
+	projectile._sprite.material.set_shader_param("color_A", col)
+	projectile._particles2D.modulate = col
+	if player_index >= 0:
+		var pos = _players[player_index].global_position
+		# pos = pos - _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
+		# _floating_text_manager.players_add_stats_count[player_index] += 1
+		_floating_text_manager.display(str((ratio * 100) as int) + " 卍", pos , col)
 
 func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 	RunData.foxlab_current_different_enemies += delta
@@ -591,24 +596,23 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 
 		# hp ratio 在0到1范围内， 且enemy_max_hp越大，比例越大， 子弹颜色越高级
 		var hp_ratio = 1 - times_player_max_hp / enemy_max_hp
+		var pos = player.global_position
+		if stats.shooting_sounds.size() > 0:
+			SoundManager2D.play(Utils.get_rand_element(stats.shooting_sounds), pos, stats.sound_db_mod * hp_ratio, 0.2)
+		var auto_target_enemy: bool = projectiles_on_type_change[2]
+		_foxlab_spawn_projectile_args.damage_tracking_key_hash = Utils.character_foxlab_loong_rider_hash
+		_foxlab_spawn_projectile_args.from_player_index = player_index
 		for i in projectiles_on_type_change[0]:
-			var auto_target_enemy: bool = projectiles_on_type_change[2]
-			_foxlab_spawn_projectile_args.damage_tracking_key_hash = Utils.character_foxlab_loong_rider_hash
-			_foxlab_spawn_projectile_args.from_player_index = player_index
 			var direction = rand_range( - PI, PI)
-			if delta > 0:
-				auto_target_enemy = false
-				direction = (enemy.global_position - player.global_position).angle()
-			var projectile = WeaponService.manage_special_spawn_projectile(
-				player, 
-				stats, 
-				direction,
-				auto_target_enemy, 
-				_entity_spawner, 
-				player, 
-				_foxlab_spawn_projectile_args
-			)
-			call_deferred("foxlab_modify_loong_rider_projectile", projectile, RunData.foxlab_current_different_enemies, hp_ratio)
+			if delta > 0: # 指向导致变化的敌人
+				direction = (enemy.global_position - pos).angle()
+			elif auto_target_enemy:
+				var target = Utils.get_rand_element(_entity_spawner.get_all_enemies())
+				if target != null and is_instance_valid(target):
+					direction = (target.global_position - pos).angle()
+			_foxlab_spawn_projectile_args.knockback_direction = Vector2(cos(direction), sin(direction))
+			var projectile = WeaponService.spawn_projectile(pos, stats, direction, player, _foxlab_spawn_projectile_args)
+			foxlab_modify_loong_rider_projectile(projectile, RunData.foxlab_current_different_enemies, hp_ratio, player_index if i == 0 else -1)
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :

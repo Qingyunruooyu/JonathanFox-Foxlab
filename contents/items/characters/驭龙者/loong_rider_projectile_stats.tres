@@ -1,8 +1,10 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/projectiles/loong_rider_projectile.tscn" type="PackedScene" id=1]
 [ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/projectiles/loong_rider_projectile_sound.wav" type="AudioStream" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/projectiles/loong_rider_projectile_sound1.wav" type="AudioStream" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/projectiles/loong_rider_projectile_sound2.wav" type="AudioStream" id=5]
 
 [resource]
 script = ExtResource( 2 )
@@ -20,8 +22,8 @@ can_have_negative_knockback = false
 effect_scale = 1.0
 scaling_stats = [ [ "stat_attack_speed", 0.3 ], [ "stat_max_hp", 0.3 ] ]
 lifesteal = 0.0
-shooting_sounds = [ ExtResource( 3 ) ]
-sound_db_mod = -10
+shooting_sounds = [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 3 ) ]
+sound_db_mod = 5
 is_healing = false
 recoil = 25
 recoil_duration = 0.1

@@ -200,11 +200,6 @@ func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vect
 		 _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	enemy._die_args_unit.from = args.from
 
-	if enemy._pending_die:
-		foxlab_enemy_summary[enemy.pool_id] -= 1
-		if foxlab_enemy_summary[enemy.pool_id] == 0:
-			foxlab_on_enemy_type_change(-1, enemy)
-
 	if args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count():
 		return
 
@@ -545,8 +540,7 @@ func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int,
 	projectile._particles2D.modulate = col
 	if player_index >= 0:
 		var pos = _players[0].global_position
-		pos = pos - _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
-		_floating_text_manager.players_add_stats_count[player_index] += 1
+		pos = pos - Utils.randi_range(0, 5) * _floating_text_manager.offset
 		var scale = Utils.foxlab_fit_item_icon_scale(enemy.stats)
 		_floating_text_manager.display("卍", pos , col, enemy.stats.icon, _floating_text_manager.duration, false,\
 			 _floating_text_manager.direction, false, scale)
@@ -695,6 +689,11 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, args)
 	if args.cleaning_up or _cleaning_up:
 		return
+
+
+	foxlab_enemy_summary[enemy.pool_id] -= 1
+	if foxlab_enemy_summary[enemy.pool_id] == 0:
+		foxlab_on_enemy_type_change(-1, enemy)
 
 	# print("killer: ", args.from, "is enemy: ", args.from is Enemy)
 	if args.from is Enemy:

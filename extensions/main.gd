@@ -321,7 +321,7 @@ func foxlab_spawn_seed(unit, player_index: int):
 
 	consumable.already_picked_up = false
 	consumable.consumable_data = consumable_to_spawn
-	consumable.set_texture(unit.stats.icon)
+	consumable.set_texture(unit.stats.icon if unit.stats.icon else unit.sprite.texture)
 	var pos = unit.global_position
 	var dist: = rand_range(150, 200 + unit.stats.gold_spread)
 	var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
@@ -426,7 +426,8 @@ func foxlab_process_extra_enemies():
 		if extra_evil_mobs > 0:
 			_wave_manager.add_groups(Utils.foxlab_generate_evil_mob_group_data(extra_evil_mobs))
 
-	_is_horde_wave = (extra_enemies > 4)
+	if extra_enemies > 4 * _players.size():
+		_is_horde_wave = true
 
 #待处理的经验，亏欠的生命值
 func foxlab_process_pending_states():
@@ -539,10 +540,11 @@ func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int,
 	projectile._sprite.material.set_shader_param("color_A", col)
 	projectile._particles2D.modulate = col
 	if player_index >= 0:
-		var pos = _players[0].global_position
-		pos = pos - Utils.randi_range(0, 5) * _floating_text_manager.offset
-		var scale = Utils.foxlab_fit_item_icon_scale(enemy.stats)
-		_floating_text_manager.display("卍", pos , col, enemy.stats.icon, _floating_text_manager.duration, false,\
+		var pos = _players[player_index].global_position
+		pos = pos - Utils.randi_range(1, 6) * _floating_text_manager.offset
+		var enemy_data = {"icon": enemy.sprite.texture}
+		var scale = Utils.foxlab_fit_item_icon_scale(enemy_data)
+		_floating_text_manager.display("卍", pos , col, enemy.sprite.texture, _floating_text_manager.duration, false,\
 			 _floating_text_manager.direction, false, scale)
 
 func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):

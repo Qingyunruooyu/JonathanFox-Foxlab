@@ -69,6 +69,13 @@ func manage_special_spawn_projectile(
 		call_deferred("foxlab_connect_signal_for_projectile", from, projectile)
 	return projectile
 
+func init_burning_data(base_burning_data: BurningData, player_index: int, is_structure: bool = false, is_pet: bool = false) -> BurningData:
+	var burning_scaling_stat_effects = RunData.get_player_effect(Utils.foxlab_burning_scaling_stats_hash, player_index)
+	if not burning_scaling_stat_effects.empty():
+		base_burning_data = base_burning_data.duplicate()
+		base_burning_data.scaling_stats = foxlab_apply_scaling_stat_effects(burning_scaling_stat_effects, base_burning_data.scaling_stats, false)
+	return .init_burning_data(base_burning_data, player_index, is_structure, is_pet)
+
 ### 功能 ###
 func foxlab_connect_signal_for_projectile(from: Node, projectile: Node):
 	var _killed_sthing = projectile._hitbox.connect("killed_something", from, "on_killed_something", [projectile._hitbox])
@@ -132,3 +139,20 @@ func foxlab_add_weapon_class_explode_stats(from_stats:WeaponStats, player_index:
 				_foxlab_weapon_class_explode_args.effects.append(explode_effect)
 				return _foxlab_weapon_class_explode_args
 	return args
+
+func foxlab_apply_scaling_stat_effects(extra_scaling_stat: Array, scaling_stats: Array, sub: bool) -> Array:
+	if extra_scaling_stat.empty():
+		return scaling_stats
+	var new_scaling_stats = scaling_stats.duplicate(true)
+	for scaling_stat_effect in extra_scaling_stat:
+		assert (scaling_stat_effect[0] is int)
+		var scaling_stat_hash = scaling_stat_effect[0]
+		var scaling_stat_value = scaling_stat_effect[1] / 100.0
+		if sub:
+			scaling_stat_value *= -1
+		var existing_scaling_stat = find_scaling_stat(scaling_stat_hash, new_scaling_stats)
+		if existing_scaling_stat != null:
+			existing_scaling_stat[1] += scaling_stat_value
+		else:
+			new_scaling_stats.push_back([scaling_stat_hash, scaling_stat_value])
+	return new_scaling_stats

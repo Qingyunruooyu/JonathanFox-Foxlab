@@ -196,7 +196,7 @@ func foxlab_enemy_priority_queue_ready():
 func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
 	foxlab_seed_numbers[player_index] = 0
 
-func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
+func _on_enemy_took_damage_foxlab(enemy, value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
 		 _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
 	enemy._die_args_unit.from = args.from
 
@@ -211,6 +211,10 @@ func _on_enemy_took_damage_foxlab(enemy, _value: int, _knockback_direction: Vect
 
 	if not enemy.is_boosted and foxlab_should_check_mutation[args.from_player_index]:
 		foxlab_process_enemy_mutate(enemy, args)
+
+	if args.hitbox and RunData.get_player_effect_bool(Utils.foxlab_instant_burn_hash, args.from_player_index) and\
+		enemy._burning and value > enemy._burning.damage:
+		enemy._on_BurningTimer_timeout()
 
 func _on_neutral_took_damage_foxlab(neutral, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, \
 	_is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :

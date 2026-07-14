@@ -1,0 +1,51 @@
+[gd_resource type="Resource" load_steps=25 format=2]
+
+[ext_resource path="res://items/characters/character_data.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_eyes.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_effect_1.tres" type="Resource" id=3]
+[ext_resource path="res://weapons/melee/circular_saw/2/circular_saw_2_data.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_forehead.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_hat.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_effect_2.tres" type="Resource" id=7]
+[ext_resource path="res://weapons/melee/wrench/2/wrench_2_data.tres" type="Resource" id=8]
+[ext_resource path="res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_data.tres" type="Resource" id=9]
+[ext_resource path="res://weapons/ranged/rail_gun/2/rail_gun_2_data.tres" type="Resource" id=10]
+[ext_resource path="res://weapons/ranged/flamethrower/2/flamethrower_2_data.tres" type="Resource" id=11]
+[ext_resource path="res://weapons/melee/plank/2/plank_2_data.tres" type="Resource" id=12]
+[ext_resource path="res://weapons/ranged/shredder/2/shredder_2_data.tres" type="Resource" id=13]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_effect_3.tres" type="Resource" id=14]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_effect_4.tres" type="Resource" id=15]
+[ext_resource path="res://weapons/ranged/medical_gun/2/medical_gun_2_data.tres" type="Resource" id=16]
+[ext_resource path="res://weapons/melee/stick/2/stick_2_data.tres" type="Resource" id=17]
+[ext_resource path="res://weapons/melee/torch/2/torch_2_data.tres" type="Resource" id=18]
+[ext_resource path="res://weapons/ranged/taser/2/taser_2_data.tres" type="Resource" id=19]
+[ext_resource path="res://weapons/ranged/fireball/2/fireball_2_data.tres" type="Resource" id=20]
+[ext_resource path="res://weapons/ranged/wand/2/wand_2_data.tres" type="Resource" id=21]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_effect_5.tres" type="Resource" id=22]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_icon.png" type="Texture" id=23]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/nyuba/nyuba_mouth.tres" type="Resource" id=24]
+
+[resource]
+script = ExtResource( 1 )
+my_id = "character_foxlab_nyuba"
+unlocked_by_default = true
+can_be_looted = true
+icon = ExtResource( 23 )
+name = "CHARACTER_FOXLAB_NYUBA"
+tier = 0
+value = 1
+effects = [ ExtResource( 3 ), ExtResource( 7 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 22 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = -1
+item_appearances = [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 24 ) ]
+tags = [  ]
+wanted_tags = [ "stat_elemental_damage", "stat_hp_regeneration" ]
+banned_item_groups = [  ]
+banned_items = [ "item_eyepatch", "item_hunting_trophy", "item_insanity", "item_lucky_coin", "item_sunglasses", "item_tentacle" ]
+banned_upgrades = [ "upgrade_crit_chance" ]
+starting_weapons = [ ExtResource( 18 ), ExtResource( 12 ), ExtResource( 17 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 9 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 16 ), ExtResource( 13 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 11 ) ]
+starting_items = [  ]

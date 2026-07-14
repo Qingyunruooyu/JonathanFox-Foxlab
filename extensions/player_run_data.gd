@@ -336,6 +336,8 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_curse_item_by_price_hash: 0,
 			Utils.foxlab_price_digit_hash: 0,
 			Utils.foxlab_projectile_on_enemy_type_change_hash: [],
+			Utils.foxlab_instant_burn_hash: 0,
+			Utils.foxlab_burning_scaling_stats_hash: []
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

@@ -1,7 +1,6 @@
 extends "res://entities/units/pet/scapegoat/scapegoat.gd"
 
 onready var foxlab_healing_zone = $"%HealingTriggeringZone"
-onready var foxlab_healing_shape = $"%HealingTriggeringZone/CollisionShape2D"
 var _foxlab_movement_behavior = load("res://entities/units/movement_behaviors/follow_rand_pos_around_player_movement_behavior.gd")
 var _foxlab_target_behavior = load("res://entities/units/target_behavior/closest_player_target_behavior.gd")
 
@@ -16,7 +15,6 @@ func _foxlab_ready():
 		RunData.foxlab_scapegoat_no_hurt[player_index].append(self)
 
 	if RunData.get_player_effect_bool(Utils.foxlab_scapegoat_no_heal_hash, player_index):
-		foxlab_healing_shape.shape.radius = 0
 		foxlab_healing_zone.collision_mask = 0
 
 		_foxlab_target_ins = _foxlab_target_behavior.new().init(self)

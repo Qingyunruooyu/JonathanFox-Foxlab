@@ -9,6 +9,8 @@ var _foxlab_curse_particle_instance = null
 var foxlab_ball_lighting_names = [Keys.generate_hash("item_foxlab_ball_lightning_3"), Keys.generate_hash("item_foxlab_ball_lightning_2"), Keys.generate_hash("item_foxlab_ball_lightning_1"), Keys.generate_hash("item_foxlab_ball_lightning_0"), ]
 
 var _foxlab_ball_lightning_timer: Timer
+var _foxlab_apply_burning_timer: Timer
+var foxlab_burning_data = null
 
 var foxlab_enemy_stats_on_hit = []
 
@@ -23,6 +25,7 @@ func _ready() -> void :
 	if _foxlab_has_curse():
 		foxlab_add_curse_particle()
 	foxlab_ball_ligntning_ready()
+	foxlab_burning_ready()
 	foxlab_enemy_temp_stats_on_hit_ready()
 	foxlab_projectile_on_hit_ready()
 	foxlab_bounce_player_projectile_ready()
@@ -34,9 +37,20 @@ func foxlab_ball_ligntning_ready():
 	if ball_lightning_effect.size() > 0 and ball_lightning_effect[0] > 0:
 		_foxlab_ball_lightning_timer = Timer.new()
 		_foxlab_ball_lightning_timer.wait_time = ball_lightning_effect[3]
-		var _foxlab_ball_lightning = _foxlab_ball_lightning_timer.connect("timeout", self, "on_foxlab_ball_lightning_timeout")
+		var _err = _foxlab_ball_lightning_timer.connect("timeout", self, "on_foxlab_ball_lightning_timeout")
 		add_child(_foxlab_ball_lightning_timer)
 		_foxlab_ball_lightning_timer.start()
+
+func foxlab_burning_ready():
+	if RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		_foxlab_apply_burning_timer = Timer.new()
+		_foxlab_apply_burning_timer.wait_time = 0.5
+		var _err = _foxlab_apply_burning_timer.connect("timeout", self, "on_foxlab_apply_burning_timer_timeout")
+		add_child(_foxlab_apply_burning_timer)
+		_foxlab_apply_burning_timer.start()
+		# 基础燃烧蔓延范围为128，这里翻倍
+		_burning_particles._collision.shape = _burning_particles._collision.shape.duplicate()
+		_burning_particles._collision.shape.radius *= 2
 
 func foxlab_enemy_temp_stats_on_hit_ready():
 	var temp_stats_on_hit_effect = RunData.get_player_effect(Keys.temp_stats_on_hit_hash, player_index)
@@ -202,6 +216,12 @@ func on_foxlab_ball_lightning_timeout() -> void :
 			args
 		)
 
+func on_foxlab_apply_burning_timer_timeout() -> void:
+	if foxlab_burning_data == null:
+		foxlab_burning_data = WeaponService.init_burning_data(RunData.get_player_effect(Keys.burn_chance_hash, player_index), player_index)
+		foxlab_burning_data.from = self
+	apply_burning(foxlab_burning_data)
+
 func foxlab_manage_projectile_on_hit() -> void:
 	var projectile_on_hit_effect: Array = RunData.get_player_effect(Utils.foxlab_projectile_on_hit_hash, player_index)
 	var weapon_args = WeaponServiceInitStatsArgs.new()
@@ -330,9 +350,10 @@ func add_weapon(weapon: WeaponData, pos: int) -> void :
 
 func _clean_up() -> void :
 	._clean_up()
-	if _foxlab_ball_lightning_timer:
-		_foxlab_ball_lightning_timer.stop()
-		_foxlab_ball_lightning_timer.paused = true
+	for timer in [_foxlab_ball_lightning_timer, _foxlab_apply_burning_timer]:
+		if timer:
+			timer.stop()
+			timer.paused = true
 	if _foxlab_bounce_box:
 		_foxlab_bounce_box.disable()
 
@@ -377,7 +398,11 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 					main.foxlab_get_item(get_item_on_break_effect[0], get_item_on_break_effect[1], player_index)
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
-	var ret = .take_damage(value, args)
+	var ret = [ ]
+	if args.is_burning and RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		ret = [0, 0, false]
+	else:
+		ret = .take_damage(value, args)
 	if ret[2]:
 		foxlab_one_shot_on_dodge(args)
 	if ret[1] > 0:
@@ -431,3 +456,7 @@ func on_alien_eyes_timeout() -> void :
 		print("alien eyes is cleaned")
 		_alien_eyes_timer.stop()
 		_alien_eyes_timer.paused = true
+
+func _on_BurningTimer_timeout() -> void :
+	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		._on_BurningTimer_timeout()

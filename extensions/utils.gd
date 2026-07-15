@@ -112,6 +112,7 @@ var foxlab_different_enemy_hash: int = Keys.generate_hash("foxlab_different_enem
 var foxlab_projectile_on_enemy_type_change_hash: int = Keys.generate_hash("foxlab_projectile_on_enemy_type_change")
 var foxlab_instant_burn_hash: int = Keys.generate_hash("foxlab_instant_burn")
 var foxlab_burning_scaling_stats_hash: int = Keys.generate_hash("foxlab_burning_scaling_stats")
+var foxlab_burning_proof_hash: int = Keys.generate_hash("foxlab_burning_proof")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")

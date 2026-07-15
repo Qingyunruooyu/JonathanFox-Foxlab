@@ -44,6 +44,7 @@ const PC_EXTENSION_SCRIPTS: =[
 	"evil_mob.gd",
 	"melee_weapon.gd",
 	"ranged_weapon.gd",
+	"unit.gd",
 ]
 
 

@@ -261,7 +261,7 @@ func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 func foxlab_process_immed_burn(enemy, value: int, args: TakeDamageArgs):
 	# 有hitbox（一定是非燃烧伤害）或者没有hitbox且没有燃烧（象宝宝之类）
 	if (args.hitbox or not args.is_burning) and RunData.get_player_effect_bool(Utils.foxlab_instant_burn_hash, args.from_player_index) and\
-		enemy._burning and value > enemy._burning.damage:
+		enemy._burning and (value >= enemy._burning.damage or Utils.get_chance_success(value / (enemy._burning.damage as float))):
 		enemy._burning.duration += 1
 		var health_before = enemy.current_stats.health
 		enemy._on_BurningTimer_timeout()
@@ -835,3 +835,4 @@ func on_gold_picked_up(gold: Node, player_index: int) -> void :
 func on_stats_updated(player_index: int) -> void :
 	.on_stats_updated(player_index)
 	_foxlab_proj_on_death_stat_caches[player_index] = null
+	_players[player_index].foxlab_burning_data = null

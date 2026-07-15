@@ -212,9 +212,7 @@ func _on_enemy_took_damage_foxlab(enemy, value: int, _knockback_direction: Vecto
 	if not enemy.is_boosted and foxlab_should_check_mutation[args.from_player_index]:
 		foxlab_process_enemy_mutate(enemy, args)
 
-	if args.hitbox and RunData.get_player_effect_bool(Utils.foxlab_instant_burn_hash, args.from_player_index) and\
-		enemy._burning and value > enemy._burning.damage:
-		enemy._on_BurningTimer_timeout()
+	foxlab_process_immed_burn(enemy, value, args)
 
 func _on_neutral_took_damage_foxlab(neutral, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, \
 	_is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
@@ -259,6 +257,16 @@ func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
 				RunData.add_stat(stat, value, args.from_player_index)
 				RunData.add_tracked_value(args.from_player_index, Utils.character_foxlab_refactor_hash, value, add_mod)
+
+func foxlab_process_immed_burn(enemy, value: int, args: TakeDamageArgs):
+	# 有hitbox（一定是非燃烧伤害）或者没有hitbox且没有燃烧（象宝宝之类）
+	if (args.hitbox or not args.is_burning) and RunData.get_player_effect_bool(Utils.foxlab_instant_burn_hash, args.from_player_index) and\
+		enemy._burning and value > enemy._burning.damage:
+		enemy._burning.duration += 1
+		var health_before = enemy.current_stats.health
+		enemy._on_BurningTimer_timeout()
+		var health_after = enemy.current_stats.health
+		RunData.add_tracked_value(args.from_player_index, Utils.character_foxlab_nyuba_hash, health_before - health_after)
 
 ##########贯通改为反弹相关########
 func foxlab_piercing_is_bounce_ready():

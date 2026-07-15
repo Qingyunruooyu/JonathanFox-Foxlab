@@ -153,6 +153,7 @@ var item_foxlab_wanted_unknown_hash: int = Keys.generate_hash("item_foxlab_wante
 var item_foxlab_salvation_hash: int = Keys.generate_hash("item_foxlab_salvation")
 var consumable_foxlab_seed_hash: int = Keys.generate_hash("consumable_foxlab_seed")
 var item_foxlab_shadow_hash: int = Keys.generate_hash("item_foxlab_shadow")
+var character_foxlab_nyuba_hash: int = Keys.generate_hash("character_foxlab_nyuba")
 
 # enemy names
 var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")

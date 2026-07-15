@@ -27,7 +27,6 @@ const EXTENSION_SCRIPTS: =[
 	"item_description.gd",
 	"weapon_selection.gd",
 	"effects/projectile_effect.gd",
-	"effects/burning_effect.gd",
 	"tag_panel.gd",
 	"tags_container.gd",
 	"scapegoat.gd",
@@ -40,6 +39,7 @@ const EXTENSION_SCRIPTS: =[
 ]
 
 const PC_EXTENSION_SCRIPTS: =[
+	"effects/burning_effect.gd",
 	"progress_data.gd",
 	"evil_mob.gd",
 	"melee_weapon.gd",

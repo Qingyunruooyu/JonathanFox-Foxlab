@@ -49,8 +49,10 @@ func foxlab_burning_ready():
 		add_child(_foxlab_apply_burning_timer)
 		_foxlab_apply_burning_timer.start()
 		# 基础燃烧蔓延范围为128，这里翻倍
-		_burning_particles._collision.shape = _burning_particles._collision.shape.duplicate()
-		_burning_particles._collision.shape.radius *= 2
+		var burning_collision = _burning_particles._collision
+		burning_collision.shape = burning_collision.shape.duplicate()
+		burning_collision.shape.radius *= 2
+		burning_collision.get_parent().collision_mask |= Utils.NEUTRAL_BIT
 
 func foxlab_enemy_temp_stats_on_hit_ready():
 	var temp_stats_on_hit_effect = RunData.get_player_effect(Keys.temp_stats_on_hit_hash, player_index)
@@ -321,7 +323,7 @@ func die(args: = Utils.default_die_args) -> void :
 		_die_args_unit.killing_blow_dmg_value = args.killing_blow_dmg_value
 		_die_args_unit.is_burning = args.is_burning
 		if not is_instance_valid(args.from):
-			if _is_burning or args.is_burning:
+			if (_is_burning or args.is_burning) and not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
 				_die_args_unit.from = ItemService.get_item_from_id(Keys.item_scared_sausage_hash)
 		elif args.from is Enemy:
 			_die_args_unit.from = args.from
@@ -460,3 +462,8 @@ func on_alien_eyes_timeout() -> void :
 func _on_BurningTimer_timeout() -> void :
 	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
 		._on_BurningTimer_timeout()
+
+# 燃烧会按敌人的方式重置unit速度， 玩家不需要
+func reset_speed_stat(percent_modifier: int = 0) -> void :
+	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		.reset_speed_stat(percent_modifier)

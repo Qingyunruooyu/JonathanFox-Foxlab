@@ -36,7 +36,6 @@ var _foxlab_explode_on_burn_args = [WeaponServiceExplodeArgs.new(), WeaponServic
 var _foxlab_explode_on_burn_stats = [null, null, null, null]
 var _foxlab_init_stats_args = WeaponServiceInitStatsArgs.new()
 
-var _foxlab_fox_timer = null
 var foxlab_burning_particle = load("res://particles/burning/torch_burning_particles.tscn")
 var _foxlab_fox_tiger_scene = load("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger.tscn")
 var _foxlab_foxes = [ ]
@@ -160,12 +159,7 @@ func foxlab_copy_pets_structures_ready():
 			need_check = true
 			break
 	if need_check:
-		_foxlab_fox_timer = Timer.new()
-		_foxlab_fox_timer.wait_time = Utils.FOXLAB_COPY_PETS_STRUCTURES_DELAY
-		_foxlab_fox_timer.one_shot = true
-		_foxlab_fox_timer.autostart = true
-		_foxlab_fox_timer.connect("timeout", self, "_foxlab_copy_pets_structures")
-		add_child(_foxlab_fox_timer)
+		var _error = get_tree().create_timer(Utils.FOXLAB_COPY_PETS_STRUCTURES_DELAY, false).connect("timeout", self, "_foxlab_copy_pets_structures")
 
 func _foxlab_copy_pets_structures() -> void:
 	if _cleaning_up:
@@ -1084,8 +1078,6 @@ func clean_up_room() -> void :
 	for timer in foxlab_seed_timers:
 		if timer is Timer:
 			timer.stop()
-	if _foxlab_fox_timer is Timer:
-		_foxlab_fox_timer.stop()
 	for fox in _foxlab_foxes:
 		fox.die(_entity_spawner._die_args_spawner)
 

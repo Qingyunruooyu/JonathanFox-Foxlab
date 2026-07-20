@@ -38,7 +38,7 @@ func foxlab_has_const_extra_effect_upgrade(item_data: WeaponData) -> bool:
 			nb_duplicate += 1
 			if not has_extra_effect:
 				for effect in weapon.effects:
-					if effect.text_key == ("EFFECT_FOXLAB_WEAPON_TEXT_CURSED" if weapon.is_cursed else "EFFECT_FOXLAB_WEAPON_TEXT"):
+					if effect.text_key in ["EFFECT_FOXLAB_WEAPON_TEXT_CURSED", "EFFECT_FOXLAB_WEAPON_TEXT"]:
 						has_extra_effect = true
 						break
 	if not RunData.has_weapon_slot_available(item_data, player_index):

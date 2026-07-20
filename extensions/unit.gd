@@ -3,7 +3,7 @@ extends "res://entities/units/unit/unit.gd"
 func _on_BurningTimer_timeout() -> void :
 	if _burning != null and RunData.get_nb_item(Utils.character_foxlab_nyuba_hash, _burning_player_index) > 0:
 		var nb_nyuba = RunData.get_nb_item(Utils.character_foxlab_nyuba_hash, _burning_player_index)
-		if _burning.is_global_burn:
+		if not _burning.is_global_burn:
 			._on_BurningTimer_timeout()
 			RunData.add_tracked_value(_burning_player_index, Utils.character_foxlab_nyuba_hash, nb_nyuba)
 		else:

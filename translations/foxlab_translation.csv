@@ -350,3 +350,7 @@ EFFECT_FOXLAB_BURNING_PROOF,"Always burning but immune to its damage.","Brûle t
 CHARACTER_FOXLAB_POPCORN,"Popcorn","Pop-corn","爆米花","ポップコーン","팝콘","爆米花","Попкорн","Popcorn","Palomitas","Pipoca","Popcorn","Popcorn","Popcorn"
 EFFECT_FOXLAB_EXPLODE_ON_BURN,"{0} chance for burning to explode","{0} de chance que la brûlure explose","燃烧有{0}几率爆炸","{0}の確率で燃焼が爆発","{0} 확률로 화상 폭발","燃燒有{0}機率爆炸","{0} шанс, что горение взорвется","{0} szans na wybuch płomieni","{0} probabilidad de que la quemadura explote","{0} chance de a queimadura explodir","{0} Chance, dass Brennen explodiert","Yanmanın patlama şansı {0}","{0} possibilità che la bruciatura esploda"
 ITEM_FOXLAB_DOPPELGANGER,"Doppelganger","Double","替身","ドッペルゲンガー","도플갱어","替身","Доппельгангер","Sobowtór","Doble","Sósia","Doppelgänger","Doppelganger","Sosia"
+CHARACTER_FOXLAB_WITCH_DOCTOR,Witch Doctor,,巫医,,,,,,,,,,
+EFFECT_FOXLAB_GAIN_TEMP_STAT_ON_NON_ITEM_HEALING,,,当你不通过道具效果治疗时（如{2}/{3}/{4}），获得随机{0}次升级，直至敌袭结束，受伤时重新计算,,,,,,,,,,
+EFFECT_FOXLAB_INVERT_ITEM_HEALING,,,你通过道具效果（如{0}/{1}/{2}）得到的治疗改为流失生命值,,,,,,,,,,
+

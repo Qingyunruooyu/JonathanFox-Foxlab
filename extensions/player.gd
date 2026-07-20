@@ -247,6 +247,35 @@ func foxlab_manage_projectile_on_hit() -> void:
 			args
 		)
 
+func foxlab_process_gain_temp_stat_on_non_item_healing(value_healed: int, tracking_key: int, from_torture: bool):
+	if not (from_torture or tracking_key != Keys.empty_hash ) and value_healed > 0 and\
+		RunData.get_player_effect_bool(Utils.foxlab_gain_temp_stat_on_non_item_healing_hash, player_index):
+		for _i in RunData.get_player_effect(Utils.foxlab_gain_temp_stat_on_non_item_healing_hash, player_index):
+			var level = max(1, RunData.get_player_level(player_index))
+			var upgrade_data = ItemService.get_upgrade_data(level, player_index)
+			for effect in upgrade_data.effects:
+				if Utils.is_stat_key(effect.key_hash):
+					TempStats.add_stat(effect.key_hash, effect.value, player_index)
+					if _remove_temp_stats_on_hit.has(effect.key_hash):
+						_remove_temp_stats_on_hit[effect.key_hash] += effect.value
+					else:
+						_remove_temp_stats_on_hit[effect.key_hash] = effect.value
+					RunData.emit_signal("stat_added", effect.key_hash, effect.value, - 15.0, player_index)
+
+func foxlab_process_invert_item_healing(value: int, value_healed: int, tracking_key: int, from_torture: bool, is_before_healing: bool):
+	if dead or RunData.get_player_effect_bool(Keys.no_heal_hash, player_index):
+		return
+	if (from_torture or tracking_key != Keys.empty_hash ) and value > 0 and RunData.get_player_effect_bool(Utils.foxlab_invert_item_healing_hash, player_index):
+		if is_before_healing:
+			# 治疗前预先扣血，避免治疗失败
+			current_stats.health -= value
+		else:
+			# 治疗后弥补多扣的血
+			current_stats.health += (value - value_healed)
+			if value_healed > 0:
+				var effects = RunData.get_player_effects(player_index)
+				effects[Utils.foxlab_lost_hp_hash] += value_healed
+
 func foxlab_process_lost_hp() -> bool:
 	var effects = RunData.get_player_effects(player_index)
 	var lost_hp = effects[Utils.foxlab_lost_hp_hash]
@@ -423,8 +452,11 @@ func _on_ItemAttractArea_area_entered(item: Item) -> void:
 		item.set_physics_process(true)
 
 func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_torture: bool = false) -> int:
+	foxlab_process_invert_item_healing(value, 0, tracking_key, from_torture, true)
 	var value_healed = .on_healing_effect(value, tracking_key, from_torture)
+	foxlab_process_invert_item_healing(value, value_healed, tracking_key, from_torture, false)
 	foxlab_process_lost_hp()
+	foxlab_process_gain_temp_stat_on_non_item_healing(value_healed, tracking_key, from_torture)
 	if value_healed > 0 and !_foxlab_has_charmed_all\
 		and current_stats.health >= (Utils.get_capped_stat(Keys.stat_max_hp_hash, player_index) as int):
 			_foxlab_has_charmed_all = true

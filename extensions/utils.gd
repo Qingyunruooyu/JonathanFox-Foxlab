@@ -114,6 +114,8 @@ var foxlab_explode_on_burn_hash: int = Keys.generate_hash("foxlab_explode_on_bur
 var foxlab_instant_burn_hash: int = Keys.generate_hash("foxlab_instant_burn")
 var foxlab_burning_scaling_stats_hash: int = Keys.generate_hash("foxlab_burning_scaling_stats")
 var foxlab_burning_proof_hash: int = Keys.generate_hash("foxlab_burning_proof")
+var foxlab_invert_item_healing_hash: int = Keys.generate_hash("foxlab_invert_item_healing")
+var foxlab_gain_temp_stat_on_non_item_healing_hash: int = Keys.generate_hash("foxlab_gain_temp_stat_on_non_item_healing")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")

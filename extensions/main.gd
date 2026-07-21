@@ -412,34 +412,40 @@ func _foxlab_enemy_interact(enemy: Node2D):
 
 # 本波额外敌人
 func foxlab_process_extra_enemies():
-	var extra_enemies = 0
-	for player_index in _players.size():
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_enemies_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data())
-			extra_enemies += 1
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_crash_zone_enemies_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_CRASH_ZONE"))
-			extra_enemies += 1
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_abyss_enemies_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_group_data("ZONE_ABYSS"))
-			extra_enemies += 1
+	# 只有进商店才会重置随机敌人，和糖果袋出随机精英一样
+	if RunData.foxlab_is_horde_wave == null:
+		RunData.foxlab_extra_enemy_groups = [ ]
+		var extra_enemies = 0
+		for player_index in _players.size():
+			for _i in range(Utils.get_stat(Utils.foxlab_extra_enemies_hash, player_index) as int):
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_pickup_random_group_data())
+				extra_enemies += 1
+			for _i in range(Utils.get_stat(Utils.foxlab_extra_crash_zone_enemies_hash, player_index) as int):
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_pickup_random_group_data("ZONE_CRASH_ZONE"))
+				extra_enemies += 1
+			for _i in range(Utils.get_stat(Utils.foxlab_extra_abyss_enemies_hash, player_index) as int):
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_pickup_random_group_data("ZONE_ABYSS"))
+				extra_enemies += 1
 
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_bosses_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_bosses())
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_unknown_elites_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(true))
-		for _i in range(Utils.get_stat(Utils.foxlab_extra_elites_hash, player_index) as int):
-			_wave_manager.add_groups(Utils.foxlab_pickup_random_elites(false))
+			for _i in range(Utils.get_stat(Utils.foxlab_extra_bosses_hash, player_index) as int):
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_pickup_random_bosses())
+			for _i in range(Utils.get_stat(Utils.foxlab_extra_unknown_elites_hash, player_index) as int):
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_pickup_random_elites(true))
+			for _i in range(Utils.get_stat(Utils.foxlab_extra_elites_hash, player_index) as int):
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_pickup_random_elites(false))
 
-		var extra_loot_aliens = Utils.get_stat(Utils.foxlab_extra_loot_aliens_hash, player_index) as int
-		if extra_loot_aliens > 0:
-			_wave_manager.add_groups(Utils.foxlab_generate_loot_alien_group_data(extra_loot_aliens, _wave_timer))
-		var extra_evil_mobs = Utils.get_stat(Utils.foxlab_extra_evil_mobs_hash, player_index) as int
-		if extra_evil_mobs > 0:
-			_wave_manager.add_groups(Utils.foxlab_generate_evil_mob_group_data(extra_evil_mobs))
+			var extra_loot_aliens = Utils.get_stat(Utils.foxlab_extra_loot_aliens_hash, player_index) as int
+			if extra_loot_aliens > 0:
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_generate_loot_alien_group_data(extra_loot_aliens, _wave_timer))
+			var extra_evil_mobs = Utils.get_stat(Utils.foxlab_extra_evil_mobs_hash, player_index) as int
+			if extra_evil_mobs > 0:
+				RunData.foxlab_extra_enemy_groups.append_array(Utils.foxlab_generate_evil_mob_group_data(extra_evil_mobs))
+		RunData.foxlab_is_horde_wave = (extra_enemies > 4 * _players.size())
 
-	if extra_enemies > 4 * _players.size():
-		_is_horde_wave = true
+	if not RunData.foxlab_extra_enemy_groups.empty():
+		if RunData.foxlab_is_horde_wave:
+			_is_horde_wave = true
+		_wave_manager.add_groups(RunData.foxlab_extra_enemy_groups)
 
 #待处理的经验，亏欠的生命值
 func foxlab_process_pending_states():

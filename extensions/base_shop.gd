@@ -166,6 +166,8 @@ func _ready() -> void :
 		return
 	DebugService.log_data("foxlab_shop_effects_checked: is false")
 	ItemService.foxlab_just_enter_shop = [true, true, true, true]
+	# 只有进商店才会重置随机敌人，和糖果袋出随机精英一样
+	RunData.foxlab_is_horde_wave = null
 	for player_index in RunData.get_player_count():
 		# 建造者的炮塔更新
 		var struct_range = RunData.get_player_effect(Keys.structure_range_hash, player_index)

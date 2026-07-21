@@ -27,6 +27,10 @@ var foxlab_current_different_enemies: = 0
 
 var foxlab_current_picking_player = -1
 
+var foxlab_extra_enemy_groups = []
+# null: 未生成， false: 额外敌人不够多, true：额外敌人够多，Main的_is_horde_wave置为true
+var foxlab_is_horde_wave = null
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	# DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
@@ -335,4 +339,5 @@ func reset(restart: bool = false) -> void :
 		current_wave = DebugService.starting_wave
 		TempStats.reset()
 		LinkedStats.reset()
+	foxlab_is_horde_wave = null
 	.reset(restart)

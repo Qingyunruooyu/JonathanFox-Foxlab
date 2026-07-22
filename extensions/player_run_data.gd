@@ -336,6 +336,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_curse_item_by_price_hash: 0,
 			Utils.foxlab_price_digit_hash: 0,
 			Utils.foxlab_projectile_on_enemy_type_change_hash: [],
+			Utils.foxlab_explode_on_burn_hash: [],
 			Utils.foxlab_instant_burn_hash: 0,
 			Utils.foxlab_burning_scaling_stats_hash: [],
 			Utils.foxlab_burning_proof_hash: 0,

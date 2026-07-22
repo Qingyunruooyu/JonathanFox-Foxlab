@@ -33,6 +33,8 @@ var _foxlab_proj_on_death_stat_caches: = [null, null, null, null]
 var _foxlab_spawn_projectile_args = WeaponServiceSpawnProjectileArgs.new()
 var _foxlab_bullet_color_gradient:Gradient = null
 
+var explode_on_burn_args = [WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new()]
+
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
@@ -203,6 +205,8 @@ func _on_enemy_took_damage_foxlab(enemy, value: int, _knockback_direction: Vecto
 	if args.from_player_index < 0 or args.from_player_index >= RunData.get_player_count():
 		return
 
+	foxlab_process_explode_on_burn(enemy, args)
+
 	if enemy._pending_die:
 		foxlab_process_landmine_on_death(enemy, args)
 		foxlab_process_struct_crit_kill(_is_crit, args)
@@ -267,6 +271,42 @@ func foxlab_process_immed_burn(enemy, value: int, args: TakeDamageArgs):
 		enemy._on_BurningTimer_timeout()
 		var health_after = enemy.current_stats.health
 		RunData.add_tracked_value(args.from_player_index, Utils.character_foxlab_nyuba_hash, health_before - health_after)
+
+func foxlab_process_explode_on_burn(enemy, args: TakeDamageArgs):
+	# 不是燃烧或烧完了
+	if (args.hitbox or not args.is_burning) or enemy._burning == null:
+		return
+
+	var player_index = args.from_player_index
+	var effect = RunData.get_player_effect(Utils.foxlab_process_explode_on_burn_hash, player_index)
+
+	var explosion_chance: = 0.0
+	for explosion in effect:
+		explosion_chance += explosion.chance
+	if not Utils.get_chance_success(explosion_chance):
+		return
+
+	var player = _players[player_index]
+	if player.foxlab_burning_data == null:
+		player.foxlab_burning_data = WeaponService.init_burning_data(RunData.get_player_effect(Keys.burn_chance_hash, player_index), player_index)
+		player.foxlab_burning_data.from = player
+
+	var first_effect = effect[0]
+	var first_stats = first_effect.stats
+
+	var position = Utils.get_random_offset_position(enemy.global_position, 10)
+	var explode_args = explode_on_burn_args[player_index]
+	explode_args.pos = position
+	explode_args.damage = enemy._burning.damage
+	explode_args.accuracy = first_stats.accuracy
+	explode_args.crit_chance = first_stats.crit_chance + Utils.get_capped_stat(Keys.stat_crit_chance_hash, player_index) / 100.0
+	explode_args.crit_damage = first_stats.crit_damage
+	explode_args.burning_data = player.foxlab_burning_data
+	explode_args.scaling_stats = player.foxlab_burning_data.scaling_stats
+	explode_args.damage_tracking_key_hash = first_effect.tracking_key_hash
+	explode_args.from_player_index = player_index
+	WeaponService.call_deferred("explode", first_effect, explode_args)
+
 
 ##########贯通改为反弹相关########
 func foxlab_piercing_is_bounce_ready():

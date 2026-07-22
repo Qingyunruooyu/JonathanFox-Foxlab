@@ -1,4 +1,4 @@
-extends "res://entities/units/unit/unit.gd"
+extends "res://entities/units/enemies/enemy.gd"
 
 func _on_BurningTimer_timeout() -> void :
 	if _burning != null and RunData.get_nb_item(Utils.character_foxlab_nyuba_hash, _burning_player_index) > 0:

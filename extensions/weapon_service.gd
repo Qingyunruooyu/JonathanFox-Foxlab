@@ -83,14 +83,18 @@ func init_burning_data(base_burning_data: BurningData, player_index: int, is_str
 		var base_damage = global_burning.damage
 		if not new_burning_data.is_global_burn():
 			base_damage += base_burning_data.damage
-		base_damage =  apply_scaling_stats_to_damage(base_damage, new_burning_data.scaling_stats, player_index)
 
 		var percent_dmg_bonus = (1 + (Utils.get_stat(Keys.stat_percent_damage_hash, player_index) / 100.0))
-		if is_structure and not is_pet:
-			percent_dmg_bonus = (1 + (Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0))
-		elif is_structure and is_pet:
-			percent_dmg_bonus += Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0
+		if is_structure:
+			if is_pet:
+				percent_dmg_bonus += Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0
+			else:
+				percent_dmg_bonus = (1 + (Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0))
 		var exploding_dmg_bonus = (Utils.get_stat(Keys.explosion_damage_hash, player_index) / 100.0)
+
+		if is_pet or not is_structure: # 和 get_explosion_damage 一致
+			new_burning_data.scaling_stats = _apply_weapon_scaling_stat_effects(new_burning_data.scaling_stats, player_index)
+		base_damage =  apply_scaling_stats_to_damage(base_damage, new_burning_data.scaling_stats, player_index)
 
 		new_burning_data.damage = max(1, round(base_damage * (percent_dmg_bonus + exploding_dmg_bonus))) as int
 

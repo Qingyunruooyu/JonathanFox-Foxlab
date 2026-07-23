@@ -278,7 +278,7 @@ func foxlab_process_explode_on_burn(enemy, args: TakeDamageArgs):
 		return
 
 	var player_index = args.from_player_index
-	var effect = RunData.get_player_effect(Utils.foxlab_process_explode_on_burn_hash, player_index)
+	var effect = RunData.get_player_effect(Utils.foxlab_explode_on_burn_hash, player_index)
 
 	var explosion_chance: = 0.0
 	for explosion in effect:
@@ -298,15 +298,23 @@ func foxlab_process_explode_on_burn(enemy, args: TakeDamageArgs):
 	var explode_args = explode_on_burn_args[player_index]
 	explode_args.pos = position
 	explode_args.damage = enemy._burning.damage
+	explode_args.scaling_stats = player.foxlab_burning_data.scaling_stats
 	explode_args.accuracy = first_stats.accuracy
 	explode_args.crit_chance = first_stats.crit_chance + Utils.get_capped_stat(Keys.stat_crit_chance_hash, player_index) / 100.0
 	explode_args.crit_damage = first_stats.crit_damage
 	explode_args.burning_data = player.foxlab_burning_data
-	explode_args.scaling_stats = player.foxlab_burning_data.scaling_stats
-	explode_args.damage_tracking_key_hash = first_effect.tracking_key_hash
 	explode_args.from_player_index = player_index
-	WeaponService.call_deferred("explode", first_effect, explode_args)
-
+	explode_args.ignored_objects = [enemy]
+	explode_args.damage_tracking_key_hash = first_effect.tracking_key_hash
+	if is_instance_valid(enemy._burning.from):
+		explode_args.from = enemy._burning.from
+	else:
+		explode_args.from = null
+	var explosion = WeaponService.explode(first_effect, explode_args)
+	if explode_args.from != null and explode_args.from is Weapon:
+		explosion.connect("hit_something", explode_args.from, "on_weapon_hit_something", [explosion._hitbox])
+		if not explosion.is_connected("killed_something", explode_args.from, "on_killed_something"):
+			explosion.connect("killed_something", explode_args.from, "on_killed_something", [explosion._hitbox])
 
 ##########贯通改为反弹相关########
 func foxlab_piercing_is_bounce_ready():

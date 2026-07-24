@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/popcorn/popcorn_explosion_stats.tres" type="Resource" id=1]
-[ext_resource path="res://projectiles/explosion.tscn" type="PackedScene" id=2]
+[ext_resource path="res://projectiles/flesh_explosion/flesh_explosion.tscn" type="PackedScene" id=2]
 [ext_resource path="res://effects/items/item_exploding_effect.gd" type="Script" id=3]
 
 [resource]

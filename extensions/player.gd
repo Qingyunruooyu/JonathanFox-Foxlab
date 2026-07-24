@@ -467,3 +467,8 @@ func _on_BurningTimer_timeout() -> void :
 func reset_speed_stat(percent_modifier: int = 0) -> void :
 	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
 		.reset_speed_stat(percent_modifier)
+
+func heal(value: int, is_from_torture: bool = false) -> int:
+	if value <= 0:
+		return 0
+	return .heal(value, is_from_torture)

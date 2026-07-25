@@ -10,16 +10,16 @@ func set_item(item_data: ItemParentData, player_index: int, item_count: int = 1)
 	if is_special_upgrade:
 		item_data = item_data.get_meta("foxlab_item", item_data)
 
-	expand_indefinitely = foxlab_expand_indefinitely
-
-	.set_item(item_data, player_index, item_count)
-
 	if (RunData.shop_effects_checked and item_data is WeaponData and item_data.effects.size() > 9)\
 		or (not RunData.is_coop_run and is_special_upgrade):
 		expand_indefinitely = false
+	else:
+		expand_indefinitely = foxlab_expand_indefinitely
 
 	_vbox_container.visible = show_details and expand_indefinitely
 	_scroll_container.visible = show_details and not expand_indefinitely
+
+	.set_item(item_data, player_index, item_count)
 
 	if item_data is ItemData and not item_data is CharacterData and not item_data is UpgradeData and not item_data is DifficultyData:
 		if item_data.max_nb <= 0:

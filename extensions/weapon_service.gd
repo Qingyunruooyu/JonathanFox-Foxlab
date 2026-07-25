@@ -81,7 +81,7 @@ func init_burning_data(base_burning_data: BurningData, player_index: int, is_str
 	if not new_burning_data.is_not_burning() and not RunData.get_player_effect(Utils.foxlab_explode_on_burn_hash, player_index).empty():
 		var global_burning = RunData.get_player_effect(Keys.burn_chance_hash, player_index)
 		var base_damage = global_burning.damage
-		if not new_burning_data.is_global_burn():
+		if not new_burning_data.is_global_burn:
 			base_damage += base_burning_data.damage
 
 		var percent_dmg_bonus = (1 + (Utils.get_stat(Keys.stat_percent_damage_hash, player_index) / 100.0))

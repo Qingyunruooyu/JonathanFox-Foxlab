@@ -234,6 +234,7 @@ effect_keys_full_serialization = [ "foxlab_always_convert_stats_end_of_wave", "f
 translation_keys_needing_operator = {
 "bounce": [ 0 ],
 "bounce_damage": [ 0 ],
+"burning_cooldown_reduction": [ 0 ],
 "crate_chance": [ 0 ],
 "dodge_cap": [ 0 ],
 "effect_accuracy": [ 0 ],

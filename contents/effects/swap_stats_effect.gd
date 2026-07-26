@@ -3,6 +3,15 @@ extends "res://items/global/effect.gd"
 static func get_id() -> String:
 	return "foxlab_swap_stats"
 
+# 跳过修改减少100%的属性和没有修改的主属性
+static func is_ignored_stats(effects, stat_hash, stat_gain_hash):
+	if effects.has(stat_gain_hash): #有修改
+		if effects[stat_gain_hash] == -100: #但修改减少100%
+			return true
+	elif stat_hash in Utils._primary_stat_keys: #没有修改，但是是主属性
+		return true
+	return false
+
 func apply(player_index: int) -> void:
 	var stats_in_container = Utils.foxlab_get_stats_in_container()
 	var effects = RunData.get_player_effects(player_index)
@@ -10,8 +19,7 @@ func apply(player_index: int) -> void:
 		var stats_to_swap = []
 		for stat in stats:
 			var effect_hash = Keys.generate_hash("gain_" + Keys.hash_to_string[stat])
-			# 跳过修改减少100%的属性
-			if effects.has(effect_hash) and effects[effect_hash] == -100:
+			if is_ignored_stats(effects, stat, effect_hash):
 				continue
 			stats_to_swap.append(stat)
 		var range_seq = null
@@ -57,8 +65,7 @@ func get_text(player_index: int, _colored: bool = true) -> String:
 	for stats in stats_in_container:
 		for stat in stats:
 			var effect_hash = Keys.generate_hash("gain_" + Keys.hash_to_string[stat])
-			# 跳过修改减少100%的属性
-			if effects.has(effect_hash) and effects[effect_hash] == -100:
+			if is_ignored_stats(effects, stat, effect_hash):
 				if zero_stat.empty():
 					zero_stat.append(text)
 					zero_stat.append(tr("EFFECT_FOXLAB_STAT_IGNORE_IN_SWAP"))

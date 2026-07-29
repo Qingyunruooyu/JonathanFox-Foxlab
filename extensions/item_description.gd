@@ -1,6 +1,10 @@
 extends "res://ui/menus/shop/item_description.gd"
 
 var foxlab_item_is_special_upgrade = false
+var foxlab_expand_indefinitely = true
+
+func _ready() -> void :
+    foxlab_expand_indefinitely = expand_indefinitely
 
 func foxlab_should_scroll() -> bool:
 	return (RunData.shop_effects_checked and item is WeaponData and item.effects.size() > 9)\
@@ -27,8 +31,8 @@ func set_item(item_data: ItemParentData, player_index: int, item_count: int = 1)
 	if foxlab_item_is_special_upgrade:
 		item_data = item_data.get_meta("foxlab_item", item_data)
 
+	expand_indefinitely = foxlab_expand_indefinitely
 	.set_item(item_data, player_index, item_count)
-
 	foxlab_update_visibility()
 
 	if item_data is ItemData and not item_data is CharacterData and not item_data is UpgradeData and not item_data is DifficultyData:

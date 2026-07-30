@@ -253,11 +253,9 @@ static func init_effects()->Dictionary:
 			if not gain_stat in vanilla_effects:
 				vanilla_effects[gain_stat] = 0
 		var new_effects: = {
-			Utils.foxlab_gain_xp_gain_hash: 0,
 			Utils.foxlab_gain_enemy_health_hash: 0,
 			Utils.foxlab_gain_enemy_speed_hash: 0,
 			Utils.foxlab_gain_enemy_damage_hash: 0,
-			Utils.foxlab_gain_structure_percent_damage_hash:0,
 			Utils.foxlab_item_steal_warmhole_spawn_hash:0,
 			Utils.foxlab_poet_next_curse_chance_hash: 0,
 			Utils.foxlab_tasks_hash: [],
@@ -266,8 +264,6 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_enemy_interact_hash: 0,
 			Utils.foxlab_dante_states_hash: 0,
 			Utils.foxlab_dante_penalty_hash: 0,
-			Utils.foxlab_shop_point_hash: 0,
-			Utils.foxlab_shop_vip_hash: 0,
 			Utils.foxlab_cultivator_level_hash: 0,
 			Utils.foxlab_wave_started_hash: 0, # 防止面具变身的初始角色带有起始物品的时候，被重复添加
 			Utils.foxlab_faceless_enable_upgrade_on_transform_hash:0,

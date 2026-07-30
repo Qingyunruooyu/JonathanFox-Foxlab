@@ -15,11 +15,9 @@ var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Key
 
 # Effects
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
-var foxlab_gain_xp_gain_hash: int = Keys.generate_hash("gain_xp_gain")
 var foxlab_gain_enemy_health_hash: int = Keys.generate_hash("gain_enemy_health")
 var foxlab_gain_enemy_speed_hash: int = Keys.generate_hash("gain_enemy_speed")
 var foxlab_gain_enemy_damage_hash: int = Keys.generate_hash("gain_enemy_damage")
-var foxlab_gain_structure_percent_damage_hash: int = Keys.generate_hash("gain_structure_percent_damage")
 var foxlab_item_steal_warmhole_spawn_hash: int = Keys.generate_hash("foxlab_item_steal_warmhole_spawn")
 var foxlab_extra_enemies_hash: int = Keys.generate_hash("foxlab_extra_enemies")
 var foxlab_extra_crash_zone_enemies_hash: int = Keys.generate_hash("foxlab_extra_crash_zone_enemies")
@@ -33,8 +31,6 @@ var item_foxlab_trouble_mutation_hash: int = Keys.generate_hash("item_foxlab_tro
 var foxlab_enemy_interact_hash: int = Keys.generate_hash("foxlab_enemy_interact")
 var foxlab_dante_states_hash: int = Keys.generate_hash("foxlab_dante_states")
 var foxlab_dante_penalty_hash: int = Keys.generate_hash("foxlab_dante_penalty")
-var foxlab_shop_point_hash: int = Keys.generate_hash("foxlab_shop_point")
-var foxlab_shop_vip_hash: int = Keys.generate_hash("foxlab_shop_vip")
 var foxlab_cultivator_level_hash: int = Keys.generate_hash("foxlab_cultivator_level")
 var foxlab_extra_bosses_hash: int = Keys.generate_hash("foxlab_extra_bosses")
 var foxlab_extra_elites_hash: int = Keys.generate_hash("foxlab_extra_elites")

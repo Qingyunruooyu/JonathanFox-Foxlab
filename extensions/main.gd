@@ -54,9 +54,6 @@ func _ready():
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():
 	for player_index in _players.size():
-		var player = _players[player_index]
-		var full_health = (player.current_stats.health == player.max_stats.health)
-		var pre_health = player.current_stats.health
 		var need_reset_player: bool = false
 		# value, foxlab_receive_item_id, foxlab_receive_item_wave, curse_factor, is_cursed, end_wave
 		var receive_item_effects: Array = RunData.get_player_effect(Utils.foxlab_effect_receive_item_at_wave_hash, player_index)
@@ -134,10 +131,6 @@ func foxlab_receive_item_stat_ready():
 		if need_reset_player:
 			# 重置cache用，不然武器伤害之类的不会更新
 			RunData._are_player_stats_dirty[player_index] = true
-			player.update_player_stats(true)
-			if not full_health:
-				player.current_stats.health = min(pre_health, player.current_stats.health)
-			player.emit_signal("health_updated", player, player.current_stats.health, player.max_stats.health)
 
 ########### 异变相关 ###############
 func _foxlab_should_check_mutation(player_index: int)-> bool:

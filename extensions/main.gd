@@ -33,7 +33,9 @@ var _foxlab_proj_on_death_stat_caches: = [null, null, null, null]
 var _foxlab_spawn_projectile_args = WeaponServiceSpawnProjectileArgs.new()
 var _foxlab_bullet_color_gradient:Gradient = null
 
-var explode_on_burn_args = [WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new()]
+var _foxlab_explode_on_burn_args = [WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new(), WeaponServiceExplodeArgs.new()]
+var _foxlab_explode_on_burn_stats = [null, null, null, null]
+var _foxlab_init_stats_args = WeaponServiceInitStatsArgs.new()
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
@@ -286,23 +288,22 @@ func foxlab_process_explode_on_burn(enemy, args: TakeDamageArgs):
 	if not Utils.get_chance_success(explosion_chance):
 		return
 
-	var player = _players[player_index]
-	if player.foxlab_burning_data == null:
-		player.foxlab_burning_data = WeaponService.init_burning_data(RunData.get_player_effect(Keys.burn_chance_hash, player_index), player_index)
-		player.foxlab_burning_data.from = player
+	var burning_data = _players[player_index].foxlab_get_burning_data()
 
 	var first_effect = effect[0]
-	var first_stats = first_effect.stats
+	if _foxlab_explode_on_burn_stats[player_index] == null:
+		_foxlab_explode_on_burn_stats[player_index] = WeaponService.init_base_stats(first_effect.stats, player_index, _foxlab_init_stats_args, false, true)
+	var first_stats = _foxlab_explode_on_burn_stats[player_index]
 
 	var position = Utils.get_random_offset_position(enemy.global_position, 10)
-	var explode_args = explode_on_burn_args[player_index]
+	var explode_args = _foxlab_explode_on_burn_args[player_index]
 	explode_args.pos = position
 	explode_args.damage = enemy._burning.damage
-	explode_args.scaling_stats = player.foxlab_burning_data.scaling_stats
+	explode_args.scaling_stats = burning_data.scaling_stats
 	explode_args.accuracy = first_stats.accuracy
-	explode_args.crit_chance = first_stats.crit_chance + Utils.get_capped_stat(Keys.stat_crit_chance_hash, player_index) / 100.0
+	explode_args.crit_chance = first_stats.crit_chance
 	explode_args.crit_damage = first_stats.crit_damage
-	explode_args.burning_data = player.foxlab_burning_data
+	explode_args.burning_data = burning_data
 	explode_args.from_player_index = player_index
 	explode_args.ignored_objects = [enemy]
 	explode_args.damage_tracking_key_hash = first_effect.tracking_key_hash
@@ -890,3 +891,4 @@ func on_stats_updated(player_index: int) -> void :
 	.on_stats_updated(player_index)
 	_foxlab_proj_on_death_stat_caches[player_index] = null
 	_players[player_index].foxlab_burning_data = null
+	_foxlab_explode_on_burn_stats[player_index] = null

@@ -218,17 +218,23 @@ func on_foxlab_ball_lightning_timeout() -> void :
 			args
 		)
 
-func on_foxlab_apply_burning_timer_timeout() -> void:
+func foxlab_get_burning_data():
 	if foxlab_burning_data == null:
-		foxlab_burning_data = WeaponService.init_burning_data(RunData.get_player_effect(Keys.burn_chance_hash, player_index), player_index)
+		foxlab_burning_data = WeaponService.init_burning_data(BurningData.new(), player_index)
 		foxlab_burning_data.from = self
-	apply_burning(foxlab_burning_data)
+	return foxlab_burning_data
+
+func on_foxlab_apply_burning_timer_timeout() -> void:
+	apply_burning(foxlab_get_burning_data())
 
 func foxlab_manage_projectile_on_hit() -> void:
 	var projectile_on_hit_effect: Array = RunData.get_player_effect(Utils.foxlab_projectile_on_hit_hash, player_index)
 	var weapon_args = WeaponServiceInitStatsArgs.new()
 	weapon_args.effects = _foxlab_projectile_on_hit_effects
 	var projectile_stats = WeaponService.init_ranged_stats(projectile_on_hit_effect[1], player_index, true, weapon_args)
+	if projectile_stats.shooting_sounds.size() > 0:
+		SoundManager2D.play(Utils.get_rand_element(projectile_stats.shooting_sounds), global_position, projectile_stats.sound_db_mod, 0.2)
+	projectile_stats.shooting_sounds = [ ]
 	var proj_num = projectile_on_hit_effect[0] +  RunData.get_player_effect(Utils.foxlab_projectile_on_hit_num_hash, player_index)
 	for i in proj_num:
 		var direction = (2 * PI / projectile_on_hit_effect[0]) * i

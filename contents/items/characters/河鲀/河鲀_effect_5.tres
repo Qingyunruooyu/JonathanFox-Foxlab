@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/projectile_on_hit_effect.gd" type="Script" id=1]
 [ext_resource path="res://projectiles/spike/bullet_spike.tscn" type="PackedScene" id=2]
 [ext_resource path="res://weapons/weapon_stats/ranged_weapon_stats.gd" type="Script" id=3]
+[ext_resource path="res://dlcs/dlc_1/enemies/pufferfish/PufferFish_single_pop.wav" type="AudioStream" id=4]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 3 )
@@ -20,8 +21,8 @@ can_have_negative_knockback = false
 effect_scale = 1.0
 scaling_stats = [ [ "stat_max_hp", 0.5 ] ]
 lifesteal = 0.0
-shooting_sounds = [  ]
-sound_db_mod = -5
+shooting_sounds = [ ExtResource( 4 ) ]
+sound_db_mod = 5
 is_healing = false
 recoil = 25
 recoil_duration = 0.1

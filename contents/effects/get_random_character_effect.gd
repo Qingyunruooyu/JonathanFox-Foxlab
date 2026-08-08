@@ -21,7 +21,8 @@ func _get_armor_chance(player_index: int, armor_increases_chance: bool) -> float
 
 func _get_transform_chance(player_index: int) -> float:
 	var armor = _get_armor_chance(player_index, false)
-	return  max(armor * value2, MIN_TRANSFORM_CHANCE)
+	var pity = RunData.get_player_effect(Utils.foxlab_transform_pity_hash, player_index)
+	return clamp(armor * value2 + pity, MIN_TRANSFORM_CHANCE, 100)
 
 func _can_character_be_modified(character: CharacterData) -> bool:
 	return (character.resource_path.begins_with("res://items/") or character.resource_path.begins_with("res://dlcs/"))
@@ -62,10 +63,12 @@ func apply(player_index: int) -> void:
 	#DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
 	var wave_started = RunData.foxlab_is_wave_started()
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
+		RunData.get_player_effects(player_index)[Utils.foxlab_transform_pity_hash] += int(transform_chance / 10.0)
 		#DebugService.log_data("transform failed")
 		_after_transform(player_index, stack_effect)
 		return
 
+	RunData.get_player_effects(player_index)[Utils.foxlab_transform_pity_hash] = 0
 	var is_vagabond_on0 = RunData.get_player_effect_bool(Keys.all_weapons_count_for_sets_hash, player_index)
 
 	cleanup(player_index)

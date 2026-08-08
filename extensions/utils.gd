@@ -38,6 +38,7 @@ var foxlab_extra_unknown_elites_hash: int = Keys.generate_hash("foxlab_extra_unk
 var foxlab_wave_started_hash: int = Keys.generate_hash("foxlab_wave_started")
 var foxlab_faceless_enable_upgrade_on_transform_hash: int = Keys.generate_hash("foxlab_faceless_enable_upgrade_on_transform")
 var foxlab_faceless_upgrade_on_transform_wave_hash: int = Keys.generate_hash("foxlab_faceless_upgrade_on_transform_wave")
+var foxlab_transform_pity_hash: int = Keys.generate_hash("foxlab_transform_pity")
 var foxlab_faceless_convert_stat_characters_hash: int = Keys.generate_hash("foxlab_faceless_convert_stat_characters")
 var foxlab_faceless_transform_stack_hash: int = Keys.generate_hash("foxlab_faceless_transform_stack")
 var foxlab_mask_history_hash: int=Keys.generate_hash("foxlab_mask_history")

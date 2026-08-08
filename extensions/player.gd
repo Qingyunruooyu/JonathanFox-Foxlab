@@ -261,9 +261,8 @@ func foxlab_process_lost_hp() -> bool:
 		current_stats.health = max(1, current_stats.health - lost_hp) as int
 		if current_stats.health != prev_health:
 			effects[Utils.foxlab_lost_hp_hash] -= prev_health - current_stats.health
-			emit_signal("health_updated", self, current_stats.health, max_stats.health)
-			return true
-	return false
+		emit_signal("health_updated", self, current_stats.health, max_stats.health)
+	return lost_hp > 0
 
 func foxlab_add_weapon_particle(cur_weapon: Weapon):
 	if not cur_weapon.muzzle.get_children().empty():
@@ -443,14 +442,23 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 					for enemy in main._entity_spawner.get_all_enemies():
 						if not enemy is Boss and not enemy.is_loot and enemy.can_be_charmed:
 							enemy.set_charmed(player_index)
+				var items_got:Dictionary = RunData.get_player_effect(Utils.foxlab_charm_all_items_hash, player_index)
 				for effect in charm_all_effect:
-					var item_id_hash = effect[0]
-					var items_got:Dictionary = RunData.get_player_effect(Utils.foxlab_charm_all_items_hash, player_index)
-					var item_times = items_got.get_or_add(item_id_hash, 0)
-					if Utils.get_chance_success(1.0/(1.0 + item_times)):
-						main.foxlab_get_item(item_id_hash, effect[1], player_index)
-						items_got[item_id_hash] += effect[1]
-						play_sound = true
+					for i in [0, 2]:
+						var item_id_hash = effect[i]
+						var item_num = effect[i + 1]
+						var item_times = items_got.get_or_add(item_id_hash, [0, 0]) # 0 for times, 1 for pity
+						var chance = 1.0 / (1.0 + item_times[0]) + item_times[1]
+						# print("chance: ", chance, " item: ", Keys.hash_to_string[item_id_hash])
+						if Utils.get_chance_success(chance):
+							main.foxlab_get_item(item_id_hash, item_num, player_index)
+							item_times[0] += item_num
+							item_times[1] = 0
+							play_sound = true
+							break
+						else:
+							item_times[1] += chance/item_times[0] # add pity bonus
+							# print("current pity: ", item_times[1], " item: ", Keys.hash_to_string[item_id_hash])
 				if play_sound:
 					SoundManager.play(preload("res://ui/sounds/Shield 4.mp3"))
 	return value_healed

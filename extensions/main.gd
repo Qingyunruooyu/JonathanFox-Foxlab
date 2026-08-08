@@ -500,7 +500,7 @@ func foxlab_process_pending_states():
 
 		var player = _players[player_index]
 		if player.foxlab_process_lost_hp():
-			_on_player_health_updated(player, player.current_stats.health, player.max_stats.health)
+			player.check_hp_regen()
 
 # 只处理这几个简单的，其他还有非常多只在一开始就判定这一波要不要生效的，不再做处理了
 func foxlab_before_add_item(player_index: int) ->Dictionary:

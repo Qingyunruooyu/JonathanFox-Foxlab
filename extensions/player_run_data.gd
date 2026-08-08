@@ -317,7 +317,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_lost_hp_on_losing_gold_hash: 0,
 			Utils.foxlab_lost_hp_hash: 0,
 			Utils.foxlab_charm_all_when_fully_heal_hash: [],
-			Utils.foxlab_charm_all_items_hash: {},
+			Utils.foxlab_charm_all_items_hash: {}, # key: item_id_hash, value: [item got times, pity bonus]
 			Utils.foxlab_extra_hit_hash: 0,
 			Utils.foxlab_turret_target_hash: 0,
 			Utils.foxlab_bounce_player_projectile_hash: 0,

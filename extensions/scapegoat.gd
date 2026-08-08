@@ -11,7 +11,8 @@ func _ready():
 	call_deferred("_foxlab_ready")
 
 func _foxlab_ready():
-	if not RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index).empty():
+	if not RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index).empty() or \
+		not RunData.get_player_effect(Utils.foxlab_stats_on_scapegoat_death_hash, player_index).empty():
 		RunData.foxlab_scapegoat_no_hurt[player_index].append(self)
 
 	if RunData.get_player_effect_bool(Utils.foxlab_scapegoat_no_heal_hash, player_index):
@@ -24,12 +25,6 @@ func _foxlab_ready():
 		_foxlab_movement_ins = _foxlab_movement_behavior.new().init(self)
 		_current_movement_behavior = _foxlab_movement_ins
 		add_child(_foxlab_movement_ins)
-
-func on_health_updated(_unit, current_val: int, max_val: int) -> void :
-	.on_health_updated(_unit, current_val, max_val)
-	if not RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index).empty() \
-		and current_val >= max_val:
-		life_bar.hide()
 
 func update_highlight(_value: bool = true):
 	.update_highlight(_value)
@@ -48,9 +43,6 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	if not (args.hitbox and args.hitbox.is_healing):
 		dmg_taken = .take_damage(value, args)
 	if dmg_taken[1] > 0:
-		if not RunData.foxlab_scapegoat_no_hurt[player_index].empty() and current_stats.health + dmg_taken[1] >= max_stats.health:
-			RunData.foxlab_scapegoat_no_hurt[player_index].erase(self)
-
 		var material = RunData.get_player_effect(Utils.foxlab_materials_on_scapegoat_hit_hash, player_index)
 		if material > 0:
 			for _i in range(material):
@@ -80,6 +72,12 @@ func _alter_movement_behavior():
 
 func die(args: = Entity.DieArgs.new()) -> void :
 	.die(args)
-	if not args.cleaning_up:
-		for stats_on_scapegoat_death in RunData.get_player_effect(Utils.foxlab_stats_on_scapegoat_death_hash, player_index):
-			RunData.add_stat(stats_on_scapegoat_death[0], stats_on_scapegoat_death[1], player_index)
+	if not args.cleaning_up and not RunData.foxlab_scapegoat_no_hurt[player_index].empty():
+		var before_size = RunData.foxlab_scapegoat_no_hurt[player_index].size()
+		RunData.foxlab_scapegoat_no_hurt[player_index].erase(self)
+		var after_size = RunData.foxlab_scapegoat_no_hurt[player_index].size()
+		if before_size > after_size:
+			RunData.foxlab_nb_died_scapegoat[player_index] += 1
+			if after_size == 0:
+				for stats_on_scapegoat_death in RunData.get_player_effect(Utils.foxlab_stats_on_scapegoat_death_hash, player_index):
+					RunData.add_stat(stats_on_scapegoat_death[0], stats_on_scapegoat_death[1] * RunData.foxlab_nb_died_scapegoat[player_index], player_index)

@@ -10,6 +10,7 @@ var foxlab_is_midnight = [false, false, false, false]
 
 #替罪羊相关
 var foxlab_scapegoat_no_hurt = [[], [], [], []]
+var foxlab_nb_died_scapegoat = [0, 0, 0, 0]
 
 #面具相关，面具成功触发时发出信号
 signal foxlab_sec_char_changed(new_characters, player_index)
@@ -211,6 +212,7 @@ func _reset_per_wave_properties() -> void :
 	foxlab_current_different_enemies = 0
 	foxlab_is_midnight = [false, false, false, false]
 	foxlab_scapegoat_no_hurt = [[], [], [], []]
+	foxlab_nb_died_scapegoat = [0, 0, 0, 0]
 
 func add_gold(value: int, player_index: int) -> void :
 	# 如果材料不是自己捡的，自己又是要控材料的角色，把材料先记着

@@ -677,7 +677,7 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
 		var gain_effects = RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index)
-		if gain_effects.empty() or RunData.foxlab_scapegoat_no_hurt[player_index].empty():
+		if gain_effects.empty() or RunData.foxlab_nb_died_scapegoat[player_index]:
 			continue
 		for gain_effect in gain_effects:
 			foxlab_get_item(gain_effect[0], gain_effect[1], player_index)

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=37 format=2]
+[gd_resource type="Resource" load_steps=36 format=2]
 
 [ext_resource path="res://weapons/ranged/laser_gun/1/laser_gun_data.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/goatkeeper/goatkeeper_ear_front.tres" type="Resource" id=2]
@@ -32,7 +32,6 @@
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=34]
 [ext_resource path="res://weapons/melee/stick/1/stick_data.tres" type="Resource" id=35]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/goatkeeper/goatkeeper_effect_4.tres" type="Resource" id=39]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/goatkeeper/goatkeeper_effect_0.tres" type="Resource" id=40]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/goatkeeper/goatkeeper_effect_1.tres" type="Resource" id=41]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/goatkeeper/goatkeeper_effect_2.tres" type="Resource" id=42]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/goatkeeper/goatkeeper_effect_3.tres" type="Resource" id=43]
@@ -46,7 +45,7 @@ icon = ExtResource( 27 )
 name = "CHARACTER_FOXLAB_GOAT_KEEPER"
 tier = 0
 value = 1
-effects = [ ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 39 ), ExtResource( 14 ) ]
+effects = [ ExtResource( 42 ), ExtResource( 41 ), ExtResource( 43 ), ExtResource( 39 ), ExtResource( 14 ) ]
 tracking_text = "FOXLAB_MATERIALS_DROPPED"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

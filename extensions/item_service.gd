@@ -88,14 +88,11 @@ const FOXLAB_CHARM_CHANCE := 0.03
 var foxlab_enemies = []
 var foxlab_die_args = Entity.DieArgs.new()
 const FOXLAB_PLAYER_HP_BOOST = 20
-var foxlab_player_boost_args = BoostArgs.new()
 var foxlab_enemy_boost_args = BoostArgs.new()
 func _foxlab_init_enemies():
 	foxlab_die_args.cleaning_up = true
 	foxlab_die_args.enemy_killed_by_player = false
 	foxlab_die_args.killed_by_player_index = - 1
-	foxlab_player_boost_args.speed_boost = 20
-	foxlab_player_boost_args.attack_speed_boost = 20
 	foxlab_enemy_boost_args.hp_boost = 150
 	foxlab_enemy_boost_args.damage_boost = 25
 	foxlab_enemy_boost_args.speed_boost = 50
@@ -149,18 +146,11 @@ func foxlab_spawn_random_enemy(enemy, boss_spawned_this_wave: int, player_index:
 		var main = Utils.get_scene_node()
 		for _player_index in RunData.get_player_count():
 			var player =  main._players[_player_index]
-			if not player._pending_die and Utils.get_stat(Keys.stat_max_hp_hash, _player_index) > 0:
-				if player.is_boosted:
-					player._boost_timer.start()
-					continue
-				var max_hp = player.max_stats.health as float
-				# 最少增加20点血量
-				if max_hp * (FOXLAB_PLAYER_HP_BOOST / 100.0) < FOXLAB_PLAYER_HP_BOOST:
-					foxlab_player_boost_args.hp_boost = ((max_hp + FOXLAB_PLAYER_HP_BOOST) / max_hp - 1) * 100
-				else:
-					foxlab_player_boost_args.hp_boost = FOXLAB_PLAYER_HP_BOOST
-				player.boost(foxlab_player_boost_args)
-				player.emit_signal("stats_boosted", player)
+			if not player._pending_die:
+				player._hit_protection += 1
+				player.current_stats.health += int(max(FOXLAB_PLAYER_HP_BOOST, player.current_stats.health * FOXLAB_PLAYER_HP_BOOST / 100))
+				player.emit_signal("health_updated", player, player.current_stats.health, player.max_stats.health)
+
 
 		var floating_text_manager = main._floating_text_manager
 		if not enemy is Boss:

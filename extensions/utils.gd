@@ -15,6 +15,7 @@ var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Key
 
 # Effects
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
+var foxlab_gain_xp_gain_hash: int = Keys.generate_hash("gain_xp_gain")
 var foxlab_gain_enemy_health_hash: int = Keys.generate_hash("gain_enemy_health")
 var foxlab_gain_enemy_speed_hash: int = Keys.generate_hash("gain_enemy_speed")
 var foxlab_gain_enemy_damage_hash: int = Keys.generate_hash("gain_enemy_damage")

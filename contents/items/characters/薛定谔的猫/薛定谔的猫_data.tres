@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=42 format=2]
+[gd_resource type="Resource" load_steps=35 format=2]
 
 [ext_resource path="res://weapons/melee/dagger/1/dagger_data.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_1.tres" type="Resource" id=2]
@@ -22,21 +22,14 @@
 [ext_resource path="res://weapons/ranged/icicle/1/icicle_data.tres" type="Resource" id=20]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/schrodingers_top.tres" type="Resource" id=22]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_8.tres" type="Resource" id=23]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_11.tres" type="Resource" id=24]
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=25]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_18.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_17.tres" type="Resource" id=27]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_20.tres" type="Resource" id=29]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_13.tres" type="Resource" id=30]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_15.tres" type="Resource" id=31]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_12.tres" type="Resource" id=32]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_10.tres" type="Resource" id=33]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_19.tres" type="Resource" id=34]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_21.tres" type="Resource" id=35]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_16.tres" type="Resource" id=36]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_7.tres" type="Resource" id=37]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_9.tres" type="Resource" id=38]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_icon.png" type="Texture" id=39]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_23.tres" type="Resource" id=40]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/薛定谔的猫/薛定谔的猫_effect_24.tres" type="Resource" id=41]
@@ -51,7 +44,7 @@ icon = ExtResource( 39 )
 name = "CHARACTER_FOXLAB_SCHRODINGERS_CAT"
 tier = 0
 value = 1
-effects = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 37 ), ExtResource( 23 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 24 ), ExtResource( 32 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 3 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ) ]
+effects = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 37 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 35 ), ExtResource( 3 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

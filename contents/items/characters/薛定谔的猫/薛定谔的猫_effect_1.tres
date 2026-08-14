@@ -9,7 +9,7 @@ arg_index = 0
 arg_sign = 0
 arg_value = 2
 arg_format = 0
-arg_key = "1/3"
+arg_key = "1/2"
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 2 )

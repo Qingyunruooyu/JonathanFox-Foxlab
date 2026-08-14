@@ -27,6 +27,8 @@ func apply_items_appearance(all_items: Array) -> void :
 	potato.texture = foxlab_potato_texture
 	var legs = $"%Character"/Legs
 	legs.visible = true
+	var shadow = $"%Character"/Shadow
+	shadow.visible = true
 
 	.apply_items_appearance(all_items)
 
@@ -53,6 +55,7 @@ func apply_items_appearance(all_items: Array) -> void :
 			if app.get("foxlab_hide_potato"):
 				potato.texture = foxlab_transparent_texture
 				legs.visible = false
+				shadow.visible = false
 				return
 
 

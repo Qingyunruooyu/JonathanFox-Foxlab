@@ -372,6 +372,8 @@ func apply_items_effects() -> void :
 			potato.texture = foxlab_transparent_texture
 			var legs = $Animation/Legs
 			legs.visible = false
+			var shadow = $Animation/Shadow
+			shadow.visible = false
 			return
 
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :

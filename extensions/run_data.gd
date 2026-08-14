@@ -95,6 +95,16 @@ func foxlab_forget_item_entry(player_index:int):
 	foxlab_remembered_weapons[player_index].clear()
 	foxlab_remembered_items[player_index].clear()
 
+func foxlab_forget_a_weapon(weapon, player_index):
+	Utils.reset_stat_cache(player_index)
+	var effects: Array = weapon.effects
+	# 倒着找，只找最后一次记忆的效果段 （孟婆记忆面具，面具换掉孟婆从而保留的效果，不会失去）
+	for i in range(effects.size(), 0, -1):
+		if effects[i - 1].custom_key_hash == Utils.foxlab_remembered_effect_begin_hash:
+			while effects.size() >= i:
+				effects.pop_back().unapply(player_index)
+			break
+
 func foxlab_forget_item(player_index: int):
 	if not foxlab_remembered_items[player_index].empty():
 		var effects = RunData.get_player_effects(player_index)
@@ -116,14 +126,7 @@ func foxlab_forget_item(player_index: int):
 
 	if not foxlab_remembered_weapons[player_index].empty():
 		for weapon in get_player_weapons_ref(player_index):
-			Utils.reset_stat_cache(player_index)
-			var effects: Array = weapon.effects
-			# 倒着找，只找最后一次记忆的效果段 （孟婆记忆面具，面具换掉孟婆从而保留的效果，不会失去）
-			for i in range(effects.size(), 0, -1):
-				if effects[i - 1].custom_key_hash == Utils.foxlab_remembered_effect_begin_hash:
-					while effects.size() >= i:
-						effects.pop_back().unapply(player_index)
-					break
+			foxlab_forget_a_weapon(weapon, player_index)
 		foxlab_remembered_weapons[player_index].clear()
 		LinkedStats.reset_player(player_index)
 
@@ -343,3 +346,9 @@ func reset(restart: bool = false) -> void :
 		LinkedStats.reset()
 	foxlab_is_horde_wave = null
 	.reset(restart)
+
+func after_weapon_removed(weapon: WeaponData, player_index: int) -> void :
+	.after_weapon_removed(weapon, player_index)
+	# 孟婆中途武器碎了，把记忆抹除，避免重回商店时，记忆还在（逃过了 foxlab_forget_item 批量抹除代码)
+	if not foxlab_remembered_weapons[player_index].empty():
+		foxlab_forget_a_weapon(weapon, player_index)

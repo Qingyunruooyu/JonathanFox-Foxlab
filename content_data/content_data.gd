@@ -64,9 +64,8 @@ func add_resources(settings: Dictionary):
 	if not settings["FOXLAB_DISABLE_CHARACTERS"]:
 		ProgressData._append_without_duplicates(ItemService.characters, characters)
 	else:
-		var faceless_hash = Keys.generate_hash("character_foxlab_faceless")
 		for character in characters:
-			if character.my_id_hash == faceless_hash:
+			if character.my_id == "character_foxlab_faceless":
 				ProgressData._append_without_duplicates(ItemService.characters, [character])
 				break
 

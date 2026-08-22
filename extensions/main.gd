@@ -298,7 +298,7 @@ func foxlab_process_explode_on_burn(enemy, args: TakeDamageArgs):
 	explode_args.crit_damage = first_stats.crit_damage
 	explode_args.burning_data = burning_data
 	explode_args.from_player_index = player_index
-	explode_args.ignored_objects = [enemy]
+	explode_args.ignored_objects = [ ]
 	explode_args.damage_tracking_key_hash = first_effect.tracking_key_hash
 	if is_instance_valid(enemy._burning.from):
 		explode_args.from = enemy._burning.from

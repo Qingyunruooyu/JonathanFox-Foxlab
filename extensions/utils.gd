@@ -174,6 +174,8 @@ var foxlab_ignored_floating_stat_hash = {
 var foxlab_primary_stat_gain_map = {}
 # stats in order of stat panel
 var foxlab_stats_in_container = []
+var foxlab_stats_container: Node = null
+var foxlab_stats_invisible_in_container: = {Keys.item_box_gold_hash: 0}
 # 0: tier COMMON level up value of primary (defaults to 1)
 # 1: basic upgrade id
 var foxlab_primary_stat_level_up_map = []
@@ -452,16 +454,18 @@ func foxlab_is_vanilla_upgrade(upgrade_data:UpgradeData):
 
 func foxlab_get_stats_in_container():
 	if foxlab_stats_in_container.empty():
-		var stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()
-		get_tree().root.add_child(stats_container)
+		var stats_container = foxlab_stats_container
+		add_child(stats_container)
 		stats_container.visible = false
+		# print("stats container order: ")
 		if stats_container._primary_stats != null and stats_container._secondary_stats != null:
 			for container in [stats_container._primary_stats, stats_container._secondary_stats]:
 				foxlab_stats_in_container.append([])
 				var stats = foxlab_stats_in_container.back()
 				for stat in container.get_children():
-					if stat.visible:
+					if not stat.key_hash in foxlab_stats_invisible_in_container:
 						stats.append(stat.key_hash)
+					# print(Keys.hash_to_string[stat.key_hash], " visible: ", stat.visible)
 		stats_container.queue_free()
 	return foxlab_stats_in_container
 
@@ -577,7 +581,12 @@ func reset_stat_keys() -> void :
 	foxlab_item_wanted_hash.clear()
 	foxlab_unknown_elites.clear()
 	foxlab_evil_mob_units.clear()
+
 	foxlab_stats_in_container.clear()
+	if is_instance_valid(foxlab_stats_container):
+		foxlab_stats_container.queue_free()
+	foxlab_stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()
+
 	foxlab_primary_stat_level_up_map.clear()
 	foxlab_primary_stat_gain_map.clear()
 	_foxlab_init_primary_stat_gain_map()

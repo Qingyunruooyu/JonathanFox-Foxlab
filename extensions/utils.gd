@@ -461,11 +461,13 @@ func foxlab_get_stats_in_container():
 		if stats_container._primary_stats != null and stats_container._secondary_stats != null:
 			for container in [stats_container._primary_stats, stats_container._secondary_stats]:
 				foxlab_stats_in_container.append([])
+				var stats_added = {}
 				var stats = foxlab_stats_in_container.back()
 				for stat in container.get_children():
-					if not stat.key_hash in foxlab_stats_invisible_in_container:
+					if not stat.key_hash in foxlab_stats_invisible_in_container and not stat.key_hash in stats_added:
 						stats.append(stat.key_hash)
-					# print(Keys.hash_to_string[stat.key_hash], " visible: ", stat.visible)
+						stats_added[stat.key_hash] = 1
+						# print(Keys.hash_to_string[stat.key_hash], " visible: ", stat.visible)
 		stats_container.queue_free()
 	return foxlab_stats_in_container
 

@@ -19,7 +19,6 @@ arg_value = 0
 arg_format = 0
 arg_key = ""
 
-
 [resource]
 script = ExtResource( 1 )
 key = "item_garden"

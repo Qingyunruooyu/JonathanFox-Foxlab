@@ -281,6 +281,14 @@ func _foxlab_init_primary_stat_gain_map():
 		if gain_stat_hash in effects:
 			foxlab_primary_stat_gain_map[gain_stat_hash] = stat
 
+func foxlab_get_colored_stat_str(stat_hash: int) -> String:
+	var stat_data = ItemService.get_stat(stat_hash)
+	var stat_str = Keys.hash_to_string[stat_hash]
+	if stat_data and stat_data.is_dlc_stat and stat_data.color_override != Color.black:
+		return "[color=#%s]%s[/color]" % [stat_data.color_override.to_html(), tr(stat_str.to_upper())]
+	else:
+		return tr(stat_str.to_upper())
+
 ####### 生成敌人相关 ##########
 const FOXLAB_DRAGON_FISH_PATH = "res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres"
 func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:

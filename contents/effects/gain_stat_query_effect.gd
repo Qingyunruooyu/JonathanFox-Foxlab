@@ -10,16 +10,10 @@ func get_text(player_index: int, _colored: bool = true) -> String:
 		if gain_value == 0:
 			continue
 		var stat = Utils.foxlab_primary_stat_gain_map[stat_gain]
-		var stat_str = Keys.hash_to_string[stat]
 		var value_str = str(gain_value) + "%"
 		if gain_value > 0:
 			value_str = "+" + value_str
-		if stat == Keys.stat_curse_hash:
-			text += "\n" + Text.text(tr("EFFECT_FOXLAB_STAT_QUERY"), [value_str,
-				"[color=#%s]%s[/color]" % [Utils.CURSE_COLOR.to_html(), tr(stat_str.to_upper())]],
-				 [Sign.OVERRIDE, Sign.NEUTRAL])
-		else:
-			text += "\n" + Text.text(tr("EFFECT_FOXLAB_STAT_QUERY"), [value_str,
-				 tr(stat_str.to_upper())],
-				 [Sign.NEGATIVE if gain_value < 0 else Sign.POSITIVE, Sign.NEUTRAL])
+		text += "\n" + Text.text(tr("EFFECT_FOXLAB_STAT_QUERY"), [value_str,
+				Utils.foxlab_get_colored_stat_str(stat)],
+				[Sign.NEGATIVE if gain_value < 0 else Sign.POSITIVE, Sign.NEUTRAL])
 	return text

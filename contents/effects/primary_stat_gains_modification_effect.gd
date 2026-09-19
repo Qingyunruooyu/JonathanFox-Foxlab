@@ -24,13 +24,14 @@ func unapply(player_index: int) -> void:
 
 func get_args(_player_index: int) -> Array:
 	var display_text = tr(stat_displayed.to_upper())
-	if not stats_exception.empty():
-		var exceptions = []
-		for stat in stats_exception:
-			if stat == "stat_curse":
-				exceptions.append("[color=#%s]%s[/color]" % [Utils.CURSE_COLOR.to_html(), tr("STAT_CURSE")])
-			else:
-				exceptions.append(tr(stat.to_upper()))
+	var exceptions = []
+	for stat in Utils._primary_stat_keys:
+		var stat_str = Keys.hash_to_string[stat]
+		var gain_stat = "gain_" + stat_str
+		var gain_stat_hash = Keys.generate_hash(gain_stat)
+		if stat_str in stats_exception or not gain_stat_hash in Utils.foxlab_primary_stat_gain_map:
+			exceptions.append(Utils.foxlab_get_colored_stat_str(stat))
+	if not exceptions.empty():
 		display_text += Text.text(tr("FOXLAB_EXCEPT"), ["/".join(exceptions)], [get_sign(effect_sign, value)])
 	return [display_text, str(abs(value))]
 

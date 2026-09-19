@@ -349,6 +349,10 @@ func die(args: = Utils.default_die_args) -> void :
 		Utils.default_die_args.from = null
 		Utils.default_die_args.is_bullet_hell = false
 
+	# 有玩家阵亡时，原版会重置TempStats，导致玩家属性变化，但敌人属性cache住的，重置也没用
+	# 这里重置敌人cache使其生效。影响孔雀、芹菜茶、围巾等道具
+	EntityService.reset_cache()
+
 func add_weapon(weapon: WeaponData, pos: int) -> void :
 	.add_weapon(weapon, pos)
 	var cur_weapon = current_weapons.back()

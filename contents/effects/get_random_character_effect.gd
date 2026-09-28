@@ -15,8 +15,8 @@ static func get_id() -> String:
 
 func _get_armor_chance(player_index: int, armor_increases_chance: bool) -> float:
 	var num = -1 if armor_increases_chance else 1
-	# 如果armor_increases_chance为 false，护甲越高概率越低
-	var armor = RunData.get_armor_coef(num * Utils.get_stat(Keys.stat_armor_hash, player_index))
+	# 如果armor_increases_chance为 false，该属性越高概率越低；属性取自效果的key
+	var armor = RunData.get_armor_coef(num * Utils.get_stat(key_hash, player_index))
 	return armor
 
 func _get_transform_chance(player_index: int) -> float:
@@ -65,6 +65,7 @@ func apply(player_index: int) -> void:
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
 		RunData.get_player_effects(player_index)[Utils.foxlab_transform_pity_hash] += int(transform_chance / 10.0)
 		#DebugService.log_data("transform failed")
+		_foxlab_refund_mask_on_fail(player_index)
 		_after_transform(player_index, stack_effect)
 		return
 
@@ -123,6 +124,22 @@ func apply(player_index: int) -> void:
 
 	RunData.emit_signal("foxlab_sec_char_changed", icons_to_pop, player_index)
 	_after_transform(player_index, stack_effect)
+
+# 变身失败时，按最后一个条目对应道具当前价格的比例返还一次材料（退款不超过原价）；条目格式：[道具key, 返还百分比]
+func _foxlab_refund_mask_on_fail(player_index: int) -> void:
+	var refunds = RunData.get_player_effect(Utils.foxlab_mask_fail_refund_hash, player_index)
+	if refunds.empty():
+		return
+	var refund = refunds.back()
+	var item_data = ItemService.get_element(ItemService.items, refund[0])
+	if item_data == null:
+		return
+	# 退款比例最大100%，不能超过原价
+	var refund_ratio = min(refund[1], 100)
+	var item_price: int = ItemService.get_value(RunData.current_wave, item_data.value, player_index, true, false, item_data.my_id_hash)
+	var final_gold = int(item_price * refund_ratio / 100.0)
+	if final_gold > 0:
+		RunData.add_gold(final_gold, player_index)
 
 func _after_transform(player_index: int, stack_effect: Array) -> void:
 	stack_effect[1] = false
@@ -228,12 +245,13 @@ func cleanup(player_index: int) -> void:
 
 
 func get_args(player_index: int) -> Array:
+	# 最后一位{3}为该效果key对应属性的名称
 	if RunData.get_player_character(player_index) == null:
-		return ["%s ~ %s" % [str(floor(MIN_TRANSFORM_NUM)), str(ceil(MAX_TRANSFORM_NUM))], tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM")]
+		return ["%s ~ %s" % [str(floor(MIN_TRANSFORM_NUM)), str(ceil(MAX_TRANSFORM_NUM))], tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr(key.to_upper())]
 	try_generate(player_index)
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
-	return [str(meta.chars.size()),meta.names, str(stepify(_get_transform_chance(player_index), 0.01))]
+	return [str(meta.chars.size()),meta.names, str(stepify(_get_transform_chance(player_index), 0.01)), tr(key.to_upper())]
 
 func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictionary):
 	if not character.my_id_hash in convert_stat_dict:

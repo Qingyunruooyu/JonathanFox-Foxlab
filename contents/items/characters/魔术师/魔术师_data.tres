@@ -31,9 +31,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_9.tres" type="Resource" id=29]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_10.tres" type="Resource" id=30]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_11.tres" type="Resource" id=31]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_12.tres" type="Resource" id=32]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_8.tres" type="Resource" id=33]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_13.tres" type="Resource" id=34]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_3a.tres" type="Resource" id=35]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/魔术师_effect_14.tres" type="Resource" id=36]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/魔术师/magician_hat.tres" type="Resource" id=37]
@@ -51,7 +49,7 @@ icon = ExtResource( 28 )
 name = "CHARACTER_FOXLAB_MAGICIAN"
 tier = 0
 value = 1
-effects = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 35 ), ExtResource( 5 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 33 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 34 ), ExtResource( 36 ), ExtResource( 41 ) ]
+effects = [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 35 ), ExtResource( 5 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 33 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 36 ), ExtResource( 41 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
@@ -60,7 +58,7 @@ curse_factor = 0.0
 max_nb = -1
 item_appearances = [ ExtResource( 38 ), ExtResource( 37 ), ExtResource( 6 ), ExtResource( 7 ) ]
 tags = [  ]
-wanted_tags = [ "exploration" ]
+wanted_tags = [ "exploration", "stat_harvesting" ]
 banned_item_groups = [  ]
 banned_items = [ "item_tree", "item_yztato_ghost_tree", "item_baby_gecko", "item_sifds_relic", "item_lootworm", "item_foxlab_inner_indomitable", "item_foxlab_salvation" ]
 banned_upgrades = [  ]

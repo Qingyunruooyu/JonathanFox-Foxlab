@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 key = ""
 text_key = "EFFECT_FOXLAB_FAST_ON_HIT"
-value = 12
+value = 1
 custom_key = ""
 storage_method = 0
 effect_sign = 1

@@ -13,13 +13,13 @@ arg_key = ""
 
 [resource]
 script = ExtResource( 2 )
-key = "stat_harvesting"
+key = "stat_max_hp"
 text_key = "EFFECT_GAIN_STAT_FOR_EVERY_STAT"
-value = -4
+value = 3
 custom_key = ""
 storage_method = 0
-effect_sign = 3
+effect_sign = 0
 custom_args = [ SubResource( 1 ) ]
 nb_stat_scaled = 1
-stat_scaled = "duplicate_item"
-perm_stats_only = true
+stat_scaled = "foxlab_living_structure"
+perm_stats_only = false

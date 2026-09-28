@@ -18,8 +18,7 @@ var foxlab_mutate_boost = [null, null, null, null]
 var foxlab_original_piercing = [0, 0, 0, 0]
 
 #超度相关
-var foxlab_seed_timers = []
-var foxlab_seed_numbers = [Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND, Utils.FOXLAB_SEED_PER_SECOND]
+var foxlab_seed_timers = [null, null, null, null]
 var foxlab_next_gold_player: int
 
 # 额外碰撞判定
@@ -55,48 +54,12 @@ func _ready():
 func foxlab_receive_item_stat_ready():
 	for player_index in _players.size():
 		var need_reset_player: bool = false
-		# value, foxlab_receive_item_id, foxlab_receive_item_wave, curse_factor, is_cursed, end_wave
+		# 条目格式：[道具key, 个数, 诅咒标记]
 		var receive_item_effects: Array = RunData.get_player_effect(Utils.foxlab_effect_receive_item_at_wave_hash, player_index)
 		if not receive_item_effects.empty():
-			# Cache
-			var _item = ItemService.get_item_from_id(Keys.item_alien_eyes_hash)
-
-			var remove_array: Array = []
 			for receive_item_effect in receive_item_effects:
-				if receive_item_effect[2] <= RunData.current_wave:
-					var end_wave = -1
-					if receive_item_effect.size() > 5:
-						end_wave = receive_item_effect[5]
-					if end_wave <= 0:
-						remove_array.push_back(receive_item_effect)
-					elif end_wave < RunData.current_wave:
-						remove_array.push_back(receive_item_effect)
-						continue
-
-					var item_data = ItemService.get_element(ItemService.items, receive_item_effect[1])
-					if not item_data == null:
-						var is_cursed: bool = receive_item_effect[4]
-						var dlc = null
-						var actual_item_data = item_data
-
-						if is_cursed:
-							dlc = ProgressData.get_dlc_data("abyssal_terrors")
-
-						for i in receive_item_effect[0]:
-							if dlc:
-								actual_item_data = dlc.curse_item(item_data, player_index, false)
-							if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
-								for effect in actual_item_data.effects:
-									if effect is SwapMaxMinStatEffect:
-										effect.has_been_applied = false
-										effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
-							RunData.add_item(actual_item_data, player_index)
-						_on_foxlab_item_added(actual_item_data, receive_item_effect[0], player_index)
-
-						need_reset_player = true
-
-			for remove_entry in remove_array:
-				receive_item_effects.erase(remove_entry)
+				foxlab_get_item(receive_item_effect[0], receive_item_effect[1], player_index, receive_item_effect[2])
+			need_reset_player = true
 
 		# [key, value, starting_wave, end_wave]
 		var stats_end_of_wave_after_wave: Array = RunData.get_player_effect(Utils.foxlab_stats_end_of_wave_after_wave_hash, player_index)
@@ -156,20 +119,15 @@ func foxlab_mutation_ready():
 			foxlab_mutate_boost[i].damage_boost = ItemService.foxlab_enemy_boost_args.damage_boost
 
 func foxlab_seed_timers_ready():
-	var timer_wait_time: = 1.0
-	var player_count: int = RunData.get_player_count()
-	var timer_delay: = timer_wait_time / player_count
 	foxlab_next_gold_player = Utils.randi() % RunData.get_player_count()
 	for player_index in RunData.get_player_count():
 		if RunData.get_player_effect_bool(Utils.foxlab_enemy_interact_hash, player_index):
+			# 类似lifesteal：one_shot计时器，每 1/FOXLAB_SEED_PER_SECOND 秒每个玩家最多生成一个种子
 			var timer = Timer.new()
-			timer.wait_time = timer_wait_time
-			timer.autostart = true
-			foxlab_seed_timers.append(timer)
-			timer.connect("timeout", self, "_on_foxlab_seed_timer_timeout", [player_index])
+			timer.wait_time = 1.0 / Utils.FOXLAB_SEED_PER_SECOND
+			timer.one_shot = true
+			foxlab_seed_timers[player_index] = timer
 			add_child(timer)
-			if not get_tree().current_scene.name == "GutRunner":
-				yield(get_tree().create_timer(timer_delay), "timeout")
 
 func foxlab_extra_hit_ready():
 	for i in RunData.get_player_count():
@@ -189,9 +147,6 @@ func foxlab_enemy_priority_queue_ready():
 			for p in offsets.size():
 				_foxlab_bullet_color_gradient.add_point(offsets[p], colors[p])
 			break
-
-func _on_foxlab_seed_timer_timeout(player_index: int) -> void:
-	foxlab_seed_numbers[player_index] = 0
 
 func _on_enemy_took_damage_foxlab(enemy, value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool,\
 		 _is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
@@ -353,9 +308,10 @@ func foxlab_spawn_crate(unit) -> bool:
 	return false
 
 func foxlab_spawn_seed(unit, player_index: int):
-	if foxlab_seed_numbers[player_index] >= Utils.FOXLAB_SEED_PER_SECOND:
+	var timer = foxlab_seed_timers[player_index]
+	if timer == null or not timer.is_stopped():
 		return
-	foxlab_seed_numbers[player_index] += 1
+	timer.start()
 
 	var consumable_to_spawn: ConsumableData = ItemService.foxlab_seed_data.duplicate()
 	var effects = []
@@ -525,13 +481,20 @@ func foxlab_after_add_item(pre_states: Dictionary, player_index: int):
 				if not new_effect.empty() and player._one_second_timer.is_stopped():
 					player._one_second_timer.start()
 
-func foxlab_get_item(item_id_hash: int, num: int, player_index: int):
+# curse_mode：>0必诅咒；==0不诅咒；<0（默认）按apply_item_effect_modifications的结果
+func foxlab_get_item(item_id_hash: int, num: int, player_index: int, curse_mode: int = -1):
 	var item_data = ItemService.get_item_from_id(item_id_hash)
 	if not item_data == null:
 		var pre_states = foxlab_before_add_item(player_index)
 		var displayed_item = item_data
 		for _i in num:
-			var actual_item_data = ItemService.apply_item_effect_modifications(item_data, player_index)
+			var actual_item_data = item_data
+			if curse_mode > 0:
+				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+				if dlc:
+					actual_item_data = dlc.curse_item(item_data, player_index, false)
+			elif curse_mode < 0:
+				actual_item_data = ItemService.apply_item_effect_modifications(item_data, player_index)
 			if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
 				for effect in actual_item_data.effects:
 					if effect is SwapMaxMinStatEffect:
@@ -676,6 +639,13 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
+		# 先移除临时武器，避免排险者的异变会合入临时武器
+		_players[player_index].foxlab_remove_temp_weapon()
+
+		# 敌袭结束后获得道具；条目格式：[道具key, 个数, 诅咒标记]
+		for receive_item_effect in RunData.get_player_effect(Utils.foxlab_effect_receive_item_at_wave_end_hash, player_index):
+			foxlab_get_item(receive_item_effect[0], receive_item_effect[1], player_index, receive_item_effect[2])
+
 		var gain_effects = RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index)
 		if gain_effects.empty() or RunData.foxlab_nb_died_scapegoat[player_index]:
 			continue

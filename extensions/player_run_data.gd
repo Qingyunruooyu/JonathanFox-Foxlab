@@ -270,6 +270,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_faceless_enable_upgrade_on_transform_hash:0,
 			Utils.foxlab_faceless_upgrade_on_transform_wave_hash:Utils.LARGE_NUMBER,
 			Utils.foxlab_transform_pity_hash: 0, # 变身的概率怜悯
+			Utils.foxlab_mask_fail_refund_hash: [], # 变身失败按道具价格返还材料 [道具id, 返还百分比]
 			#ConvertStatEffect存在短路行为，如果两个角色都有这个效果，则不兼容，不允许同时变身
 			Utils.foxlab_faceless_convert_stat_characters_hash:{},
 			Utils.foxlab_faceless_transform_stack_hash:[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
@@ -278,8 +279,11 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_convert_remainder_end_of_wave_hash:[],
 			Utils.foxlab_temp_stats_on_structure_crit_hash: [], # 被删掉的原版词条
 			Utils.foxlab_landmines_on_death_chance_hash: [],
-			Utils.foxlab_effect_receive_item_at_wave_hash: [], # 改自brolab的两个特殊机制词条
-			Utils.foxlab_stats_end_of_wave_after_wave_hash: [],
+			Utils.foxlab_spawn_landmine_on_entering_birth_area_hash: 0, # 踩到敌人出生点时生成structure的个数
+			Utils.foxlab_copy_weapon_on_summon_birth_hash: [], # 踩到被召唤敌人的生成标记时[stat key, stat value, 复制武器数]
+			Utils.foxlab_effect_receive_item_at_wave_hash: [], # 敌袭开始/结束后获得道具 [道具key, 个数, 诅咒标记]
+			Utils.foxlab_effect_receive_item_at_wave_end_hash: [],
+			Utils.foxlab_stats_end_of_wave_after_wave_hash: [], # 改自brolab的特殊机制词条
 			Utils.foxlab_mutate_alive_enemy_hash: 0, #变异几率
 			Utils.foxlab_gain_stat_on_mutate_hash:0, #变异后可获得属性,
 			Utils.foxlab_no_trees_hash:0 ,#无法生成树木,
@@ -324,6 +328,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_bounce_player_projectile_hash: 0,
 			Utils.foxlab_weapon_class_explode_hash: [],
 			Utils.foxlab_knockback_aura_hash: 0,
+			Utils.character_foxlab_golem_ninja_hash: 0, # 傀儡忍者任务执行次数
 			Utils.foxlab_get_item_on_weapon_break_hash: [],
 			Utils.item_foxlab_shadow_hash: 0,
 			Utils.foxlab_one_shot_on_dodge_hash: [],

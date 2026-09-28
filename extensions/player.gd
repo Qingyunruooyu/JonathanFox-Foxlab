@@ -6,6 +6,13 @@ var foxlab_transparent_texture = preload("res://mods-unpacked/JonathanFox-FoxLab
 var _foxlab_curse_particle =load("res://particles/curse/curse_enemy_particles.tscn")
 var _foxlab_curse_particle_instance = null
 
+const FOXLAB_MOM_LANDMINE_EFFECT_PATH = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_0.tres"
+const FOXLAB_MOM_LANDMINE_REUSABLE_SCENE_PATH = "res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/mom_landmine/mom_landmine_reusable.tscn"
+var foxlab_mom_landmine_effect: Resource = null
+var foxlab_mom_landmine_spawned_this_wave: int = 0
+# 临时添加的武器（WeaponData，在players_data中，_clean_up时移除，敌袭结束后不保留）
+var foxlab_temp_weapons: = []
+
 var foxlab_ball_lighting_names = [Keys.generate_hash("item_foxlab_ball_lightning_3"), Keys.generate_hash("item_foxlab_ball_lightning_2"), Keys.generate_hash("item_foxlab_ball_lightning_1"), Keys.generate_hash("item_foxlab_ball_lightning_0"), ]
 
 var _foxlab_ball_lightning_timer: Timer
@@ -316,6 +323,18 @@ func foxlab_one_shot_on_dodge(args: TakeDamageArgs):
 					RunData.add_tracked_value(player_index, Utils.item_foxlab_shadow_hash, 1, 1)
 					return
 
+# 移除临时武器：反向遍历武器列表，找到完全相同的WeaponData实例后按索引精确移除
+# （若武器已中途破裂，players_data中已无该实例，此处自然跳过）
+func foxlab_remove_temp_weapon():
+	while not foxlab_temp_weapons.empty():
+		var temp_weapon: WeaponData = foxlab_temp_weapons.pop_back()
+		var weapons = RunData.get_player_weapons_ref(player_index)
+		for i in range(weapons.size() - 1, -1, -1):
+			if weapons[i] == temp_weapon:
+				RunData.remove_weapon_by_index(i, player_index)
+				break
+
+
 ############ 函数扩展 #########
 #　修复官方bug
 func die(args: = Utils.default_die_args) -> void :
@@ -368,6 +387,8 @@ func _clean_up() -> void :
 	if _foxlab_bounce_box:
 		_foxlab_bounce_box.disable()
 
+	foxlab_remove_temp_weapon()
+
 func apply_items_effects() -> void :
 	.apply_items_effects()
 	for appearance in RunData.get_player_appearances(player_index):
@@ -379,6 +400,13 @@ func apply_items_effects() -> void :
 			var shadow = $Animation/Shadow
 			shadow.visible = false
 			return
+
+# 添加临时武器：正常走RunData.add_weapon进players_data（破裂等逻辑由原版处理），
+# 记录到foxlab_temp_weapons，敌袭结束_clean_up时从players_data移除
+func foxlab_add_temp_weapon(weapon: WeaponData) -> void :
+	var new_weapon: WeaponData = RunData.add_weapon(weapon, player_index)
+	foxlab_temp_weapons.append(new_weapon)
+	RunData.emit_signal("foxlab_weapon_added", new_weapon, player_index)
 
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	var prev_weapons = current_weapons.size()

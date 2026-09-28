@@ -22,14 +22,13 @@
 [ext_resource path="res://weapons/ranged/icicle/1/icicle_data.tres" type="Resource" id=20]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/sickle/1/sickle_data.tres" type="Resource" id=21]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=22]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_0a.tres" type="Resource" id=23]
+[ext_resource path="res://dlcs/dlc_1/weapons/melee/brick/1/brick_data.tres" type="Resource" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_2.tres" type="Resource" id=29]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_1.tres" type="Resource" id=30]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_5.tres" type="Resource" id=32]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_4.tres" type="Resource" id=34]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_43a.tres" type="Resource" id=38]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_6.tres" type="Resource" id=40]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_0.tres" type="Resource" id=55]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_37.tres" type="Resource" id=56]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/troubleshooter_scar.tres" type="Resource" id=57]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_44b.tres" type="Resource" id=58]
@@ -41,6 +40,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/瞻星之危/瞻星之危_data.tres" type="Resource" id=66]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/累卵之危/累卵之危_data.tres" type="Resource" id=67]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/裂变之危/裂变之危_data.tres" type="Resource" id=68]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/排险者/排险者_effect_0.tres" type="Resource" id=69]
 
 [resource]
 script = ExtResource( 7 )
@@ -51,7 +51,7 @@ icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_TROUBLESHOOTER"
 tier = 0
 value = 1
-effects = [ ExtResource( 23 ), ExtResource( 55 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 2 ), ExtResource( 34 ), ExtResource( 32 ), ExtResource( 40 ), ExtResource( 56 ), ExtResource( 59 ), ExtResource( 61 ), ExtResource( 38 ), ExtResource( 64 ), ExtResource( 60 ), ExtResource( 58 ) ]
+effects = [ ExtResource( 69 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 2 ), ExtResource( 34 ), ExtResource( 32 ), ExtResource( 40 ), ExtResource( 56 ), ExtResource( 59 ), ExtResource( 61 ), ExtResource( 38 ), ExtResource( 64 ), ExtResource( 60 ), ExtResource( 58 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
@@ -64,5 +64,5 @@ wanted_tags = [ "xp_gain", "stat_speed", "pickup" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 13 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 65 ), ExtResource( 12 ), ExtResource( 17 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 18 ), ExtResource( 11 ), ExtResource( 14 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 8 ) ]
+starting_weapons = [ ExtResource( 13 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 65 ), ExtResource( 12 ), ExtResource( 17 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 18 ), ExtResource( 11 ), ExtResource( 14 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 8 ), ExtResource( 23 ) ]
 starting_items = [ ExtResource( 66 ), ExtResource( 67 ), ExtResource( 68 ) ]

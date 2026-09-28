@@ -11,6 +11,7 @@ const FOXLAB_SEED_PER_SECOND = 4
 const FOXLAB_GET_ITEM_ON_BREAK_MAX_CHANCE = 0.81
 
 const FOXLAB_ENCHANTED_EYES_CRATE_CHANCE = 20
+const FOXLAB_MOM_LANDMINE_MAX_PER_WAVE = 6
 var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Keys.generate_hash("item_foxlab_tracker")]
 
 # Effects
@@ -40,6 +41,7 @@ var foxlab_wave_started_hash: int = Keys.generate_hash("foxlab_wave_started")
 var foxlab_faceless_enable_upgrade_on_transform_hash: int = Keys.generate_hash("foxlab_faceless_enable_upgrade_on_transform")
 var foxlab_faceless_upgrade_on_transform_wave_hash: int = Keys.generate_hash("foxlab_faceless_upgrade_on_transform_wave")
 var foxlab_transform_pity_hash: int = Keys.generate_hash("foxlab_transform_pity")
+var foxlab_mask_fail_refund_hash: int = Keys.generate_hash("foxlab_mask_fail_refund")
 var foxlab_faceless_convert_stat_characters_hash: int = Keys.generate_hash("foxlab_faceless_convert_stat_characters")
 var foxlab_faceless_transform_stack_hash: int = Keys.generate_hash("foxlab_faceless_transform_stack")
 var foxlab_mask_history_hash: int=Keys.generate_hash("foxlab_mask_history")
@@ -47,7 +49,10 @@ var foxlab_buddhas_hand_stack_hash: int = Keys.generate_hash("foxlab_buddhas_han
 var foxlab_convert_remainder_end_of_wave_hash: int = Keys.generate_hash("foxlab_convert_remainder_end_of_wave")
 var foxlab_temp_stats_on_structure_crit_hash: int = Keys.generate_hash("foxlab_temp_stats_on_structure_crit")
 var foxlab_landmines_on_death_chance_hash: int = Keys.generate_hash("foxlab_landmines_on_death_chance")
+var foxlab_spawn_landmine_on_entering_birth_area_hash: int = Keys.generate_hash("foxlab_spawn_landmine_on_entering_birth_area")
+var foxlab_copy_weapon_on_summon_birth_hash: int = Keys.generate_hash("foxlab_copy_weapon_on_summon_birth")
 var foxlab_effect_receive_item_at_wave_hash: int = Keys.generate_hash("foxlab_effect_receive_item_at_wave")
+var foxlab_effect_receive_item_at_wave_end_hash: int = Keys.generate_hash("foxlab_effect_receive_item_at_wave_end")
 var foxlab_stats_end_of_wave_after_wave_hash: int = Keys.generate_hash("foxlab_stats_end_of_wave_after_wave")
 var foxlab_mutate_alive_enemy_hash: int = Keys.generate_hash("foxlab_mutate_alive_enemy")
 var foxlab_gain_stat_on_mutate_hash: int = Keys.generate_hash("foxlab_gain_stat_on_mutate")
@@ -134,6 +139,7 @@ var character_foxlab_goat_keeper_hash: int = Keys.generate_hash("character_foxla
 var character_foxlab_stargazer_hash: int = Keys.generate_hash("character_foxlab_stargazer")
 var character_foxlab_bounty_hunter_hash: int = Keys.generate_hash("character_foxlab_bounty_hunter")
 var character_foxlab_loong_rider_hash: int = Keys.generate_hash("character_foxlab_loong_rider")
+var character_foxlab_golem_ninja_hash: int = Keys.generate_hash("character_foxlab_golem_ninja")
 var item_foxlab_angel_hash: int = Keys.generate_hash("item_foxlab_angel")
 var item_foxlab_ball_lightning_0_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_0")
 var item_foxlab_ball_lightning_1_hash: int = Keys.generate_hash("item_foxlab_ball_lightning_1")

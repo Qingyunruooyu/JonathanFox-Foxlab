@@ -12,6 +12,7 @@ func reset_player(player_index: int) -> void :
 		var stat_to_tweak: int = linked_stat[0]
 		var nb_stat_to_tweak: = int(linked_stat[1])
 		var stat_scaled: int = linked_stat[2]
+		print(stat_scaled, ", ", Keys.hash_to_string[stat_scaled])
 		var nb_stat_scaled: = int(linked_stat[3])
 		var perm_stats_only: bool = linked_stat[4]
 		var actual_nb_scaled: = 0.0
@@ -31,14 +32,17 @@ func reset_player(player_index: int) -> void :
 						actual_nb_scaled = RunData.get_stat(stat_scaled, player_index)
 					else:
 						actual_nb_scaled = RunData.get_stat(stat_scaled, player_index) + TempStats.get_stat(stat_scaled, player_index)
+					if not stat_scaled in actual_nb_scaled_cache_bugged:
+						actual_nb_scaled_cache_bugged[stat_scaled] = actual_nb_scaled
 				else:
 					continue
 			actual_nb_scaled_cache[[stat_scaled, perm_stats_only]] = actual_nb_scaled
-			if not stat_scaled in actual_nb_scaled_cache_bugged:
-				actual_nb_scaled_cache_bugged[stat_scaled] = actual_nb_scaled
 
 		var amount_to_add: = int(nb_stat_to_tweak * (actual_nb_scaled / nb_stat_scaled))
-		var amount_to_minus: = int(nb_stat_to_tweak * (actual_nb_scaled_cache_bugged[stat_scaled] / nb_stat_scaled))
-		if amount_to_add != amount_to_minus:
-			add_stat(stat_to_tweak, amount_to_add - amount_to_minus, player_index)
+		if stat_scaled in actual_nb_scaled_cache_bugged: # stat类型，原版的cache不区分永久还是非永久，直接cache了
+			var amount_to_minus: = int(nb_stat_to_tweak * (actual_nb_scaled_cache_bugged[stat_scaled] / nb_stat_scaled))
+			if amount_to_add != amount_to_minus:
+				add_stat(stat_to_tweak, amount_to_add - amount_to_minus, player_index)
+		else: # foxlab专有类型
+			add_stat(stat_to_tweak, amount_to_add, player_index)
 

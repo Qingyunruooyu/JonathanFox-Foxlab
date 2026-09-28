@@ -4,14 +4,12 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "foxlab_effect_receive_item_at_wave"
-text_key = "EFFECT_FOXLAB_ITEM_START_WAVE"
+key = "item_goldfish"
+text_key = "effect_gain_stat_end_of_wave"
 value = 1
-custom_key = ""
-storage_method = 0
+custom_key = "foxlab_effect_receive_item_at_wave_end"
+storage_method = 1
 effect_sign = 3
 custom_args = [  ]
-foxlab_receive_item_id = "item_goldfish"
-foxlab_receive_item_wave = 1
-foxlab_receive_item_end_wave = 99999999
-foxlab_cursed_item = false
+value2 = -1
+sum_strategy = 0

@@ -137,7 +137,7 @@ func _foxlab_refund_mask_on_fail(player_index: int) -> void:
 	# 退款比例最大100%，不能超过原价
 	var refund_ratio = min(refund[1], 100)
 	var item_price: int = ItemService.get_value(RunData.current_wave, item_data.value, player_index, true, false, item_data.my_id_hash)
-	var final_gold = int(item_price * refund_ratio / 100.0)
+	var final_gold = round(item_price * refund_ratio / 100.0) as int
 	if final_gold > 0:
 		RunData.add_gold(final_gold, player_index)
 

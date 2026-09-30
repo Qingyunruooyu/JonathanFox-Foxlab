@@ -24,11 +24,6 @@ func charm(from_player_index: int) -> void :
 	foxlab_child_charmed = true
 	for additional_proj in _parent._all_additional_projectiles:
 		charm_proj(additional_proj)
-	if _parent.enemy_id == "":
-		var proj = _parent.get_node("Pivot/EnemyProjectile")
-		if proj:
-			charm_proj(proj)
-
 	if _parent is Boss:
 		_charm_timer.start(max(_parent._entity_spawner_ref._wave_timer.time_left - 5, Utils.CHARM_DURATION))
 
@@ -39,7 +34,3 @@ func uncharm() -> void :
 	foxlab_child_charmed = false
 	for additional_proj in _parent._all_additional_projectiles:
 		uncharm_proj(additional_proj)
-	if _parent.enemy_id == "":
-		var proj = _parent.get_node("Pivot/EnemyProjectile")
-		if proj:
-			uncharm_proj(proj)

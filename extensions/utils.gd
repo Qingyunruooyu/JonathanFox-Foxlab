@@ -11,7 +11,9 @@ const FOXLAB_SEED_PER_SECOND = 4
 const FOXLAB_GET_ITEM_ON_BREAK_MAX_CHANCE = 0.81
 
 const FOXLAB_ENCHANTED_EYES_CRATE_CHANCE = 20
+const FOXLAB_FOX_FREE_REROLL = 1
 const FOXLAB_MOM_LANDMINE_MAX_PER_WAVE = 6
+const FOXLAB_COPY_PETS_STRUCTURES_DELAY = 5.0
 var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Keys.generate_hash("item_foxlab_tracker")]
 
 # Effects
@@ -51,6 +53,11 @@ var foxlab_temp_stats_on_structure_crit_hash: int = Keys.generate_hash("foxlab_t
 var foxlab_landmines_on_death_chance_hash: int = Keys.generate_hash("foxlab_landmines_on_death_chance")
 var foxlab_spawn_landmine_on_entering_birth_area_hash: int = Keys.generate_hash("foxlab_spawn_landmine_on_entering_birth_area")
 var foxlab_copy_weapon_on_summon_birth_hash: int = Keys.generate_hash("foxlab_copy_weapon_on_summon_birth")
+var foxlab_spawn_enemy_via_gold_bag_hash: int = Keys.generate_hash("foxlab_spawn_enemy_via_gold_bag")
+var foxlab_killed_enemies_hash: int = Keys.generate_hash("foxlab_killed_enemies")
+var foxlab_killed_boss_hash: int = Keys.generate_hash("foxlab_boss")
+var foxlab_killed_looting_enemies_hash: int = Keys.generate_hash("foxlab_looting_enemies")
+var foxlab_copy_pets_structures_on_wave_start_hash: int = Keys.generate_hash("foxlab_copy_pets_structures_on_wave_start")
 var foxlab_effect_receive_item_at_wave_hash: int = Keys.generate_hash("foxlab_effect_receive_item_at_wave")
 var foxlab_effect_receive_item_at_wave_end_hash: int = Keys.generate_hash("foxlab_effect_receive_item_at_wave_end")
 var foxlab_stats_end_of_wave_after_wave_hash: int = Keys.generate_hash("foxlab_stats_end_of_wave_after_wave")
@@ -201,8 +208,14 @@ var foxlab_gaster_group = null
 
 var foxlab_evil_mob_units = []
 
+# PackedScene instance id -> SeedEffect(PackedScene in it)
 var foxlab_enemy_id_scene_map = {}
 
+# enemy_id_hash -> PackedScene（召唤击杀过的敌人用，entity_spawner.spawn_entity里记录）
+var foxlab_enemy_id_hash_scene_map = {}
+
+# pool_id -> PackedScene（复制构筑物/宠物用，entity_spawner.spawn_entity里记录；pool_id与scene一一对应）
+var foxlab_pets_structures_pool_id_scene_map = {}
 var foxlab_object_effect_item = {}
 
 #反序列化之后，物品回收相关，快速查找effect id对应的effect对象
@@ -561,6 +574,16 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 				["foxlab_get_rand_character", _]:
 					max_effect_modifier = max(max_effect_modifier, effect_modifier)
 					effect.value2 = sqrt(effect.value2 * dlc_data._boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)) as int
+				["foxlab_copy_pets_structures_on_wave_start", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var extra_effect = Effect.new()
+					extra_effect.key = "free_rerolls"
+					extra_effect.key_hash = Keys.free_rerolls_hash
+					extra_effect.value = FOXLAB_FOX_FREE_REROLL
+					extra_effect.text_key = "EFFECT_FREE_SHOP_REROLL"
+					extra_effect.effect_sign = Sign.POSITIVE
+					extra_effect.value = dlc_data._boost_effect_value_positively(extra_effect, effect_modifier)
+					ret.effects.insert(1, extra_effect)
 
 	ret.curse_factor = max_effect_modifier
 

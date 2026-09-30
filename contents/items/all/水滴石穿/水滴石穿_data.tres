@@ -4,7 +4,6 @@
 [ext_resource path="res://items/global/item_data.gd" type="Script" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/水滴石穿/水滴石穿_effect_1.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/水滴石穿/水滴石穿_effect_0.tres" type="Resource" id=7]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/水滴石穿/水滴石穿_effect_5.tres" type="Resource" id=8]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/水滴石穿/水滴石穿_effect_6.tres" type="Resource" id=9]
 
 [resource]
@@ -16,7 +15,7 @@ icon = ExtResource( 1 )
 name = "ITEM_FOXLAB_SLOW_AND_STEADY_WINS"
 tier = 3
 value = 110
-effects = [ ExtResource( 7 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 9 ) ]
+effects = [ ExtResource( 7 ), ExtResource( 6 ), ExtResource( 9 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

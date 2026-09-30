@@ -36,6 +36,8 @@ var _foxlab_explode_on_burn_args = [WeaponServiceExplodeArgs.new(), WeaponServic
 var _foxlab_explode_on_burn_stats = [null, null, null, null]
 var _foxlab_init_stats_args = WeaponServiceInitStatsArgs.new()
 
+var _foxlab_fox_timer = null
+
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
@@ -43,6 +45,8 @@ func _ready():
 	_err = _end_wave_timer.connect("timeout", self, "_on_foxlab_EndWaveTimer_timeout")
 
 	foxlab_receive_item_stat_ready()
+	foxlab_spawn_enemy_via_gold_bag_ready()
+	foxlab_copy_pets_structures_ready()
 	foxlab_mutation_ready()
 	foxlab_piercing_is_bounce_ready()
 	foxlab_gain_stat_every_killed_enemies_ready()
@@ -94,6 +98,115 @@ func foxlab_receive_item_stat_ready():
 		if need_reset_player:
 			# 重置cache用，不然武器伤害之类的不会更新
 			RunData._are_player_stats_dirty[player_index] = true
+
+########### 敌袭开始消耗材料袋召唤击杀过的敌人 ##############
+# 能否转换：至少有一条效果条目（消耗>0且对应击杀记录非空）
+func foxlab_can_spawn_enemy_via_gold_bag(player_index: int) -> bool:
+	for effect in RunData.get_player_effect(Utils.foxlab_spawn_enemy_via_gold_bag_hash, player_index):
+		if effect[1] <= 0:
+			continue
+		if not RunData.get_player_effect(Utils.foxlab_killed_enemies_hash, 0)[effect[0]].empty():
+			return true
+	return false
+
+func foxlab_spawn_enemy_via_gold_bag_ready():
+	var convertible_players: Array = []
+	for player_index in _players.size():
+		if foxlab_can_spawn_enemy_via_gold_bag(player_index):
+			convertible_players.append(player_index)
+	if convertible_players.empty():
+		return
+
+	var gold_budget_per_player: int = RunData.bonus_gold / convertible_players.size()
+	for player_index in convertible_players:
+		var gold_budget: int = gold_budget_per_player
+		# 条目格式：[类型key(boss/looting_enemies), 每次消耗材料数, 是否魅惑, 每波上限]
+		for effect in RunData.get_player_effect(Utils.foxlab_spawn_enemy_via_gold_bag_hash, player_index):
+			# 击杀记录统一在0号玩家身上，全队共享
+			var killed = RunData.get_player_effect(Utils.foxlab_killed_enemies_hash, 0)[effect[0]]
+			if killed.empty():
+				continue
+			var cost: int = effect[1]
+			if cost <= 0:
+				continue
+			var proc_left: int = effect[3] if effect[3] >= 0 else Utils.LARGE_NUMBER
+			while proc_left > 0 and gold_budget >= cost and RunData.bonus_gold >= cost:
+				var scene = Utils.foxlab_enemy_id_hash_scene_map.get(Utils.get_rand_element(killed.keys()))
+				if scene == null:
+					break
+				RunData.remove_bonus_gold(cost)
+				gold_budget -= cost
+				var pos = _entity_spawner.get_spawn_pos_in_area(_players[player_index].global_position, 200)
+				_entity_spawner.on_enemy_wanted_to_spawn_an_enemy(scene, pos, null, player_index if effect[2] else -1)
+				proc_left -= 1
+
+########### 敌袭开始第5秒复制构筑物/宠物 ##############
+# 效果值X>0时，波次开始第5秒，复制离玩家最近的X个构筑物或宠物（玩家死亡则随机选X个；
+# 超出场上总数则超出部分随机重复复制；场上没有则不发生；可以复制其他玩家的）
+func foxlab_copy_pets_structures_ready():
+	var need_check: bool = false
+	for player_index in _players.size():
+		if RunData.get_player_effect_bool(Utils.foxlab_copy_pets_structures_on_wave_start_hash, player_index):
+			need_check = true
+			break
+	if need_check:
+		_foxlab_fox_timer = Timer.new()
+		_foxlab_fox_timer.wait_time = Utils.FOXLAB_COPY_PETS_STRUCTURES_DELAY
+		_foxlab_fox_timer.one_shot = true
+		_foxlab_fox_timer.autostart = true
+		_foxlab_fox_timer.connect("timeout", self, "_foxlab_copy_pets_structures")
+		add_child(_foxlab_fox_timer)
+
+func _foxlab_copy_pets_structures() -> void:
+	if _cleaning_up:
+		return
+	for player_index in _players.size():
+		_foxlab_copy_pets_structures_for_player(player_index)
+
+func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
+	var count: int = RunData.get_player_effect(Utils.foxlab_copy_pets_structures_on_wave_start_hash, player_index)
+	if count <= 0:
+		return
+
+	# 只保留非空列表
+	var lists: Array = []
+	for list in [_entity_spawner.structures, _entity_spawner.pets]:
+		if not list.empty():
+			lists.append(list)
+	if lists.empty():
+		return
+
+	var player = _players[player_index]
+	var selected: Array = []
+	if not player.dead:
+		# 活着：topK取离玩家最近的前X个——小顶堆存负距离，堆满X个后淘汰最远的，O(N logX)
+		var queue = FoxLabPriorityQueue.new()
+		for list in lists:
+			for original in list:
+				queue.push(original, -original.global_position.distance_squared_to(player.global_position))
+				if queue.size() > count:
+					queue.pop()
+		while not queue.empty():
+			selected.append(queue.pop())
+	# 死亡（或超出场上总数）：随机补足（两级随机）
+	while selected.size() < count:
+		selected.append(Utils.get_rand_element(Utils.get_rand_element(lists)))
+
+	var target_added = false
+	for original in selected:
+		var scene = Utils.foxlab_pets_structures_pool_id_scene_map.get(original.pool_id)
+		var data = _entity_spawner.foxlab_pets_structures_node_data_map.get(original)
+		if scene == null:
+			continue
+		var args = EntitySpawner.SpawnEntityArgs.new(ZoneService.get_rand_pos((Utils.EDGE_MAP_DIST * 2.5) as int),\
+				EntityType.PET if original is Pet else EntityType.STRUCTURE)
+		args.player_index = player_index
+		var copy = _entity_spawner.spawn_entity(scene, args, data)
+		if copy != null:
+			copy.add_outline(Color("#fd6a2d"))
+			if not target_added and (copy is Structure or not copy.can_be_targeted_by_enemies):
+				target_added = true
+				_entity_spawner.targetable_pets.append(copy)
 
 ########### 异变相关 ###############
 func _foxlab_should_check_mutation(player_index: int)-> bool:
@@ -732,6 +845,14 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 		_foxlab_enemy_interact(enemy)
 	if args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
 		var player_index = args.killed_by_player_index
+
+		# 记录击杀过的敌人（消耗材料袋召唤用）：统一记录到0号玩家，全队共享
+		var killed_enemies:Dictionary = RunData.get_player_effect(Utils.foxlab_killed_enemies_hash, 0)
+		if enemy is Boss:
+			killed_enemies[Utils.foxlab_killed_boss_hash][enemy.enemy_id_hash] = 1
+		elif enemy.is_loot or not enemy.can_be_charmed:
+			killed_enemies[Utils.foxlab_killed_looting_enemies_hash][enemy.enemy_id_hash] = 1
+
 		for near_effect in RunData.get_player_effect(Utils.foxlab_heal_when_kill_nearby_hash, player_index):
 			if not Utils.get_chance_success(near_effect[2] / 100.0):
 				continue
@@ -836,6 +957,8 @@ func clean_up_room() -> void :
 	for timer in foxlab_seed_timers:
 		if timer is Timer:
 			timer.stop()
+	if _foxlab_fox_timer is Timer:
+		_foxlab_fox_timer.stop()
 
 func _on_player_health_updated(player, current_val: int, max_val: int) -> void :
 	._on_player_health_updated(player, current_val, max_val)

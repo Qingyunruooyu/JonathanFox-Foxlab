@@ -11,7 +11,3 @@ func die(args: = Utils.default_die_args) -> void :
 
 func _ready() -> void :
 	add_outline(Color.violet)
-
-func respawn() -> void :
-	.respawn()
-	add_outline(Color.violet)

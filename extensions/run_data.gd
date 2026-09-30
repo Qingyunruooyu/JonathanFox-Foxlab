@@ -282,11 +282,12 @@ func add_starting_items_and_weapons() -> void :
 	ItemService.foxlab_add_pet_structure_stats()
 
 var FOXLAB_ELITE_CHARS = [Keys.generate_hash("character_foxlab_war_master"),
-						Keys.generate_hash("character_foxlab_survivor"),
-						Keys.generate_hash("character_foxlab_kidnapper"),
-						Keys.generate_hash("character_foxlab_wormhole_traveler"),
-						Keys.generate_hash("character_foxlab_venom"),
-						Keys.generate_hash("character_foxlab_bounty_hunter")]
+					Keys.generate_hash("character_foxlab_survivor"),
+					Keys.generate_hash("character_foxlab_kidnapper"),
+					Keys.generate_hash("character_foxlab_wormhole_traveler"),
+					Keys.generate_hash("character_foxlab_venom"),
+					Keys.generate_hash("character_foxlab_bounty_hunter"),
+					Keys.generate_hash("character_foxlab_ghost_envoy")]
 var FOXLAB_HORDE_CHARS = [Keys.generate_hash("character_foxlab_pufferfish")]
 
 func init_elites_spawn(base_wave: int = 10, horde_chance: float = 0.4) -> void :

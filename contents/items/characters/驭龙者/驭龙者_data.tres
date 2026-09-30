@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=30 format=2]
+[gd_resource type="Resource" load_steps=31 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/驭龙者_effect_1.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/驭龙者_effect_2.tres" type="Resource" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/驭龙者_effect_0b.tres" type="Resource" id=23]
 [ext_resource path="res://weapons/melee/chopper/1/chopper_data.tres" type="Resource" id=24]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/spoon/1/spoon_data.tres" type="Resource" id=25]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/驭龙者_effect_0c.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/驭龙者_icon.png" type="Texture" id=27]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/loong_rider_right.tres" type="Resource" id=28]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/驭龙者/loong_rider_eyes.tres" type="Resource" id=29]
@@ -39,7 +40,7 @@ icon = ExtResource( 27 )
 name = "CHARACTER_FOXLAB_LOONG_RIDER"
 tier = 0
 value = 1
-effects = [ ExtResource( 4 ), ExtResource( 23 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ) ]
+effects = [ ExtResource( 26 ), ExtResource( 4 ), ExtResource( 23 ), ExtResource( 6 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ) ]
 tracking_text = "DAMAGE_DEALT"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

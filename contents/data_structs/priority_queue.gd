@@ -38,6 +38,9 @@ func top_priority():
 func empty():
 	return _items.empty()
 
+func size():
+	return _items.size()
+
 func remove(item):
 	var index = _find_item_index(item)
 	if index == -1:

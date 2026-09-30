@@ -24,7 +24,13 @@ func _ready() -> void :
 	call_deferred("_foxlab_init_resources")
 	call_deferred("_foxlab_init_configs")
 	call_deferred("_foxlab_init_enemies")
+	call_deferred("_foxlab_fix_banned_items_for_endless")
 
+# 修复官方bug，无尽模式道具没有真正被禁用
+func _foxlab_fix_banned_items_for_endless():
+	for i in range(banned_items_for_endless.size()):
+		if banned_items_for_endless[i] is String:
+			banned_items_for_endless[i] = Keys.generate_hash(banned_items_for_endless[i])
 
 func _foxlab_init_resources():
 	foxlab_kill_nearby_icon = get_element(items, Utils.item_foxlab_inner_indomitable_hash).icon
@@ -122,7 +128,6 @@ func foxlab_random_enemies() -> Array:
 		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
 			continue
 		foxlab_get_enemy_from_item(entity)
-	foxlab_enemies.append(load("res://entities/units/enemies/corrupted_tree/corrupted_tree.tscn") as PackedScene)
 	return foxlab_enemies
 
 func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int):

@@ -12,7 +12,6 @@ func reset_player(player_index: int) -> void :
 		var stat_to_tweak: int = linked_stat[0]
 		var nb_stat_to_tweak: = int(linked_stat[1])
 		var stat_scaled: int = linked_stat[2]
-		print(stat_scaled, ", ", Keys.hash_to_string[stat_scaled])
 		var nb_stat_scaled: = int(linked_stat[3])
 		var perm_stats_only: bool = linked_stat[4]
 		var actual_nb_scaled: = 0.0

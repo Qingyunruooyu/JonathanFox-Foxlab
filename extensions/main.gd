@@ -136,7 +136,7 @@ func foxlab_spawn_enemy_via_gold_bag_ready():
 					break
 				RunData.remove_bonus_gold(cost)
 				gold_budget -= cost
-				var pos = _entity_spawner.get_spawn_pos_in_area(_players[player_index].global_position, 200)
+				var pos = ZoneService.get_rand_pos(Utils.EDGE_MAP_DIST)
 				_entity_spawner.on_enemy_wanted_to_spawn_an_enemy(scene, pos, null, player_index if effect[2] else -1)
 				proc_left -= 1
 
@@ -198,15 +198,48 @@ func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
 		var data = _entity_spawner.foxlab_pets_structures_node_data_map.get(original)
 		if scene == null:
 			continue
-		var args = EntitySpawner.SpawnEntityArgs.new(ZoneService.get_rand_pos((Utils.EDGE_MAP_DIST * 2.5) as int),\
-				EntityType.PET if original is Pet else EntityType.STRUCTURE)
-		args.player_index = player_index
-		var copy = _entity_spawner.spawn_entity(scene, args, data)
-		if copy != null:
-			copy.add_outline(Color("#fd6a2d"))
-			if not target_added and (copy is Structure or not copy.can_be_targeted_by_enemies):
-				target_added = true
-				_entity_spawner.targetable_pets.append(copy)
+		_foxlab_spawn_entity_birth_for_fox_copy(EntityType.PET if original is Pet else EntityType.STRUCTURE,
+												scene,
+												ZoneService.get_rand_pos_in_area(original.global_position, 250) if original is Pet else ZoneService.get_rand_pos((Utils.EDGE_MAP_DIST * 2.5) as int),
+												data,
+												player_index,
+												!target_added)
+		target_added = true
+
+func _foxlab_spawn_entity_birth_for_fox_copy(
+	type: int,
+	scene: PackedScene,
+	pos: Vector2,
+	data: Resource = null,
+	player_index: = - 1,
+	targetable: bool = false
+):
+	var entity_birth = get_node_from_pool(_entity_spawner._entity_birth_pool_id, _births_container)
+
+	if entity_birth == null:
+		entity_birth = _entity_spawner.entity_birth_scene.instance()
+		add_birth(entity_birth)
+	else:
+		if entity_birth.is_connected("birth_timeout", _entity_spawner, "on_entity_birth_timeout"):
+			entity_birth.disconnect("birth_timeout", _entity_spawner, "on_entity_birth_timeout")
+	entity_birth.connect("birth_timeout", self, "_on_foxlab_fox_entity_birth_timeout", [targetable])
+
+	entity_birth.start(type, scene, pos, data, player_index)
+
+func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool):
+	_entity_spawner._spawn_entity_args._init(birth.global_position, birth.type)
+	_entity_spawner._spawn_entity_args.player_index = birth.player_index
+
+	var copy = _entity_spawner.spawn_entity(birth.scene, _entity_spawner._spawn_entity_args, birth.data, birth.source, birth.charmed_by)
+
+	birth.disconnect("birth_timeout", self, "_on_foxlab_fox_entity_birth_timeout")
+	birth.connect("birth_timeout", _entity_spawner, "on_entity_birth_timeout")
+	add_node_to_pool(birth, _entity_spawner._entity_birth_pool_id)
+
+	if copy != null:
+		copy.add_outline(Color("#fd6a2d"))
+		if targetable:
+			_entity_spawner.targetable_pets.append(copy)
 
 ########### 异变相关 ###############
 func _foxlab_should_check_mutation(player_index: int)-> bool:

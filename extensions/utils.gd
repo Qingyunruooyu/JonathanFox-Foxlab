@@ -13,7 +13,7 @@ const FOXLAB_GET_ITEM_ON_BREAK_MAX_CHANCE = 0.81
 const FOXLAB_ENCHANTED_EYES_CRATE_CHANCE = 20
 const FOXLAB_FOX_FREE_REROLL = 1
 const FOXLAB_MOM_LANDMINE_MAX_PER_WAVE = 6
-const FOXLAB_COPY_PETS_STRUCTURES_DELAY = 5.0
+const FOXLAB_COPY_PETS_STRUCTURES_DELAY = 10.0
 var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Keys.generate_hash("item_foxlab_tracker")]
 
 # Effects

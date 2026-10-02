@@ -26,9 +26,7 @@ func foxlab_process_copy_weapon_on_summon_birth(player, player_index: int) -> vo
 	if not (charmed_by < 0 and is_instance_valid(source) and source is Enemy):
 		return
 
-	# 觉醒之后，只能复制危机个数次的武器
-	if RunData.get_player_effect_bool(Utils.item_foxlab_trouble_mutation_hash, player_index) and\
-		player.foxlab_temp_weapons.size() >= RunData.get_player_effect(Utils.foxlab_troubleshooter_crisis_num_hash, player_index):
+	if player.foxlab_temp_weapons.size() >= RunData.get_player_effect(Utils.foxlab_troubleshooter_crisis_num_hash, player_index):
 		return
 
 	var copy_effects = RunData.get_player_effect(Utils.foxlab_copy_weapon_on_summon_birth_hash, player_index)

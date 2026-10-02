@@ -37,6 +37,7 @@ var _foxlab_explode_on_burn_stats = [null, null, null, null]
 var _foxlab_init_stats_args = WeaponServiceInitStatsArgs.new()
 
 var _foxlab_fox_timer = null
+var foxlab_burning_particle = load("res://particles/burning/torch_burning_particles.tscn")
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
@@ -131,9 +132,14 @@ func foxlab_spawn_enemy_via_gold_bag_ready():
 				continue
 			var proc_left: int = effect[3] if effect[3] >= 0 else Utils.LARGE_NUMBER
 			while proc_left > 0 and gold_budget >= cost and RunData.bonus_gold >= cost:
-				var scene = Utils.foxlab_enemy_id_hash_scene_map.get(Utils.get_rand_element(killed.keys()))
-				if scene == null:
-					break
+				var enemy_id_hash = Utils.get_rand_element(killed.keys())
+				# print(" spawn ", enemy_id_hash)
+				var scene = Utils.foxlab_enemy_id_hash_scene_map.get(enemy_id_hash)
+				if scene == null: # 存档恢复的，entity spawner懒记忆还没有留档，全量记录
+					ItemService.foxlab_init_enemy_id_scene_map()
+					scene = Utils.foxlab_enemy_id_hash_scene_map.get(enemy_id_hash)
+					if scene == null:
+						break
 				RunData.remove_bonus_gold(cost)
 				gold_budget -= cost
 				var pos = ZoneService.get_rand_pos(Utils.EDGE_MAP_DIST)
@@ -179,21 +185,31 @@ func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
 	var player = _players[player_index]
 	var selected: Array = []
 	if not player.dead:
-		# 活着：topK取离玩家最近的前X个——小顶堆存负距离，堆满X个后淘汰最远的，O(N logX)
+		# 活着：topK取离玩家最近的前X个——小顶堆存负距离，堆满X个后淘汰最远的，O(N logK)
 		var queue = FoxLabPriorityQueue.new()
 		for list in lists:
 			for original in list:
-				queue.push(original, -original.global_position.distance_squared_to(player.global_position))
-				if queue.size() > count:
-					queue.pop()
+				if queue.size() < count:
+					# 堆顶是最远的
+					queue.push(original, -original.global_position.distance_squared_to(player.global_position))
+				else:
+					# 当前 K 个里最远的距离
+					var farthest = -queue.top_priority()
+					var current = original.global_position.distance_squared_to(player.global_position)
+					if current < farthest:
+						# 弹出最远的
+						queue.pop()
+						queue.push(original, -current) # 放入更近的
 		while not queue.empty():
-			selected.append(queue.pop())
+			var original = queue.pop()
+			var targetable = queue.empty()
+			selected.append([original, targetable])
 	# 死亡（或超出场上总数）：随机补足（两级随机）
 	while selected.size() < count:
-		selected.append(Utils.get_rand_element(Utils.get_rand_element(lists)))
+		selected.append([Utils.get_rand_element(Utils.get_rand_element(lists)), false])
 
-	var target_added = false
-	for original in selected:
+	for selection in selected:
+		var original = selection[0]
 		var scene = Utils.foxlab_pets_structures_pool_id_scene_map.get(original.pool_id)
 		var data = _entity_spawner.foxlab_pets_structures_node_data_map.get(original)
 		if scene == null:
@@ -203,8 +219,7 @@ func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
 												ZoneService.get_rand_pos_in_area(original.global_position, 250) if original is Pet else ZoneService.get_rand_pos((Utils.EDGE_MAP_DIST * 2.5) as int),
 												data,
 												player_index,
-												!target_added)
-		target_added = true
+												selection[1])
 
 func _foxlab_spawn_entity_birth_for_fox_copy(
 	type: int,
@@ -238,8 +253,11 @@ func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool):
 
 	if copy != null:
 		copy.add_outline(Color("#fd6a2d"))
-		if targetable:
+		if targetable and copy.get("can_be_targeted_by_enemies") != true:
 			_entity_spawner.targetable_pets.append(copy)
+			var instance = foxlab_burning_particle.instance()
+			copy.sprite.add_child(instance)
+			copy.sprite.move_child(instance, 0)
 
 ########### 异变相关 ###############
 func _foxlab_should_check_mutation(player_index: int)-> bool:

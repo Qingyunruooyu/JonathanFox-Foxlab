@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 key = "foxlab_boss"
 text_key = "effect_foxlab_spawn_enemy_via_gold_bag"
-value = 300
+value = 400
 custom_key = "foxlab_spawn_enemy_via_gold_bag"
 storage_method = 0
 effect_sign = 3

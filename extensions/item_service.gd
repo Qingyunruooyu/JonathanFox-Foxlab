@@ -110,16 +110,12 @@ func foxlab_has_node_with_name(packed_scene: PackedScene, node_name: String) -> 
 			return true
 	return false
 
+# boss精英不用这个函数，因为原版里面穿刺蠕虫有的拼成worn了
 func foxlab_get_enemy_from_item(enemy:Resource):
 	var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
 	var scene_path:String = enemy_path + ".tscn"
 	var scene:PackedScene = load(scene_path)
-	if scene == null:
-		#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
-		return
-	if not foxlab_has_node_with_name(scene, "Boss"):
-		foxlab_enemies.append(scene)
-		#print(scene_path)
+	return scene
 
 func foxlab_random_enemies() -> Array:
 	if not foxlab_enemies.empty():
@@ -127,8 +123,33 @@ func foxlab_random_enemies() -> Array:
 	for entity in entities:
 		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
 			continue
-		foxlab_get_enemy_from_item(entity)
+		var scene = foxlab_get_enemy_from_item(entity)
+		if scene == null:
+			#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
+			continue
+		foxlab_enemies.append(scene)
 	return foxlab_enemies
+
+func foxlab_init_enemy_id_scene_map():
+	for entity in entities:
+		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
+			continue
+		var scene = foxlab_get_enemy_from_item(entity)
+		if scene == null:
+			#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
+			continue
+		var enemy = scene.instance()
+		Utils.foxlab_enemy_id_hash_scene_map[Keys.generate_hash(enemy.enemy_id)] = scene
+		# print("enemy ", enemy.enemy_id, " scene ", scene)
+		enemy.free()
+
+	for enemies in [elites, bosses]:
+		for enemy_data in enemies:
+			var scene = enemy_data.scene
+			var enemy = scene.instance()
+			Utils.foxlab_enemy_id_hash_scene_map[Keys.generate_hash(enemy.enemy_id)] = scene
+			# print("enemy ", enemy.enemy_id, " scene ", scene, " hash ", Keys.generate_hash(enemy.enemy_id))
+			enemy.free()
 
 func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int):
 	var nb_reactor = max(1, RunData.get_nb_item(Utils.item_foxlab_reactor_hash, player_index))

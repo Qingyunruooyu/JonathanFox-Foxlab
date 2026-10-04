@@ -803,18 +803,14 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
+
 		# 先移除临时武器，避免排险者的异变会合入临时武器
 		_players[player_index].foxlab_remove_temp_weapon()
 
-		# 敌袭结束后获得道具；条目格式：[道具key, 个数, 诅咒标记]
-		for receive_item_effect in RunData.get_player_effect(Utils.foxlab_effect_receive_item_at_wave_end_hash, player_index):
-			foxlab_get_item(receive_item_effect[0], receive_item_effect[1], player_index, receive_item_effect[2])
-
 		var gain_effects = RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index)
-		if gain_effects.empty() or RunData.foxlab_nb_died_scapegoat[player_index]:
-			continue
-		for gain_effect in gain_effects:
-			foxlab_get_item(gain_effect[0], gain_effect[1], player_index)
+		if !(gain_effects.empty() or RunData.foxlab_nb_died_scapegoat[player_index]):
+			for gain_effect in gain_effects:
+				foxlab_get_item(gain_effect[0], gain_effect[1], player_index)
 
 	._on_WaveTimer_timeout()
 
@@ -830,6 +826,10 @@ func _on_WaveTimer_timeout() -> void :
 			RunData.add_gold(pending_material, player_index)
 			RunData.emit_signal("stat_added", Keys.stat_materials_hash, pending_material, - 15.0, player_index)
 			effects[Utils.foxlab_pending_material_hash] = 0
+
+		# 敌袭结束后获得道具；条目格式：[道具key, 个数, 诅咒标记]
+		for receive_item_effect in RunData.get_player_effect(Utils.foxlab_effect_receive_item_at_wave_end_hash, player_index):
+			foxlab_get_item(receive_item_effect[0], receive_item_effect[1], player_index, receive_item_effect[2])
 
 func on_levelled_up(player_index: int) -> void :
 	.on_levelled_up(player_index)

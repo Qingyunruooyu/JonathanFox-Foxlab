@@ -5,7 +5,6 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_3.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_4.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_6.tres" type="Resource" id=5]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_5.tres" type="Resource" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_2.tres" type="Resource" id=8]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_1.tres" type="Resource" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/mom_appearance.tres" type="Resource" id=10]
@@ -27,7 +26,7 @@ icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_MOM"
 tier = 0
 value = 1
-effects = [ ExtResource( 2 ), ExtResource( 9 ), ExtResource( 15 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 4 ) ]
+effects = [ ExtResource( 2 ), ExtResource( 9 ), ExtResource( 15 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 4 ) ]
 tracking_text = "DAMAGE_DEALT"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

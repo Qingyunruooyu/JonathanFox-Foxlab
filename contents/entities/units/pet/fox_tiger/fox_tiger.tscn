@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://entities/units/unit/unit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png" type="Texture" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger.gd" type="Script" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger_stats.tres" type="Resource" id=4]
+[ext_resource path="res://entities/units/movement_behaviors/movement_behavior.gd" type="Script" id=5]
+[ext_resource path="res://particles/burning/torch_burning_particles.tscn" type="Resource" id=6]
+
+[node name="FoxTiger" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+stats = ExtResource( 4 )
+collision_layer = 0
+collision_mask = 0
+targetable_particles = ExtResource(6)
+
+[node name="Sprite" parent="Animation" index="0"]
+visible = false
+texture = ExtResource( 2 )
+
+[node name="Collision" parent="." index="1"]
+disabled = true
+
+[node name="Hurtbox" parent="." index="2"]
+monitoring = false
+
+[node name="MovementBehavior" type="Node2D" parent="." index="3"]
+script = ExtResource( 5 )

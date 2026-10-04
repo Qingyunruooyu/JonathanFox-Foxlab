@@ -38,6 +38,7 @@ var _foxlab_init_stats_args = WeaponServiceInitStatsArgs.new()
 
 var _foxlab_fox_timer = null
 var foxlab_burning_particle = load("res://particles/burning/torch_burning_particles.tscn")
+var _foxlab_fox_tiger_scene = load("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger.tscn")
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
@@ -251,9 +252,14 @@ func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool):
 	birth.connect("birth_timeout", _entity_spawner, "on_entity_birth_timeout")
 	add_node_to_pool(birth, _entity_spawner._entity_birth_pool_id)
 
-	if copy != null:
+	if targetable and copy is Structure:
+		var args = EntitySpawner.SpawnEntityArgs.new(birth.global_position, - 1)
+		args.player_index = birth.player_index
+		var fake_fox_pet = _entity_spawner.spawn_entity(_foxlab_fox_tiger_scene,args)
+		fake_fox_pet.set_original(copy)
+	else:
 		copy.add_outline(Color("#fd6a2d"))
-		if targetable and copy.get("can_be_targeted_by_enemies") != true:
+		if targetable:
 			_entity_spawner.targetable_pets.append(copy)
 			var instance = foxlab_burning_particle.instance()
 			copy.sprite.add_child(instance)

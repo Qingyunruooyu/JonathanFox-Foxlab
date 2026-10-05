@@ -26,8 +26,11 @@ func set_original(original_entity: Node2D):
 
 func on_foxlab_orignal_died(_entity: Node2D, _die_args: Entity.DieArgs):
 	original.disconnect("died", self, "on_foxlab_orignal_died")
-	if targetable_particles_instance:
-		targetable_particles_instance.queue_free()
 	_entity_spawner_ref.targetable_pets.erase(self)
 	die()
 	set_physics_process(false)
+
+func die(args: = Utils.default_die_args) -> void :
+	if targetable_particles_instance:
+		targetable_particles.queue_free()
+	.die(args)

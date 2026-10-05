@@ -39,6 +39,7 @@ var _foxlab_init_stats_args = WeaponServiceInitStatsArgs.new()
 var _foxlab_fox_timer = null
 var foxlab_burning_particle = load("res://particles/burning/torch_burning_particles.tscn")
 var _foxlab_fox_tiger_scene = load("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger.tscn")
+var _foxlab_foxes = [ ]
 
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
@@ -257,6 +258,7 @@ func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool):
 		args.player_index = birth.player_index
 		var fake_fox_pet = _entity_spawner.spawn_entity(_foxlab_fox_tiger_scene,args)
 		fake_fox_pet.set_original(copy)
+		_foxlab_foxes.append(fake_fox_pet)
 	else:
 		copy.add_outline(Color("#fd6a2d"))
 		if targetable:
@@ -1016,12 +1018,21 @@ func clean_up_room() -> void :
 			timer.stop()
 	if _foxlab_fox_timer is Timer:
 		_foxlab_fox_timer.stop()
+	for fox in _foxlab_foxes:
+		fox.die(_entity_spawner._die_args_spawner)
 
 func _on_player_health_updated(player, current_val: int, max_val: int) -> void :
 	._on_player_health_updated(player, current_val, max_val)
+
+	var player_ui = _players_ui[player.player_index]
+
+	var player_life_bar = player_ui.player_life_bar
+	if player_life_bar.visible and current_val >= max_val:
+		player_life_bar.visible = false
+
 	var lost_hp = RunData.get_player_effect(Utils.foxlab_lost_hp_hash, player.player_index)
 	if lost_hp > 0:
-		var life_label:Label = _players_ui[player.player_index].life_label
+		var life_label:Label = player_ui.life_label
 		if life_label.visible:
 			life_label.text = str(-lost_hp) + " | " + life_label.text
 

@@ -41,6 +41,8 @@ var foxlab_burning_particle = load("res://particles/burning/torch_burning_partic
 var _foxlab_fox_tiger_scene = load("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger.tscn")
 var _foxlab_foxes = [ ]
 
+var _foxlab_entity_birth_entered_players = {}
+
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
@@ -808,6 +810,72 @@ func foxlab_on_enemy_type_change(delta: int, enemy: Node2D):
 			foxlab_modify_loong_rider_projectile(projectile, RunData.foxlab_current_different_enemies, hp_ratio,
 				enemy, player_index if i == 0 else -1)
 
+func foxlab_on_entity_birth_timeout(birth):
+	_foxlab_entity_birth_entered_players[birth].clear()
+
+func _foxlab_on_EntityBirth_body_entered(body: Node, birth) -> void :
+	if not (body is Player):
+		return
+
+	if not (birth.type == EntityType.ENEMY or birth.type == EntityType.BOSS):
+		return
+
+	var player_index: int = body.player_index
+	if player_index in _foxlab_entity_birth_entered_players[birth]:
+		return
+	_foxlab_entity_birth_entered_players[birth].append(player_index)
+	foxlab_process_copy_weapon_on_summon_birth(body,  birth)
+	foxlab_process_spawn_landmine(body, birth)
+
+func foxlab_process_copy_weapon_on_summon_birth(player, birth) -> void :
+	if not (birth.charmed_by < 0 and is_instance_valid(birth.source) and birth.source is Enemy):
+		return
+
+	if player.foxlab_temp_weapons.size() >= RunData.get_player_effect(Utils.foxlab_troubleshooter_crisis_num_hash, player.player_index):
+		return
+
+	var copy_effects = RunData.get_player_effect(Utils.foxlab_copy_weapon_on_summon_birth_hash, player.player_index)
+	if copy_effects.empty():
+		return
+
+	var weapons_ref = RunData.get_player_weapons_ref(player.player_index)
+	if weapons_ref.empty():
+		return
+
+	for effect_entry in copy_effects:
+		var stat_key: int = effect_entry[0]
+		var stat_delta: int = effect_entry[1]
+		var weapon_count: int = effect_entry[2]
+
+		for _i in weapon_count:
+			player.foxlab_add_temp_weapon( Utils.get_rand_element(weapons_ref))
+		if stat_delta != 0:
+			TempStats.add_stat(stat_key, stat_delta, player.player_index)
+
+
+# 踩到敌人出生点生成可反复爆炸的地雷（每波最多FOXLAB_MOM_LANDMINE_MAX_PER_WAVE个，魅惑的除外）
+func foxlab_process_spawn_landmine(player, birth) -> void :
+	if birth.charmed_by > 0:
+		return
+
+	var count: int = RunData.get_player_effect(Utils.foxlab_spawn_landmine_on_entering_birth_area_hash, player.player_index)
+	if count <= 0:
+		return
+
+	var to_spawn: int = min(count, Utils.FOXLAB_MOM_LANDMINE_MAX_PER_WAVE - player.foxlab_mom_landmine_spawned_this_wave) as int
+	if to_spawn <= 0:
+		return
+	player.foxlab_mom_landmine_spawned_this_wave += to_spawn
+
+	if player.foxlab_mom_landmine_effect == null:
+		player.foxlab_mom_landmine_effect = load(player.FOXLAB_MOM_LANDMINE_EFFECT_PATH).duplicate()
+		player.foxlab_mom_landmine_effect.scene = load(player.FOXLAB_MOM_LANDMINE_REUSABLE_SCENE_PATH)
+
+	for _i in to_spawn:
+		var pos = _entity_spawner.get_spawn_pos_in_area(birth.global_position, 200)
+		var queue = _entity_spawner.queues_to_spawn_structures[player.player_index]
+		queue.push_back([EntityType.STRUCTURE, player.foxlab_mom_landmine_effect.scene, pos, player.foxlab_mom_landmine_effect])
+
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
@@ -1046,3 +1114,10 @@ func on_stats_updated(player_index: int) -> void :
 	_foxlab_proj_on_death_stat_caches[player_index] = null
 	_players[player_index].foxlab_burning_data = null
 	_foxlab_explode_on_burn_stats[player_index] = null
+
+# 扩展 entity_birth.gd 兼容性不好（The BOSS rush）
+func add_birth(instance: EntityBirth) -> void :
+	.add_birth(instance)
+	instance.connect("body_entered", self, "_foxlab_on_EntityBirth_body_entered", [instance])
+	instance.connect("birth_timeout", self, "foxlab_on_entity_birth_timeout")
+	_foxlab_entity_birth_entered_players[instance] = [ ]

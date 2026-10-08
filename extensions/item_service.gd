@@ -16,6 +16,72 @@ var foxlab_weapon_spawning_pet = [] #原版没有召唤宠物的武器，浅陌�
 var foxlab_transform_characters:Array=[]
 var foxlab_vanilla_characters:Array=[]
 
+######### 次要角色限制合并缓存 ############
+# 影子=主角+身上全部次要角色（变身/佛手等）的 wanted_tags/banned_items/banned_item_groups/banned_upgrades 的并集
+# 仅登记表变化（RunData标脏）或 current_character 引用变化时重建；登记表为空时影子即主角本身
+var _foxlab_merged_chars = [null, null, null, null]
+var _foxlab_merged_char_sources = [null, null, null, null]
+var _foxlab_merged_chars_dirty = [true, true, true, true]
+
+func foxlab_mark_merged_char_dirty(player_index: int) -> void:
+	_foxlab_merged_chars_dirty[player_index] = true
+
+func foxlab_clear_merged_char_cache() -> void:
+	for i in _foxlab_merged_chars.size():
+		_foxlab_merged_chars[i] = null
+		_foxlab_merged_char_sources[i] = null
+		_foxlab_merged_chars_dirty[i] = true
+
+func _foxlab_get_merged_character(player_index: int) -> CharacterData:
+	var orig: CharacterData = RunData.players_data[player_index].current_character
+	if orig == null:
+		return null
+	if not _foxlab_merged_chars_dirty[player_index] and _foxlab_merged_char_sources[player_index] == orig:
+		return _foxlab_merged_chars[player_index]
+
+	var restrictions: Dictionary = RunData.foxlab_extra_char_restrictions[player_index]
+	var merged: CharacterData = orig
+	if not restrictions.empty():
+		var candidate: CharacterData = orig.duplicate()
+		var changed: bool = false
+		if _foxlab_restrictions_have_data(restrictions, "wanted_tags"):
+			candidate.wanted_tags = _foxlab_union_unique(orig.wanted_tags, restrictions, "wanted_tags")
+			changed = changed or candidate.wanted_tags.size() > orig.wanted_tags.size()
+		if RunData.current_wave < RunData.nb_of_waves:
+			for restriction_key in ["banned_items", "banned_item_groups", "banned_upgrades"]:
+				if not _foxlab_restrictions_have_data(restrictions, restriction_key):
+					continue
+				var base_array: Array = orig.get(restriction_key)
+				var union_array: Array = _foxlab_union_unique(base_array, restrictions, restriction_key)
+				if union_array.size() > base_array.size():
+					changed = true
+				candidate.set(restriction_key, union_array)
+		# 并集没有引入任何新元素时（次要角色限制是主角的子集），直接用主角的，不产生swap
+		if changed:
+			merged = candidate
+	_foxlab_merged_chars[player_index] = merged
+	_foxlab_merged_char_sources[player_index] = orig
+	_foxlab_merged_chars_dirty[player_index] = false
+	return merged
+
+func _foxlab_restrictions_have_data(restrictions: Dictionary, key: String) -> bool:
+	for entry in restrictions.values():
+		if not entry[key].empty():
+			return true
+	return false
+
+func _foxlab_union_unique(base: Array, restrictions: Dictionary, key: String) -> Array:
+	var result: Array = base.duplicate()
+	var seen: Dictionary = {}
+	for element in result:
+		seen[element] = true
+	for entry in restrictions.values():
+		for element in entry[key]:
+			if not seen.has(element):
+				seen[element] = true
+				result.append(element)
+	return result
+
 const FOXLAB_MOD_NAME = "JonathanFox-FoxLab"
 var foxlab_is_android = false
 var foxlab_mod = null
@@ -248,14 +314,31 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 	if type == TierData.WEAPONS and RunData.get_player_effect(Keys.remove_shop_items_hash, player_index).has(Keys.pet_hash):
 		args.excluded_items.append_array(foxlab_weapon_spawning_pet)
 
-	# 非诅咒的蝾螈，刷新状态
+	# 次要角色限制：原版在函数内部读current_character，临时以合并影子替换主角
+	var orig_character = RunData.players_data[player_index].current_character
+	var merged_character = _foxlab_get_merged_character(player_index)
+	var swapped: bool = merged_character != orig_character
+	if swapped:
+		RunData.players_data[player_index].current_character = merged_character
 	var elt = ._get_rand_item_for_wave(wave, player_index, type, args)
+	# 条件还原：窗口内若有人改动了current_character则不覆盖
+	if swapped and RunData.players_data[player_index].current_character == merged_character:
+		RunData.players_data[player_index].current_character = orig_character
+
+	# 非诅咒的蝾螈，刷新状态
 	if elt.my_id_hash == Keys.item_axolotl_hash and elt.effects.size() > 0 and "has_been_applied" in elt.effects[0]:
 		elt.effects[0].has_been_applied = false
 	return elt
 
 func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: int) -> Array:
+	var orig_character = RunData.players_data[player_index].current_character
+	var merged_character = _foxlab_get_merged_character(player_index)
+	var swapped: bool = merged_character != orig_character
+	if swapped:
+		RunData.players_data[player_index].current_character = merged_character
 	var upgrades = .get_upgrades(level, number, old_upgrades, player_index)
+	if swapped and RunData.players_data[player_index].current_character == merged_character:
+		RunData.players_data[player_index].current_character = orig_character
 	if not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
 		return upgrades
 

@@ -32,6 +32,11 @@ var foxlab_extra_enemy_groups = []
 # null: 未生成， false: 额外敌人不够多, true：额外敌人够多，Main的_is_horde_wave置为true
 var foxlab_is_horde_wave = null
 
+# 次要角色的限制/偏好列表
+# {角色my_id_hash: {count: 引用计数, wanted_tags: [...], banned_items: [...], banned_item_groups: [...], banned_upgrades: [...]}}
+# 主角（current_character）不登记；数组为登记时的静态快照；供ItemService生成道具时，合并到主角
+var foxlab_extra_char_restrictions = [{}, {}, {}, {}]
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	# DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
@@ -346,7 +351,75 @@ func reset(restart: bool = false) -> void :
 		TempStats.reset()
 		LinkedStats.reset()
 	foxlab_is_horde_wave = null
+	for restrictions in foxlab_extra_char_restrictions:
+		restrictions.clear()
+	ItemService.foxlab_clear_merged_char_cache()
 	.reset(restart)
+
+func resume_from_state(state: Dictionary) -> void :
+	.resume_from_state(state)
+	# 读档不走apply_item_effects，按恢复后的items重建次要角色限制登记
+	foxlab_rebuild_extra_char_restrictions()
+
+######### 次要角色限制登记 ############
+func apply_item_effects(item_data: ItemParentData, player_index: int) -> void :
+	.apply_item_effects(item_data, player_index)
+	if item_data is CharacterData and item_data != players_data[player_index].current_character:
+		_foxlab_register_extra_char(item_data, player_index)
+
+
+func unapply_item_effects(item_data: ItemParentData, player_index: int) -> void :
+	if item_data is CharacterData:
+		_foxlab_unregister_extra_char(item_data, player_index)
+	.unapply_item_effects(item_data, player_index)
+
+
+func _foxlab_register_extra_char(character: CharacterData, player_index: int) -> void:
+	_foxlab_register_extra_char_into(foxlab_extra_char_restrictions[player_index], character)
+	ItemService.foxlab_mark_merged_char_dirty(player_index)
+
+
+func _foxlab_unregister_extra_char(character: CharacterData, player_index: int) -> void:
+	var restrictions: Dictionary = foxlab_extra_char_restrictions[player_index]
+	var entry = restrictions.get(character.my_id_hash)
+	if entry == null:
+		return
+	entry["count"] -= 1
+	if entry["count"] <= 0:
+		restrictions.erase(character.my_id_hash)
+	ItemService.foxlab_mark_merged_char_dirty(player_index)
+
+
+func _foxlab_register_extra_char_into(restrictions: Dictionary, character: CharacterData) -> void:
+	var in_endless: bool = current_wave >= nb_of_waves
+	if character.wanted_tags.empty() and (in_endless or (character.banned_items.empty() and character.banned_item_groups.empty() and character.banned_upgrades.empty())):
+		return
+	var entry = restrictions.get(character.my_id_hash)
+	if entry == null:
+		entry = {
+			"count": 0,
+			"wanted_tags": character.wanted_tags.duplicate(),
+			"banned_items": [] if in_endless else character.banned_items.duplicate(),
+			"banned_item_groups": [] if in_endless else character.banned_item_groups.duplicate(),
+			"banned_upgrades": [] if in_endless else character.banned_upgrades.duplicate(),
+		}
+		restrictions[character.my_id_hash] = entry
+	entry["count"] += 1
+
+func foxlab_rebuild_extra_char_restrictions() -> void:
+	for player_index in players_data.size():
+		var restrictions: Dictionary = foxlab_extra_char_restrictions[player_index]
+		restrictions.clear()
+		var current_character = players_data[player_index].current_character
+		var skipped_own := false
+		for item in players_data[player_index].items:
+			if not item is CharacterData:
+				continue
+			if not skipped_own and current_character != null and item.my_id_hash == current_character.my_id_hash:
+				skipped_own = true
+				continue
+			_foxlab_register_extra_char_into(restrictions, item)
+	ItemService.foxlab_clear_merged_char_cache()
 
 func after_weapon_removed(weapon: WeaponData, player_index: int) -> void :
 	.after_weapon_removed(weapon, player_index)

@@ -297,6 +297,8 @@ func foxlab_process_lost_hp() -> bool:
 		current_stats.health = max(1, current_stats.health - lost_hp) as int
 		if current_stats.health != prev_health:
 			effects[Utils.foxlab_lost_hp_hash] -= prev_health - current_stats.health
+			if _health_regen_timer.is_stopped() and current_stats.health < max_stats.health:
+				check_hp_regen()
 		emit_signal("health_updated", self, current_stats.health, max_stats.health)
 	return lost_hp > 0
 

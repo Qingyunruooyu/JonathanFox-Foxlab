@@ -621,10 +621,7 @@ func foxlab_process_pending_states():
 		if pending_xp > 0:
 			RunData.add_xp(pending_xp, player_index)
 		effects[Utils.foxlab_pending_xp_hash] = 0
-
-		var player = _players[player_index]
-		if player.foxlab_process_lost_hp():
-			player.check_hp_regen()
+		_players[player_index].foxlab_process_lost_hp()
 
 # 只处理这几个简单的，其他还有非常多只在一开始就判定这一波要不要生效的，不再做处理了
 func foxlab_before_add_item(player_index: int) ->Dictionary:

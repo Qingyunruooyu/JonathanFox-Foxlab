@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=23 format=2]
+[gd_resource type="Resource" load_steps=24 format=2]
 
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/healer_icon.png" type="Texture" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://weapons/melee/pruner/1/pruner_data.tres" type="Resource" id=21]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=22]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_4.tres" type="Resource" id=23]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_0a.tres" type="Resource" id=24]
 
 [resource]
 script = ExtResource( 1 )
@@ -32,7 +33,7 @@ icon = ExtResource( 2 )
 name = "CHARACTER_FOXLAB_HEALER"
 tier = 0
 value = 1
-effects = [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 23 ) ]
+effects = [ ExtResource( 6 ), ExtResource( 24 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 23 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
@@ -41,7 +42,7 @@ curse_factor = 0.0
 max_nb = -1
 item_appearances = [ ExtResource( 3 ) ]
 tags = [  ]
-wanted_tags = [ "stat_lifesteal", "stat_hp_regeneration", "consumable", "xp_gain" ]
+wanted_tags = [ "xp_gain" ]
 banned_item_groups = [  ]
 banned_items = [ "item_torture", "item_blood_donation", "item_bloody_hand" ]
 banned_upgrades = [  ]

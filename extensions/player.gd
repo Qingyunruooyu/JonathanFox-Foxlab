@@ -275,19 +275,22 @@ func foxlab_process_gain_temp_stat_on_non_item_healing(value_healed: int, tracki
 						_remove_temp_stats_on_hit[effect.key_hash] = effect.value
 					RunData.emit_signal("stat_added", effect.key_hash, effect.value, - 15.0, player_index)
 
-func foxlab_process_invert_item_healing(value: int, value_healed: int, tracking_key: int, from_torture: bool, is_before_healing: bool):
+# excess传null走预扣分支（连同超出上限的幻影生命一并削掉并返回），传预扣返回值走补回分支（还回）
+# 守卫不通过时必须返回0（数字）而非null，避免补回调用误入预扣分支二次扣血
+func foxlab_process_invert_item_healing(value: int, value_healed: int, tracking_key: int, from_torture: bool, excess) -> int:
 	if dead or RunData.get_player_effect_bool(Keys.no_heal_hash, player_index):
-		return
+		return 0
 	if (from_torture or tracking_key != Keys.empty_hash ) and value > 0 and RunData.get_player_effect_bool(Utils.foxlab_invert_item_healing_hash, player_index):
-		if is_before_healing:
-			# 治疗前预先扣血，避免治疗失败
-			current_stats.health -= value
+		if excess == null:
+			var excess_shaved: int = max(0, current_stats.health - max_stats.health)
+			current_stats.health = min(current_stats.health, max_stats.health) - value
+			return excess_shaved
 		else:
-			# 治疗后弥补多扣的血
-			current_stats.health += (value - value_healed)
+			current_stats.health += (value - value_healed) + excess
 			if value_healed > 0:
 				var effects = RunData.get_player_effects(player_index)
 				effects[Utils.foxlab_lost_hp_hash] += value_healed
+	return 0
 
 func foxlab_process_lost_hp() -> bool:
 	var effects = RunData.get_player_effects(player_index)
@@ -299,6 +302,7 @@ func foxlab_process_lost_hp() -> bool:
 			effects[Utils.foxlab_lost_hp_hash] -= prev_health - current_stats.health
 			if _health_regen_timer.is_stopped() and current_stats.health < max_stats.health:
 				check_hp_regen()
+				_attract_nearby_consumables()
 		emit_signal("health_updated", self, current_stats.health, max_stats.health)
 	return lost_hp > 0
 
@@ -493,9 +497,9 @@ func _on_ItemAttractArea_area_entered(item: Item) -> void:
 		item.set_physics_process(true)
 
 func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_torture: bool = false) -> int:
-	foxlab_process_invert_item_healing(value, 0, tracking_key, from_torture, true)
+	var excess = foxlab_process_invert_item_healing(value, 0, tracking_key, from_torture, null)
 	var value_healed = .on_healing_effect(value, tracking_key, from_torture)
-	foxlab_process_invert_item_healing(value, value_healed, tracking_key, from_torture, false)
+	foxlab_process_invert_item_healing(value, value_healed, tracking_key, from_torture, excess)
 	foxlab_process_lost_hp()
 	foxlab_process_gain_temp_stat_on_non_item_healing(value_healed, tracking_key, from_torture)
 	if value_healed > 0 and !_foxlab_has_charmed_all\

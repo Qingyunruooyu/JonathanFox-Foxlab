@@ -261,6 +261,8 @@ func foxlab_manage_projectile_on_hit() -> void:
 		)
 
 func foxlab_process_gain_temp_stat_on_non_item_healing(value_healed: int, tracking_key: int, from_torture: bool):
+	if cleaning_up:
+		return
 	if not (from_torture or tracking_key != Keys.empty_hash ) and value_healed > 0 and\
 		RunData.get_player_effect_bool(Utils.foxlab_gain_temp_stat_on_non_item_healing_hash, player_index):
 		for _i in RunData.get_player_effect(Utils.foxlab_gain_temp_stat_on_non_item_healing_hash, player_index):

@@ -137,12 +137,9 @@ func foxlab_spawn_enemy_via_gold_bag_ready():
 			while proc_left > 0 and gold_budget >= cost and RunData.bonus_gold >= cost:
 				var enemy_id_hash = Utils.get_rand_element(killed.keys())
 				# print(" spawn ", enemy_id_hash)
-				var scene = Utils.foxlab_enemy_id_hash_scene_map.get(enemy_id_hash)
-				if scene == null: # 存档恢复的，entity spawner懒记忆还没有留档，全量记录
-					ItemService.foxlab_init_enemy_id_scene_map()
-					scene = Utils.foxlab_enemy_id_hash_scene_map.get(enemy_id_hash)
-					if scene == null:
-						break
+				var scene = ItemService.foxlab_get_enemy_scene(enemy_id_hash)
+				if scene == null:
+					break
 				RunData.remove_bonus_gold(cost)
 				gold_budget -= cost
 				var pos = ZoneService.get_rand_pos(Utils.EDGE_MAP_DIST)
@@ -485,7 +482,7 @@ func foxlab_spawn_seed(unit, player_index: int):
 	var effects = []
 	for effect in consumable_to_spawn.effects:
 		if effect.get_id() == "foxlab_seed":
-			effects.append(Utils.foxlab_enemy_id_scene_map[unit.pool_id])
+			effects.append(ItemService.foxlab_enemy_seed_effect_map[unit.pool_id])
 		else:
 			effects.append(effect)
 	consumable_to_spawn.effects = effects

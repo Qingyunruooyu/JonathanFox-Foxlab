@@ -157,7 +157,6 @@ func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> Ite
 ####### 变异相关 ##############
 const FOXLAB_BOSS_CHANCE := 0.06
 const FOXLAB_CHARM_CHANCE := 0.03
-var foxlab_enemies = []
 var foxlab_die_args = Entity.DieArgs.new()
 const FOXLAB_PLAYER_HP_BOOST = 20
 var foxlab_enemy_boost_args = BoostArgs.new()
@@ -183,29 +182,21 @@ func foxlab_get_enemy_from_item(enemy:Resource):
 	var scene:PackedScene = load(scene_path)
 	return scene
 
-func foxlab_random_enemies() -> Array:
-	if not foxlab_enemies.empty():
-		return foxlab_enemies
-	for entity in entities:
-		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
-			continue
-		var scene = foxlab_get_enemy_from_item(entity)
-		if scene == null:
-			#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
-			continue
-		foxlab_enemies.append(scene)
-	return foxlab_enemies
+####### 敌人注册表 ##############
+# entry = {scene: PackedScene, texture: Texture, is_boss: bool（boss和精英为true）}
+# enemy_id_hash -> entry，跨存档稳定键（材料袋召唤、序列化入口）
+var foxlab_hash_to_entry := {}
+# PackedScene -> entry，运行时反查
+var foxlab_scene_to_entry := {}
+# 非精英/头目场景（变异/伪装的随机池）
+var foxlab_normal_scenes := []
+# scene实例id(=pool_id) -> SeedEffect（种子道具用，entity_spawner.spawn_entity懒写）
+var foxlab_enemy_seed_effect_map := {}
 
-# PackedScene -> Sprite贴图（foxlab_init_enemy_id_scene_map里instance时顺带缓存；
-# instance未入树onready未解析，须用get_node读）
-var foxlab_enemy_scene_texture_map := {}
-
-func foxlab_get_enemy_scene_texture(scene) -> Texture:
-	if foxlab_enemy_scene_texture_map.empty():
-		foxlab_init_enemy_id_scene_map()
-	return foxlab_enemy_scene_texture_map.get(scene)
-
-func foxlab_init_enemy_id_scene_map():
+func foxlab_ensure_enemy_registry():
+	if not foxlab_hash_to_entry.empty():
+		return
+	# 普通敌人从entities（ItemEnemy）；boss/头目从bosses和elites
 	for entity in entities:
 		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
 			continue
@@ -214,18 +205,32 @@ func foxlab_init_enemy_id_scene_map():
 			#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
 			continue
 		var enemy = scene.instance()
-		Utils.foxlab_enemy_id_hash_scene_map[Keys.generate_hash(enemy.enemy_id)] = scene
-		foxlab_enemy_scene_texture_map[scene] = enemy.get_node("Animation/Sprite").texture
-		# print("enemy ", enemy.enemy_id, " scene ", scene)
+		var entry = {"scene": scene, "texture": enemy.get_node("Animation/Sprite").texture, "is_boss": false}
+		foxlab_hash_to_entry[Keys.generate_hash(enemy.enemy_id)] = entry
+		foxlab_scene_to_entry[scene] = entry
+		foxlab_normal_scenes.append(scene)
 		enemy.free()
 
-	for enemies in [elites, bosses]:
-		for enemy_data in enemies:
-			var scene = enemy_data.scene
-			var enemy = scene.instance()
-			Utils.foxlab_enemy_id_hash_scene_map[Keys.generate_hash(enemy.enemy_id)] = scene
-			# print("enemy ", enemy.enemy_id, " scene ", scene, " hash ", Keys.generate_hash(enemy.enemy_id))
-			enemy.free()
+	for enemy_data in elites + bosses:
+		var scene = enemy_data.scene
+		var enemy = scene.instance()
+		var entry = {"scene": scene, "texture": enemy.get_node("Animation/Sprite").texture, "is_boss": true}
+		foxlab_hash_to_entry[Keys.generate_hash(enemy.enemy_id)] = entry
+		foxlab_scene_to_entry[scene] = entry
+		enemy.free()
+
+func foxlab_get_enemy_scene(enemy_id_hash: int) -> PackedScene:
+	foxlab_ensure_enemy_registry()
+	var entry = foxlab_hash_to_entry.get(enemy_id_hash)
+	return entry.scene if entry != null else null
+
+func foxlab_get_enemy_entry_by_scene(scene) -> Dictionary:
+	foxlab_ensure_enemy_registry()
+	return foxlab_scene_to_entry.get(scene)
+
+func foxlab_get_random_normal_enemies() -> Array:
+	foxlab_ensure_enemy_registry()
+	return foxlab_normal_scenes
 
 func foxlab_should_spawn_new_boss(boss_spawned_this_wave: int, player_index: int):
 	var nb_reactor = max(1, RunData.get_nb_item(Utils.item_foxlab_reactor_hash, player_index))
@@ -267,7 +272,7 @@ func foxlab_spawn_random_enemy(enemy, boss_spawned_this_wave: int, player_index:
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_reactor_hash, 1, 2)
 		enemy.emit_signal("wanted_to_spawn_an_enemy", enemy_data.scene, pos, enemy, charmed_by)
 	else:
-		enemy.emit_signal("wanted_to_spawn_an_enemy", Utils.get_rand_element(foxlab_random_enemies()), pos, enemy,charmed_by)
+		enemy.emit_signal("wanted_to_spawn_an_enemy", Utils.get_rand_element(foxlab_get_random_normal_enemies()), pos, enemy,charmed_by)
 
 	enemy.can_drop_loot = false
 	enemy.call_deferred("die", foxlab_die_args)

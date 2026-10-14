@@ -210,12 +210,6 @@ var foxlab_gaster_group = null
 
 var foxlab_evil_mob_units = []
 
-# PackedScene instance id -> SeedEffect(PackedScene in it)
-var foxlab_enemy_id_scene_map = {}
-
-# enemy_id_hash -> PackedScene（召唤击杀过的敌人用，entity_spawner.spawn_entity里记录）
-var foxlab_enemy_id_hash_scene_map = {}
-
 # pool_id -> PackedScene（复制构筑物/宠物用，entity_spawner.spawn_entity里记录；pool_id与scene一一对应）
 var foxlab_pets_structures_pool_id_scene_map = {}
 var foxlab_object_effect_item = {}

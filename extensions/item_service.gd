@@ -196,6 +196,15 @@ func foxlab_random_enemies() -> Array:
 		foxlab_enemies.append(scene)
 	return foxlab_enemies
 
+# PackedScene -> Sprite贴图（foxlab_init_enemy_id_scene_map里instance时顺带缓存；
+# instance未入树onready未解析，须用get_node读）
+var foxlab_enemy_scene_texture_map := {}
+
+func foxlab_get_enemy_scene_texture(scene) -> Texture:
+	if foxlab_enemy_scene_texture_map.empty():
+		foxlab_init_enemy_id_scene_map()
+	return foxlab_enemy_scene_texture_map.get(scene)
+
 func foxlab_init_enemy_id_scene_map():
 	for entity in entities:
 		if not entity is ItemEnemy or entity.is_elite or entity.is_boss:
@@ -206,6 +215,7 @@ func foxlab_init_enemy_id_scene_map():
 			continue
 		var enemy = scene.instance()
 		Utils.foxlab_enemy_id_hash_scene_map[Keys.generate_hash(enemy.enemy_id)] = scene
+		foxlab_enemy_scene_texture_map[scene] = enemy.get_node("Animation/Sprite").texture
 		# print("enemy ", enemy.enemy_id, " scene ", scene)
 		enemy.free()
 

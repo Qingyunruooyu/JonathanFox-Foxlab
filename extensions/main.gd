@@ -1045,6 +1045,10 @@ func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 	if is_instance_valid(enemy.source_spawner) and enemy.source_spawner is Enemy and enemy.get_charmed_by_player_index() == -1:
 		_foxlab_enemy_interact(enemy)
 
+	# source为Texture时是召唤时传入的伪装皮肤，替换敌人贴图（此时已在树中，sprite可用）
+	if enemy.source_spawner is Texture:
+		enemy.sprite.texture = enemy.source_spawner
+
 func _on_EntitySpawner_neutral_spawned(neutral) -> void :
 	._on_EntitySpawner_neutral_spawned(neutral)
 	var _error_took_damage = neutral.connect("took_damage", self, "_on_neutral_took_damage_foxlab")

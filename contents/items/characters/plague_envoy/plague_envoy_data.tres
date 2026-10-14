@@ -2,18 +2,18 @@
 
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/healer_icon.png" type="Texture" id=2]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_appearance.tres" type="Resource" id=3]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_1.tres" type="Resource" id=5]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_0.tres" type="Resource" id=6]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_3.tres" type="Resource" id=7]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_2.tres" type="Resource" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/plague_envoy/plague_envoy_appearance.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/plague_envoy/plague_envoy_effect_1.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/plague_envoy/plague_envoy_effect_0.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/plague_envoy/plague_envoy_effect_3.tres" type="Resource" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/plague_envoy/plague_envoy_effect_2.tres" type="Resource" id=8]
 [ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/ranged/icicle/1/icicle_data.tres" type="Resource" id=13]
 [ext_resource path="res://weapons/ranged/medical_gun/1/medical_gun_data.tres" type="Resource" id=18]
 [ext_resource path="res://weapons/ranged/slingshot/1/slingshot_data.tres" type="Resource" id=19]
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=20]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/1/javelin_data.tres" type="Resource" id=22]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_0a.tres" type="Resource" id=24]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/plague_envoy/plague_envoy_effect_0a.tres" type="Resource" id=24]
 [ext_resource path="res://weapons/ranged/crossbow/1/crossbow_data.tres" type="Resource" id=25]
 [ext_resource path="res://weapons/ranged/double_barrel_shotgun/1/double_barrel_shotgun_data.tres" type="Resource" id=26]
 [ext_resource path="res://weapons/ranged/ghost_scepter/1/ghost_scepter_data.tres" type="Resource" id=27]
@@ -25,15 +25,15 @@
 [ext_resource path="res://weapons/ranged/taser/1/taser_data.tres" type="Resource" id=33]
 [ext_resource path="res://weapons/ranged/wand/1/wand_data.tres" type="Resource" id=34]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/flute/1/flute_data.tres" type="Resource" id=35]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/healer/healer_effect_5.tres" type="Resource" id=36]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/plague_envoy/plague_envoy_effect_5.tres" type="Resource" id=36]
 
 [resource]
 script = ExtResource( 1 )
-my_id = "character_foxlab_healer"
+my_id = "character_foxlab_plague_envoy"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 2 )
-name = "CHARACTER_FOXLAB_HEALER"
+name = "CHARACTER_FOXLAB_PLAGUE_ENVOY"
 tier = 0
 value = 1
 effects = [ ExtResource( 6 ), ExtResource( 24 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 36 ) ]

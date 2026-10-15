@@ -165,7 +165,9 @@ func foxlab_process_player_projectile_effects(hitbox: Area2D):
 
 func foxlab_connect_jelly_shields():
 	for jelly in jellyshields:
-		var _err = jelly.get_node("Hurtbox").connect("area_entered", self, "_on_foxlab_jellyshield_Hurtbox_area_entered", [jelly])
+		var hurtbox = jelly.get_node("Hurtbox")
+		if not hurtbox.is_connected("area_entered", self, "_on_foxlab_jellyshield_Hurtbox_area_entered"):
+			var _err = hurtbox.connect("area_entered", self, "_on_foxlab_jellyshield_Hurtbox_area_entered", [jelly])
 
 func _on_foxlab_jellyshield_Hurtbox_area_entered(hitbox: Area2D, jelly: Node2D) -> void :
 	var parent = hitbox.get_parent()
@@ -284,8 +286,8 @@ func foxlab_process_invert_item_healing(value: int, value_healed: int, tracking_
 		return 0
 	if (from_torture or tracking_key != Keys.empty_hash ) and value > 0 and RunData.get_player_effect_bool(Utils.foxlab_invert_item_healing_hash, player_index):
 		if excess == null:
-			var excess_shaved: int = max(0, current_stats.health - max_stats.health)
-			current_stats.health = min(current_stats.health, max_stats.health) - value
+			var excess_shaved = int(max(0, current_stats.health - max_stats.health))
+			current_stats.health = int(min(current_stats.health, max_stats.health) - value)
 			return excess_shaved
 		else:
 			current_stats.health += (value - value_healed) + excess

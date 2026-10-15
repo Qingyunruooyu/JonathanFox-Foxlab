@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://entities/units/unit/unit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/transparent_icon.png" type="Texture" id=2]
@@ -6,6 +6,10 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger_stats.tres" type="Resource" id=4]
 [ext_resource path="res://entities/units/movement_behaviors/movement_behavior.gd" type="Script" id=5]
 [ext_resource path="res://particles/burning/torch_burning_particles.tscn" type="Resource" id=6]
+
+[sub_resource type="CircleShape2D" id=1]
+resource_local_to_scene = true
+radius = 200.0
 
 [node name="FoxTiger" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
@@ -26,3 +30,21 @@ monitoring = false
 
 [node name="MovementBehavior" type="Node2D" parent="." index="3"]
 script = ExtResource( 5 )
+
+[node name="Range" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource( 1 )
+
+[node name="OverloadTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+process_mode = 0
+
+[connection signal="body_entered" from="Range" to="." method="_on_Range_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_Range_body_exited"]
+[connection signal="timeout" from="OverloadTimer" to="." method="_on_OverloadTimer_timeout"]

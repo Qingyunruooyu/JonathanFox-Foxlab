@@ -174,6 +174,11 @@ func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
 	for list in [_entity_spawner.structures, _entity_spawner.pets]:
 		if not list.empty():
 			lists.append(list)
+	var jellyshields: Array = []
+	for owner_player in _players:
+		jellyshields.append_array(owner_player.jellyshields)
+	if not jellyshields.empty():
+		lists.append(jellyshields)
 	if lists.empty():
 		return
 
@@ -205,6 +210,10 @@ func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
 
 	for selection in selected:
 		var original = selection[0]
+		if original is Jellyshield:
+			_foxlab_spawn_entity_birth_for_fox_copy(EntityType.PET, player.jellyshield_scene,
+													original.global_position, null, player_index, selection[1], true)
+			continue
 		var scene = Utils.foxlab_pets_structures_pool_id_scene_map.get(original.pool_id)
 		var data = _entity_spawner.foxlab_pets_structures_node_data_map.get(original)
 		if scene == null:
@@ -222,7 +231,8 @@ func _foxlab_spawn_entity_birth_for_fox_copy(
 	pos: Vector2,
 	data: Resource = null,
 	player_index: = - 1,
-	targetable: bool = false
+	targetable: bool = false,
+	is_jellyshield: bool = false
 ):
 	var entity_birth = get_node_from_pool(_entity_spawner._entity_birth_pool_id, _births_container)
 
@@ -232,33 +242,42 @@ func _foxlab_spawn_entity_birth_for_fox_copy(
 	else:
 		if entity_birth.is_connected("birth_timeout", _entity_spawner, "on_entity_birth_timeout"):
 			entity_birth.disconnect("birth_timeout", _entity_spawner, "on_entity_birth_timeout")
-	entity_birth.connect("birth_timeout", self, "_on_foxlab_fox_entity_birth_timeout", [targetable])
+	entity_birth.connect("birth_timeout", self, "_on_foxlab_fox_entity_birth_timeout", [targetable, is_jellyshield])
 
 	entity_birth.start(type, scene, pos, data, player_index)
 
-func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool):
-	_entity_spawner._spawn_entity_args._init(birth.global_position, birth.type)
+func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool, is_jellyshield: bool):
+	_entity_spawner._spawn_entity_args._init(birth.global_position, -1 if is_jellyshield else birth.type)
 	_entity_spawner._spawn_entity_args.player_index = birth.player_index
 
-	var copy = _entity_spawner.spawn_entity(birth.scene, _entity_spawner._spawn_entity_args, birth.data, birth.source, birth.charmed_by)
+	var copy = null
+	# 玩家死亡时，水母盾跟随死亡，不再召唤
+	if not _cleaning_up and (not is_jellyshield or not _players[birth.player_index].dead):
+		copy = _entity_spawner.spawn_entity(birth.scene, _entity_spawner._spawn_entity_args, birth.data, birth.source, birth.charmed_by)
+	if copy is Jellyshield:
+		var owner_player = _players[birth.player_index]
+		owner_player.jellyshields.append(copy)
+		var angle: float = owner_player.jellyshields[0]._angle
+		for i in owner_player.jellyshields.size():
+			var jellyshield = owner_player.jellyshields[i]
+			jellyshield.init_trajectory(i, owner_player.jellyshields.size(), owner_player)
+			jellyshield._angle = angle
+		copy.update_highlight()
+		owner_player.foxlab_connect_jelly_shields()
 
 	birth.disconnect("birth_timeout", self, "_on_foxlab_fox_entity_birth_timeout")
 	birth.connect("birth_timeout", _entity_spawner, "on_entity_birth_timeout")
 	add_node_to_pool(birth, _entity_spawner._entity_birth_pool_id)
 
-	if targetable and copy is Structure:
-		var args = EntitySpawner.SpawnEntityArgs.new(birth.global_position, - 1)
+	if copy == null:
+		return
+	copy.add_outline(Color("#fd6a2d"))
+	if targetable and not (copy is Pet and copy.can_be_targeted_by_enemies):
+		var args = EntitySpawner.SpawnEntityArgs.new(copy.global_position, - 1)
 		args.player_index = birth.player_index
 		var fake_fox_pet = _entity_spawner.spawn_entity(_foxlab_fox_tiger_scene,args)
 		fake_fox_pet.set_original(copy)
 		_foxlab_foxes.append(fake_fox_pet)
-	else:
-		copy.add_outline(Color("#fd6a2d"))
-		if targetable:
-			_entity_spawner.targetable_pets.append(copy)
-			var instance = foxlab_burning_particle.instance()
-			copy.sprite.add_child(instance)
-			copy.sprite.move_child(instance, 0)
 
 ########### 异变相关 ###############
 func _foxlab_should_check_mutation(player_index: int)-> bool:
@@ -1059,6 +1078,8 @@ func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 		enemy._collision.scale *= size_ratio
 		enemy._hurtbox.scale *= size_ratio
 		enemy._hitbox.scale *= size_ratio
+		if not enemy is EvilMob:
+			enemy.can_drop_loot = false
 
 func _on_foxlab_disguise_enemy_tree_exiting(enemy, original_texture, size_ratio, snap_collision, snap_hurtbox, snap_hitbox) -> void :
 	enemy.sprite.texture = original_texture
@@ -1099,7 +1120,8 @@ func clean_up_room() -> void :
 		if timer is Timer:
 			timer.stop()
 	for fox in _foxlab_foxes:
-		fox.die(_entity_spawner._die_args_spawner)
+		if is_instance_valid(fox):
+			fox.die(_entity_spawner._die_args_spawner)
 
 func _on_player_health_updated(player, current_val: int, max_val: int) -> void :
 	._on_player_health_updated(player, current_val, max_val)

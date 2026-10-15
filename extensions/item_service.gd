@@ -87,10 +87,13 @@ var foxlab_is_android = false
 var foxlab_mod = null
 
 func _ready() -> void :
+	var _err = ProgressData.connect("dlc_activated", self, "_foxlab_on_dlc_changed")
+	_err = ProgressData.connect("dlc_deactivated", self, "_foxlab_on_dlc_changed")
 	call_deferred("_foxlab_init_resources")
 	call_deferred("_foxlab_init_configs")
 	call_deferred("_foxlab_init_enemies")
 	call_deferred("_foxlab_fix_banned_items_for_endless")
+	call_deferred("foxlab_ensure_enemy_registry")
 
 # 修复官方bug，无尽模式道具没有真正被禁用
 func _foxlab_fix_banned_items_for_endless():
@@ -192,6 +195,12 @@ var foxlab_scene_to_entry := {}
 var foxlab_normal_scenes := []
 # scene实例id(=pool_id) -> SeedEffect（种子道具用，entity_spawner.spawn_entity懒写）
 var foxlab_enemy_seed_effect_map := {}
+
+func _foxlab_on_dlc_changed(_dlc_id: String) -> void:
+	foxlab_hash_to_entry.clear()
+	foxlab_scene_to_entry.clear()
+	foxlab_normal_scenes.clear()
+	call_deferred("foxlab_ensure_enemy_registry")
 
 func foxlab_ensure_enemy_registry():
 	if not foxlab_hash_to_entry.empty():

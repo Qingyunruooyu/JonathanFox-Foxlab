@@ -1044,10 +1044,9 @@ func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 
 	# source为Texture时是召唤时传入的伪装皮肤，替换敌人贴图（此时已在树中，sprite可用）
 	# 贴图尺寸不同时，_collision/_hurtbox/_hitbox按贴图尺寸比等比缩放，行为与外表一致；sprite.scale不动（不干预追猎者/蝰鱼的set_size对它做加法自放大）
-	# 每次换皮重连died信号，阵亡还原后断连（一次性）
 	if enemy.source_spawner is Texture:
-		if enemy.is_connected("died", self, "_on_foxlab_disguise_enemy_died"):
-			enemy.disconnect("died", self, "_on_foxlab_disguise_enemy_died")
+		if enemy.is_connected("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting"):
+			enemy.disconnect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting")
 		var original_texture: Texture = enemy.sprite.texture
 		var size_ratio: Vector2 = Vector2(1, 1)
 		if enemy.source_spawner.get_size() != original_texture.get_size():
@@ -1055,19 +1054,19 @@ func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 		var snap_collision: Vector2 = enemy._collision.scale
 		var snap_hurtbox: Vector2 = enemy._hurtbox.scale
 		var snap_hitbox: Vector2 = enemy._hitbox.scale
-		enemy.connect("died", self, "_on_foxlab_disguise_enemy_died", [original_texture, size_ratio, snap_collision, snap_hurtbox, snap_hitbox])
+		enemy.connect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting", [enemy, original_texture, size_ratio, snap_collision, snap_hurtbox, snap_hitbox])
 		enemy.sprite.texture = enemy.source_spawner
 		enemy._collision.scale *= size_ratio
 		enemy._hurtbox.scale *= size_ratio
 		enemy._hitbox.scale *= size_ratio
 
-func _on_foxlab_disguise_enemy_died(enemy, _args, original_texture, size_ratio, snap_collision, snap_hurtbox, snap_hitbox) -> void :
+func _on_foxlab_disguise_enemy_tree_exiting(enemy, original_texture, size_ratio, snap_collision, snap_hurtbox, snap_hitbox) -> void :
 	enemy.sprite.texture = original_texture
 	# 还原 = 当前值 - 快照*(ratio-1)，不能用除法：伪装期间set_size对碰撞体的加法增量（0.25Δ）需原样保留在原尺寸空间
 	enemy._collision.scale = enemy._collision.scale - snap_collision * (size_ratio - Vector2.ONE)
 	enemy._hurtbox.scale = enemy._hurtbox.scale - snap_hurtbox * (size_ratio - Vector2.ONE)
 	enemy._hitbox.scale = enemy._hitbox.scale - snap_hitbox * (size_ratio - Vector2.ONE)
-	enemy.disconnect("died", self, "_on_foxlab_disguise_enemy_died")
+	enemy.disconnect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting")
 
 func _on_EntitySpawner_neutral_spawned(neutral) -> void :
 	._on_EntitySpawner_neutral_spawned(neutral)

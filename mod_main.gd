@@ -36,6 +36,7 @@ const EXTENSION_SCRIPTS: =[
 	"upgrade_ui.gd",
 	"coop_item_popup.gd",
 	"item_popup.gd",
+	"killed_by_container.gd",
 ]
 
 const PC_EXTENSION_SCRIPTS: =[

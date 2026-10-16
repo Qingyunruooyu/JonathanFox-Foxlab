@@ -186,7 +186,7 @@ func foxlab_get_enemy_from_item(enemy:Resource):
 	return scene
 
 ####### 敌人注册表 ##############
-# entry = {scene: PackedScene, texture: Texture, is_boss: bool（boss和精英为true）}
+# entry = {scene, texture, is_boss, collision_radii: Vector3（本体、受击、攻击半径）}
 # enemy_id_hash -> entry，跨存档稳定键（材料袋召唤、序列化入口）
 var foxlab_hash_to_entry := {}
 # PackedScene -> entry，运行时反查
@@ -213,20 +213,27 @@ func foxlab_ensure_enemy_registry():
 		if scene == null:
 			#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
 			continue
-		var enemy = scene.instance()
-		var entry = {"scene": scene, "texture": enemy.get_node("Animation/Sprite").texture, "is_boss": false}
-		foxlab_hash_to_entry[Keys.generate_hash(enemy.enemy_id)] = entry
-		foxlab_scene_to_entry[scene] = entry
+		_foxlab_register_enemy_scene(scene, false)
 		foxlab_normal_scenes.append(scene)
-		enemy.free()
 
 	for enemy_data in elites + bosses:
-		var scene = enemy_data.scene
-		var enemy = scene.instance()
-		var entry = {"scene": scene, "texture": enemy.get_node("Animation/Sprite").texture, "is_boss": true}
-		foxlab_hash_to_entry[Keys.generate_hash(enemy.enemy_id)] = entry
-		foxlab_scene_to_entry[scene] = entry
-		enemy.free()
+		_foxlab_register_enemy_scene(enemy_data.scene, true)
+
+func _foxlab_register_enemy_scene(scene: PackedScene, is_boss: bool) -> void:
+	var enemy = scene.instance()
+	var entry = {
+		"scene": scene,
+		"texture": enemy.get_node("Animation/Sprite").texture,
+		"is_boss": is_boss,
+		"collision_radii": Vector3(
+			enemy.get_node("Collision").shape.radius,
+			enemy.get_node("Hurtbox/Collision").shape.radius,
+			enemy.get_node("Hitbox/Collision").shape.radius
+		)
+	}
+	foxlab_hash_to_entry[Keys.generate_hash(enemy.enemy_id)] = entry
+	foxlab_scene_to_entry[scene] = entry
+	enemy.free()
 
 func foxlab_get_enemy_scene(enemy_id_hash: int) -> PackedScene:
 	foxlab_ensure_enemy_registry()

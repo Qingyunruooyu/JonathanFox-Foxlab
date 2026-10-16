@@ -298,16 +298,24 @@ func foxlab_process_invert_item_healing(value: int, value_healed: int, tracking_
 				_foxlab_summon_disguised_enemy()
 	return 0
 
+class FoxLabDisguiseSource:
+	extends Reference
+
+	var foxlab_scene: PackedScene
+
+	func _init(scene: PackedScene):
+		foxlab_scene = scene
+
 # 治疗转化触发时召唤伪装敌人：本体与皮肤为两次独立随机
 func _foxlab_summon_disguised_enemy() -> void:
 	var scenes = ItemService.foxlab_get_random_normal_enemies()
 	var enemy_scene = Utils.get_rand_element(scenes)
 	var texture_scene = Utils.get_rand_element(scenes)
-	var texture = null
+	var source = null
 	if enemy_scene != texture_scene:
-		texture = ItemService.foxlab_get_enemy_entry_by_scene(texture_scene).texture
+		source = FoxLabDisguiseSource.new(texture_scene)
 	var pos = ZoneService.get_rand_pos()
-	_entity_spawner_ref.on_enemy_wanted_to_spawn_an_enemy(enemy_scene, pos, texture, -1)
+	_entity_spawner_ref.on_enemy_wanted_to_spawn_an_enemy(enemy_scene, pos, source, -1)
 
 func foxlab_process_lost_hp() -> bool:
 	var effects = RunData.get_player_effects(player_index)

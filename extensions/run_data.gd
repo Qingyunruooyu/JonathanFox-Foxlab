@@ -28,6 +28,8 @@ var foxlab_current_different_enemies: = 0
 
 var foxlab_current_picking_player = -1
 
+var foxlab_killed_by_textures = [null, null, null, null]
+
 var foxlab_extra_enemy_groups = []
 # null: 未生成， false: 额外敌人不够多, true：额外敌人够多，Main的_is_horde_wave置为true
 var foxlab_is_horde_wave = null
@@ -216,6 +218,7 @@ func foxlab_remove_item_from_end(item_data: ItemData, player_index: int) -> void
 ###### 扩展 ######
 func _reset_per_wave_properties() -> void :
 	._reset_per_wave_properties()
+	foxlab_killed_by_textures = [null, null, null, null]
 	foxlab_current_living_structures = 0
 	foxlab_current_different_enemies = 0
 	foxlab_is_midnight = [false, false, false, false]

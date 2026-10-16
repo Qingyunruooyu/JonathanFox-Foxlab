@@ -1061,32 +1061,32 @@ func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 	if is_instance_valid(enemy.source_spawner) and enemy.source_spawner is Enemy and enemy.get_charmed_by_player_index() == -1:
 		_foxlab_enemy_interact(enemy)
 
-	# source为Texture时是召唤时传入的伪装皮肤，替换敌人贴图（此时已在树中，sprite可用）
-	# 贴图尺寸不同时，_collision/_hurtbox/_hitbox按贴图尺寸比等比缩放，行为与外表一致；sprite.scale不动（不干预追猎者/蝰鱼的set_size对它做加法自放大）
-	if enemy.source_spawner is Texture:
+	if enemy.source_spawner is Reference and "foxlab_scene" in enemy.source_spawner:
 		if enemy.is_connected("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting"):
 			enemy.disconnect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting")
+		var disguise = ItemService.foxlab_get_enemy_entry_by_scene(enemy.source_spawner.foxlab_scene)
+		var collision_radii: Vector3 = disguise.collision_radii
 		var original_texture: Texture = enemy.sprite.texture
-		var size_ratio: Vector2 = Vector2(1, 1)
-		if enemy.source_spawner.get_size() != original_texture.get_size():
-			size_ratio = enemy.source_spawner.get_size() / original_texture.get_size()
-		var snap_collision: Vector2 = enemy._collision.scale
-		var snap_hurtbox: Vector2 = enemy._hurtbox.scale
-		var snap_hitbox: Vector2 = enemy._hitbox.scale
-		enemy.connect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting", [enemy, original_texture, size_ratio, snap_collision, snap_hurtbox, snap_hitbox])
-		enemy.sprite.texture = enemy.source_spawner
-		enemy._collision.scale *= size_ratio
-		enemy._hurtbox.scale *= size_ratio
-		enemy._hitbox.scale *= size_ratio
+		var collision_ratio: float = collision_radii.x / enemy._collision.shape.radius
+		var hurtbox_ratio: float = collision_radii.y / enemy._hurtbox._collision.shape.radius
+		var hitbox_ratio: float = collision_radii.z / enemy._hitbox._collision.shape.radius
+		var collision_delta: Vector2 = enemy._collision.scale * (collision_ratio - 1.0)
+		var hurtbox_delta: Vector2 = enemy._hurtbox.scale * (hurtbox_ratio - 1.0)
+		var hitbox_delta: Vector2 = enemy._hitbox.scale * (hitbox_ratio - 1.0)
+		enemy.connect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting", [enemy, original_texture, collision_delta, hurtbox_delta, hitbox_delta])
+		enemy.sprite.texture = disguise.texture
+		enemy._collision.scale *= collision_ratio
+		enemy._hurtbox.scale *= hurtbox_ratio
+		enemy._hitbox.scale *= hitbox_ratio
 		if not enemy is EvilMob:
 			enemy.can_drop_loot = false
 
-func _on_foxlab_disguise_enemy_tree_exiting(enemy, original_texture, size_ratio, snap_collision, snap_hurtbox, snap_hitbox) -> void :
+func _on_foxlab_disguise_enemy_tree_exiting(enemy, original_texture, collision_delta: Vector2, hurtbox_delta: Vector2, hitbox_delta: Vector2) -> void :
 	enemy.sprite.texture = original_texture
-	# 还原 = 当前值 - 快照*(ratio-1)，不能用除法：伪装期间set_size对碰撞体的加法增量（0.25Δ）需原样保留在原尺寸空间
-	enemy._collision.scale = enemy._collision.scale - snap_collision * (size_ratio - Vector2.ONE)
-	enemy._hurtbox.scale = enemy._hurtbox.scale - snap_hurtbox * (size_ratio - Vector2.ONE)
-	enemy._hitbox.scale = enemy._hitbox.scale - snap_hitbox * (size_ratio - Vector2.ONE)
+	# 只减去换皮时的缩放差值，保留 set_size 后续添加的成长增量。
+	enemy._collision.scale -= collision_delta
+	enemy._hurtbox.scale -= hurtbox_delta
+	enemy._hitbox.scale -= hitbox_delta
 	enemy.disconnect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting")
 
 func _on_EntitySpawner_neutral_spawned(neutral) -> void :
@@ -1122,6 +1122,14 @@ func clean_up_room() -> void :
 	for fox in _foxlab_foxes:
 		if is_instance_valid(fox):
 			fox.die(_entity_spawner._die_args_spawner)
+
+func _on_player_died(player, args) -> void:
+	RunData.foxlab_killed_by_textures[player.player_index] = null
+	if is_instance_valid(args.from) and args.from is Enemy:
+		var source = args.from.source_spawner
+		if source is Reference and "foxlab_scene" in source:
+			RunData.foxlab_killed_by_textures[player.player_index] = args.from.sprite.texture
+	._on_player_died(player, args)
 
 func _on_player_health_updated(player, current_val: int, max_val: int) -> void :
 	._on_player_health_updated(player, current_val, max_val)

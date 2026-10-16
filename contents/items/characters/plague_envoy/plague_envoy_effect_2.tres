@@ -5,7 +5,7 @@
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
-arg_index = 0
+arg_index = 1
 arg_sign = 1
 arg_value = 2
 arg_format = 0
@@ -13,7 +13,7 @@ arg_key = "item_cute_monkey"
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 2 )
-arg_index = 1
+arg_index = 2
 arg_sign = 1
 arg_value = 2
 arg_format = 0
@@ -21,7 +21,7 @@ arg_key = "item_turret_healing"
 
 [sub_resource type="Resource" id=3]
 script = ExtResource( 2 )
-arg_index = 2
+arg_index = 3
 arg_sign = 1
 arg_value = 2
 arg_format = 0
@@ -31,7 +31,7 @@ arg_key = "item_torture"
 script = ExtResource( 1 )
 key = "foxlab_invert_item_healing"
 text_key = "EFFECT_FOXLAB_INVERT_ITEM_HEALING"
-value = 1
+value = 2
 custom_key = ""
 storage_method = 0
 effect_sign = 3

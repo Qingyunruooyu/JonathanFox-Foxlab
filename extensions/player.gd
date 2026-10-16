@@ -284,7 +284,10 @@ func foxlab_process_gain_temp_stat_on_non_item_healing(value_healed: int, tracki
 func foxlab_process_invert_item_healing(value: int, value_healed: int, tracking_key: int, from_torture: bool, excess) -> int:
 	if dead or RunData.get_player_effect_bool(Keys.no_heal_hash, player_index):
 		return 0
-	if (from_torture or tracking_key != Keys.empty_hash ) and value > 0 and RunData.get_player_effect_bool(Utils.foxlab_invert_item_healing_hash, player_index):
+	if not (from_torture or tracking_key != Keys.empty_hash) or value <= 0:
+		return 0
+	var enemy_count: int = RunData.get_player_effect(Utils.foxlab_invert_item_healing_hash, player_index)
+	if enemy_count > 0:
 		if excess == null:
 			var excess_shaved = int(max(0, current_stats.health - max_stats.health))
 			current_stats.health = int(min(current_stats.health, max_stats.health) - value)
@@ -295,7 +298,8 @@ func foxlab_process_invert_item_healing(value: int, value_healed: int, tracking_
 				var effects = RunData.get_player_effects(player_index)
 				effects[Utils.foxlab_lost_hp_hash] += value_healed
 			if not cleaning_up:
-				_foxlab_summon_disguised_enemy()
+				for _i in enemy_count:
+					_foxlab_summon_disguised_enemy()
 	return 0
 
 class FoxLabDisguiseSource:

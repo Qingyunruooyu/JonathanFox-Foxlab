@@ -328,6 +328,9 @@ func get_player_shop_items(wave: int, player_index: int, args: ItemServiceGetSho
 	if not foxlab_just_enter_shop[player_index]:
 		args.increase_tier += RunData.get_player_effect(Utils.foxlab_increase_tier_on_rerolls_hash, player_index) + \
 							min(1, RunData.get_player_effect(Utils.foxlab_buy_item_increase_tier_current_hash, player_index))
+	if RunData.get_player_item(Utils.item_foxlab_shop_advisor_hash, player_index) != null:
+		Utils.foxlab_try_analyze_shop_advisor(player_index)
+		Utils.foxlab_sync_shop_advisor(player_index)
 	return .get_player_shop_items(wave, player_index, args)
 
 var FOXLAB_BANNED_ITEM_NAMES_EARLIER = [Keys.generate_hash("item_foxlab_slow_and_steady_wins"), Keys.generate_hash("item_foxlab_spacetime_anchor")]

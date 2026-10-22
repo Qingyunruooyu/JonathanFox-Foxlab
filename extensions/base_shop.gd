@@ -265,6 +265,14 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	if shop_value != 0:
 		RunData.get_player_effects(player_index)[Utils.foxlab_price_digit_hash] = (shop_value % 10) as int
 
+	# 购买任意道具后移除商店军师（购买军师本身不算）
+	if shop_value != 0 and item_data.get_category() == Category.ITEM and item_data.my_id_hash != Utils.item_foxlab_shop_advisor_hash:
+		RunData.get_player_effects(player_index)[Utils.foxlab_shop_advisor_serial_hash] += 1
+		var advisor = RunData.get_player_item(Utils.item_foxlab_shop_advisor_hash, player_index)
+		if advisor != null:
+			RunData.remove_item(advisor, player_index)
+			_on_foxlab_item_gear_changed(player_index)
+
 	if item_data.get_category() == Category.WEAPON and\
 		item_data.tier >= RunData.get_player_effect(Utils.foxlab_bonus_reroll_weapon_tier_hash, player_index):
 		_has_bonus_free_reroll[player_index] = true

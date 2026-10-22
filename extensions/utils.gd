@@ -168,6 +168,9 @@ var item_foxlab_wanted_unknown_hash: int = Keys.generate_hash("item_foxlab_wante
 var item_foxlab_salvation_hash: int = Keys.generate_hash("item_foxlab_salvation")
 var consumable_foxlab_seed_hash: int = Keys.generate_hash("consumable_foxlab_seed")
 var item_foxlab_shadow_hash: int = Keys.generate_hash("item_foxlab_shadow")
+var item_foxlab_shop_advisor_hash: int = Keys.generate_hash("item_foxlab_shop_advisor")
+var foxlab_shop_advisor_cache_hash: int = Keys.generate_hash("foxlab_shop_advisor_cache")
+var foxlab_shop_advisor_serial_hash: int = Keys.generate_hash("foxlab_shop_advisor_serial")
 var character_foxlab_nyuba_hash: int = Keys.generate_hash("character_foxlab_nyuba")
 
 # enemy names
@@ -441,6 +444,163 @@ func foxlab_get_random_item_foxlab_wanted(player_index: int):
 	if RunData.get_nb_item(character_foxlab_bounty_hunter_hash, player_index) > 0:
 		RunData.add_tracked_value(player_index, character_foxlab_bounty_hunter_hash, 1)
 	return foxlab_item_wanted.pick_random()
+
+######## 商店军师 ########
+# cache条目: [分析时波次, 分析时商店购买序号, 推荐道具hash, 已写入guaranteed的道具hash]
+# guaranteed_shop_items只在apply(同步)与unapply(清除)时增删，平时重分析只更新cache
+func foxlab_try_analyze_shop_advisor(player_index: int) -> void:
+	var effects = RunData.get_player_effects(player_index)
+	var cache: Array = effects[foxlab_shop_advisor_cache_hash]
+	var serial: int = effects[foxlab_shop_advisor_serial_hash]
+	if cache.size() == 4 and cache[0] == RunData.current_wave and cache[1] == serial:
+		return
+	var item = foxlab_analyze_needed_item(player_index)
+	var guaranteed_hash: int = cache[3] if cache.size() == 4 else 0
+	effects[foxlab_shop_advisor_cache_hash] = [RunData.current_wave, serial, item.my_id_hash if item != null else 0, guaranteed_hash]
+
+# 把cache中的最新推荐同步进guaranteed_shop_items（apply与商店生成时调用）
+func foxlab_sync_shop_advisor(player_index: int) -> void:
+	var cache: Array = RunData.get_player_effect(foxlab_shop_advisor_cache_hash, player_index)
+	if cache.size() != 4 or cache[2] == 0 or cache[2] == cache[3]:
+		return
+	if cache[3] != 0:
+		foxlab_remove_guaranteed_shop_item(player_index, cache[3])
+	RunData.get_player_effect(Keys.guaranteed_shop_items_hash, player_index).append([cache[2], 1])
+	cache[3] = cache[2]
+
+func foxlab_clear_shop_advisor(player_index: int) -> void:
+	var effects = RunData.get_player_effects(player_index)
+	var cache: Array = effects[foxlab_shop_advisor_cache_hash]
+	if cache.size() == 4 and cache[3] != 0:
+		foxlab_remove_guaranteed_shop_item(player_index, cache[3])
+	effects[foxlab_shop_advisor_cache_hash] = []
+
+func foxlab_remove_guaranteed_shop_item(player_index: int, item_hash: int) -> void:
+	var guaranteed: Array = RunData.get_player_effect(Keys.guaranteed_shop_items_hash, player_index)
+	for i in range(guaranteed.size()):
+		if guaranteed[i][0] == item_hash:
+			guaranteed.remove(i)
+			return
+
+func foxlab_get_shop_advisor_item(player_index: int):
+	var cache: Array = RunData.get_player_effect(foxlab_shop_advisor_cache_hash, player_index)
+	if cache.size() == 4 and cache[2] != 0:
+		return ItemService.get_element(ItemService.items, cache[2])
+	return null
+
+func foxlab_advisor_item_banned(player_index: int, item) -> bool:
+	for banned in RunData.players_data[player_index].banned_items:
+		var banned_hash = Keys.generate_hash(banned) if banned is String else banned
+		if banned_hash == item.my_id_hash:
+			return true
+	# 影子角色：包裹里有多个角色（变身等）时禁用列表是并集
+	var character = ItemService._foxlab_get_merged_character(player_index)
+	if character == null:
+		return false
+	if item.my_id in character.banned_items:
+		return true
+	for group in character.banned_item_groups:
+		if ItemService.item_groups.has(group) and item.my_id in ItemService.item_groups[group]:
+			return true
+	return false
+
+func foxlab_advisor_candidate(player_index: int, shop_tier: int, item_ids: Array):
+	for item_id in item_ids:
+		var item = ItemService.get_element(ItemService.items, Keys.generate_hash(item_id))
+		if item == null or item.tier > shop_tier:
+			continue
+		if RunData.get_remaining_max_nb_item(item, player_index) <= 0:
+			continue
+		if foxlab_advisor_item_banned(player_index, item):
+			continue
+		return item
+	return null
+
+# 规则链（先命中先返回）：脆皮(生命/护甲增益修改为负)→水熊虫；每秒失血被抵消(如嗜血独狼)→献血/血淋淋的手；
+# 毒水果概率→异形虫(消耗品治疗-1的负面无所谓)；探索偏好→增箱/鱼饵/树木；
+# 收获偏好→王冠(剩余波次×8收获 ≥ 现价 才回本)；远程贯通带衰减→南瓜；
+# 远程无贯通无反弹→跳弹/头巾；武器基础冷却≥60→攻速道具(闪避>0连帽衫，否则社区支持起)；
+# 兜底→wanted_tags命中的道具随机一件
+func foxlab_analyze_needed_item(player_index: int):
+	# 影子角色：wanted_tags同样是多角色并集
+	var character = ItemService._foxlab_get_merged_character(player_index)
+	if character == null:
+		return null
+	# 当前波次商店最高可出现的道具等级（get_tier_from_wave是随机掷骰，不适合做上限判定）
+	var shop_tier: int = Tier.COMMON
+	for i in range(ItemService._tiers_data.size() - 1, -1, -1):
+		if RunData.current_wave - 1 >= ItemService._tiers_data[i][ItemService.TierData.MIN_WAVE]:
+			shop_tier = i
+			break
+	var item = null
+
+	# 脆皮判定：生命/护甲增益修改为负（升级减生命值、增益减少类），或实际值过低（反物质这类不走增益体系的反加）
+	var squishy = RunData.get_player_effect(Keys.gain_stat_max_hp_hash, player_index) < 0 \
+		or RunData.get_player_effect(Keys.gain_stat_armor_hash, player_index) < 0 \
+		or get_stat(Keys.stat_max_hp_hash, player_index) < 10 \
+		or get_stat(Keys.stat_armor_hash, player_index) < 0
+	if squishy:
+		item = foxlab_advisor_candidate(player_index, shop_tier, ["item_tardigrade"])
+
+	if item == null and RunData.get_player_effect(Keys.lose_hp_per_second_hash, player_index) < 0:
+		item = foxlab_advisor_candidate(player_index, shop_tier, ["item_blood_donation", "item_bloody_hand"])
+
+	if item == null and RunData.get_player_effect(Keys.poisoned_fruit_hash, player_index) > 0:
+		item = foxlab_advisor_candidate(player_index, shop_tier, ["item_alien_worm"])
+
+	if item == null and "exploration" in character.wanted_tags:
+		item = foxlab_advisor_candidate(player_index, shop_tier, ["item_treasure_map", "item_pearl", "item_bait", "item_tree"])
+
+	if item == null and "stat_harvesting" in character.wanted_tags:
+		var crown = ItemService.get_element(ItemService.items, Keys.item_crown_hash)
+		if crown != null:
+			var price: int = ItemService.get_value(RunData.current_wave, crown.value, player_index, false, false, crown.my_id_hash)
+			if 8 * (RunData.nb_of_waves - RunData.current_wave) >= price:
+				item = foxlab_advisor_candidate(player_index, shop_tier, ["item_crown"])
+
+	var has_piercing_decay = false
+	var has_ranged_without_pierce = false
+	var slow_weapon = false
+	for weapon in RunData.get_player_weapons_ref(player_index):
+		if weapon.type == WeaponData.Type.RANGED:
+			if weapon.stats.piercing > 0 and weapon.stats.piercing_dmg_reduction > 0:
+				has_piercing_decay = true
+			elif weapon.stats.piercing <= 0 and weapon.stats.bounce <= 0:
+				has_ranged_without_pierce = true
+		if weapon.stats.cooldown >= 60:
+			slow_weapon = true
+
+	if item == null and has_piercing_decay:
+		item = foxlab_advisor_candidate(player_index, shop_tier, ["item_pumpkin"])
+	if item == null and has_ranged_without_pierce:
+		item = foxlab_advisor_candidate(player_index, shop_tier, ["item_ricochet", "item_bandana"])
+	if item == null and slow_weapon:
+		# 攻速道具梯度：连帽衫按闪避加成，没闪避不推；之后按等级从高到低取第一个可用的
+		var attack_speed_tiers = [[1, "item_banner"], [1, "item_small_magazine"], [0, "item_coffee"], [0, "item_gummy_berserker"]]
+		if get_stat(Keys.stat_dodge_hash, player_index) > 0:
+			attack_speed_tiers.push_front([3, "item_retromations_hoodie"])
+		else:
+			attack_speed_tiers.push_front([2, "item_community_support"])
+		for tier_entry in attack_speed_tiers:
+			if tier_entry[0] > shop_tier:
+				continue
+			item = foxlab_advisor_candidate(player_index, shop_tier, [tier_entry[1]])
+			if item != null:
+				break
+
+	if item != null:
+		return item
+
+	var fallback_pool = []
+	for tag in character.wanted_tags:
+		for candidate_item in ItemService.items:
+			if candidate_item.can_be_looted and tag in candidate_item.tags and candidate_item.tier <= shop_tier \
+				and RunData.get_remaining_max_nb_item(candidate_item, player_index) > 0 \
+				and not foxlab_advisor_item_banned(player_index, candidate_item):
+				fallback_pool.append(candidate_item)
+	if fallback_pool.empty():
+		return null
+	return get_rand_element(fallback_pool)
 
 # 不直接销毁武器， 因为武器可能还有投射物、爆炸在外面，防止他们引用野地址
 func foxlab_queue_free_weapon(weapon: Node2D):

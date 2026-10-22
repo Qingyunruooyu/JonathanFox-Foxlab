@@ -348,6 +348,8 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_burning_proof_hash: 0,
 			Utils.foxlab_gain_temp_stat_on_non_item_healing_hash: 0,
 			Utils.foxlab_invert_item_healing_hash: 0,
+			Utils.foxlab_shop_advisor_cache_hash: [],
+			Utils.foxlab_shop_advisor_serial_hash: 0,
 		}
 		new_effects.merge(vanilla_effects)
 		new_effects.merge(init_foxlab_stats())

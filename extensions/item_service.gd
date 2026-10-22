@@ -274,7 +274,7 @@ func foxlab_spawn_random_enemy(enemy, boss_spawned_this_wave: int, player_index:
 			var player =  main._players[_player_index]
 			if not player._pending_die:
 				player._hit_protection += 1
-				player.current_stats.health += int(max(FOXLAB_PLAYER_HP_BOOST, player.current_stats.health * FOXLAB_PLAYER_HP_BOOST / 100))
+				player.current_stats.health += int(max(FOXLAB_PLAYER_HP_BOOST, player.current_stats.health * FOXLAB_PLAYER_HP_BOOST / 400))
 				player.emit_signal("health_updated", player, player.current_stats.health, player.max_stats.health)
 
 

@@ -28,6 +28,9 @@ var _foxlab_has_charmed_all = false
 
 var _foxlab_bounce_box:Area2D = null
 
+# 受击类(temp_stats_on_hit)负向最大生命的待豁免量（机械恶魔），update_player_stats同步扣减时抵扣
+var _foxlab_max_hp_shave_exempt: int = 0
+
 func _ready() -> void :
 	if _foxlab_has_curse():
 		foxlab_add_curse_particle()
@@ -452,6 +455,7 @@ func _clean_up() -> void :
 		_foxlab_bounce_box.disable()
 
 	foxlab_remove_temp_weapon()
+	_foxlab_max_hp_shave_exempt = 0
 
 func apply_items_effects() -> void :
 	.apply_items_effects()
@@ -513,6 +517,9 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	if ret[1] > 0:
 		for stats in foxlab_enemy_stats_on_hit:
 			EntityService.factor_cache.erase(stats)
+		for temp_stat_on_hit in RunData.get_player_effect(Keys.temp_stats_on_hit_hash, player_index):
+			if temp_stat_on_hit[0] == Keys.stat_max_hp_hash and temp_stat_on_hit[1] < 0:
+				_foxlab_max_hp_shave_exempt += -temp_stat_on_hit[1]
 		var hitbox = args.hitbox
 		if _foxlab_has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from.player_index == -1:
 			foxlab_manage_projectile_on_hit()
@@ -587,3 +594,29 @@ func heal(value: int, is_from_torture: bool = false) -> int:
 	if value <= 0:
 		return 0
 	return .heal(value, is_from_torture)
+
+# 最大生命减少X时，若当前生命超过新上限，当前生命减X、最多减到新上限
+# 受击导致最大生命减少（机械恶魔）豁免同步扣减，避免受击在伤害之外再被扣一次当前生命
+func update_player_stats(reset_current_health: = false) -> void :
+	var old_max_health: int = max_stats.health
+	.update_player_stats(reset_current_health)
+	var decreased_health: int = old_max_health - max_stats.health
+	var exempt: int = min(decreased_health, _foxlab_max_hp_shave_exempt) if decreased_health > 0 else 0
+	decreased_health -= exempt
+	_foxlab_max_hp_shave_exempt = 0
+	if not reset_current_health and decreased_health > 0 and current_stats.health > max_stats.health:
+		current_stats.health = max(max_stats.health, current_stats.health - decreased_health) as int
+		emit_signal("health_updated", self, current_stats.health, max_stats.health)
+
+# 玩家被Buff怪增强，原版boost()立即给当前生命加血、boost_ended()把当前生命钳制回新上限，
+# 会与update_player_stats的生命调整重复计算（boost多加一次，结束时多扣一次），
+# 改成统一由update_player_stats处理
+func boost(boost_args: BoostArgs) -> void :
+	var prev_health: int = current_stats.health
+	.boost(boost_args)
+	current_stats.health = prev_health
+
+func boost_ended() -> void :
+	var prev_health: int = current_stats.health
+	.boost_ended()
+	current_stats.health = prev_health

@@ -181,6 +181,9 @@ func foxlab_has_node_with_name(packed_scene: PackedScene, node_name: String) -> 
 # boss精英不用这个函数，因为原版里面穿刺蠕虫有的拼成worn了
 func foxlab_get_enemy_from_item(enemy:Resource):
 	var enemy_path:String = enemy.resource_path.trim_suffix("_item.tres")
+	# 运行时注册的图鉴条目（其他mod动态添加的敌人）没有resource_path，从stats路径推导场景
+	if enemy_path.empty() and enemy.stats != null:
+		enemy_path = enemy.stats.resource_path.trim_suffix("_stats.tres")
 	var scene_path:String = enemy_path + ".tscn"
 	var scene:PackedScene = load(scene_path)
 	return scene

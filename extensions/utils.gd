@@ -594,17 +594,13 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 		ret.effects.append_array(effect_to_move)
 	return ret
 
-func foxlab_fit_item_icon_scale(item) ->Vector2:
-	var standard_icon_size =  ItemService.characters[0].icon.get_size()
-	var icon:Texture = item.icon
-	var icon_scale = Vector2(0.5, 0.5)
-	var icon_size = icon.get_size()
-	if icon_size != standard_icon_size:
-		var max_dimension = max(icon_size.x, icon_size.y)
-		var scale_factor = standard_icon_size.x / max_dimension
-		icon_scale.x *= scale_factor
-		icon_scale.y *= scale_factor
-	return icon_scale
+func foxlab_fit_item_icon_scale(texture: Texture, base_scale: float = 0.5) -> Vector2:
+	var standard_icon_size = ItemService.characters[0].icon.get_size()
+	var texture_size = texture.get_size()
+	var scale_factor = base_scale
+	if texture_size != standard_icon_size:
+		scale_factor = base_scale * standard_icon_size.x / max(texture_size.x, texture_size.y)
+	return Vector2(scale_factor, scale_factor)
 
 func foxlab_is_sellable_item(item_data: ItemData)->bool:
 	return item_data.can_be_looted and not item_data is CharacterData

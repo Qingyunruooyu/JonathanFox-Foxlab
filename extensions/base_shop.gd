@@ -67,7 +67,7 @@ func _on_foxlab_item_added(new_items, player_index):
 		direction = Vector2(25, - 100)
 	for item in new_items:
 		var icon = item.icon
-		var icon_scale = Utils.foxlab_fit_item_icon_scale(item)
+		var icon_scale = Utils.foxlab_fit_item_icon_scale(item.icon)
 		_floating_text_manager.display("+1", popup_pos, Utils.CURSE_COLOR if item.is_cursed else color, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
 		popup_pos -= offset
 
@@ -379,7 +379,7 @@ func fill_shop_items(player_locked_items: Array, player_index: int, just_entered
 					pos.y += reroll_button.rect_size.y / 2
 				else:
 					pos.x += reroll_button.rect_size.x - 80
-				var icon_scale = Utils.foxlab_fit_item_icon_scale(item_data)
+				var icon_scale = Utils.foxlab_fit_item_icon_scale(item_data.icon)
 				_floating_text_manager.display("-1", pos, Utils.CURSE_COLOR if item_data.is_cursed else color, item_data.icon,\
 					_floating_text_manager.duration * 2, true, _floating_text_manager.direction, false, icon_scale)
 				lose_item_num -= 1

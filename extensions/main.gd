@@ -515,7 +515,9 @@ func foxlab_spawn_seed(unit, player_index: int):
 
 	consumable.already_picked_up = false
 	consumable.consumable_data = consumable_to_spawn
-	consumable.set_texture(unit.stats.icon if unit.stats.icon else unit.sprite.texture)
+	var seed_texture: Texture = unit.stats.icon if unit.stats.icon else unit.sprite.texture
+	consumable.set_texture(seed_texture)
+	consumable.scale = Utils.foxlab_fit_item_icon_scale(seed_texture, 1.0)
 	var pos = unit.global_position
 	var dist: = rand_range(150, 200 + unit.stats.gold_spread)
 	var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
@@ -528,7 +530,7 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 	var pos = _players[player_index].global_position - Vector2(0, 50)
 	for character in new_characters:
 		var icon = character.icon
-		var icon_scale = Utils.foxlab_fit_item_icon_scale(character)
+		var icon_scale = Utils.foxlab_fit_item_icon_scale(character.icon)
 		_floating_text_manager.display("", pos, Color.white, icon, _floating_text_manager.duration * 2, true,  _floating_text_manager.direction, false, icon_scale)
 		pos -= Vector2(30, 30)
 	SoundManager2D.play(Utils.get_rand_element(_floating_text_manager.stat_pos_sounds), pos, -10)
@@ -549,7 +551,7 @@ func _on_foxlab_weapon_added(new_weapon: WeaponData, player_index: int):
 
 func _on_foxlab_item_added(new_item, item_count: int, player_index: int):
 	var player = _players[player_index]
-	var icon_scale = Utils.foxlab_fit_item_icon_scale(new_item)
+	var icon_scale = Utils.foxlab_fit_item_icon_scale(new_item.icon)
 	var pos = player.global_position - 1.5 * _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset
 	_floating_text_manager.players_add_stats_count[player_index] += 1
 	var text_str = ""
@@ -747,7 +749,7 @@ func foxlab_modify_loong_rider_projectile(projectile: Node2D, bonus_bounce: int,
 		var pos = _players[player_index].global_position
 		pos = pos - Utils.randi_range(1, 6) * _floating_text_manager.offset
 		var enemy_data = {"icon": enemy.sprite.texture}
-		var scale = Utils.foxlab_fit_item_icon_scale(enemy_data)
+		var scale = Utils.foxlab_fit_item_icon_scale(enemy_data.icon)
 		_floating_text_manager.display("卍", pos , col, enemy.sprite.texture, _floating_text_manager.duration, false,\
 			 _floating_text_manager.direction, false, scale)
 

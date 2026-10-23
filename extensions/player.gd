@@ -517,9 +517,14 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	if ret[1] > 0:
 		for stats in foxlab_enemy_stats_on_hit:
 			EntityService.factor_cache.erase(stats)
+		# 受击类负向最大生命（机械恶魔）：豁免量=本次伤害，但不超过本次受击的总降幅（每击只记一次）；
+		# min上限防止大伤害一击的多余豁免抵扣同帧另一击的同步扣减
+		var neg_max_hp_on_hit: int = 0
 		for temp_stat_on_hit in RunData.get_player_effect(Keys.temp_stats_on_hit_hash, player_index):
 			if temp_stat_on_hit[0] == Keys.stat_max_hp_hash and temp_stat_on_hit[1] < 0:
-				_foxlab_max_hp_shave_exempt += -temp_stat_on_hit[1]
+				neg_max_hp_on_hit += -temp_stat_on_hit[1]
+		if neg_max_hp_on_hit > 0:
+			_foxlab_max_hp_shave_exempt += min(neg_max_hp_on_hit, ret[1])
 		var hitbox = args.hitbox
 		if _foxlab_has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from.player_index == -1:
 			foxlab_manage_projectile_on_hit()

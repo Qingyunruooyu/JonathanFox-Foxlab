@@ -71,14 +71,16 @@ func _on_foxlab_item_added(new_items, player_index):
 		_floating_text_manager.display("+1", popup_pos, Utils.CURSE_COLOR if item.is_cursed else color, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
 		popup_pos -= offset
 
+# 必须传 _ref（实时数组）而非 get_player_items() 的拷贝：deferred 到帧末才执行，
+# 若传快照拷贝，同帧稍后 foxlab_add_bonus_items 等同步增量更新会被旧快照的全量重建覆盖
 func _on_foxlab_item_gear_changed(player_index):
 	var player_gear_container = _get_gear_container(player_index)
-	var items = RunData.get_player_items(player_index)
+	var items = RunData.get_player_items_ref(player_index)
 	player_gear_container.call_deferred("set_items_data", items)
 
 func _on_foxlab_weapon_gear_changed(player_index):
 	var player_gear_container = _get_gear_container(player_index)
-	var weapons = RunData.get_player_weapons(player_index)
+	var weapons = RunData.get_player_weapons_ref(player_index)
 	player_gear_container.call_deferred("set_weapons_data", weapons)
 
 func _on_foxlab_item_pin_button_pressed(weapon_data: WeaponData, player_index: int) -> void :

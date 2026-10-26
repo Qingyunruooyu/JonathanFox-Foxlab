@@ -1,4 +1,4 @@
-extends Unit
+extends "res://entities/units/unit/unit.gd"
 
 export (Resource) var targetable_particles
 export (float) var overload_radius = 200.0

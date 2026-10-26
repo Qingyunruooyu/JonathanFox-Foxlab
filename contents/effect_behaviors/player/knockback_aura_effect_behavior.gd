@@ -1,4 +1,4 @@
-extends PlayerEffectBehavior
+extends "res://effect_behaviors/player_effect_behavior.gd"
 
 export (AudioStreamSample) var sound_effect
 

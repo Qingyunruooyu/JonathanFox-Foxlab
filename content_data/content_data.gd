@@ -3,6 +3,7 @@ extends Resource
 # ItemService
 export (Array, Resource) var characters = []
 export (Array, Resource) var items = []
+export (Array, Resource) var entities = []
 # export (Array, Resource) var weapons = []
 # export (Array, Resource) var sets = []
 # export (Array, Resource) var upgrades = []
@@ -74,6 +75,7 @@ func add_resources(settings: Dictionary):
 			item.can_be_looted = false
 
 	ProgressData._append_without_duplicates(ItemService.items, items)
+	ProgressData._append_without_duplicates(ItemService.entities, entities)
 	ProgressData._append_without_duplicates(ItemService.effects, effects)
 	ProgressData._append_without_duplicates(RunData.effect_keys_with_weapon_stats, Utils.convert_to_hash_array(effect_keys_with_weapon_stats))
 	ProgressData._append_without_duplicates(RunData.effect_keys_full_serialization, Utils.convert_to_hash_array(effect_keys_full_serialization))

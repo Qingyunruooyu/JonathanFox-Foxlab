@@ -2,7 +2,7 @@
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effect_behaviors/player/knockback_aura_effect_behavior.gd" type="Script" id=1]
 [ext_resource path="res://overlap/hitbox.tscn" type="PackedScene" id=2]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/老狙神/old_sniper_effect_1.png" type="Texture" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/old_sniper/old_sniper_effect_1.png" type="Texture" id=3]
 [ext_resource path="res://dlcs/dlc_1/items/lantern/lantern.wav" type="AudioStream" id=4]
 
 [sub_resource type="CircleShape2D" id=1]

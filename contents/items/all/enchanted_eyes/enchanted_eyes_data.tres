@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/enchanted_eyes/enchanted_eyes_icon.png" type="Texture" id=1]
+[ext_resource path="res://items/global/item_data.gd" type="Script" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/enchanted_eyes/enchanted_eyes_effect_0.tres" type="Resource" id=13]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/enchanted_eyes/enchanted_eyes_effect_17.tres" type="Resource" id=20]
+
+[resource]
+script = ExtResource( 2 )
+my_id = "item_foxlab_enchanted_eyes"
+unlocked_by_default = true
+can_be_looted = true
+icon = ExtResource( 1 )
+name = "ITEM_FOXLAB_ENCHANTED_EYES"
+tier = 2
+value = 60
+effects = [ ExtResource( 13 ), ExtResource( 20 ) ]
+tracking_text = "FOXLAB_WANTED_FOUND"
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = 1
+item_appearances = [  ]
+tags = [ "exploration" ]

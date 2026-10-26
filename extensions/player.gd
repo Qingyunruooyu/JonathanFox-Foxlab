@@ -6,7 +6,7 @@ var foxlab_transparent_texture = preload("res://mods-unpacked/JonathanFox-FoxLab
 var _foxlab_curse_particle =load("res://particles/curse/curse_enemy_particles.tscn")
 var _foxlab_curse_particle_instance = null
 
-const FOXLAB_MOM_LANDMINE_EFFECT_PATH = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/鬼妈/鬼妈_effect_0.tres"
+const FOXLAB_MOM_LANDMINE_EFFECT_PATH = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/mother/mother_effect_0.tres"
 const FOXLAB_MOM_LANDMINE_REUSABLE_SCENE_PATH = "res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/mom_landmine/mom_landmine_reusable.tscn"
 var foxlab_mom_landmine_effect: Resource = null
 var foxlab_mom_landmine_spawned_this_wave: int = 0

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/task_effect.gd" type="Script" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/golem_ninja/task_effects/golem_ninja_remove_no_heal.tres" type="Resource" id=3]
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 1 )
+arg_index = 5
+arg_sign = 2
+arg_value = 2
+arg_format = 0
+arg_key = "item_foxlab_omnic_crisis"
+
+[resource]
+script = ExtResource( 2 )
+key = "crit_chance_cap"
+text_key = "EFFECT_FOXLAB_GOLEM_NINJA"
+value = 101
+custom_key = "character_foxlab_golem_ninja"
+storage_method = 1
+effect_sign = 0
+custom_args = [ SubResource( 4 ) ]
+sub_effects = [ ExtResource( 3 ) ]
+max_execs = 1
+comparison = 0
+default_text_mode = true

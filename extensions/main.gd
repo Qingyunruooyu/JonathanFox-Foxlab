@@ -930,7 +930,7 @@ func on_levelled_up(player_index: int) -> void :
 	if upgrade.level % 5 == 0:
 		consumable_tier = Tier.LEGENDARY
 	var consumable_to_drop = ItemService.get_consumable_for_tier(consumable_tier).duplicate()
-	consumable_to_drop.icon = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/赏金猎人/cursed_chest.png")
+	consumable_to_drop.icon = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bounty_hunter/cursed_chest.png")
 	for _i in range(bonus_crate):
 		var consumable_to_process = UpgradesUI.ConsumableToProcess.new()
 		consumable_to_process.consumable_data = consumable_to_drop

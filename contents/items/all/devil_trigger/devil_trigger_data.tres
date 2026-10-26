@@ -1,0 +1,37 @@
+[gd_resource type="Resource" load_steps=17 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_icon.png" type="Texture" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_0.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_3.tres" type="Resource" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_8.tres" type="Resource" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_12.tres" type="Resource" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_4.tres" type="Resource" id=6]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_9.tres" type="Resource" id=7]
+[ext_resource path="res://items/global/item_data.gd" type="Script" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_10.tres" type="Resource" id=10]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_6.tres" type="Resource" id=11]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_2.tres" type="Resource" id=12]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_1.tres" type="Resource" id=13]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_5.tres" type="Resource" id=14]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_11.tres" type="Resource" id=15]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_effect_1a.tres" type="Resource" id=16]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/devil_trigger/devil_trigger_skin.tres" type="Resource" id=17]
+
+[resource]
+script = ExtResource( 9 )
+my_id = "item_foxlab_devil_trigger"
+unlocked_by_default = true
+can_be_looted = false
+icon = ExtResource( 1 )
+name = "ITEM_FOXLAB_DEVIL_TRIGGER"
+tier = 3
+value = 1
+effects = [ ExtResource( 2 ), ExtResource( 13 ), ExtResource( 16 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 14 ), ExtResource( 11 ), ExtResource( 4 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 15 ), ExtResource( 5 ) ]
+tracking_text = ""
+is_lockable = true
+unlock_codex_descr_after_get_it = 1
+is_cursed = false
+curse_factor = 0.0
+max_nb = 1
+item_appearances = [ ExtResource( 17 ) ]
+tags = [  ]

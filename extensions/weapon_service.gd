@@ -1,7 +1,7 @@
 extends "res://singletons/weapon_service.gd"
 
-const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_MELEE = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/jellyfish_explode_melee_effect.tres"
-const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/水母/jellyfish_explode_ranged_effect.tres"
+const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_MELEE = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/jellyfish/jellyfish_explode_melee_effect.tres"
+const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED = "res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/jellyfish/jellyfish_explode_ranged_effect.tres"
 
 var _foxlab_weapon_class_explode_args = WeaponServiceInitStatsArgs.new()
 

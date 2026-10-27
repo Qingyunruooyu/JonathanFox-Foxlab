@@ -216,6 +216,26 @@ func foxlab_remove_item_from_end(item_data: ItemData, player_index: int) -> void
 			break
 
 ###### 扩展 ######
+# 原版按 my_id 擦除第一个匹配的锁定条目，锁定列表里存在同名不同数据的商品（如诅咒+普通）时会擦错；
+# 无重名、或精确匹配恰为首个同名条目时基类行为等价，走基类，否则精确移除
+func unlock_player_shop_item(item_data, player_index: int) -> void :
+	var player_locked_items = locked_shop_items[player_index]
+	var first_same_name = -1
+	var precise = -1
+	for i in player_locked_items.size():
+		var locked_item = player_locked_items[i]
+		if locked_item[0].my_id_hash != item_data.my_id_hash:
+			continue
+		if first_same_name == -1:
+			first_same_name = i
+		if Utils.foxlab_same_shop_item(locked_item[0], item_data):
+			precise = i
+			break
+	if precise == -1 or precise == first_same_name:
+		.unlock_player_shop_item(item_data, player_index)
+	else:
+		player_locked_items.remove(precise)
+
 func _reset_per_wave_properties() -> void :
 	._reset_per_wave_properties()
 	foxlab_killed_by_textures = [null, null, null, null]

@@ -605,6 +605,20 @@ func foxlab_fit_item_icon_scale(texture: Texture, base_scale: float = 0.5) -> Ve
 func foxlab_is_sellable_item(item_data: ItemData)->bool:
 	return item_data.can_be_looted and not item_data is CharacterData
 
+# 同名商店商品的同一性判断（用于区分诅咒/普通等同名不同数据的变体）：
+# 不同名直接判不同；同名先比实例（会话内各处共享实例，正常游玩都在此命中）；
+# 实例不同（存档恢复后是两批实例）再按序列化数据比较，与原版 is_same_item 同法，武器同样适用
+func foxlab_same_shop_item(a, b) -> bool:
+	if a.my_id_hash != b.my_id_hash:
+		return false
+	if a == b:
+		return true
+	return str(a.serialize()) == str(b.serialize())
+
+# 商店元组 [item_data, wave_value] 的同一性判断，波次（基础价）不同即视为不同条目
+func foxlab_same_shop_tuple(a: Array, b: Array) -> bool:
+	return a[1] == b[1] and foxlab_same_shop_item(a[0], b[0])
+
 ######## 扩展 ######
 func reset_stat_keys() -> void :
 	.reset_stat_keys()

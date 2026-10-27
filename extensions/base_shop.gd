@@ -148,6 +148,26 @@ func foxlab_remember_item(player_index: int) -> int:
 			RunData.remove_item(source_item, player_index)
 	return wave_reset_count
 
+# 原版 on_shop_item_bought/on_shop_item_banned 按 my_id 擦除商店元组列表里的首个匹配，
+# 这里把实际被操作的那个元组挪到同名组首位，保证原版擦中的就是它；无重名时它本来就在首位
+func foxlab_move_shop_tuple_to_front(shop_item, player_index: int) -> void :
+	var player_shop_items = _shop_items[player_index]
+	var target = [shop_item.item_data, shop_item.wave_value]
+	var first_same_name = -1
+	var precise = -1
+	for i in player_shop_items.size():
+		if player_shop_items[i][0].my_id_hash != shop_item.item_data.my_id_hash:
+			continue
+		if first_same_name == -1:
+			first_same_name = i
+		if Utils.foxlab_same_shop_tuple(player_shop_items[i], target):
+			precise = i
+			break
+	if precise > first_same_name:
+		var tuple = player_shop_items[precise]
+		player_shop_items.remove(precise)
+		player_shop_items.insert(first_same_name, tuple)
+
 ######### 扩展 #########
 func _ready() -> void :
 	if not RunData.is_connected("foxlab_sec_char_changed", self, "_on_foxlab_item_added"):
@@ -227,14 +247,9 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 	foxlab_current_shop_item_pos[player_index][0] = shop_item._button.rect_global_position
 	foxlab_current_shop_item_pos[player_index][1] = shop_item._button.rect_size.x / 2.0
 
-	# 同名但是诅咒系数不同的道具，如果不是从左往右买，就会错位。比如商店一个诅咒镜子和一个普通镜子，如果买普通镜子，会把排前面的诅咒镜子干掉
-	var items_pull_back = []
-	for item in _shop_items[player_index]:
-		if item[0].my_id_hash == shop_item.item_data.my_id_hash and item[0].curse_factor != shop_item.item_data.curse_factor:
-			items_pull_back.append(item)
-	for item in items_pull_back:
-		_shop_items[player_index].erase(item)
-		_shop_items[player_index].append(item)
+	# 同名不同数据的商品（如诅咒/普通），原版按 my_id 擦除首个匹配会错位，
+	# 把实际购买的元组挪到同名组首位，保证原版擦中的就是它
+	foxlab_move_shop_tuple_to_front(shop_item, player_index)
 
 	# 不知道为啥买了之后，shop_item.value恢复原价了，这里是为了区分是购买还是窃取
 	var shop_value = shop_item.value
@@ -271,6 +286,10 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 		item_data.tier >= RunData.get_player_effect(Utils.foxlab_bonus_reroll_weapon_tier_hash, player_index):
 		_has_bonus_free_reroll[player_index] = true
 		set_reroll_button_price(player_index)
+
+func on_shop_item_banned(shop_item, player_index: int) -> void :
+	foxlab_move_shop_tuple_to_front(shop_item, player_index)
+	.on_shop_item_banned(shop_item, player_index)
 
 func buy_weapon(item_data: WeaponData, player_index: int) -> void :
 	.buy_weapon(item_data, player_index)
@@ -356,6 +375,57 @@ func _on_shop_item_focused(shop_item: ShopItem, player_index: int) -> void :
 func _on_shop_item_unfocused(shop_item: ShopItem, player_index: int) -> void :
 	._on_shop_item_unfocused(shop_item, player_index)
 	hide_tags(shop_item)
+
+func foxlab_shop_has_same_name(player_index: int) -> bool:
+	var seen = {}
+	for shop_tuple in _shop_items[player_index]:
+		var id_hash = shop_tuple[0].my_id_hash
+		if seen.has(id_hash):
+			return true
+		seen[id_hash] = true
+	return false
+
+func _update_visual_locks() -> void :
+	# 无重名时基类按 my_id 匹配即可；有重名才需要精确区分
+	var has_same_name = false
+	for player_index in RunData.get_player_count():
+		if foxlab_shop_has_same_name(player_index):
+			has_same_name = true
+			break
+	if not has_same_name:
+		._update_visual_locks()
+		return
+
+	# 存档恢复后 locked_shop_items 与 _shop_items 是两批各自反序列化的实例，
+	# 先按元组签名把锁定条目重链到商店元组的实例上，之后整个商店会话的锁定/解锁/购买都走实例比较
+	for player_index in RunData.get_player_count():
+		for locked_item in RunData.locked_shop_items[player_index]:
+			for shop_tuple in _shop_items[player_index]:
+				if Utils.foxlab_same_shop_tuple(shop_tuple, locked_item):
+					locked_item[0] = shop_tuple[0]
+					break
+
+	unlock_all_shop_items_visually()
+	for player_index in RunData.get_player_count():
+		var shop_items_container = _get_shop_items_container(player_index)
+		var player_shop_items = _shop_items[player_index]
+		var player_locked_items = RunData.get_player_locked_shop_items(player_index)
+		for locked_item in player_locked_items:
+			var first_same_name = -1
+			var precise = -1
+			for i in player_shop_items.size():
+				if shop_items_container.is_shop_item_locked_visually(i):
+					continue
+				if player_shop_items[i][0].my_id_hash != locked_item[0].my_id_hash:
+					continue
+				if first_same_name == -1:
+					first_same_name = i
+				if Utils.foxlab_same_shop_tuple(player_shop_items[i], locked_item):
+					precise = i
+					break
+			var target = precise if precise != -1 else first_same_name
+			if target != -1:
+				shop_items_container.lock_shop_item_visually(target)
 
 func fill_shop_items(player_locked_items: Array, player_index: int, just_entered_shop: bool = false) -> void :
 	.fill_shop_items(player_locked_items, player_index, just_entered_shop)

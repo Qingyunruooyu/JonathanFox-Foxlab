@@ -418,3 +418,12 @@ func apply_item_effect_modifications(item: ItemParentData, player_index: int) ->
 		if dlc:
 			new_item = Utils.foxlab_extra_curse_item(item, player_index, false, 0.0, new_item, dlc)
 	return new_item
+
+# 原版 get_weapon_from_weapon_id 永远返回 _weapon_id_lookup[weapon_id] 的第一把（最低阶），
+# 这里借用原版填好 lookup 缓存后，在同 id 列表里按 tier 匹配
+func foxlab_get_weapon_from_weapon_id(weapon_id_hash: int, tier: int):
+	get_weapon_from_weapon_id(weapon_id_hash)
+	for weapon in _weapon_id_lookup[weapon_id_hash]:
+		if weapon.tier == tier:
+			return weapon
+	return null

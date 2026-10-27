@@ -427,7 +427,31 @@ func _update_visual_locks() -> void :
 			if target != -1:
 				shop_items_container.lock_shop_item_visually(target)
 
+func foxlab_upgrade_locked_items(player_locked_items: Array, player_index: int) -> void:
+	var chance = RunData.get_player_effect(Utils.foxlab_upgrade_locked_item_on_reroll_hash, player_index)
+	if chance <= 0:
+		return
+	for locked_item in player_locked_items:
+		if not Utils.get_chance_success(chance / 100.0):
+			continue
+		var vanilla_item
+		if locked_item[0] is WeaponData:
+			vanilla_item = ItemService.foxlab_get_weapon_from_weapon_id(locked_item[0].weapon_id_hash, locked_item[0].tier)
+		else:
+			vanilla_item = ItemService.get_item_from_id(locked_item[0].my_id_hash)
+		if vanilla_item == null:
+			continue
+		for _i in 500:
+			var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
+			# TODO(fox): 未来史前惧兽还要检查机械/变异系数（？）
+			if modified != vanilla_item and modified.curse_factor > locked_item[0].curse_factor:
+				locked_item[0] = modified
+				RunData.add_tracked_value(player_index, Utils.item_foxlab_fishing_net_hash, 1)
+				break
+
 func fill_shop_items(player_locked_items: Array, player_index: int, just_entered_shop: bool = false) -> void :
+	if not just_entered_shop:
+		foxlab_upgrade_locked_items(player_locked_items, player_index)
 	.fill_shop_items(player_locked_items, player_index, just_entered_shop)
 
 	var lose_item_num = RunData.get_player_effect(Utils.foxlab_lose_item_on_reroll_hash, player_index)
@@ -466,8 +490,9 @@ func fill_shop_items(player_locked_items: Array, player_index: int, just_entered
 		var pos = RunData.get_player_effect(Utils.foxlab_price_digit_hash, player_index) - 1
 		if pos >= 0 and pos < get_player_shop_items(player_index).size():
 			var item = get_player_shop_items(player_index)[pos]
-			for dlc_id in RunData.enabled_dlcs:
-				var dlc_data = ProgressData.get_dlc_data(dlc_id)
-				if dlc_data and dlc_data.has_method("curse_item"):
-					item[0] = dlc_data.curse_item(item[0], player_index)
+			if not item[0].is_cursed:
+				for dlc_id in RunData.enabled_dlcs:
+					var dlc_data = ProgressData.get_dlc_data(dlc_id)
+					if dlc_data and dlc_data.has_method("curse_item"):
+						item[0] = dlc_data.curse_item(item[0], player_index)
 	RunData.get_player_effects(player_index)[Utils.foxlab_price_digit_hash] = 0

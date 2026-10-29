@@ -8,11 +8,9 @@ var _angle = rand_range(0, 2 * PI)
 
 export (Resource) var slow_sound
 
-
 func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [], _entity_spawner_ref = null) -> void :
 	.init(zone_min_pos, zone_max_pos, players_ref, _entity_spawner_ref)
 	_players = players_ref
-
 
 func _physics_process(delta: float) -> void :
 	_angle += delta * rotation_speed

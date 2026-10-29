@@ -1,9 +1,9 @@
 extends "res://singletons/entity_service.gd"
 
-const FOXLAB_TURRET_KEYS = {"effect_foxlab_reactor": 1,  "effect_foxlab_funnel": 2, "effect_foxlab_demon_pull": 6, "effect_foxlab_aquila": 7,  "effect_foxlab_tracker": 9}
+const FOXLAB_TURRET_KEYS = {"effect_foxlab_reactor": 1,  "effect_foxlab_funnel": 2, "effect_foxlab_demon_pull": 6, "effect_foxlab_aquila": 7,  "effect_foxlab_tracker": 9, "effect_foxlab_uv_lamp": 10}
 
 var foxlab_turret_keys_all = {"effect_builder_turret_alt": 0, "effect_turret_rocket": 3, "effect_turret_laser": 4, "effect_tyler": 5,
-		"effect_turret_flame": 8, "effect_turret": 10, "effect_turret_healing": 11}
+		"effect_turret_flame": 8, "effect_turret": 11, "effect_turret_healing": 12}
 
 func _ready():
 	foxlab_turret_keys_all.merge(FOXLAB_TURRET_KEYS)

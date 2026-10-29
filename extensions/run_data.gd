@@ -26,6 +26,9 @@ var foxlab_current_living_structures: = 0
 #当前存活的敌人的种类数
 var foxlab_current_different_enemies: = 0
 
+#紫外线灯相关，enemy_id_hash -> 当前被照射（暴露）的该类敌人实例数
+var foxlab_exposed_enemies = {}
+
 var foxlab_current_picking_player = -1
 
 var foxlab_killed_by_textures = [null, null, null, null]
@@ -244,6 +247,7 @@ func _reset_per_wave_properties() -> void :
 	foxlab_is_midnight = [false, false, false, false]
 	foxlab_scapegoat_no_hurt = [[], [], [], []]
 	foxlab_nb_died_scapegoat = [0, 0, 0, 0]
+	foxlab_exposed_enemies.clear()
 
 func add_gold(value: int, player_index: int) -> void :
 	# 如果材料不是自己捡的，自己又是要控材料的角色，把材料先记着

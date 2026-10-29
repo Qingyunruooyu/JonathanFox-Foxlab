@@ -127,6 +127,7 @@ var foxlab_burning_scaling_stats_hash: int = Keys.generate_hash("foxlab_burning_
 var foxlab_burning_proof_hash: int = Keys.generate_hash("foxlab_burning_proof")
 var foxlab_invert_item_healing_hash: int = Keys.generate_hash("foxlab_invert_item_healing")
 var foxlab_gain_temp_stat_on_non_item_healing_hash: int = Keys.generate_hash("foxlab_gain_temp_stat_on_non_item_healing")
+var foxlab_has_uv_lamp_hash: int = Keys.generate_hash("foxlab_has_uv_lamp")
 
 # weapon extra effects that will be kept on weapon upgrade
 var foxlab_const_effect_begin_hash: int = Keys.generate_hash("foxlab_const_effect_begin")
@@ -564,6 +565,11 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 					extra_effect.effect_sign = Sign.POSITIVE
 					extra_effect.value = dlc_data._boost_effect_value_positively(extra_effect, effect_modifier)
 					new_effects.append(extra_effect)
+				["foxlab_uv_lamp", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var boosted_stats = effect.stats.duplicate()
+					boosted_stats.max_range = int(ceil(effect.stats.max_range * (1.0 + effect_modifier)))
+					effect.stats = boosted_stats
 				[_, Utils.foxlab_heal_when_kill_nearby_hash]:
 					max_effect_modifier = max(max_effect_modifier, effect_modifier)
 					effect.value2 = dlc_data._boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)

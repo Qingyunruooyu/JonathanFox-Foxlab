@@ -28,7 +28,7 @@ export (Dictionary) var translation_keys_needing_percent = {}
 
 # EffectBehaviorService
 # export(Array, Resource) var scene_effect_behaviors = []
-# export(Array, Resource) var enemy_effect_behaviors = []
+export(Array, Resource) var enemy_effect_behaviors = []
 export(Array, Resource) var player_effect_behaviors = []
 
 export(Array, Translation) var translations = []
@@ -86,7 +86,7 @@ func add_resources(settings: Dictionary):
 	Text.keys_needing_percent.merge(translation_keys_needing_percent)
 
 	# ProgressData._append_without_duplicates(EffectBehaviorService.scene_effect_behaviors, scene_effect_behaviors)
-	# ProgressData._append_without_duplicates(EffectBehaviorService.enemy_effect_behaviors, enemy_effect_behaviors)
+	ProgressData._append_without_duplicates(EffectBehaviorService.enemy_effect_behaviors, enemy_effect_behaviors)
 	ProgressData._append_without_duplicates(EffectBehaviorService.player_effect_behaviors, player_effect_behaviors)
 
 	for translation in translations:

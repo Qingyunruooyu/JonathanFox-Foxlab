@@ -4,3 +4,4 @@
 
 [node name="ExposedEnemyEffectBehavior" type="Node2D"]
 script = ExtResource( 1 )
+bonus_damage_taken_percent = 25

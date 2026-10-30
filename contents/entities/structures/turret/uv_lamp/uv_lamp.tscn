@@ -1,11 +1,27 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://entities/structures/turret/turret.tscn" type="PackedScene" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/uv_lamp/uv_lamp.png" type="Texture" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/uv_lamp/uv_lamp.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+resource_local_to_scene = true
+radius = 169.706
 
 [node name="UvLamp" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
 [node name="Sprite" parent="Animation" index="0"]
 texture = ExtResource( 2 )
+
+[node name="ExposeRange" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 516
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExposeRange"]
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[connection signal="body_entered" from="ExposeRange" to="." method="_on_ExposeRange_body_entered"]
+[connection signal="body_exited" from="ExposeRange" to="." method="_on_ExposeRange_body_exited"]

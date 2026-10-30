@@ -304,7 +304,8 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_piercing_is_bounce_hash:0, #贯通视为反弹
 			Utils.foxlab_bonus_reroll_weapon_tier_hash: Utils.LARGE_NUMBER, #每页购买一个X级或以上武器可以奖励一次刷新
 			Utils.foxlab_level_up_bonus_crate_hash: 0, #升级时奖励宝箱数
-			Utils.foxlab_has_uv_lamp_hash: 0, #紫外线灯数量
+			Utils.foxlab_uv_lamp_hash: 0, #紫外线灯数量
+			Utils.foxlab_uv_lamp_instance_hash: 0, #场上紫外线灯实例数
 			Utils.foxlab_keep_random_weapon_hash: 0,
 			Utils.foxlab_shop_effects_checked_hash: 0, #base shop _ready()标记，避免重复操作，没有实际效果
 			Utils.foxlab_projectile_on_hit_hash:[],

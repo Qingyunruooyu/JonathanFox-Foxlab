@@ -35,9 +35,7 @@ func _on_ExposeRange_body_entered(body: Node) -> void :
 
 
 func _on_ExposeRange_body_exited(body: Node) -> void :
-	if not body is Enemy:
-		return
-	if not is_instance_valid(body):
+	if not body is Enemy or not is_instance_valid(body):
 		return
 	if not dead and not body.dead:
 		_foxlab_unexpose(body)

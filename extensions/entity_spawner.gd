@@ -2,6 +2,8 @@ extends "res://global/entity_spawner.gd"
 
 var foxlab_pets_structures_node_data_map = {}
 
+const FOXLAB_CHARMED_PROJ_ORIGINAL_META: = "foxlab_charmed_original"
+
 ##### 扩展 #####
 func on_group_spawn_timing_reached(group_data: WaveGroupData) -> void :
 	if group_data.is_neutral:
@@ -21,10 +23,28 @@ func get_nb_bosses_and_elites_alive() -> int:
 
 func on_enemy_charmed(enemy: Entity) -> void :
 	.on_enemy_charmed(enemy)
-	if ItemService.foxlab_is_android and enemy is Boss:
-		for effect_behavior in enemy.effect_behaviors.get_children():
-			if "charmed" in effect_behavior:
-				effect_behavior._charm_timer.start(max(_wave_timer.time_left - 5, Utils.CHARM_DURATION))
+	var is_boss = enemy is Boss
+	for effect_behavior in enemy.effect_behaviors.get_children():
+		if not "charmed" in effect_behavior:
+			continue
+		for proj in enemy._all_additional_projectiles:
+			if is_instance_valid(proj):
+				proj.set_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META, [proj._hitbox.collision_layer, proj._sprite.material])
+				proj.set_collision_layer(Utils.PET_PROJECTILES_BIT)
+				var new_shader = effect_behavior.projectile_shader.duplicate()
+				new_shader.set_shader_param("hue", Utils.CHARM_COLOR.h)
+				proj.set_sprite_material(new_shader)
+		if is_boss:
+			effect_behavior._charm_timer.start(max(_wave_timer.time_left - 5, Utils.CHARM_DURATION))
+
+func _on_enemy_died(enemy: Node2D, _args: Entity.DieArgs) -> void :
+	._on_enemy_died(enemy, _args)
+	for proj in enemy._all_additional_projectiles:
+		if is_instance_valid(proj) and proj.has_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META):
+			var original = proj.get_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META)
+			proj.set_collision_layer(original[0])
+			proj.set_sprite_material(original[1])
+			proj.remove_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META)
 
 func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = null, source = null, charmed_by: int = - 1) -> KinematicBody2D:
 	if args.type == EntityType.ENEMY or args.type == EntityType.BOSS:

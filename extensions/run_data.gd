@@ -248,6 +248,8 @@ func _reset_per_wave_properties() -> void :
 	foxlab_scapegoat_no_hurt = [[], [], [], []]
 	foxlab_nb_died_scapegoat = [0, 0, 0, 0]
 	foxlab_exposed_enemies.clear()
+	for i in get_player_count():
+		RunData.get_player_effects(i)[Utils.foxlab_uv_lamp_instance_hash] = 0
 
 func add_gold(value: int, player_index: int) -> void :
 	# 如果材料不是自己捡的，自己又是要控材料的角色，把材料先记着

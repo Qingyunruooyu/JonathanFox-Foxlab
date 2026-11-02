@@ -1,6 +1,6 @@
 extends "res://effect_behaviors/enemy_effect_behavior.gd"
 
-export (int) var bonus_damage_taken_percent = 25
+export (int) var bonus_damage_taken_percent = 50
 
 func _ready() -> void :
 	_parent._hurtbox.connect("area_entered", self, "_on_Hurtbox_area_entered")

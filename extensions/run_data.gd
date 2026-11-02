@@ -29,6 +29,11 @@ var foxlab_current_different_enemies: = 0
 #紫外线灯相关，enemy_id_hash -> 当前被照射（暴露）的该类敌人实例数
 var foxlab_exposed_enemies = {}
 
+#紫外线灯相关，缓存各玩家背包内全部 CharacterData（含主角）的 effects 扁平数组，
+#dirty 时在 get_foxlab_backpack_char_effects 中惰性重建；紫外灯照射区按玩家进入次数整组 apply/unapply（多灯叠加）
+var foxlab_backpack_char_effects = [[], [], [], []]
+var _foxlab_backpack_char_effects_dirty = [true, true, true, true]
+
 var foxlab_current_picking_player = -1
 
 var foxlab_killed_by_textures = [null, null, null, null]
@@ -287,7 +292,7 @@ func get_next_level_xp_needed(player_index) -> float:
 	if xp_needed > 0:
 		return xp_needed
 	# 防止需要的经验不是正数，导致无限升级爆栈
-	var xp_needed_effect = max(get_player_effect(Utils.next_level_xp_needed_hash, player_index), -99)
+	var xp_needed_effect = max(get_player_effect(Keys.next_level_xp_needed_hash, player_index), -99)
 	return get_xp_needed(get_player_level(player_index) + 1) * (1.0 + xp_needed_effect / 100.0)
 
 func foxlab_item_recycle_test():
@@ -382,6 +387,9 @@ func reset(restart: bool = false) -> void :
 	foxlab_is_horde_wave = null
 	for restrictions in foxlab_extra_char_restrictions:
 		restrictions.clear()
+	for player_index in _foxlab_backpack_char_effects_dirty.size():
+		_foxlab_backpack_char_effects_dirty[player_index] = true
+		foxlab_backpack_char_effects[player_index] = []
 	ItemService.foxlab_clear_merged_char_cache()
 	.reset(restart)
 
@@ -393,14 +401,29 @@ func resume_from_state(state: Dictionary) -> void :
 ######### 次要角色限制登记 ############
 func apply_item_effects(item_data: ItemParentData, player_index: int) -> void :
 	.apply_item_effects(item_data, player_index)
-	if item_data is CharacterData and item_data != players_data[player_index].current_character:
-		_foxlab_register_extra_char(item_data, player_index)
+	if item_data is CharacterData:
+		_foxlab_backpack_char_effects_dirty[player_index] = true
+		if item_data != players_data[player_index].current_character:
+			_foxlab_register_extra_char(item_data, player_index)
 
 
 func unapply_item_effects(item_data: ItemParentData, player_index: int) -> void :
 	if item_data is CharacterData:
 		_foxlab_unregister_extra_char(item_data, player_index)
+		_foxlab_backpack_char_effects_dirty[player_index] = true
 	.unapply_item_effects(item_data, player_index)
+
+
+func get_foxlab_backpack_char_effects(player_index: int) -> Array:
+	if not _foxlab_backpack_char_effects_dirty[player_index]:
+		return foxlab_backpack_char_effects[player_index]
+	var effects: Array = []
+	for item in players_data[player_index].items:
+		if item is CharacterData:
+			effects.append_array(item.effects)
+	foxlab_backpack_char_effects[player_index] = effects
+	_foxlab_backpack_char_effects_dirty[player_index] = false
+	return effects
 
 
 func _foxlab_register_extra_char(character: CharacterData, player_index: int) -> void:
@@ -439,6 +462,7 @@ func foxlab_rebuild_extra_char_restrictions() -> void:
 	for player_index in players_data.size():
 		var restrictions: Dictionary = foxlab_extra_char_restrictions[player_index]
 		restrictions.clear()
+		_foxlab_backpack_char_effects_dirty[player_index] = true
 		var current_character = players_data[player_index].current_character
 		var skipped_own := false
 		for item in players_data[player_index].items:

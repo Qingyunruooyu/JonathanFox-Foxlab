@@ -30,4 +30,5 @@ func get_args(player_index: int) -> Array:
 	var count_hash: int = Utils.foxlab_uv_lamp_instance_hash if RunData.wave_in_progress else Utils.foxlab_uv_lamp_hash
 	args.push_back(str(bonus_percent))
 	args.push_back(str(RunData.sum_all_player_effects(count_hash) * bonus_percent))
+	args.push_back("100")
 	return args

@@ -1,5 +1,6 @@
 extends  "res://effects/items/turret_effect.gd"
 
+export (float) var expose_range_ratio = 2.0
 var bonus_percent = null
 
 static func get_id() -> String:
@@ -21,7 +22,7 @@ func get_args(player_index: int) -> Array:
 	var args = .get_args(player_index)
 	_init_stats_args_turret.effects = effects
 	var init_stats = WeaponService.init_structure_stats(stats, player_index, _init_stats_args_turret)
-	args.push_back(str(init_stats.max_range))
+	args.push_back(str(min(init_stats.max_range, stats.max_range * expose_range_ratio)))
 	if bonus_percent == null:
 		var exposed_behavior = load("res://mods-unpacked/JonathanFox-FoxLab/contents/effect_behaviors/enemy/exposed_enemy_effect_behavior.tscn").instance()
 		bonus_percent = exposed_behavior.bonus_damage_taken_percent

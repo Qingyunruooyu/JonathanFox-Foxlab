@@ -2,10 +2,12 @@ extends "res://entities/structures/turret/turret.gd"
 
 var _instance_counted: bool = false
 var _exposed_enemies: Dictionary = {}
+var _expose_range_ratio: float = 2.0
 onready var _expose_shape = $ExposeRange / CollisionShape2D
 
 func set_data(data: Resource) -> void :
 	.set_data(data)
+	_expose_range_ratio = data.expose_range_ratio
 	if not _instance_counted:
 		_instance_counted = true
 		RunData.get_player_effects(player_index)[Utils.foxlab_uv_lamp_instance_hash] += 1
@@ -23,7 +25,7 @@ func reload_data() -> void :
 
 func _sync_expose_range() -> void :
 	if _expose_shape:
-		_expose_shape.shape.radius = stats.max_range
+		_expose_shape.shape.radius = min(stats.max_range, base_stats.max_range * _expose_range_ratio)
 
 
 func _on_ExposeRange_body_entered(body: Node) -> void :

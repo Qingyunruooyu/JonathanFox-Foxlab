@@ -92,7 +92,7 @@ func _on_player_in_zone_died(player, _args) -> void :
 func _foxlab_player_entered(player) -> void :
 	var player_index: int = player.player_index
 	var char_effects: Array = RunData.get_foxlab_backpack_char_effects(player_index)
-	RunData.apply_effects_array(char_effects, player_index)
+	RunData.foxlab_apply_effects_array(char_effects, player_index)
 	player._set_color_modulation(color_entity_modulation)
 	if sound_enter_zone:
 		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", sound_enter_zone, 2, global_position, 0, 0.1)

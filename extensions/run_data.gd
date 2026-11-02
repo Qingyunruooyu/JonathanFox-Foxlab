@@ -406,13 +406,17 @@ func apply_item_effects(item_data: ItemParentData, player_index: int) -> void :
 		if item_data != players_data[player_index].current_character:
 			_foxlab_register_extra_char(item_data, player_index)
 
-
 func unapply_item_effects(item_data: ItemParentData, player_index: int) -> void :
 	if item_data is CharacterData:
 		_foxlab_unregister_extra_char(item_data, player_index)
 		_foxlab_backpack_char_effects_dirty[player_index] = true
 	.unapply_item_effects(item_data, player_index)
 
+func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
+	Utils.reset_stat_cache(player_index)
+	for effect in effects:
+		effect.apply(player_index)
+	ChallengeService.check_stat_challenges(player_index)
 
 func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	if not _foxlab_backpack_char_effects_dirty[player_index]:
@@ -420,7 +424,9 @@ func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	var effects: Array = []
 	for item in players_data[player_index].items:
 		if item is CharacterData:
-			effects.append_array(item.effects)
+			for effect in item.effects:
+				if effect.storage_method != Effect.StorageMethod.REPLACE:
+					effects.append(effect)
 	foxlab_backpack_char_effects[player_index] = effects
 	_foxlab_backpack_char_effects_dirty[player_index] = false
 	return effects

@@ -7,7 +7,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/odd_eyed/odd_eyed_effect_0.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/odd_eyed/odd_eyed_mouth.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/odd_eyed/odd_eyed_icon.png" type="Texture" id=7]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=8]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/odd_eyed/odd_eyed_effect_1a.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/melee/cactus_mace/1/cactus_mace_data.tres" type="Resource" id=11]
@@ -35,6 +35,8 @@
 [resource]
 script = ExtResource( 8 )
 my_id = "character_foxlab_odd_eyed"
+foxlab_required_item_set = [ "abyssal_terrors" ]
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 7 )

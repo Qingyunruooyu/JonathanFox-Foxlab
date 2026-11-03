@@ -43,7 +43,7 @@ var foxlab_extra_enemy_groups = []
 var foxlab_is_horde_wave = null
 
 # 次要角色的限制/偏好列表
-# {角色my_id_hash: {count: 引用计数, wanted_tags: [...], banned_items: [...], banned_item_groups: [...], banned_upgrades: [...]}}
+# {角色my_id_hash: {count: 引用计数, wanted_tags: [...], banned_items: [...], banned_item_groups: [...], banned_upgrades: [...], banned_meca_stats: [...]}}
 # 主角（current_character）不登记；数组为登记时的静态快照；供ItemService生成道具时，合并到主角
 var foxlab_extra_char_restrictions = [{}, {}, {}, {}]
 
@@ -297,7 +297,7 @@ func get_next_level_xp_needed(player_index) -> float:
 
 func foxlab_item_recycle_test():
 	var failed_items = []
-	for item in ItemService.items + ItemService.characters:
+	for item in ItemService.get_items() + ItemService.get_characters():
 		if item.my_id in failed_items:
 			continue
 		print("test ", item.my_id)
@@ -421,12 +421,17 @@ func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
 func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	if not _foxlab_backpack_char_effects_dirty[player_index]:
 		return foxlab_backpack_char_effects[player_index]
+	var dlc_data = ItemService.get_dlc_data_by_id("primal_dread")
 	var effects: Array = []
 	for item in players_data[player_index].items:
 		if item is CharacterData:
 			for effect in item.effects:
-				if effect.storage_method != Effect.StorageMethod.REPLACE:
-					effects.append(effect)
+				if effect.storage_method == Effect.StorageMethod.REPLACE:
+					continue
+				# 不传player_index：只按效果本身判定，避免缓存列表随波次状态失效
+				if dlc_data == null or not dlc_data.can_effect_be_copied_by_mutation(effect):
+					continue
+				effects.append(effect)
 	foxlab_backpack_char_effects[player_index] = effects
 	_foxlab_backpack_char_effects_dirty[player_index] = false
 	return effects
@@ -450,7 +455,7 @@ func _foxlab_unregister_extra_char(character: CharacterData, player_index: int) 
 
 func _foxlab_register_extra_char_into(restrictions: Dictionary, character: CharacterData) -> void:
 	var in_endless: bool = current_wave >= nb_of_waves
-	if character.wanted_tags.empty() and (in_endless or (character.banned_items.empty() and character.banned_item_groups.empty() and character.banned_upgrades.empty())):
+	if character.wanted_tags.empty() and (in_endless or (character.banned_items.empty() and character.banned_item_groups.empty() and character.banned_upgrades.empty() and character.banned_meca_stats.empty())):
 		return
 	var entry = restrictions.get(character.my_id_hash)
 	if entry == null:
@@ -460,6 +465,7 @@ func _foxlab_register_extra_char_into(restrictions: Dictionary, character: Chara
 			"banned_items": [] if in_endless else character.banned_items.duplicate(),
 			"banned_item_groups": [] if in_endless else character.banned_item_groups.duplicate(),
 			"banned_upgrades": [] if in_endless else character.banned_upgrades.duplicate(),
+			"banned_meca_stats": character.banned_meca_stats.duplicate(),
 		}
 		restrictions[character.my_id_hash] = entry
 	entry["count"] += 1

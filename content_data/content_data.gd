@@ -1,6 +1,7 @@
 extends Resource
 
 # ItemService
+export (Resource) var update_data
 export (Array, Resource) var characters = []
 export (Array, Resource) var items = []
 export (Array, Resource) var entities = []
@@ -62,19 +63,19 @@ func add_stats():
 			ItemService.stats.append(stat)
 
 func add_resources(settings: Dictionary):
-	if not settings["FOXLAB_DISABLE_CHARACTERS"]:
-		ProgressData._append_without_duplicates(ItemService.characters, characters)
-	else:
-		for character in characters:
-			if character.my_id == "character_foxlab_faceless":
-				ProgressData._append_without_duplicates(ItemService.characters, [character])
-				break
+	update_data.item_set.items = items
+	update_data.item_set.characters = characters if not settings["FOXLAB_DISABLE_CHARACTERS"] else [get_element_by_id(characters, "character_foxlab_faceless")]
+	update_data.item_set.stats = stats
+	ProgressData._append_without_duplicates(ItemService.update_data_list, [update_data])
+	ProgressData.refresh_active_update_data()
+	ItemService.invalidate_characters_cache()
+	ItemService.invalidate_items_cache()
+	ItemService.invalidate_weapons_cache()
 
 	if settings["FOXLAB_DISABLE_ITEMS"]:
 		for item in items:
 			item.can_be_looted = false
 
-	ProgressData._append_without_duplicates(ItemService.items, items)
 	ProgressData._append_without_duplicates(ItemService.entities, entities)
 	ProgressData._append_without_duplicates(ItemService.effects, effects)
 	ProgressData._append_without_duplicates(RunData.effect_keys_with_weapon_stats, Utils.convert_to_hash_array(effect_keys_with_weapon_stats))
@@ -92,9 +93,11 @@ func add_resources(settings: Dictionary):
 	for translation in translations:
 		TranslationServer.add_translation(translation)
 
-	if OS.get_name() == "Android":
-		modify_characters()
-		add_stats()
-	else:
-		call_deferred("modify_characters")
-		call_deferred("add_stats")
+	modify_characters()
+	add_stats()
+
+func get_element_by_id(elements: Array, id: String):
+	for element in elements:
+		if element.my_id == id:
+			return element
+	return null

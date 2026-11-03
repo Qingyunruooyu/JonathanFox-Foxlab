@@ -3,7 +3,7 @@ extends "res://ui/menus/run/weapon_selection.gd"
 func _get_unlocked_elements(player_index: int) -> Array:
 	var elements_unlocked = ._get_unlocked_elements(player_index)
 	if RunData.get_player_character(player_index).my_id_hash == Utils.character_foxlab_faceless_hash:
-		var mask_item = ItemService.get_element(ItemService.items, Utils.item_foxlab_mask_hash)
+		var mask_item = ItemService.get_element(ItemService.get_items(), Utils.item_foxlab_mask_hash)
 		for effect in mask_item.effects:
 			if effect.get_id() == "foxlab_get_rand_character":
 				effect.try_generate(player_index)
@@ -21,7 +21,7 @@ func _get_unlocked_elements(player_index: int) -> Array:
 func _get_all_possible_elements(player_index: int) -> Array:
 	var elements = ._get_all_possible_elements(player_index)
 	if RunData.get_player_character(player_index).my_id_hash == Utils.character_foxlab_faceless_hash:
-		var mask_item = ItemService.get_element(ItemService.items, Utils.item_foxlab_mask_hash)
+		var mask_item = ItemService.get_element(ItemService.get_items(), Utils.item_foxlab_mask_hash)
 		for effect in mask_item.effects:
 			if effect.get_id() == "foxlab_get_rand_character":
 				effect.try_generate(player_index)

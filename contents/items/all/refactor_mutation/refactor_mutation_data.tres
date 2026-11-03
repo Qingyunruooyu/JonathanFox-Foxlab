@@ -3,7 +3,7 @@
 [ext_resource path="res://items/global/item_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/refactor_mutation/refactor_mutation_effect_0.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/refactor_mutation/refactor_mutation_icon.png" type="Texture" id=3]
-[ext_resource path="res://items/all/mutation/mutation_appearance.tres" type="Resource" id=4]
+[ext_resource path="res://items/all/00_base_game/mutation/mutation_appearance.tres" type="Resource" id=4]
 
 [resource]
 script = ExtResource( 1 )

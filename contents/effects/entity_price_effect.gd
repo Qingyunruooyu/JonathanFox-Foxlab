@@ -17,14 +17,14 @@ func apply_effects_core(player_index: int, call_func: String):
 	effect.storage_method = Effect.StorageMethod.KEY_VALUE
 	effect.value = value
 	var applied: Dictionary = {}
-	for weapon in ItemService.weapons:
+	for weapon in ItemService.get_weapons():
 		if weapon.weapon_id_hash in applied:
 			continue
 		if weapon.call(function):
 			effect.key_hash = weapon.weapon_id_hash
 			effect.call(call_func, player_index)
 			applied[weapon.weapon_id_hash] = 1
-	for item in ItemService.items:
+	for item in ItemService.get_items():
 		if item.my_id_hash in applied:
 			continue
 		if item.call(function):

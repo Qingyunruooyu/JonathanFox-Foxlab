@@ -36,6 +36,8 @@
 [resource]
 script = ExtResource( 8 )
 my_id = "character_foxlab_turtle"
+foxlab_required_item_set = [ "abyssal_terrors" ]
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
@@ -55,5 +57,6 @@ wanted_tags = [ "stat_curse", "stat_speed" ]
 banned_item_groups = [ "melee_damage", "ranged_damage", "melee_and_ranged_damage", "engineering", "elemental_damage" ]
 banned_items = [ "item_mutation", "item_charcoal", "item_gnome", "item_handcuffs", "item_foxlab_omnic_crisis", "item_torture", "item_triangle_of_power" ]
 banned_upgrades = [ "upgrade_elemental_damage", "upgrade_melee_damage", "upgrade_engineering", "upgrade_ranged_damage" ]
+banned_meca_stats = [ "stat_elemental_damage", "stat_engineering", "stat_melee_damage", "stat_ranged_damage" ]
 starting_weapons = [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 29 ), ExtResource( 30 ) ]
 starting_items = [ ExtResource( 7 ) ]

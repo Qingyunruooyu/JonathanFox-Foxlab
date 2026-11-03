@@ -69,7 +69,7 @@ func get_text(player_index: int, _colored: bool = true) -> String:
 				if zero_stat.empty():
 					zero_stat.append(text)
 					zero_stat.append(tr("EFFECT_FOXLAB_STAT_IGNORE_IN_SWAP"))
-				zero_stat.append(Utils.foxlab_get_colored_stat_str(stat))
+				zero_stat.append(Utils.foxlab_get_colored_stat_str(stat, player_index))
 	if zero_stat.empty():
 		return text
 	return "\n".join(zero_stat)

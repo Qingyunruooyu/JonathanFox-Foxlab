@@ -9,7 +9,7 @@ func apply_effects_core(player_index: int, call_func: String):
 	effect.storage_method = Effect.StorageMethod.KEY_VALUE
 	effect.value = value
 	var applied: Dictionary = {}
-	for weapon in ItemService.weapons:
+	for weapon in ItemService.get_weapons():
 		if weapon.weapon_id_hash in applied:
 			continue
 		for set in weapon.sets:

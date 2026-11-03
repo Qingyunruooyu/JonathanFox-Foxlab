@@ -1,20 +1,12 @@
 extends "res://singletons/progress_data.gd"
 
 var foxlab_data
-var foxlab_extension_loaded:=false
 const FOXLAB_MOD_NAME:="JonathanFox-FoxLab"
 const FOXLAB_MOD_PATH:="res://mods-unpacked/" + FOXLAB_MOD_NAME + "/"
-const FOXLAB_EXTENSION_DIR: = FOXLAB_MOD_PATH + "extensions/"
 
 # =========================== Extension =========================== #
 func _ready() -> void:
 	_foxlab_ready()
-
-func load_dlc_pcks()->void :
-	.load_dlc_pcks()
-	if not foxlab_extension_loaded:
-		foxlab_install_extensions()
-		foxlab_extension_loaded = true
 
 # =========================== Custom =========================== #
 func _foxlab_ready() -> void:
@@ -33,10 +25,3 @@ func _foxlab_ready() -> void:
 	load_game_file()
 	add_unlocked_by_default()
 	set_max_selectable_difficulty()
-
-func foxlab_install_extensions() -> void:
-	var extensions: Array = [
-		"dlc_1_data.gd",
-	]
-	for path in extensions:
-		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + path)

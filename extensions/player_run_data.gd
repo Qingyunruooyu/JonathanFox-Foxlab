@@ -24,7 +24,6 @@ static func init_foxlab_stats() -> Dictionary:
 			Utils.item_foxlab_stargazer_hash: 0,
 			Utils.item_foxlab_split_hash: 0,
 			Utils.item_foxlab_eggs_hash: 0,
-			Utils.stat_foxlab_crit_damage_hash: 0,
 		}
 
 # 这个函数是因为JSON文件不区分int 和float，而Effect序列化/反序列化中，只有value成员做了特殊处理，强制转成int，其他
@@ -91,7 +90,7 @@ func _init():
 				"items": [],      #初始道具（对象）
 				"weapons": [],    #初始武器（对象）
 				"names": "",      #变换的角色的名字
-				"prevs": [],      #前一次变身的角色/道具（[名字,诅咒系数]）和武器（对象），这次变身成功后需要移除
+				"prevs": [],      #前一次变身的角色/道具/武器完整对象，这次变身成功后需要移除
 				})
 	foxlab_mask_meta.push_back(foxlab_mask_meta[0].duplicate(true))
 
@@ -137,11 +136,8 @@ func serialize() -> Dictionary:
 			else:
 				var data = []
 				for res in value:
-					assert(res is Resource or res is Array)
-					if res is Resource:
-						data.push_back(res.serialize())
-					else:
-						data.push_back(res.duplicate())
+					assert(res is Resource)
+					data.push_back(res.serialize())
 				meta[key] = data
 	return serialized
 
@@ -151,9 +147,9 @@ func deserialize(data: Dictionary):
 			foxlab_buddhas_hand_meta[i] =  data.foxlab_buddhas_hand_meta[i].duplicate()
 			var meta = foxlab_buddhas_hand_meta[i]
 			if meta.item:
-				meta.item = _foxlab_deserialize_item(ItemService.items, meta.item)
+				meta.item = _foxlab_deserialize_item(ItemService.get_items(), meta.item)
 			if meta.weapon:
-				meta.weapon = _foxlab_deserialize_item(ItemService.weapons, meta.weapon)
+				meta.weapon = _foxlab_deserialize_item(ItemService.get_weapons(), meta.weapon)
 
 	if "foxlab_mask_meta" in data:
 		for i in range(data.foxlab_mask_meta.size()):
@@ -162,25 +158,31 @@ func deserialize(data: Dictionary):
 			if not meta.chars.empty():
 				var chars = []
 				for character in meta.chars:
-					chars.push_back(_foxlab_deserialize_item(ItemService.characters, character))
+					chars.push_back(_foxlab_deserialize_item(ItemService.get_characters(), character))
 				meta.chars = chars
 			if not meta.items.empty():
 				var items = []
 				for item in meta.items:
-					items.push_back(_foxlab_deserialize_item(ItemService.items, item))
+					items.push_back(_foxlab_deserialize_item(ItemService.get_items(), item))
 				meta.items = items
 			if not meta.weapons.empty():
 				var weapons = []
 				for weapon in meta.weapons:
-					weapons.push_back(_foxlab_deserialize_item(ItemService.weapons, weapon))
+					weapons.push_back(_foxlab_deserialize_item(ItemService.get_weapons(), weapon))
 				meta.weapons = weapons
 			if not meta.prevs.empty():
 				var prev_items = []
 				for item in meta.prevs:
 					if item is Dictionary:
-						prev_items.push_back(_foxlab_deserialize_item(ItemService.weapons, item))
+						var deserialized = _foxlab_deserialize_item(ItemService.get_characters(), item)
+						if deserialized == null:
+							deserialized = _foxlab_deserialize_item(ItemService.get_items(), item)
+						if deserialized == null:
+							deserialized = _foxlab_deserialize_item(ItemService.get_weapons(), item)
+						assert(deserialized != null)
+						prev_items.push_back(deserialized)
 					else:
-						assert (item is Array)
+						assert(item is Resource)
 						prev_items.push_back(item.duplicate())
 				meta.prevs = prev_items
 
@@ -212,21 +214,19 @@ func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> 
 	var prev_items = []
 	for meta in foxlab_mask_meta:
 		for prev in meta.prevs:
-			if prev is Array: # [id_hash, curse_factor]
-				prev_items.append(prev)
+			assert(prev is Resource)
+			prev_items.append(prev)
 
 	var cache_items = []
 	for item_data in items:
 		var is_prev = false
 		for i in range(prev_items.size()):
-			if prev_items[i][1] != item_data.curse_factor:
+			if not ItemService.is_same_item(prev_items[i], item_data):
 				continue
-			var prev_item_hash = prev_items[i][0] as int
-			if item_data.my_id_hash == prev_item_hash or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and prev_item_hash in Keys.item_builder_turret_n_hash):
-				cache_items.append(item_data)
-				prev_items.remove(i)
-				is_prev = true
-				break
+			cache_items.append(item_data)
+			prev_items.remove(i)
+			is_prev = true
+			break
 		if not is_prev and Utils.foxlab_item_has_object_effect(item_data):
 			cache_items.push_back(item_data)
 

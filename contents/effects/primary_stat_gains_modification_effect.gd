@@ -22,7 +22,7 @@ func unapply(player_index: int) -> void:
 		if not Utils.foxlab_primary_stat_gain_map[stat_gain] in stats_exception_hash:
 			effects[stat_gain] -= value
 
-func get_args(_player_index: int) -> Array:
+func get_args(player_index: int) -> Array:
 	var display_text = tr(stat_displayed.to_upper())
 	var exceptions = []
 	for stat in Utils._primary_stat_keys:
@@ -30,7 +30,7 @@ func get_args(_player_index: int) -> Array:
 		var gain_stat = "gain_" + stat_str
 		var gain_stat_hash = Keys.generate_hash(gain_stat)
 		if stat_str in stats_exception or not gain_stat_hash in Utils.foxlab_primary_stat_gain_map:
-			exceptions.append(Utils.foxlab_get_colored_stat_str(stat))
+			exceptions.append(Utils.foxlab_get_colored_stat_str(stat, player_index))
 	if not exceptions.empty():
 		display_text += Text.text(tr("FOXLAB_EXCEPT"), ["/".join(exceptions)], [get_sign(effect_sign, value)])
 	return [display_text, str(abs(value))]

@@ -5,7 +5,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_2.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_3.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_appearance_0.tres" type="Resource" id=5]
-[ext_resource path="res://items/all/injection/injection_data.tres" type="Resource" id=6]
+[ext_resource path="res://items/all/00_base_game/injection/injection_data.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_5.tres" type="Resource" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_7.tres" type="Resource" id=10]
@@ -15,16 +15,17 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_11.tres" type="Resource" id=14]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_10.tres" type="Resource" id=15]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_6.tres" type="Resource" id=16]
-[ext_resource path="res://items/all/boiling_water/boiling_water_data.tres" type="Resource" id=17]
+[ext_resource path="res://items/all/00_base_game/boiling_water/boiling_water_data.tres" type="Resource" id=17]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_0.tres" type="Resource" id=18]
-[ext_resource path="res://items/all/peaceful_bee/peaceful_bee_data.tres" type="Resource" id=19]
-[ext_resource path="res://items/all/propeller_hat/propeller_hat_data.tres" type="Resource" id=20]
+[ext_resource path="res://items/all/00_base_game/peaceful_bee/peaceful_bee_data.tres" type="Resource" id=19]
+[ext_resource path="res://items/all/00_base_game/propeller_hat/propeller_hat_data.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_13.tres" type="Resource" id=21]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ball/ball_effect_12.tres" type="Resource" id=22]
 
 [resource]
 script = ExtResource( 7 )
 my_id = "character_foxlab_ball"
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
@@ -44,5 +45,6 @@ wanted_tags = [ "stat_elemental_damage", "exploration" ]
 banned_item_groups = [ "hp_regeneration", "consumable_heal" ]
 banned_items = [ "item_blood_donation", "item_bloody_hand", "item_ricochet", "item_extra_stomach" ]
 banned_upgrades = [ "upgrade_armor", "upgrade_max_hp", "upgrade_hp_regeneration", "upgrade_lifesteal" ]
+banned_meca_stats = [ "stat_armor", "stat_hp_regeneration", "stat_lifesteal", "stat_max_hp" ]
 starting_weapons = [  ]
 starting_items = [ ExtResource( 17 ), ExtResource( 20 ), ExtResource( 6 ), ExtResource( 19 ) ]

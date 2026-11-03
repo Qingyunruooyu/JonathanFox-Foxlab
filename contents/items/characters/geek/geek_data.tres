@@ -36,6 +36,7 @@
 [resource]
 script = ExtResource( 6 )
 my_id = "character_foxlab_geek"
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 27 )

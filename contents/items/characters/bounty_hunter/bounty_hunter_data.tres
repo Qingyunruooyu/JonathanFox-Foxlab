@@ -6,7 +6,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bounty_hunter/bounty_hunter_effect_24.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bounty_hunter/bounter_hunter_crate.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bounty_hunter/bounter_hunter_bag.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=7]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=8]
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=10]
@@ -35,6 +35,8 @@
 [resource]
 script = ExtResource( 7 )
 my_id = "character_foxlab_bounty_hunter"
+foxlab_required_item_set = [ "abyssal_terrors" ]
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 45 )

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=31 format=2]
 
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/undead/undead_icon.png" type="Texture" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/undead/undead_effect_1.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/undead/undead_effect_2.tres" type="Resource" id=4]
@@ -34,6 +34,8 @@
 [resource]
 script = ExtResource( 1 )
 my_id = "character_foxlab_undead"
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 2 )

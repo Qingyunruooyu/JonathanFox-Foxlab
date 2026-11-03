@@ -7,7 +7,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/war_master/war_master_effect_15.tres" type="Resource" id=5]
 [ext_resource path="res://items/characters/apprentice/apprentice_eyes_appearance.tres" type="Resource" id=6]
 [ext_resource path="res://items/characters/entrepreneur/entrepreneur_suit_appearance.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=8]
 [ext_resource path="res://weapons/melee/spear/2/spear_2_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/ranged/slingshot/2/slingshot_2_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/ranged/double_barrel_shotgun/2/double_barrel_shotgun_2_data.tres" type="Resource" id=11]
@@ -41,6 +41,8 @@
 [resource]
 script = ExtResource( 8 )
 my_id = "character_foxlab_war_master"
+foxlab_required_item_set = [ "abyssal_terrors" ]
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 31 )

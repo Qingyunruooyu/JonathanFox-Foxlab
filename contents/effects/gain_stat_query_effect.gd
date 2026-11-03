@@ -14,6 +14,6 @@ func get_text(player_index: int, _colored: bool = true) -> String:
 		if gain_value > 0:
 			value_str = "+" + value_str
 		text += "\n" + Text.text(tr("EFFECT_FOXLAB_STAT_QUERY"), [value_str,
-				Utils.foxlab_get_colored_stat_str(stat)],
+				Utils.foxlab_get_colored_stat_str(stat, player_index)],
 				[Sign.NEGATIVE if gain_value < 0 else Sign.POSITIVE, Sign.NEUTRAL])
 	return text

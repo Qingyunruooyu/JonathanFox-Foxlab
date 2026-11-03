@@ -1,6 +1,6 @@
 extends "res://ui/menus/shop/base_shop.gd"
 
-var foxlab_mask_success_sound = preload("res://entities/units/enemies/pursuer/sci-fi_code_fail_13.wav")
+var foxlab_mask_success_sound = preload("res://entities/units/enemies/crash_zone/basic/pursuer/sci-fi_code_fail_13.wav")
 var foxlab_current_shop_item_pos = [[null, null], [null, null], [null, null], [null, null]]
 var foxlab_pinned_weapon_element = [null, null, null, null]
 var foxlab_uncursed_weapon_element = [null, null, null, null]
@@ -431,23 +431,46 @@ func foxlab_upgrade_locked_items(player_locked_items: Array, player_index: int) 
 	var chance = RunData.get_player_effect(Utils.foxlab_upgrade_locked_item_on_reroll_hash, player_index)
 	if chance <= 0:
 		return
+	var primal_dread = null
+	if "primal_dread" in ProgressData.active_update_data:
+		primal_dread = ItemService.get_dlc_data_by_id("primal_dread")
+	var abyssal_terrors = null
+	if "abyssal_terrors" in ProgressData.active_update_data:
+		abyssal_terrors = ItemService.get_dlc_data_by_id("abyssal_terrors")
+
 	for locked_item in player_locked_items:
 		if not Utils.get_chance_success(chance / 100.0):
 			continue
-		var vanilla_item
-		if locked_item[0] is WeaponData:
-			vanilla_item = ItemService.foxlab_get_weapon_from_weapon_id(locked_item[0].weapon_id_hash, locked_item[0].tier)
-		else:
-			vanilla_item = ItemService.get_item_from_id(locked_item[0].my_id_hash)
-		if vanilla_item == null:
-			continue
-		for _i in 500:
-			var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
-			# TODO(fox): 未来史前惧兽还要检查机械/变异系数（？）
-			if modified != vanilla_item and modified.curse_factor > locked_item[0].curse_factor:
-				locked_item[0] = modified
-				RunData.add_tracked_value(player_index, Utils.item_foxlab_fishing_net_hash, 1)
-				break
+		var current_item = locked_item[0]
+		var upgraded = null
+		if current_item.is_cursed:
+			# 已诅咒：从原版基底重掷，诅咒系数严格更深才替换
+			var vanilla_item = _foxlab_get_vanilla_copy(current_item)
+			if vanilla_item != null and abyssal_terrors != null:
+				for _i in 500:
+					var recursed = abyssal_terrors.curse_item(vanilla_item, player_index)
+					if recursed != vanilla_item and recursed.curse_factor > current_item.curse_factor:
+						upgraded = recursed
+						break
+		elif current_item is WeaponData and current_item.is_meca:
+			# 已机械化武器：再机械化必然更优（rank+1，零件与战力累加），无需比较
+			if primal_dread != null:
+				upgraded = primal_dread.meca_item(current_item, player_index)
+		elif not current_item.is_mutant:
+			# 无附加状态：与普通刷新一致尝试一次，获得任一状态即视为升级
+			var vanilla_item = _foxlab_get_vanilla_copy(current_item)
+			if vanilla_item != null:
+				var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
+				if modified != vanilla_item and (modified.is_cursed or modified.is_meca):
+					upgraded = modified
+		if upgraded != null:
+			locked_item[0] = upgraded
+			RunData.add_tracked_value(player_index, Utils.item_foxlab_fishing_net_hash, 1)
+
+func _foxlab_get_vanilla_copy(item_data):
+	if item_data is WeaponData:
+		return ItemService.foxlab_get_weapon_from_weapon_id(item_data.weapon_id_hash, item_data.tier)
+	return ItemService.get_item_from_id(item_data.my_id_hash)
 
 func fill_shop_items(player_locked_items: Array, player_index: int, just_entered_shop: bool = false) -> void :
 	if not just_entered_shop:
@@ -492,7 +515,7 @@ func fill_shop_items(player_locked_items: Array, player_index: int, just_entered
 			var item = get_player_shop_items(player_index)[pos]
 			if not item[0].is_cursed:
 				for dlc_id in RunData.enabled_dlcs:
-					var dlc_data = ProgressData.get_dlc_data(dlc_id)
+					var dlc_data = ItemService.get_dlc_data_by_id(dlc_id)
 					if dlc_data and dlc_data.has_method("curse_item"):
 						item[0] = dlc_data.curse_item(item[0], player_index)
 	RunData.get_player_effects(player_index)[Utils.foxlab_price_digit_hash] = 0

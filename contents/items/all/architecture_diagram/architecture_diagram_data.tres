@@ -7,12 +7,13 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/architecture_diagram/architecture_diagram_effect_4.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/architecture_diagram/architecture_diagram_effect_5.tres" type="Resource" id=7]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/architecture_diagram/architecture_diagram_effect_0.tres" type="Resource" id=8]
-[ext_resource path="res://items/global/item_data.gd" type="Script" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/global/item_data.gd" type="Script" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/architecture_diagram/architecture_diagram_effect_6.tres" type="Resource" id=10]
 
 [resource]
 script = ExtResource( 9 )
 my_id = "item_foxlab_architecture_diagram"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )

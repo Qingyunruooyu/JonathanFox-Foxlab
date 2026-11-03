@@ -4,7 +4,7 @@
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/rampaging_vagabond/vagabond_eyes.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/rampaging_vagabond/vagabond_mouth.tres" type="Resource" id=6]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=7]
 [ext_resource path="res://weapons/ranged/double_barrel_shotgun/1/double_barrel_shotgun_data.tres" type="Resource" id=8]
 [ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/melee/dagger/1/dagger_data.tres" type="Resource" id=10]
@@ -35,6 +35,8 @@
 [resource]
 script = ExtResource( 7 )
 my_id = "character_foxlab_rampaging_vagabond"
+foxlab_required_item_set = [ "abyssal_terrors" ]
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )

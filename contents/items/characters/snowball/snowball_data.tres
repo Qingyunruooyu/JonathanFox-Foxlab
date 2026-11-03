@@ -12,8 +12,8 @@
 [ext_resource path="res://weapons/ranged/slingshot/2/slingshot_2_data.tres" type="Resource" id=10]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_carrot.tres" type="Resource" id=11]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_icon.png" type="Texture" id=12]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=13]
-[ext_resource path="res://items/all/piggy_bank/piggy_bank_data.tres" type="Resource" id=14]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=13]
+[ext_resource path="res://items/all/00_base_game/piggy_bank/piggy_bank_data.tres" type="Resource" id=14]
 [ext_resource path="res://weapons/melee/claw/2/claw_2_data.tres" type="Resource" id=15]
 [ext_resource path="res://weapons/melee/dagger/2/dagger_2_data.tres" type="Resource" id=16]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_1.tres" type="Resource" id=17]
@@ -28,15 +28,15 @@
 [ext_resource path="res://weapons/melee/vorpal_sword/2/vorpal_sword_2_data.tres" type="Resource" id=26]
 [ext_resource path="res://weapons/melee/sword/2/sword_2_data.tres" type="Resource" id=27]
 [ext_resource path="res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_data.tres" type="Resource" id=28]
-[ext_resource path="res://items/all/little_frog/little_frog_data.tres" type="Resource" id=29]
+[ext_resource path="res://items/all/00_base_game/little_frog/little_frog_data.tres" type="Resource" id=29]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/javelin/2/javelin_2_data.tres" type="Resource" id=30]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_3.tres" type="Resource" id=31]
-[ext_resource path="res://items/all/dangerous_bunny/dangerous_bunny_data.tres" type="Resource" id=32]
+[ext_resource path="res://items/all/00_base_game/dangerous_bunny/dangerous_bunny_data.tres" type="Resource" id=32]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/trident/2/trident_2_data.tres" type="Resource" id=33]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/hiking_stick/2/hiking_stick_2_data.tres" type="Resource" id=34]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/blunderbuss/2/blunderbuss_2_data.tres" type="Resource" id=35]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/harpoon_gun/2/harpoon_gun_2_data.tres" type="Resource" id=36]
-[ext_resource path="res://items/all/bait/bait_data.tres" type="Resource" id=37]
+[ext_resource path="res://items/all/00_base_game/bait/bait_data.tres" type="Resource" id=37]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/mace/2/mace_2_data.tres" type="Resource" id=38]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_eyes.tres" type="Resource" id=39]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_mouth.tres" type="Resource" id=40]
@@ -47,6 +47,8 @@
 [resource]
 script = ExtResource( 13 )
 my_id = "character_foxlab_snowball"
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 12 )
@@ -66,5 +68,6 @@ wanted_tags = [ "economy" ]
 banned_item_groups = [  ]
 banned_items = [ "item_pearl", "item_baby_elephant", "item_cyberball", "item_lost_duck", "item_lucky_charm", "item_lucky_coin", "item_propeller_hat", "item_shady_potion" ]
 banned_upgrades = [ "upgrade_luck" ]
+banned_meca_stats = [ "stat_luck" ]
 starting_weapons = [ ExtResource( 4 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 16 ), ExtResource( 27 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 24 ), ExtResource( 15 ), ExtResource( 8 ), ExtResource( 34 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 30 ), ExtResource( 36 ), ExtResource( 26 ), ExtResource( 38 ), ExtResource( 5 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 20 ), ExtResource( 3 ) ]
 starting_items = [ ExtResource( 32 ), ExtResource( 14 ), ExtResource( 37 ), ExtResource( 29 ) ]

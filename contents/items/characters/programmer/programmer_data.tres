@@ -21,12 +21,13 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/programmer/programmer_effect_12.tres" type="Resource" id=19]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/programmer/programmer_effect_10.tres" type="Resource" id=20]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/tracker/tracker_data.tres" type="Resource" id=21]
-[ext_resource path="res://items/all/turret_flame/turret_flame_data.tres" type="Resource" id=22]
-[ext_resource path="res://items/all/bot_o_mine/bot_o_mine.tres" type="Resource" id=23]
+[ext_resource path="res://items/all/00_base_game/turret_flame/turret_flame_data.tres" type="Resource" id=22]
+[ext_resource path="res://items/all/03_paws_n_claws/bot_o_mine/bot_o_mine.tres" type="Resource" id=23]
 
 [resource]
 script = ExtResource( 9 )
 my_id = "character_foxlab_programmer"
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )

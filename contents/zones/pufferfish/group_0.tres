@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://dlcs/dlc_1/zones/abyss/015/d4_unit_pufferfish_begin.tres" type="Resource" id=1]
+[ext_resource path="res://zones/zone_2_abyss/015/d4_unit_pufferfish_begin.tres" type="Resource" id=1]
 [ext_resource path="res://zones/wave_group_data.gd" type="Script" id=2]
 
 [resource]

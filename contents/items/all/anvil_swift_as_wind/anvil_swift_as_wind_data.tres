@@ -4,11 +4,12 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_swift_as_wind/anvil_swift_as_wind_effect_2.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_swift_as_wind/anvil_swift_as_wind_effect_0.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_swift_as_wind/anvil_swift_as_wind_effect_1.tres" type="Resource" id=4]
-[ext_resource path="res://items/global/item_data.gd" type="Script" id=5]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/global/item_data.gd" type="Script" id=5]
 
 [resource]
 script = ExtResource( 5 )
 my_id = "item_foxlab_wind"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )

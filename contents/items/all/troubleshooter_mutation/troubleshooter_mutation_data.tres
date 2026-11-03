@@ -4,7 +4,7 @@
 [ext_resource path="res://items/global/item_data.gd" type="Script" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/troubleshooter_mutation/troubleshooter_mutation_effect_0.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/troubleshooter_mutation/troubleshooter_mutation_effect_1.tres" type="Resource" id=7]
-[ext_resource path="res://items/all/mutation/mutation_appearance.tres" type="Resource" id=12]
+[ext_resource path="res://items/all/00_base_game/mutation/mutation_appearance.tres" type="Resource" id=12]
 
 [resource]
 script = ExtResource( 5 )

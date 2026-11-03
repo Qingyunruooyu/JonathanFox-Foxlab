@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=5 format=2]
 
-[ext_resource path="res://items/global/item_data.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/global/item_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/wanted_giant_isopod/wanted_giant_isopod_effect_0.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/wanted_giant_isopod/wanted_giant_isopod_effect_1.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/giant_isopod_icon.png" type="Texture" id=4]
@@ -8,6 +8,7 @@
 [resource]
 script = ExtResource( 1 )
 my_id = "item_foxlab_wanted_giant_isopod"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 4 )

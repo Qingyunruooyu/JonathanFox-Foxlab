@@ -1,6 +1,5 @@
 extends "res://effects/items/double_value_effect.gd"
 
-const SAME_CHAR_CHANCE = 0.33
 const MIN_TRANSFORM_CHANCE = 10.0
 const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
@@ -86,9 +85,10 @@ func apply(player_index: int) -> void:
 	convert_stats_half_wave.clear()
 	convert_stats_end_of_wave.clear()
 	for character in meta.chars:
-		RunData.add_item(_update_character_bg(character), player_index)
+		var added_character = _update_character_bg(character)
+		RunData.add_item(added_character, player_index)
 		#DebugService.log_data("add character " + character.my_id)
-		prev_items.append([character.my_id_hash, character.curse_factor])
+		prev_items.append(added_character)
 	convert_stats_half_wave.append_array(convert_stats_half_wave_bak)
 	convert_stats_end_of_wave.append_array(convert_stats_end_of_wave_bak)
 	meta.chars.clear()
@@ -96,7 +96,7 @@ func apply(player_index: int) -> void:
 	for item in meta.items:
 		RunData.add_item(item, player_index)
 		#DebugService.log_data("add item " + item.my_id)
-		prev_items.append([item.my_id_hash, item.curse_factor])
+		prev_items.append(item)
 
 	for weapon in meta.weapons:
 		var weapon_to_add = RunData.add_weapon(weapon, player_index)
@@ -131,7 +131,7 @@ func _foxlab_refund_mask_on_fail(player_index: int) -> void:
 	if refunds.empty():
 		return
 	var refund = refunds.back()
-	var item_data = ItemService.get_element(ItemService.items, refund[0])
+	var item_data = ItemService.get_element(ItemService.get_items(), refund[0])
 	if item_data == null:
 		return
 	# 退款比例最大100%，不能超过原价
@@ -163,10 +163,10 @@ func _duplicate_weapon(player_index: int):
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	#附魔后加一个价值， 避免建造者的炮塔不识货
 	weapon.value += 1
-	var weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
+	var weapon_for_effect = Utils.get_rand_element(ItemService.get_weapons())
 	# 附魔的武器的等级最多超过当前武器1级
 	while weapon_for_effect.effects.empty() or (weapon.tier + 1 < weapon_for_effect.tier):
-		weapon_for_effect = Utils.get_rand_element(ItemService.weapons)
+		weapon_for_effect = Utils.get_rand_element(ItemService.get_weapons())
 	weapon_for_effect = weapon_for_effect.duplicate()
 	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
 	#DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
@@ -226,13 +226,11 @@ func cleanup(player_index: int) -> void:
 	for index in range(player_items_raw.size() - 1, -1, -1):
 		var item_data = player_items_raw[index]
 		for i in range(prev_items.size()):
-			if items_to_remove.has(i) or item_data.curse_factor != prev_items[i][1]:
+			if items_to_remove.has(i) or not ItemService.is_same_item(prev_items[i], item_data):
 				continue
-			var item_hash = prev_items[i][0] as int
-			if item_data.my_id_hash == item_hash or (item_data.my_id_hash in Keys.item_builder_turret_n_hash and item_hash in Keys.item_builder_turret_n_hash):
-				items_to_remove[i] = item_data
-				items_to_remove_order.push_back(item_data)
-				break
+			items_to_remove[i] = item_data
+			items_to_remove_order.push_back(item_data)
+			break
 
 		if items_to_remove_order.size() == prev_items.size():
 			break
@@ -242,7 +240,6 @@ func cleanup(player_index: int) -> void:
 
 	for meta in metas:
 		meta.prevs.clear()
-
 
 func get_args(player_index: int) -> Array:
 	# 最后一位{3}为该效果key对应属性的名称
@@ -262,7 +259,7 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 		convert_stat_dict[character.my_id_hash] = 0
 
 func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
-	if ItemService.characters.size() != ItemService.get_foxlab_transform_characters().size():
+	if ItemService.get_characters().size() != ItemService.get_foxlab_transform_characters().size():
 		return true
 	var convert_stat_dict = RunData.get_player_effect(Utils.foxlab_faceless_convert_stat_characters_hash, 0)
 	var player_character = RunData.get_player_character(player_index)
@@ -285,12 +282,11 @@ func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -
 		var candidate = null
 		if !debug_item_name.empty():
 			var item_name_hash = Keys.generate_hash(debug_item_name.pop_front())
-			candidate = ItemService.get_element(ItemService.characters, item_name_hash)
+			candidate = ItemService.get_element(ItemService.get_characters(), item_name_hash)
 		if candidate == null:
 			candidate = Utils.get_rand_element(ItemService.get_foxlab_transform_characters())
-			while candidate.my_id_hash in chars_id:
-				if !Utils.get_chance_success(SAME_CHAR_CHANCE):
-					candidate = Utils.get_rand_element(ItemService.get_foxlab_transform_characters())
+		while candidate.my_id_hash in chars_id or RunData.get_nb_item(candidate.my_id_hash, player_index) > 0:
+			candidate = Utils.get_rand_element(ItemService.get_foxlab_transform_characters())
 		if _are_chars_compatible(player_index, candidate, chars_data):
 			current_char = candidate
 	return current_char
@@ -298,8 +294,6 @@ func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -
 func _get_rand_chars(player_index: int) -> Array:
 	var chars_return:Array=[]
 	var chars_id:Array = []
-	if RunData.get_player_character(player_index) != null:
-		chars_id.append(RunData.get_player_character(player_index).my_id_hash)
 	var char_value :float = clamp(value * _get_armor_chance(player_index, true), MIN_TRANSFORM_NUM, MAX_TRANSFORM_NUM)
 	var char_value_floored :int = int(char_value)
 	var residual_value = 1 if Utils.get_chance_success(char_value - char_value_floored) else 0
@@ -310,7 +304,7 @@ func _get_rand_chars(player_index: int) -> Array:
 		var current_char = _get_one_character(player_index, chars_id, chars_return)
 		if _can_character_be_modified(current_char):
 			if curse_character:
-				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
 				current_char = dlc.curse_item(current_char, player_index)
 			current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
 		chars_return.append(current_char)
@@ -326,32 +320,32 @@ func _get_rand_chars(player_index: int) -> Array:
 		for effect in current_char.effects:
 			if effect.custom_key_hash == Keys.starting_item_hash:
 				for _i in range(effect.value):
-					var item = ItemService.get_element(ItemService.items, effect.key_hash)
+					var item = ItemService.get_element(ItemService.get_items(), effect.key_hash)
 					container.append(item)
 			elif effect.custom_key_hash == Keys.starting_weapon_hash:
 				for _i in range(effect.value):
-					var weapon = ItemService.get_element(ItemService.weapons,effect.key_hash)
+					var weapon = ItemService.get_element(ItemService.get_weapons(),effect.key_hash)
 					container.append(weapon)
 			elif effect.custom_key_hash == Keys.cursed_starting_item_hash  and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
-				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
 				for _i in range(effect.value):
-					var item = ItemService.get_element(ItemService.items, effect.key_hash)
+					var item = ItemService.get_element(ItemService.get_items(), effect.key_hash)
 					if dlc:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 			elif effect.custom_key_hash == Keys.cursed_starting_weapon_hash and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
-				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
 				for _i in range(effect.value):
-					var weapon = ItemService.get_element(ItemService.weapons, effect.key_hash)
+					var weapon = ItemService.get_element(ItemService.get_weapons(), effect.key_hash)
 					if dlc:
 						weapon = dlc.curse_item(weapon, player_index, true)
 					container.append(weapon)
 			elif effect.key == "brolab_effect_receive_item_at_wave" \
 				and effect.brolab_receive_item_wave == 1\
 				and effect.brolab_receive_item_end_wave == 1:
-				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
 				for _i in range(effect.value):
-					var item = ItemService.get_element(ItemService.items, Keys.generate_hash(effect.brolab_receive_item_id))
+					var item = ItemService.get_element(ItemService.get_items(), Keys.generate_hash(effect.brolab_receive_item_id))
 					if dlc and effect.brolab_cursed_item:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
@@ -366,10 +360,7 @@ func _get_rand_chars(player_index: int) -> Array:
 		else:
 			var prev_items = meta.prevs
 			for starting in container:
-				if starting is WeaponData:
-					prev_items.append(starting)
-				else:
-					prev_items.append([starting.my_id_hash, starting.curse_factor])
+				prev_items.append(starting)
 	if meta.names == "":
 		meta.names = tr("FOXLAB_DISABLE")
 	return chars_return

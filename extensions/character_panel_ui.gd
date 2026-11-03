@@ -13,7 +13,7 @@ func apply_items_appearance(all_items: Array) -> void :
 		RunData.get_player_character(player_index).my_id_hash == Utils.character_foxlab_faceless_hash:
 		all_items = all_items.duplicate()
 		if RunData.tracked_item_effects[player_index][Utils.item_foxlab_mask_hash] <= 0:
-			var mask_item = ItemService.get_element(ItemService.items, Utils.item_foxlab_mask_hash)
+			var mask_item = ItemService.get_element(ItemService.get_items(), Utils.item_foxlab_mask_hash)
 			for effect in mask_item.effects:
 				if effect.get_id() == "foxlab_get_rand_character":
 					effect.try_generate(player_index)

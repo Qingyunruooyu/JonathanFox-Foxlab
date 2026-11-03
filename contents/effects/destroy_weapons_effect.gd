@@ -39,14 +39,14 @@ func apply(player_index: int) -> void:
 		remained_weapon = remained_weapon.upgrades_into
 	# 村好剑等特殊升级武器，直接检索
 	if remained_weapon.tier < Tier.LEGENDARY:
-		for weapon in ItemService.weapons:
+		for weapon in ItemService.get_weapons():
 			if weapon.weapon_id_hash == remained_weapon.weapon_id_hash and weapon.tier == Tier.LEGENDARY:
 				remained_weapon = weapon
 				break
 
 	# 选中的武器是诅咒版，需要在下面重新诅咒
 	if remained_weapon.is_cursed and remained_weapon.tier == Tier.LEGENDARY:
-		remained_weapon = ItemService.get_element(ItemService.weapons, remained_weapon.my_id_hash)
+		remained_weapon = ItemService.get_element(ItemService.get_weapons(), remained_weapon.my_id_hash)
 
 	remained_weapon = remained_weapon.duplicate()
 	var adjusted_effects = remained_weapon.effects.duplicate()
@@ -57,7 +57,7 @@ func apply(player_index: int) -> void:
 	remained_weapon.effects = adjusted_effects
 	if curse_new_weapon:
 		for dlc_id in RunData.enabled_dlcs:
-			var dlc_data = ProgressData.get_dlc_data(dlc_id)
+			var dlc_data = ItemService.get_dlc_data_by_id(dlc_id)
 			if dlc_data and dlc_data.has_method("curse_item"):
 				remained_weapon = dlc_data.curse_item(remained_weapon, player_index, false, new_cursed_weapon_min_factor)
 	RunData.add_weapon(remained_weapon, player_index)

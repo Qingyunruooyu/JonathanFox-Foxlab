@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=28 format=2]
 
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/moon_fisher/moon_fisher_icon.png" type="Texture" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/moon_fisher/moon_fisher_eyes.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/moon_fisher/moon_fisher_mouth.tres" type="Resource" id=4]
@@ -31,6 +31,8 @@
 [resource]
 script = ExtResource( 1 )
 my_id = "character_foxlab_moon_fisher"
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 2 )

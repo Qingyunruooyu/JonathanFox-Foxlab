@@ -111,7 +111,6 @@ var foxlab_weapon_class_explode_hash: int = Keys.generate_hash("foxlab_weapon_cl
 var foxlab_knockback_aura_hash: int = Keys.generate_hash("foxlab_knockback_aura")
 var foxlab_get_item_on_weapon_break_hash: int = Keys.generate_hash("foxlab_get_item_on_weapon_break")
 var foxlab_one_shot_on_dodge_hash: int = Keys.generate_hash("foxlab_one_shot_on_dodge")
-var stat_foxlab_crit_damage_hash: int = Keys.generate_hash("stat_foxlab_crit_damage")
 var foxlab_material_ctrl_hash: int = Keys.generate_hash("foxlab_material_ctrl")
 var foxlab_pending_material_hash: int = Keys.generate_hash("foxlab_pending_material")
 var foxlab_bonus_item_on_bought_hash: int = Keys.generate_hash("foxlab_bonus_item_on_bought")
@@ -165,6 +164,7 @@ var item_foxlab_inner_indomitable_hash: int = Keys.generate_hash("item_foxlab_in
 var item_foxlab_mask_hash: int = Keys.generate_hash("item_foxlab_mask")
 var item_foxlab_reactor_hash: int = Keys.generate_hash("item_foxlab_reactor")
 var item_foxlab_tracker_hash: int = Keys.generate_hash("item_foxlab_tracker")
+var item_foxlab_tortoise_shell_hash: int = Keys.generate_hash("item_foxlab_tortoise_shell")
 var item_foxlab_faceless_guide_hash: int = Keys.generate_hash("item_foxlab_faceless_guide")
 var item_foxlab_enchanted_eyes_hash: int = Keys.generate_hash("item_foxlab_enchanted_eyes")
 var item_foxlab_wanted_hash: int = Keys.generate_hash("item_foxlab_wanted")
@@ -293,20 +293,30 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 	return text
 
 func _foxlab_init_primary_stat_gain_map():
-	var effects = RunData.get_player_effects(RunData.DUMMY_PLAYER_INDEX)
+	# 不能读 RunData.dummy_player_effects：它在 RunData._ready 才赋值，而本函数随 reset_stat_keys
+	# 在 ProgressData/ItemService 初始化期被调（自动加载顺序都在 RunData 之前），读到的恒为空字典
+	var effects = PlayerRunData.init_effects()
 	for stat in _primary_stat_keys:
 		var gain_stat = "gain_" + Keys.hash_to_string[stat]
 		var gain_stat_hash = Keys.generate_hash(gain_stat)
 		if gain_stat_hash in effects:
 			foxlab_primary_stat_gain_map[gain_stat_hash] = stat
 
-func foxlab_get_colored_stat_str(stat_hash: int) -> String:
+func foxlab_get_colored_stat_str(stat_hash: int, player_index: int = RunData.DUMMY_PLAYER_INDEX) -> String:
 	var stat_data = ItemService.get_stat(stat_hash)
 	var stat_str = Keys.hash_to_string[stat_hash]
-	if stat_data and stat_data.is_dlc_stat and stat_data.color_override != Color.black:
-		return "[color=#%s]%s[/color]" % [stat_data.color_override.to_html(), tr(stat_str.to_upper())]
-	else:
+	if stat_data == null or not stat_data.is_dlc_stat:
 		return tr(stat_str.to_upper())
+
+	var color = stat_data.color_override
+	if stat_data.has_negative_color_override and player_index != RunData.DUMMY_PLAYER_INDEX:
+		var current_value = RunData.get_player_effect(stat_hash, player_index)
+		if current_value < 0:
+			color = stat_data.negative_color_override
+
+	if color == Color.black:
+		return tr(stat_str.to_upper())
+	return "[color=#%s]%s[/color]" % [color.to_html(), tr(stat_str.to_upper())]
 
 ####### 生成敌人相关 ##########
 const FOXLAB_DRAGON_FISH_PATH = "res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres"
@@ -322,7 +332,7 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 	if zone_data == null:
 		zone_data = get_rand_element(ZoneService.zones)
 
-	if ResourceLoader.exists(FOXLAB_DRAGON_FISH_PATH):
+	if ResourceLoader.exists(FOXLAB_DRAGON_FISH_PATH) and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
 		if get_chance_success(extra_group_chance / 2.0):
 			if foxlab_gaster_group == null:
 				# preload会提前加载enemy.gd，导致兼容性问题
@@ -350,19 +360,20 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 
 const FOXLAB_EXTRA_BOSS_PATH = "res://mods-unpacked/Alexandre-BeyondDanger/content/enemies/boss/architect/architect.tscn"
 func foxlab_pickup_random_bosses() -> Array:
-	var bosses = ItemService.bosses.duplicate()
-	var extra_boss = null
+	var all_bosses = foxlab_get_available_zone_units(true)
+	if all_bosses.empty():
+		return [ ]
 	if not ItemService.foxlab_is_android and ResourceLoader.exists(FOXLAB_EXTRA_BOSS_PATH):
-		extra_boss = load(FOXLAB_EXTRA_BOSS_PATH)
-		bosses.append({"scene": extra_boss})
+		all_bosses.append({"scene": load(FOXLAB_EXTRA_BOSS_PATH)})
 
+	var bosses = all_bosses.duplicate()
 	if bosses.size() != FOXLAB_BOSS_SPAWN_NUM:
 		if bosses.size() > FOXLAB_BOSS_SPAWN_NUM:
 			bosses.shuffle()
 			bosses = bosses.slice(0, FOXLAB_BOSS_SPAWN_NUM - 1)
 		else:
 			while bosses.size() < FOXLAB_BOSS_SPAWN_NUM:
-				bosses.append(Utils.get_rand_element(ItemService.bosses))
+				bosses.append(Utils.get_rand_element(all_bosses))
 
 	assert(bosses.size() == FOXLAB_BOSS_SPAWN_NUM)
 	var group = preload("res://zones/common/elite/group_elite.tres").duplicate()
@@ -388,7 +399,10 @@ func foxlab_pickup_random_elites(is_unknown: bool) -> Array:
 		if not foxlab_unknown_elites.empty():
 			wave_unit_data.unit_scene = foxlab_unknown_elites.pick_random()
 	if wave_unit_data.unit_scene == null:
-		wave_unit_data.unit_scene = ItemService.elites.pick_random().scene
+		var all_elites = foxlab_get_available_zone_units(false)
+		if all_elites.empty():
+			return [ ]
+		wave_unit_data.unit_scene = all_elites.pick_random().scene
 	group.wave_units_data = [wave_unit_data]
 	return [group]
 
@@ -416,11 +430,22 @@ func foxlab_generate_evil_mob_group_data(num: int)->Array:
 		group.wave_units_data.append(foxlab_evil_mob_units.pick_random())
 	return [group]
 
+# 可用区域（dlc_id 为空或内容集启用）的 boss/精英并集；水滴石穿与通缉令的召唤池都从这里取
+func foxlab_get_available_zone_units(is_boss: bool) -> Array:
+	var result = []
+	for zone in ZoneService.zones:
+		if zone.dlc_id != "" and not ProgressData.has_item_set(zone.dlc_id):
+			continue
+		result.append_array(zone.bosses if is_boss else zone.elites)
+	return result
+
 func foxlab_collect_item_foxlab_wanted():
 	var unknown_wanted_item = null
 	var elite_ids = {}
-	for item in ItemService.items:
+	for item in ItemService.get_items():
 		if item.name == "ITEM_FOXLAB_WANTED":
+			if not ItemService._foxlab_requirements_met(item):
+				continue
 			if item.my_id_hash == item_foxlab_wanted_unknown_hash:
 				unknown_wanted_item = item
 				continue
@@ -429,13 +454,15 @@ func foxlab_collect_item_foxlab_wanted():
 			for effect in item.effects:
 				if effect.custom_key_hash == Keys.extra_enemies_next_wave_hash:
 					elite_ids[effect.key2_hash] = 1
-	if unknown_wanted_item and foxlab_item_wanted.size() < ItemService.elites.size():
-		for elite in ItemService.elites:
-			if not elite.my_id_hash in elite_ids:
-				foxlab_unknown_elites.append(elite.scene)
-		if not foxlab_unknown_elites.empty():
-			foxlab_item_wanted.append(unknown_wanted_item)
-			foxlab_item_wanted_hash[unknown_wanted_item.my_id_hash] = 1
+	if unknown_wanted_item:
+		var all_elites = foxlab_get_available_zone_units(false)
+		if foxlab_item_wanted.size() < all_elites.size():
+			for elite in all_elites:
+				if not elite.my_id_hash in elite_ids:
+					foxlab_unknown_elites.append(elite.scene)
+			if not foxlab_unknown_elites.empty():
+				foxlab_item_wanted.append(unknown_wanted_item)
+				foxlab_item_wanted_hash[unknown_wanted_item.my_id_hash] = 1
 
 func foxlab_get_random_item_foxlab_wanted(player_index: int):
 	if foxlab_item_wanted.empty():
@@ -604,7 +631,7 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 	return ret
 
 func foxlab_fit_item_icon_scale(texture: Texture, base_scale: float = 0.5) -> Vector2:
-	var standard_icon_size = ItemService.characters[0].icon.get_size()
+	var standard_icon_size = ItemService.get_characters()[0].icon.get_size()
 	var texture_size = texture.get_size()
 	var scale_factor = base_scale
 	if texture_size != standard_icon_size:
@@ -629,11 +656,23 @@ func foxlab_same_shop_tuple(a: Array, b: Array) -> bool:
 	return a[1] == b[1] and foxlab_same_shop_item(a[0], b[0])
 
 ######## 扩展 ######
-func reset_stat_keys() -> void :
-	.reset_stat_keys()
+# 通缉令缓存依赖内容集/DLC状态，懒重建；item_sets_changed / dlc 变化时主动清空
+func foxlab_clear_wanted_caches() -> void :
 	foxlab_item_wanted.clear()
 	foxlab_item_wanted_hash.clear()
 	foxlab_unknown_elites.clear()
+
+func reset_stat_keys() -> void :
+	.reset_stat_keys()
+	# 原版 ItemService.stats 是编辑器数组，只含本体属性；DLC 主属性（诅咒/进化）挂在
+	# 各内容集的 item_set.stats 里，补进主属性表，主属性修改/例外显示才能覆盖它们
+	for update_data in ItemService.update_data_list:
+		if update_data == null or update_data.item_set == null:
+			continue
+		for stat in update_data.item_set.stats:
+			if stat.is_primary_stat and not _primary_stat_keys.has(stat.stat_hash):
+				_primary_stat_keys.push_back(stat.stat_hash)
+	foxlab_clear_wanted_caches()
 	foxlab_evil_mob_units.clear()
 
 	foxlab_stats_in_container.clear()

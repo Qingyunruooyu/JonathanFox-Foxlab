@@ -34,6 +34,8 @@
 [resource]
 script = ExtResource( 13 )
 my_id = "character_foxlab_stargazer"
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 2 )

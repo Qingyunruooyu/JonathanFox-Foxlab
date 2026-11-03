@@ -17,7 +17,7 @@ var foxlab_transform_characters:Array=[]
 var foxlab_vanilla_characters:Array=[]
 
 ######### 次要角色限制合并缓存 ############
-# 影子=主角+身上全部次要角色（变身/佛手等）的 wanted_tags/banned_items/banned_item_groups/banned_upgrades 的并集
+# 影子=主角+身上全部次要角色（变身/佛手等）的 wanted_tags/banned_items/banned_item_groups/banned_upgrades/banned_meca_stats 的并集
 # 仅登记表变化（RunData标脏）或 current_character 引用变化时重建；登记表为空时影子即主角本身
 var _foxlab_merged_chars = [null, null, null, null]
 var _foxlab_merged_char_sources = [null, null, null, null]
@@ -47,6 +47,13 @@ func _foxlab_get_merged_character(player_index: int) -> CharacterData:
 		if _foxlab_restrictions_have_data(restrictions, "wanted_tags"):
 			candidate.wanted_tags = _foxlab_union_unique(orig.wanted_tags, restrictions, "wanted_tags")
 			changed = changed or candidate.wanted_tags.size() > orig.wanted_tags.size()
+		# banned_meca_stats 无尽也合并：机械化掷点无尽照常发生
+		if _foxlab_restrictions_have_data(restrictions, "banned_meca_stats"):
+			var base_meca: Array = orig.banned_meca_stats
+			var union_meca: Array = _foxlab_union_unique(base_meca, restrictions, "banned_meca_stats")
+			if union_meca.size() > base_meca.size():
+				changed = true
+			candidate.banned_meca_stats = union_meca
 		if RunData.current_wave < RunData.nb_of_waves:
 			for restriction_key in ["banned_items", "banned_item_groups", "banned_upgrades"]:
 				if not _foxlab_restrictions_have_data(restrictions, restriction_key):
@@ -89,6 +96,7 @@ var foxlab_mod = null
 func _ready() -> void :
 	var _err = ProgressData.connect("dlc_activated", self, "_foxlab_on_dlc_changed")
 	_err = ProgressData.connect("dlc_deactivated", self, "_foxlab_on_dlc_changed")
+	_err = ProgressData.connect("item_sets_changed", self, "_foxlab_on_item_sets_changed")
 	call_deferred("_foxlab_init_resources")
 	call_deferred("_foxlab_init_configs")
 	call_deferred("_foxlab_init_enemies")
@@ -102,7 +110,7 @@ func _foxlab_fix_banned_items_for_endless():
 			banned_items_for_endless[i] = Keys.generate_hash(banned_items_for_endless[i])
 
 func _foxlab_init_resources():
-	foxlab_kill_nearby_icon = get_element(items, Utils.item_foxlab_inner_indomitable_hash).icon
+	foxlab_kill_nearby_icon = get_element(get_items(), Utils.item_foxlab_inner_indomitable_hash).icon
 	foxlab_seed_data = load("res://mods-unpacked/JonathanFox-FoxLab/contents/consumables/seed/seed_data.tres")
 	foxlab_stargazer_new_app = load("res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/stargazer/stargazer_appearance_upgraded.tres")
 
@@ -121,15 +129,48 @@ func _on_setting_changed(setting_name, _value, mod_name)->void :
 		_foxlab_init_transform_characters()
 
 func _foxlab_init_transform_characters():
+	_foxlab_clear_transform_character_caches()
+	var available_characters = []
+	for character in get_characters():
+		if _foxlab_requirements_met(character):
+			available_characters.append(character)
 	if not foxlab_mod.is_transform_vanilla_only():
-		foxlab_transform_characters = characters
+		foxlab_transform_characters = available_characters
 		#DebugService.log_data("item service _foxlab_init_transform_characters done, all")
 		return
 	if foxlab_vanilla_characters.empty():
-		for character in characters:
+		for character in available_characters:
 			if "res://items/" in character.resource_path or "res://dlcs/" in character.resource_path:
 				foxlab_vanilla_characters.append(character)
 	foxlab_transform_characters = foxlab_vanilla_characters
+
+func _foxlab_requirements_met(resource) -> bool:
+	if not "foxlab_required_item_set" in resource:
+		return true
+	for item_set_id in resource.foxlab_required_item_set:
+		if not ProgressData.has_item_set(item_set_id):
+			return false
+	return true
+
+func get_disabled_required_update(character: CharacterData) -> UpdateData:
+	if "foxlab_required_item_set" in character:
+		for item_set_id in character.foxlab_required_item_set:
+			if not ProgressData.has_item_set(item_set_id):
+				for update_data in update_data_list:
+					if update_data != null and update_data.id == item_set_id:
+						return update_data
+	return .get_disabled_required_update(character)
+
+func init_unlocked_pool() -> void:
+	.init_unlocked_pool()
+	for tier_data in _tiers_data:
+		for pool in [tier_data[TierData.ALL_ITEMS], tier_data[TierData.ITEMS], tier_data[TierData.WEAPONS]]:
+			var invalid = []
+			for element in pool:
+				if not _foxlab_requirements_met(element):
+					invalid.append(element)
+			for element in invalid:
+				pool.erase(element)
 	#DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
 
 func get_foxlab_transform_characters() -> Array:
@@ -144,9 +185,9 @@ var foxlab_builder_turret_scatter : Array = [null, null, null, null]
 # 玩家第一个建造者的炮塔会居中，其他炮塔除非有group_structure，不然是随机分布的
 func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> ItemData:
 	if RunData.get_nb_item(Keys.item_builder_turret_n_hash[new_level], player_index) == 0:
-		return get_element(items, Keys.item_builder_turret_n_hash[new_level]) as ItemData
+		return get_element(get_items(), Keys.item_builder_turret_n_hash[new_level]) as ItemData
 	if  foxlab_builder_turret_scatter[new_level] == null:
-		foxlab_builder_turret_scatter[new_level] = get_element(items, Keys.item_builder_turret_n_hash[new_level]).duplicate()
+		foxlab_builder_turret_scatter[new_level] = get_element(get_items(), Keys.item_builder_turret_n_hash[new_level]).duplicate()
 		for i in range(foxlab_builder_turret_scatter[new_level].effects.size()):
 			var effect = foxlab_builder_turret_scatter[new_level].effects[i]
 			if effect is BuilderTurretEffect:
@@ -200,10 +241,28 @@ var foxlab_normal_scenes := []
 var foxlab_enemy_seed_effect_map := {}
 
 func _foxlab_on_dlc_changed(_dlc_id: String) -> void:
+	_foxlab_clear_transform_character_caches()
 	foxlab_hash_to_entry.clear()
 	foxlab_scene_to_entry.clear()
 	foxlab_normal_scenes.clear()
+	Utils.foxlab_clear_wanted_caches()
 	call_deferred("foxlab_ensure_enemy_registry")
+
+func _foxlab_on_item_sets_changed() -> void:
+	invalidate_characters_cache()
+	invalidate_items_cache()
+	invalidate_weapons_cache()
+	_foxlab_clear_transform_character_caches()
+	Utils.foxlab_clear_wanted_caches()
+	foxlab_hash_to_entry.clear()
+	foxlab_scene_to_entry.clear()
+	foxlab_normal_scenes.clear()
+	call_deferred("_foxlab_init_transform_characters")
+	call_deferred("foxlab_ensure_enemy_registry")
+
+func _foxlab_clear_transform_character_caches() -> void:
+	foxlab_transform_characters.clear()
+	foxlab_vanilla_characters.clear()
 
 func foxlab_ensure_enemy_registry():
 	if not foxlab_hash_to_entry.empty():
@@ -219,7 +278,7 @@ func foxlab_ensure_enemy_registry():
 		_foxlab_register_enemy_scene(scene, false)
 		foxlab_normal_scenes.append(scene)
 
-	for enemy_data in elites + bosses:
+	for enemy_data in Utils.foxlab_get_available_zone_units(true) + Utils.foxlab_get_available_zone_units(false):
 		_foxlab_register_enemy_scene(enemy_data.scene, true)
 
 func _foxlab_register_enemy_scene(scene: PackedScene, is_boss: bool) -> void:
@@ -266,9 +325,9 @@ func foxlab_spawn_random_enemy(enemy, boss_spawned_this_wave: int, player_index:
 			return new_boss_num
 		var enemy_data = null
 		if RunData.current_wave >= 13 and Utils.get_chance_success(FOXLAB_BOSS_CHANCE):
-			enemy_data = Utils.get_rand_element(bosses)
+			enemy_data = Utils.get_rand_element(Utils.foxlab_get_available_zone_units(true))
 		else:
-			enemy_data = Utils.get_rand_element(elites)
+			enemy_data = Utils.get_rand_element(Utils.foxlab_get_available_zone_units(false))
 		var main = Utils.get_scene_node()
 		for _player_index in RunData.get_player_count():
 			var player =  main._players[_player_index]
@@ -304,20 +363,32 @@ func foxlab_add_pet_structure_stats():
 		foxlab_pet_structure_stats_added = true
 
 func _foxlab_modify_items_tag():
-	for item in items:
+	for item in get_items():
 		if not "structure" in item.tags and item.is_structure_item():
 			item.tags.append("structure")
 		if not "pet" in item.tags and item.is_pet_item():
 			item.tags.append("pet")
 
 func _foxlab_record_spawning_weapons():
-	for weapon in weapons:
+	for weapon in get_weapons():
 		if weapon.is_structure_item():
 			foxlab_weapons_spawning_structure[weapon.weapon_id_hash] = 1
 		if weapon.is_pet_item():
 			foxlab_weapon_spawning_pet.push_back([weapon, 0])
 
 ####### 扩展 ###########
+func can_item_be_mutated(item) -> bool:
+	if "_foxlab_" in item.my_id and not item.can_be_looted \
+		and item.my_id_hash != Utils.item_foxlab_tortoise_shell_hash:
+		return false
+	return .can_item_be_mutated(item)
+
+func can_item_be_cursed(item) -> bool:
+	if "_foxlab_" in item.my_id and not item.can_be_looted \
+		and item.my_id_hash != Utils.item_foxlab_tortoise_shell_hash:
+		return false
+	return .can_item_be_cursed(item)
+
 func get_recycling_value(wave: int, from_value: int, player_index: int, is_weapon: bool = false, affected_by_items_price_stat: bool = true) -> int:
 	# 游戏本身bug，回收带有 specific_items_price 的武器时，如果道具价格低于-100%，导致负负得正，原因是没有乘以 specific_items_price/100
 	# ui/menus/shop/item_popup.gd ui/menus/shop/base_shop.gd
@@ -414,7 +485,7 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 func apply_item_effect_modifications(item: ItemParentData, player_index: int) -> ItemParentData:
 	var new_item = .apply_item_effect_modifications(item, player_index)
 	if foxlab_is_android and new_item.is_cursed:
-		var dlc = ProgressData.get_dlc_data("abyssal_terrors")
+		var dlc = get_dlc_data_by_id("abyssal_terrors")
 		if dlc:
 			new_item = Utils.foxlab_extra_curse_item(item, player_index, false, 0.0, new_item, dlc)
 	return new_item

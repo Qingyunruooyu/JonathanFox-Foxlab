@@ -15,7 +15,7 @@
 [ext_resource path="res://weapons/ranged/rail_gun/2/rail_gun_2_data.tres" type="Resource" id=13]
 [ext_resource path="res://weapons/melee/chopper/2/chopper_2_data.tres" type="Resource" id=15]
 [ext_resource path="res://weapons/ranged/double_barrel_shotgun/2/double_barrel_shotgun_2_data.tres" type="Resource" id=16]
-[ext_resource path="res://items/all/bonk_dog/bonk_dog.tres" type="Resource" id=18]
+[ext_resource path="res://items/all/03_paws_n_claws/bonk_dog/bonk_dog.tres" type="Resource" id=18]
 [ext_resource path="res://weapons/melee/fighting_stick/2/fighting_stick_2_data.tres" type="Resource" id=19]
 [ext_resource path="res://weapons/melee/plank/2/plank_2_data.tres" type="Resource" id=20]
 [ext_resource path="res://weapons/melee/stick/2/stick_2_data.tres" type="Resource" id=21]
@@ -29,12 +29,13 @@
 [ext_resource path="res://weapons/melee/wrench/2/wrench_2_data.tres" type="Resource" id=30]
 [ext_resource path="res://weapons/melee/circular_saw/2/circular_saw_2_data.tres" type="Resource" id=31]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/blunderbuss/2/blunderbuss_2_data.tres" type="Resource" id=32]
-[ext_resource path="res://items/all/turret_laser/turret_laser_data.tres" type="Resource" id=33]
-[ext_resource path="res://items/all/ratzilla/ratzilla.tres" type="Resource" id=34]
+[ext_resource path="res://items/all/00_base_game/turret_laser/turret_laser_data.tres" type="Resource" id=33]
+[ext_resource path="res://items/all/03_paws_n_claws/ratzilla/ratzilla.tres" type="Resource" id=34]
 
 [resource]
 script = ExtResource( 10 )
 my_id = "character_foxlab_butcher"
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )

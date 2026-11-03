@@ -1,5 +1,8 @@
 extends "res://items/global/item_data.gd"
 
+# 依赖的内容集id列表（如 ["abyssal_terrors"]），缺任一则该道具不出现
+export (Array, String) var foxlab_required_item_set = []
+
 func _get_tracking_text(player_index: int) -> String:
 	if RunData.init_tracked_items.get(my_id_hash) is Array:
 		return Utils.foxlab_get_tracking_text(my_id_hash, tracking_text, player_index)

@@ -46,6 +46,7 @@
 [resource]
 script = ExtResource( 11 )
 my_id = "character_foxlab_venom"
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 41 )

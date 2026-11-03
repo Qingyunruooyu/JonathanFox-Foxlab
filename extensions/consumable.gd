@@ -4,7 +4,7 @@ var foxlab_seed_timer = null
 
 func drop(pos: Vector2, p_rotation: float, p_push_back_destiation: Vector2) -> void :
 	.drop(pos, p_rotation, p_push_back_destiation)
-	if has_damage_effect():
+	if consumable_data.my_id_hash == Keys.consumable_poisoned_fruit_hash:
 		var main = Utils.get_scene_node()
 		for player in main._get_shuffled_live_players():
 			var instant_attracting = RunData.get_player_effect(Utils.foxlab_instant_poisoned_attracting_hash, player.player_index)

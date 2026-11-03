@@ -33,6 +33,7 @@
 [resource]
 script = ExtResource( 11 )
 my_id = "character_foxlab_ouroboros"
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 27 )
@@ -52,5 +53,6 @@ wanted_tags = [ "pickup", "stat_range", "xp_gain" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [ "upgrade_armor", "upgrade_lifesteal", "upgrade_elemental_damage", "upgrade_ranged_damage" ]
+banned_meca_stats = [ "stat_armor", "stat_elemental_damage", "stat_lifesteal", "stat_ranged_damage" ]
 starting_weapons = [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 2 ), ExtResource( 29 ) ]
 starting_items = [ ExtResource( 28 ), ExtResource( 10 ) ]

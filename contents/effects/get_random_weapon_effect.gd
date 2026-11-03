@@ -78,13 +78,13 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	args.increase_tier = value - 1
 	args.owned_and_shop_items = []
 	if RunData.get_nb_item(Keys.item_hourglass_hash, player_index) > 0:
-		args.owned_and_shop_items.push_back(ItemService.get_element(ItemService.items, Keys.item_hourglass_hash))
+		args.owned_and_shop_items.push_back(ItemService.get_element(ItemService.get_items(), Keys.item_hourglass_hash))
 
 	var weapon = null
 	# chance to get the same weapon equiped
 	if _get_chance_success(CHANCE_EQUIPPED_WEAPON, luck_chance) and RunData.get_player_weapons_ref(player_index).size() > 0:
 		var ref_weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index))
-		weapon = ItemService.get_element(ItemService.weapons, ref_weapon.my_id_hash).duplicate()
+		weapon = ItemService.get_element(ItemService.get_weapons(), ref_weapon.my_id_hash).duplicate()
 	else:
 		weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
 		# for debug
@@ -102,11 +102,11 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		var debug_item:String = Utils.get_rand_element(debug_item_name)
 		var debug_item_hash = Keys.generate_hash(debug_item)
 		if debug_item.begins_with("weapon_"):
-			item_for_effect = ItemService.get_element(ItemService.weapons, debug_item_hash)
+			item_for_effect = ItemService.get_element(ItemService.get_weapons(), debug_item_hash)
 		else:
-			item_for_effect = ItemService.get_element(ItemService.items, debug_item_hash)
+			item_for_effect = ItemService.get_element(ItemService.get_items(), debug_item_hash)
 	if item_for_effect == null:
-		item_for_effect = Utils.get_rand_element(ItemService.weapons)
+		item_for_effect = Utils.get_rand_element(ItemService.get_weapons())
 	if item_for_effect.effects.empty():
 		if _get_chance_success(CHANCE_LEGENDARY_ITEM, luck_chance):
 			args.increase_tier = 3

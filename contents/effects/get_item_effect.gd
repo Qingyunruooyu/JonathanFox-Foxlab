@@ -12,7 +12,7 @@ func apply(player_index: int) -> void:
 		var new_level = BuilderTurret.get_level(struct_range)
 		item_to_add = ItemService.foxlab_get_builder_turret_at_level(new_level, player_index)
 	else:
-		item_to_add = ItemService.get_element(ItemService.items, key_hash)
+		item_to_add = ItemService.get_element(ItemService.get_items(), key_hash)
 	if item_to_add != null:
 		for _i in range(value):
 			RunData.add_item(item_to_add, player_index)

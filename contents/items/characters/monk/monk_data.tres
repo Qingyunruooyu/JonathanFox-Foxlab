@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=40 format=2]
+[gd_resource type="Resource" load_steps=41 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/monk_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_5.tres" type="Resource" id=2]
@@ -10,18 +10,18 @@
 [ext_resource path="res://weapons/melee/vorpal_sword/2/vorpal_sword_2_data.tres" type="Resource" id=8]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/buddhas_hand/buddhas_hand_data.tres" type="Resource" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=10]
-[ext_resource path="res://items/all/bot_o_mine/bot_o_mine.tres" type="Resource" id=11]
+[ext_resource path="res://items/all/03_paws_n_claws/bot_o_mine/bot_o_mine.tres" type="Resource" id=11]
 [ext_resource path="res://weapons/melee/hammer/2/hammer_2_data.tres" type="Resource" id=12]
 [ext_resource path="res://weapons/ranged/rocket_launcher/2/rocket_launcher_2_data.tres" type="Resource" id=13]
 [ext_resource path="res://weapons/melee/knife/2/knife_2_data.tres" type="Resource" id=14]
 [ext_resource path="res://weapons/ranged/rail_gun/2/rail_gun_2_data.tres" type="Resource" id=15]
-[ext_resource path="res://items/all/pocket_factory/pocket_factory_data.tres" type="Resource" id=16]
+[ext_resource path="res://items/all/00_base_game/pocket_factory/pocket_factory_data.tres" type="Resource" id=16]
 [ext_resource path="res://weapons/melee/spear/2/spear_2_data.tres" type="Resource" id=17]
 [ext_resource path="res://dlcs/dlc_1/weapons/ranged/flute/2/flute_2_data.tres" type="Resource" id=18]
 [ext_resource path="res://weapons/melee/lightning_shiv/2/lightning_shiv_2_data.tres" type="Resource" id=19]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/lute/2/lute_2_data.tres" type="Resource" id=20]
 [ext_resource path="res://weapons/melee/sword/2/sword_2_data.tres" type="Resource" id=22]
-[ext_resource path="res://items/all/cyberball/cyberball_data.tres" type="Resource" id=24]
+[ext_resource path="res://items/all/00_base_game/cyberball/cyberball_data.tres" type="Resource" id=24]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/brick/2/brick_2_data.tres" type="Resource" id=25]
 [ext_resource path="res://weapons/melee/ghost_axe/2/ghost_axe_2_data.tres" type="Resource" id=27]
 [ext_resource path="res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_data.tres" type="Resource" id=28]
@@ -39,17 +39,20 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_2.tres" type="Resource" id=47]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_0.tres" type="Resource" id=48]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_1.tres" type="Resource" id=49]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_no_weapon_in_shop.tres" type="Resource" id=50]
 
 [resource]
 script = ExtResource( 10 )
 my_id = "character_foxlab_monk"
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_MONK"
 tier = 0
 value = 1
-effects = [ ExtResource( 48 ), ExtResource( 49 ), ExtResource( 4 ), ExtResource( 47 ), ExtResource( 45 ), ExtResource( 2 ), ExtResource( 44 ), ExtResource( 6 ), ExtResource( 46 ), ExtResource( 7 ), ExtResource( 3 ) ]
+effects = [ ExtResource( 48 ), ExtResource( 49 ), ExtResource( 4 ), ExtResource( 47 ), ExtResource( 45 ), ExtResource( 2 ), ExtResource( 44 ), ExtResource( 6 ), ExtResource( 46 ), ExtResource( 7 ), ExtResource( 3 ), ExtResource( 50 ) ]
 tracking_text = ""
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

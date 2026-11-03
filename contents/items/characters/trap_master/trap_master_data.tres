@@ -7,7 +7,7 @@
 [ext_resource path="res://weapons/melee/wrench/2/wrench_2_data.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/trap_master/trap_master_mouth.tres" type="Resource" id=6]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/trap_master/trap_master_eyes.tres" type="Resource" id=7]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=8]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=8]
 [ext_resource path="res://weapons/melee/cactus_mace/2/cactus_mace_2_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/ranged/slingshot/2/slingshot_2_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/melee/lightning_shiv/2/lightning_shiv_2_data.tres" type="Resource" id=11]
@@ -25,6 +25,8 @@
 [resource]
 script = ExtResource( 8 )
 my_id = "character_foxlab_trap_master"
+foxlab_required_item_set = [ "abyssal_terrors" ]
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 23 )

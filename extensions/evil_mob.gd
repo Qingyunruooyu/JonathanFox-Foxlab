@@ -1,4 +1,4 @@
-extends "res://entities/units/enemies/evil_mob/evil_mob.gd"
+extends "res://entities/units/enemies/crash_zone/basic/evil_mob/evil_mob.gd"
 
 func respawn() -> void :
 	.respawn()

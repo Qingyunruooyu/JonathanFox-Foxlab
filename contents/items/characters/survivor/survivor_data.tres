@@ -8,7 +8,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/survivor/survivor_effect_4.tres" type="Resource" id=6]
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=7]
 [ext_resource path="res://weapons/melee/vorpal_sword/2/vorpal_sword_2_data.tres" type="Resource" id=8]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=9]
 [ext_resource path="res://weapons/melee/fist/1/fist_data.tres" type="Resource" id=10]
 [ext_resource path="res://weapons/melee/knife/1/knife_data.tres" type="Resource" id=11]
 [ext_resource path="res://weapons/melee/spear/1/spear_data.tres" type="Resource" id=12]
@@ -33,6 +33,8 @@
 [resource]
 script = ExtResource( 9 )
 my_id = "character_foxlab_survivor"
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )

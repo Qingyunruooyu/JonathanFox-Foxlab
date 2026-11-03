@@ -9,6 +9,7 @@ var IS_ANDROID:bool = false
 const EXTENSION_SCRIPTS: =[
 	"utils.gd",
 	"item_service.gd",
+	"progress_data.gd",
 	"run_data.gd",
 	"player.gd",
 	"player_run_data.gd",
@@ -40,8 +41,9 @@ const EXTENSION_SCRIPTS: =[
 ]
 
 const PC_EXTENSION_SCRIPTS: =[
+	"dlc_1_data.gd",
+	"dlc_2_data.gd",
 	"effects/burning_effect.gd",
-	"progress_data.gd",
 	"evil_mob.gd",
 	"melee_weapon.gd",
 	"ranged_weapon.gd",
@@ -56,10 +58,11 @@ const DEFAULT_SETTINGS: = {
 	"FOXLAB_DISABLE_ITEMS": false
 }
 var foxlab_config = null
-var foxlab_current_settings: Dictionary = DEFAULT_SETTINGS.duplicate()
+var foxlab_current_settings: Dictionary
 
 func _init():
 	ModLoaderLog.info("Init", MOD_NAME)
+	foxlab_current_settings = DEFAULT_SETTINGS.duplicate()
 	IS_ANDROID = (OS.get_name() == "Android")
 	for script in EXTENSION_SCRIPTS:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)

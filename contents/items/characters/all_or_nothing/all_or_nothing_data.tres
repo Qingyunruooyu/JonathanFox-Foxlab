@@ -12,7 +12,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/all_or_nothing/all_or_nothing_effect_110.tres" type="Resource" id=10]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/all_or_nothing/all_or_nothing_left.tres" type="Resource" id=11]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/all_or_nothing/all_or_nothing_mouth.tres" type="Resource" id=12]
-[ext_resource path="res://items/characters/character_data.gd" type="Script" id=13]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=13]
 [ext_resource path="res://weapons/ranged/pistol/1/pistol_data.tres" type="Resource" id=14]
 [ext_resource path="res://weapons/ranged/laser_gun/1/laser_gun_data.tres" type="Resource" id=15]
 [ext_resource path="res://weapons/ranged/revolver/1/revolver_data.tres" type="Resource" id=16]
@@ -34,6 +34,8 @@
 [resource]
 script = ExtResource( 13 )
 my_id = "character_foxlab_all_or_nothing"
+foxlab_required_item_set = [ "abyssal_terrors" ]
+required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )

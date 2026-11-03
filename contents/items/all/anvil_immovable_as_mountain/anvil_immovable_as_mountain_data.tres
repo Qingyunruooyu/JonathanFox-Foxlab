@@ -6,11 +6,12 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_immovable_as_mountain/anvil_immovable_as_mountain_effect_2.tres" type="Resource" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_immovable_as_mountain/anvil_immovable_as_mountain_effect_4.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_immovable_as_mountain/anvil_immovable_as_mountain_effect_0.tres" type="Resource" id=6]
-[ext_resource path="res://items/global/item_data.gd" type="Script" id=7]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/global/item_data.gd" type="Script" id=7]
 
 [resource]
 script = ExtResource( 7 )
 my_id = "item_foxlab_mountain"
+foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = false
 icon = ExtResource( 1 )

@@ -670,12 +670,13 @@ func foxlab_get_item(item_id_hash: int, num: int, player_index: int, curse_mode:
 	if not item_data == null:
 		var pre_states = foxlab_before_add_item(player_index)
 		var displayed_item = item_data
+		var dlc = null
+		if curse_mode > 0 and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
+			dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
 		for _i in num:
 			var actual_item_data = item_data
-			if curse_mode > 0:
-				var dlc = ProgressData.get_dlc_data("abyssal_terrors")
-				if dlc:
-					actual_item_data = dlc.curse_item(item_data, player_index, false)
+			if dlc:
+				actual_item_data = dlc.curse_item(item_data, player_index, false)
 			elif curse_mode < 0:
 				actual_item_data = ItemService.apply_item_effect_modifications(item_data, player_index)
 			if actual_item_data.my_id_hash == Keys.item_axolotl_hash:
@@ -925,6 +926,9 @@ func on_levelled_up(player_index: int) -> void :
 	if bonus_crate < 1:
 		return
 
+	# 1.2.0.0 can suppress upgrade generation, so the parent may not append a record.
+	if _upgrades_to_process[player_index].empty():
+		return
 	var upgrade = _upgrades_to_process[player_index].back()
 	var consumable_tier = Tier.UNCOMMON
 	if upgrade.level % 5 == 0:

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=6 format=2]
+
+[ext_resource path="res://global/update_data.gd" type="Script" id=1]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/foxlab_item_set.tres" type="Resource" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/foxlab_banner.png" type="Texture" id=3]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/foxlab_logo.png" type="Texture" id=4]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/foxlab_icon.png" type="Texture" id=5]
+
+[resource]
+script = ExtResource( 1 )
+id = "jonathanfox_foxlab"
+name = "FOXLAB"
+item_set = ExtResource( 2 )
+update_type = 1
+icon = ExtResource( 5 )
+color = Color( 0.95, 0.45, 0.2, 1 )
+baner_logo = ExtResource( 4 )
+baner_illu = ExtResource( 3 )

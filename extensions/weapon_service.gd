@@ -17,7 +17,6 @@ func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponSer
 		new_stats.lifesteal = corrected_stats.lifesteal
 		new_stats.crit_chance = corrected_stats.crit_chance
 
-	new_stats.crit_damage += Utils.get_stat(Utils.stat_foxlab_crit_damage_hash, player_index) / 100.0
 	return new_stats
 
 func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service):

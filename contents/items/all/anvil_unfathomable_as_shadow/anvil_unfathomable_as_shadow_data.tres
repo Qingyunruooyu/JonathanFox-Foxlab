@@ -4,7 +4,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_unfathomable_as_shadow/anvil_unfathomable_as_shadow_effect_4.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_unfathomable_as_shadow/anvil_unfathomable_as_shadow_effect_3.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/anvil_unfathomable_as_shadow/anvil_unfathomable_as_shadow_effect_1.tres" type="Resource" id=7]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/item_data.gd" type="Script" id=9]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/global/item_data.gd" type="Script" id=9]
 
 [resource]
 script = ExtResource( 9 )

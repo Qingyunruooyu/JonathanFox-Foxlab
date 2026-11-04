@@ -218,6 +218,8 @@ var foxlab_evil_mob_units = []
 var foxlab_pets_structures_pool_id_scene_map = {}
 var foxlab_object_effect_item = {}
 
+var foxlab_exploding_turret_tracking_keys = null
+
 #反序列化之后，物品回收相关，快速查找effect id对应的effect对象
 var foxlab_effect_id_dict = {}
 
@@ -674,6 +676,7 @@ func reset_stat_keys() -> void :
 				_primary_stat_keys.push_back(stat.stat_hash)
 	foxlab_clear_wanted_caches()
 	foxlab_evil_mob_units.clear()
+	foxlab_exploding_turret_tracking_keys = null
 
 	foxlab_stats_in_container.clear()
 	if is_instance_valid(foxlab_stats_container):

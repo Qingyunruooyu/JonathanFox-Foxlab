@@ -220,7 +220,11 @@ func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> 
 	var cache_items = []
 	for item_data in items:
 		var is_prev = false
+		if item_data == null:
+			continue
 		for i in range(prev_items.size()):
+			if prev_items[i] == null:
+				continue
 			if not ItemService.is_same_item(prev_items[i], item_data):
 				continue
 			cache_items.append(item_data)

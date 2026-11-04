@@ -11,8 +11,11 @@ var foxlab_gain_stat_every_killed_enemies = [{}, {}, {}, {}] #有上限限制的
 var foxlab_mutate_chance:Array = [0, 0, 0, 0]
 var foxlab_should_check_mutation:Array = [false, false, false, false]
 var foxlab_bosses_this_wave = [0, 0, 0, 0]
+
 # 智械危机：构筑物暴击击杀的触发冷却（one_shot Timer，类似 lifesteal_timer）
 var foxlab_struct_crit_cd_timers = [null, null, null, null]
+var _foxlab_builder_turret_tracking_hash = [null, null, null, null]
+
 const FOXLAB_STAT_MOD_CHANCE:float = 0.2
 var foxlab_mutate_boost = [null, null, null, null]
 
@@ -371,7 +374,7 @@ func foxlab_process_landmine_on_death(enemy, args: TakeDamageArgs):
 		queue.push_back(request)
 
 func foxlab_process_struct_crit_kill(is_crit: bool, args: TakeDamageArgs):
-	if is_crit and args.hitbox.from is Structure :
+	if is_crit and (args.hitbox.from is Structure or foxlab_is_exploding_turret_hitbox(args.hitbox, args.from_player_index)):
 		if foxlab_struct_crit_cd_timers[args.from_player_index] == null:
 			var timer = Timer.new()
 			timer.one_shot = true
@@ -382,6 +385,35 @@ func foxlab_process_struct_crit_kill(is_crit: bool, args: TakeDamageArgs):
 			cd_timer.start()
 			for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
 				TempStats.add_stat(effect[0], effect[1], args.from_player_index)
+
+# 折衷：原版unit.gd受击触发的爆炸（如爆炸炮塔的投射物）from是PlayerExplosion而非构筑物，
+# 只能按damage_tracking_key_hash反查：投射物带ExplodingEffect的炮塔（静态集合存Utils，随reset_stat_keys重置）
+# 建造者炮塔的effects是运行时从玩家最好的远程武器复制的（structure.set_data存到节点上），物品数据里看不到，查场上活节点核实
+func foxlab_is_exploding_turret_hitbox(hitbox, player_index: int) -> bool:
+	if hitbox == null or not hitbox.from is PlayerExplosion:
+		return false
+	if Utils.foxlab_exploding_turret_tracking_keys == null:
+		Utils.foxlab_exploding_turret_tracking_keys = {}
+		for data_arr in [ItemService.get_items(), ItemService.get_characters()]:
+			for data in data_arr:
+				for effect in data.effects:
+					if not effect is TurretEffect:
+						continue
+					for sub_effect in effect.effects:
+						if sub_effect is ExplodingEffect:
+							Utils.foxlab_exploding_turret_tracking_keys[Keys.generate_hash(effect.tracking_key)] = true
+							break
+	if Utils.foxlab_exploding_turret_tracking_keys.has(hitbox.damage_tracking_key_hash):
+		return true
+	if _foxlab_builder_turret_tracking_hash[player_index] == null:
+		_foxlab_builder_turret_tracking_hash = [Keys.empty_hash, Keys.empty_hash, Keys.empty_hash, Keys.empty_hash]
+		for structure in _entity_spawner.structures:
+			if structure is BuilderTurret:
+				for effect in structure.effects:
+					if effect is ExplodingEffect:
+						_foxlab_builder_turret_tracking_hash[structure.player_index] = structure._damage_tracking_key_hash
+						break
+	return hitbox.damage_tracking_key_hash != Keys.empty_hash and _foxlab_builder_turret_tracking_hash[player_index] == hitbox.damage_tracking_key_hash
 
 func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0

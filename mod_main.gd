@@ -6,6 +6,10 @@ const MOD_PATH = "res://mods-unpacked/" + MOD_NAME + "/"
 const FOXLAB_EXTENSION_DIR = MOD_PATH + "extensions/"
 var IS_ANDROID:bool = false
 
+const FOXLAB_BASE_SHOP_SNAPSHOT_VERSION = "1.2.0.1"
+#脚本作用域持有覆盖脚本的引用，防止被回收导致覆盖失效
+var foxlab_base_shop_overwrite = null
+
 const EXTENSION_SCRIPTS = [
 	"utils.gd",
 	"item_service.gd",
@@ -64,6 +68,7 @@ func _init():
 	ModLoaderLog.info("Init", MOD_NAME)
 	foxlab_current_settings = DEFAULT_SETTINGS.duplicate()
 	IS_ANDROID = (OS.get_name() == "Android")
+	_foxlab_overwrite_base_shop()
 	for script in EXTENSION_SCRIPTS:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 
@@ -71,7 +76,18 @@ func _init():
 		for script in PC_EXTENSION_SCRIPTS:
 			ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 
+#1.2.0.1的base_shop.gd用":= RunData.get_next_wave()"做类型推导，装扩展阶段RunData等autoload尚未实例化，
+#解析器无法得知返回类型，基类解析失败会导致extensions/base_shop.gd装不上。vanilla自身能解析时不介入
+func _foxlab_overwrite_base_shop():
+	var vanilla_shop = load("res://ui/menus/shop/base_shop.gd")
+	if vanilla_shop != null and vanilla_shop.can_instance():
+		return
+	foxlab_base_shop_overwrite = load(MOD_PATH + "overwrites/ui/menus/shop/base_shop.gd")
+	foxlab_base_shop_overwrite.take_over_path("res://ui/menus/shop/base_shop.gd")
+
 func _ready():
+	if foxlab_base_shop_overwrite != null and CrashReporter.VERSION != FOXLAB_BASE_SHOP_SNAPSHOT_VERSION:
+		push_warning("FoxLab: base_shop overwrite is built for v%s but game is v%s, update the mod if the shop misbehaves" % [FOXLAB_BASE_SHOP_SNAPSHOT_VERSION, CrashReporter.VERSION])
 	call_deferred("_foxlab_init_configs")
 	if IS_ANDROID:
 		var utils_singleton = get_node("/root/Utils")

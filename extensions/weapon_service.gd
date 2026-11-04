@@ -6,7 +6,7 @@ const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED = "res://mods-unpacked/JonathanF
 var _foxlab_weapon_class_explode_args = WeaponServiceInitStatsArgs.new()
 
 ### 扩展 ###
-func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service, is_structure: = false, is_special_spawn: = false, is_pet: = false) -> WeaponStats:
+func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service, is_structure= false, is_special_spawn= false, is_pet= false) -> WeaponStats:
 	args = foxlab_add_weapon_class_explode_stats(from_stats, player_index, args)
 	var new_stats = .init_base_stats(from_stats, player_index, args, is_structure, is_special_spawn, is_pet)
 	# 命中率超过100%反而会降低命中率，不合理
@@ -16,6 +16,7 @@ func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponSer
 		var corrected_stats = .init_base_stats(from_stats, player_index, args, false, is_special_spawn, is_pet)
 		new_stats.lifesteal = corrected_stats.lifesteal
 		new_stats.crit_chance = corrected_stats.crit_chance
+		new_stats.crit_damage = corrected_stats.crit_damage
 
 	return new_stats
 

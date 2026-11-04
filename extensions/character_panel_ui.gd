@@ -43,7 +43,7 @@ func apply_items_appearance(all_items: Array) -> void :
 	if add_burning_particle:
 		var character_node = $"%Character"
 		if foxlab_burning_particles == null:
-			foxlab_burning_particles = load("res://particles/burning/unit_burning_particles.tscn").instance()
+			foxlab_burning_particles = load("res://mods-unpacked/JonathanFox-FoxLab/contents/particles/panel_burning_particles.tscn").instance()
 			character_node.add_child(foxlab_burning_particles)
 			foxlab_burning_particles.position = Vector2( 0, -24 )
 		foxlab_burning_particles.emitting = true

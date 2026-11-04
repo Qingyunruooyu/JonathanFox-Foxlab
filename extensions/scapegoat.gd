@@ -70,7 +70,7 @@ func _alter_movement_behavior():
 		_current_target_behavior.update_target()
 		_current_movement_behavior = _foxlab_movement_ins
 
-func die(args: = Entity.DieArgs.new()) -> void :
+func die(args= Entity.DieArgs.new()) -> void :
 	.die(args)
 	if not args.cleaning_up and not RunData.foxlab_scapegoat_no_hurt[player_index].empty():
 		var before_size = RunData.foxlab_scapegoat_no_hurt[player_index].size()

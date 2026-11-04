@@ -91,6 +91,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		while not weapon is WeaponData:
 			weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
 		weapon = weapon.duplicate()
+	if weapon.is_meca:
+		DLC2Data.change_effect_option_to_modular_effect(weapon, Utils.get_rand_element([0, 1]))
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
 		var melee_stats = weapon.stats.duplicate()
 		melee_stats.deal_dmg_on_return = true
@@ -128,7 +130,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 					break
 
 	var begin_effect = NullEffect.new()
-	var new_effects := [begin_effect]
+	var new_effects = [begin_effect]
 	if meta.item == null:
 		for effect in item_for_effect.effects:
 			effect = effect.duplicate()
@@ -144,6 +146,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	meta.weapon_id = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 	if weapon.is_cursed:
 		meta.weapon_id += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+	if weapon.is_meca:
+		meta.weapon_id += "([color=#%s]%s[/color])" % [Utils.get_evolution_color(1).to_html(), tr("FOXLAB_MECA_TEXT")]
 
 	if item_for_effect is WeaponData:
 		meta.extra_item_id = "%s %s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
@@ -159,8 +163,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 
 	meta.is_const_weapon = 1
 	if !_get_chance_success(CHANCE_CONST_WEAPON, luck_chance):
-		var level_suffix := "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
-		var break_effect := load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
+		var level_suffix = "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
+		var break_effect = load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
 		new_effects.append(break_effect)
 		meta.extra_item_id += "([color=#%s]+%s[/color])" % [ ProgressData.settings.color_negative, tr("WEAPON_BRICK")]
 		begin_effect.key += "(+%s)" % [tr("WEAPON_BRICK")]

@@ -125,7 +125,7 @@ func apply(player_index: int) -> void:
 	RunData.emit_signal("foxlab_sec_char_changed", icons_to_pop, player_index)
 	_after_transform(player_index, stack_effect)
 
-# 变身失败时，按最后一个条目对应道具当前价格的比例返还一次材料（退款不超过原价）；条目格式：[道具key, 返还百分比]
+# 变身失败时，按最后一个条目对应道具当前价格的比例返还一次（hp_shop 角色返还最大生命值，其余返还材料；退款不超过原价）；条目格式：[道具key, 返还百分比]
 func _foxlab_refund_mask_on_fail(player_index: int) -> void:
 	var refunds = RunData.get_player_effect(Utils.foxlab_mask_fail_refund_hash, player_index)
 	if refunds.empty():
@@ -137,9 +137,16 @@ func _foxlab_refund_mask_on_fail(player_index: int) -> void:
 	# 退款比例最大100%，不能超过原价
 	var refund_ratio = min(refund[1], 100)
 	var item_price: int = ItemService.get_value(RunData.current_wave, item_data.value, player_index, true, false, item_data.my_id_hash)
-	var final_gold = round(item_price * refund_ratio / 100.0) as int
-	if final_gold > 0:
-		RunData.add_gold(final_gold, player_index)
+	var hp_shop: bool = RunData.get_player_effect_bool(Keys.hp_shop_hash, player_index)
+	if hp_shop:
+		# hp_shop 商店价格按材料价的1/20向上取整折算为生命值
+		item_price = ceil(item_price / 20.0) as int
+	var final_refund = round(item_price * refund_ratio / 100.0) as int
+	if final_refund > 0:
+		if hp_shop:
+			RunData.add_stat(Keys.stat_max_hp_hash, final_refund, player_index)
+		else:
+			RunData.add_gold(final_refund, player_index)
 
 func _after_transform(player_index: int, stack_effect: Array) -> void:
 	stack_effect[1] = false
@@ -236,7 +243,7 @@ func cleanup(player_index: int) -> void:
 			break
 	for item_data in items_to_remove_order:
 		#DebugService.log_data("remove " + item_data.my_id + str(item_data))
-		RunData.foxlab_remove_item_from_end(item_data, player_index)
+		RunData.foxlab_remove_item_from_end(item_data, player_index, false)
 
 	for meta in metas:
 		meta.prevs.clear()
@@ -259,8 +266,6 @@ func _get_convert_stat_result(character: CharacterData, convert_stat_dict:Dictio
 		convert_stat_dict[character.my_id_hash] = 0
 
 func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_data: Array) -> bool:
-	if ItemService.get_characters().size() != ItemService.get_foxlab_transform_characters().size():
-		return true
 	var convert_stat_dict = RunData.get_player_effect(Utils.foxlab_faceless_convert_stat_characters_hash, 0)
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)

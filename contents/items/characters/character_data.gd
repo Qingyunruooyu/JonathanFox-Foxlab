@@ -1,6 +1,6 @@
 extends "res://items/characters/character_data.gd"
 
-# 依赖的内容集id列表（如 ["jonathanfox_foxlab", "abyssal_terrors"]），缺任一则该角色不可选
+# 依赖的内容集id列表（如 ["primal_dread", "abyssal_terrors"]），缺任一则该角色不可选
 export (Array, String) var foxlab_required_item_set = []
 
 func _get_tracking_text(player_index: int) -> String:

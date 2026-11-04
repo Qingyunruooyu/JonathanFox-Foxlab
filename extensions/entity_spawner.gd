@@ -2,7 +2,7 @@ extends "res://global/entity_spawner.gd"
 
 var foxlab_pets_structures_node_data_map = {}
 
-const FOXLAB_CHARMED_PROJ_ORIGINAL_META: = "foxlab_charmed_original"
+const FOXLAB_CHARMED_PROJ_ORIGINAL_META= "foxlab_charmed_original"
 
 ##### 扩展 #####
 func on_group_spawn_timing_reached(group_data: WaveGroupData) -> void :

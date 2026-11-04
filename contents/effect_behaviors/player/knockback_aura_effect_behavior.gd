@@ -2,7 +2,7 @@ extends "res://effect_behaviors/player_effect_behavior.gd"
 
 export (AudioStreamSample) var sound_effect
 
-var enemies_in_aura: = []
+var enemies_in_aura= []
 
 onready var knockback_timer: Timer = $"%KnockbackTimer"
 onready var _hitbox: Hitbox = $"%Hitbox"

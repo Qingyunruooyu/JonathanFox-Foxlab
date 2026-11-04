@@ -6,7 +6,7 @@ static func get_id() -> String:
 
 func apply(player_index: int) -> void:
 	var effects :Array= RunData.get_player_effect(custom_key_hash, player_index)
-	var applied : = [false, false]
+	var applied = [false, false]
 	var key_index = 0 # 0表示key，1表示key2
 	for existing_item in effects:
 		if existing_item[0] == key_hash:
@@ -32,7 +32,7 @@ func apply(player_index: int) -> void:
 
 func unapply(player_index: int) -> void:
 	var effect_items: Array =  RunData.get_player_effect(custom_key_hash, player_index)
-	var applied : = [false, false]
+	var applied = [false, false]
 	var item_to_remove = []
 	for i in effect_items.size():
 		var effect_item = effect_items[i]

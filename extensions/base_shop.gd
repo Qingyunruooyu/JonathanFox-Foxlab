@@ -3,7 +3,8 @@ extends "res://ui/menus/shop/base_shop.gd"
 var foxlab_mask_success_sound = preload("res://entities/units/enemies/crash_zone/basic/pursuer/sci-fi_code_fail_13.wav")
 var foxlab_current_shop_item_pos = [[null, null], [null, null], [null, null], [null, null]]
 var foxlab_pinned_weapon_element = [null, null, null, null]
-var foxlab_uncursed_weapon_element = [null, null, null, null]
+# 临时去掉风味标记的武器 [WeaponData, String flag]，合成后恢复
+var foxlab_temp_deflavored = [null, null, null, null]
 var foxlab_bonus_item = [[], [], [], []]
 
 func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: int) -> void :
@@ -12,7 +13,7 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 	for i in range(player_items_ref.size() - 1, -1, -1):
 		var item = player_items_ref[i]
 		if item.my_id_hash == Keys.item_builder_turret_n_hash[old_level]:
-			RunData.foxlab_remove_item_by_index(i, p_player_index)
+			RunData.foxlab_remove_item_by_index(i, p_player_index, false)
 			break
 
 	var new_item = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
@@ -104,15 +105,27 @@ func foxlab_pin_weapon(weapon_data: WeaponData, player_index: int) -> void :
 	if element:
 		# 名字相同但是不是同一把武器
 		if weapon_data.my_id_hash == element.item.my_id_hash and not(weapon_data == element.item):
-			var inventory = _get_gear_container(player_index).weapons_container._elements
-			# 原版合成逻辑：遍历到第一个诅咒状态不同的武器，break掉，开始合成
-			# 否则找最后一个同名武器
-			if weapon_data.is_cursed and element.item.is_cursed:
-				var target_weapon = element.item if element.item.curse_factor < weapon_data.curse_factor else weapon_data
-				target_weapon.is_cursed = false
-				foxlab_uncursed_weapon_element[player_index] = target_weapon
-			var target_index = 0 if weapon_data.is_cursed != element.item.is_cursed else inventory.get_child_count() - 1
-			inventory.move_child(element, target_index)
+			# 原版 get_combine_candidates 按 players_data.weapons 数据数组遍历收集候选，
+			# 给"与商店武器异风味"的 +2 分；同分时取数据数组中先出现的。
+			# 在数据数组里把 pinned 挪到最前，确保同分时最先命中。
+			var shop_flavor = ItemService.get_flavor(weapon_data)
+			var pinned_flavor = ItemService.get_flavor(element.item)
+			if shop_flavor != ItemFlavor.PLAIN and shop_flavor == pinned_flavor:
+				# 同风味对（双诅咒/双机械化/双变异）：临时去掉一侧标记让它变 PLAIN 得 +2 分
+				var flag = "is_cursed" if shop_flavor == ItemFlavor.CURSED \
+					else ("is_meca" if shop_flavor == ItemFlavor.MECA else "is_mutant")
+				var target_weapon = element.item
+				if shop_flavor == ItemFlavor.CURSED:
+					# 双诅咒：去系数低的
+					target_weapon = element.item if element.item.curse_factor < weapon_data.curse_factor else weapon_data
+				target_weapon.set(flag, false)
+				foxlab_temp_deflavored[player_index] = [target_weapon, flag]
+			# 数据数组重排：pinned 的武器挪到最前（get_player_weapons_ref 遍历最先命中）
+			var weapons = RunData.get_player_weapons_ref(player_index)
+			var pinned_idx = weapons.find(element.item)
+			if pinned_idx > 0:
+				weapons.remove(pinned_idx)
+				weapons.insert(0, element.item)
 		element._baned.visible = false
 		foxlab_pinned_weapon_element[player_index] = null
 
@@ -126,10 +139,10 @@ func foxlab_add_bonus_items(player_index: int):
 		_on_foxlab_item_added(items, player_index)
 		items.clear()
 
-func foxlab_remember_item(player_index: int) -> int:
+func foxlab_remember_shop_items(player_index: int) -> void:
 	RunData.foxlab_forget_item_entry(player_index)
 	if not RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
-		return 0
+		return
 	for item in RunData.locked_shop_items[player_index]:
 		RunData.foxlab_remember_item(item[0], player_index)
 	for item in RunData.foxlab_shop_items[player_index]:
@@ -137,16 +150,6 @@ func foxlab_remember_item(player_index: int) -> int:
 			RunData.foxlab_remember_item(item.item_data, player_index)
 	RunData.foxlab_modify_weapon(player_index)
 	RunData.foxlab_update_remembered_item(player_index)
-
-	var effects = RunData.get_player_effects(player_index)
-	var hourglass_count = effects[Keys.item_hourglass_hash]
-	var wave_reset_count = 0
-	if hourglass_count > 0:
-		var source_item = RunData.get_player_item(Keys.item_hourglass_hash, player_index)
-		if source_item:
-			wave_reset_count += hourglass_count
-			RunData.remove_item(source_item, player_index)
-	return wave_reset_count
 
 # 原版 on_shop_item_bought/on_shop_item_banned 按 my_id 擦除商店元组列表里的首个匹配，
 # 这里把实际被操作的那个元组挪到同名组首位，保证原版擦中的就是它；无重名时它本来就在首位
@@ -224,9 +227,10 @@ func _combine_weapon(weapon_data: WeaponData, player_index: int, is_upgrade: boo
 	foxlab_pin_weapon(weapon_data, player_index)
 	foxlab_modify_weapon_upgrade(weapon_data)
 	._combine_weapon(weapon_data, player_index, is_upgrade)
-	if foxlab_uncursed_weapon_element[player_index]:
-		foxlab_uncursed_weapon_element[player_index].is_cursed = true
-		foxlab_uncursed_weapon_element[player_index] = null
+	if foxlab_temp_deflavored[player_index]:
+		var entry = foxlab_temp_deflavored[player_index]
+		entry[0].set(entry[1], true)
+		foxlab_temp_deflavored[player_index] = null
 
 func on_shop_item_stolen(shop_item: ShopItem, player_index: int) -> void :
 	if _item_steals[player_index] > 0:
@@ -357,15 +361,29 @@ func _on_GoButton_pressed(player_index: int) -> void :
 func _on_tree_exited() -> void :
 	._on_tree_exited()
 
-	var wave_reset_count: = 0
 	for player_index in RunData.get_player_count():
 		foxlab_current_shop_item_pos[player_index] = [null, null]
-		wave_reset_count += foxlab_remember_item(player_index)
+		foxlab_remember_shop_items(player_index)
 		if RunData.get_player_effect_bool(Utils.foxlab_lose_item_on_reroll_hash, player_index) and\
 			not ProgressData.settings.no_item_appearance:
 				RunData.add_item_displayed(RunData.get_player_character(player_index), player_index)
 
-	RunData.current_wave -= wave_reset_count
+	# 孟婆记忆能把商店沙漏、探测仪加入背包
+	var wave_reset_count = RunData.get_wave_reset_count()
+	if wave_reset_count > 0:
+		for player_index in RunData.get_player_count():
+			var source_item = RunData.get_player_item(Keys.item_hourglass_hash, player_index)
+			if source_item:
+				RunData.remove_item(source_item, player_index)
+		RunData.current_wave -= wave_reset_count
+
+	for player_index in RunData.get_player_count():
+		for item in RunData.foxlab_remembered_items[player_index]:
+			if item.my_id_hash != Keys.item_lifeform_scanner_hash:
+				continue
+			if not RunData.switch_next_elite_to_horde(RunData.current_wave):
+				break
+			RunData.remove_item(item, player_index)
 
 func _on_shop_item_focused(shop_item: ShopItem, player_index: int) -> void :
 	._on_shop_item_focused(shop_item, player_index)
@@ -441,28 +459,29 @@ func foxlab_upgrade_locked_items(player_locked_items: Array, player_index: int) 
 	for locked_item in player_locked_items:
 		if not Utils.get_chance_success(chance / 100.0):
 			continue
-		var current_item = locked_item[0]
 		var upgraded = null
-		if current_item.is_cursed:
+		if locked_item[0].is_cursed:
 			# 已诅咒：从原版基底重掷，诅咒系数严格更深才替换
-			var vanilla_item = _foxlab_get_vanilla_copy(current_item)
+			var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
 			if vanilla_item != null and abyssal_terrors != null:
 				for _i in 500:
 					var recursed = abyssal_terrors.curse_item(vanilla_item, player_index)
-					if recursed != vanilla_item and recursed.curse_factor > current_item.curse_factor:
+					if recursed != vanilla_item and recursed.curse_factor > locked_item[0].curse_factor:
 						upgraded = recursed
 						break
-		elif current_item is WeaponData and current_item.is_meca:
+		elif locked_item[0] is WeaponData and locked_item[0].is_meca:
 			# 已机械化武器：再机械化必然更优（rank+1，零件与战力累加），无需比较
 			if primal_dread != null:
-				upgraded = primal_dread.meca_item(current_item, player_index)
-		elif not current_item.is_mutant:
+				upgraded = primal_dread.meca_item(locked_item[0], player_index)
+		elif not locked_item[0].is_mutant:
 			# 无附加状态：与普通刷新一致尝试一次，获得任一状态即视为升级
-			var vanilla_item = _foxlab_get_vanilla_copy(current_item)
+			var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
 			if vanilla_item != null:
-				var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
-				if modified != vanilla_item and (modified.is_cursed or modified.is_meca):
-					upgraded = modified
+				for _i in 500:
+					var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
+					if modified != vanilla_item:
+						upgraded = modified
+						break
 		if upgraded != null:
 			locked_item[0] = upgraded
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_fishing_net_hash, 1)
@@ -491,8 +510,8 @@ func fill_shop_items(player_locked_items: Array, player_index: int, just_entered
 				elif item_data.my_id_hash == Keys.item_axolotl_hash and item_data.effects.size() > 0 and "has_been_applied" in item_data.effects[0]:
 					item_data.effects[0].has_been_applied = false
 				update_item = true
-				RunData.foxlab_remove_item_by_index(i, player_index)
-				var reroll_button: = _get_reroll_button(player_index)
+				RunData.foxlab_remove_item_by_index(i, player_index, false)
+				var reroll_button= _get_reroll_button(player_index)
 				var pos = reroll_button.rect_global_position
 				if not RunData.is_coop_run:
 					pos.y += reroll_button.rect_size.y / 2

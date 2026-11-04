@@ -1,12 +1,12 @@
 extends Node
 
 # MOD配置
-const MOD_NAME:="JonathanFox-FoxLab"
-const MOD_PATH:="res://mods-unpacked/" + MOD_NAME + "/"
-const FOXLAB_EXTENSION_DIR: = MOD_PATH + "extensions/"
+const MOD_NAME = "JonathanFox-FoxLab"
+const MOD_PATH = "res://mods-unpacked/" + MOD_NAME + "/"
+const FOXLAB_EXTENSION_DIR = MOD_PATH + "extensions/"
 var IS_ANDROID:bool = false
 
-const EXTENSION_SCRIPTS: =[
+const EXTENSION_SCRIPTS = [
 	"utils.gd",
 	"item_service.gd",
 	"progress_data.gd",
@@ -40,7 +40,7 @@ const EXTENSION_SCRIPTS: =[
 	"killed_by_container.gd",
 ]
 
-const PC_EXTENSION_SCRIPTS: =[
+const PC_EXTENSION_SCRIPTS = [
 	"dlc_1_data.gd",
 	"dlc_2_data.gd",
 	"effects/burning_effect.gd",
@@ -52,7 +52,7 @@ const PC_EXTENSION_SCRIPTS: =[
 
 
 var ModsConfigInterface = null
-const DEFAULT_SETTINGS: = {
+const DEFAULT_SETTINGS = {
 	"FOXLAB_TRANSFORM_VANILLA_ONLY": false,
 	"FOXLAB_DISABLE_CHARACTERS": false,
 	"FOXLAB_DISABLE_ITEMS": false

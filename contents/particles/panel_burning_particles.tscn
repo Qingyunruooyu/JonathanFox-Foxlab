@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://particles/sprites/particle_fire_animation.png" type="Texture" id=1]
+[ext_resource path="res://particles/sprites/particle_31.png" type="Texture" id=2]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/particles/panel_burning_particles.gd" type="Script" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=2]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 9
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0.366379, 0.993182 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.311364 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0, 0.0748299, 0.225256, 0.320819, 0.406143, 0.720137, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 0.820313, 0, 1, 1, 0.632813, 0, 1, 1, 0.398438, 0, 1, 1, 0, 0, 1, 0.278431, 0.0509804, 0.0509804, 0.686275, 0.211765, 0.14902, 0.14902, 0 )
+
+[sub_resource type="CanvasItemMaterial" id=5]
+blend_mode = 1
+
+[sub_resource type="Curve" id=6]
+_data = [ Vector2( 0, 0.763636 ), 0.0, 0.0, 0, 0, Vector2( 0.474684, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.636364 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=7]
+colors = PoolColorArray( 1, 1, 1, 1, 0, 0, 0, 1 )
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0, 0.34471, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 0.865723, 0.609375, 1, 1, 0.275391, 0, 1 )
+
+[node name="PanelBurningParticles" type="CPUParticles2D"]
+material = SubResource( 2 )
+amount = 3
+lifetime = 0.6
+randomness = 0.5
+texture = ExtResource( 1 )
+emission_shape = 1
+emission_sphere_radius = 30.0
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, -400 )
+initial_velocity = 10.0
+initial_velocity_random = 0.03
+angular_velocity = -150.0
+angular_velocity_random = 0.41
+angle = 12.0
+angle_random = 0.91
+scale_amount = 0.66
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 3 )
+color = Color( 0.388235, 0.388235, 0.388235, 1 )
+color_ramp = SubResource( 4 )
+anim_speed = 2.0
+anim_speed_random = 0.29
+script = ExtResource( 3 )
+
+[node name="secondaryParticle" type="CPUParticles2D" parent="."]
+material = SubResource( 5 )
+amount = 2
+lifetime = 0.5
+texture = ExtResource( 2 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+angle = 720.0
+angle_random = 1.0
+scale_amount = 2.5
+scale_amount_random = 0.89
+scale_amount_curve = SubResource( 6 )
+color = Color( 0.137255, 0.137255, 0.137255, 1 )
+color_ramp = SubResource( 7 )
+color_initial_ramp = SubResource( 8 )

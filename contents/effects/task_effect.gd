@@ -26,7 +26,7 @@ func get_args(player_index: int) -> Array:
 
 func serialize() -> Dictionary:
 	var serialized = .serialize()
-	var serialized_sub_effects := []
+	var serialized_sub_effects = []
 	for sub_effect in sub_effects:
 		serialized_sub_effects.append(sub_effect.serialize())
 	serialized.sub_effects = serialized_sub_effects

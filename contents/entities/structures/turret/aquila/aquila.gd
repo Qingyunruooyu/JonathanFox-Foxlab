@@ -3,7 +3,7 @@ extends "res://entities/structures/turret/turret.gd"
 var distance = rand_range(100, 500)
 var rotation_speed = rand_range(2, 2.5)
 
-var _players: = []
+var _players= []
 var _angle = rand_range(0, 2 * PI)
 
 func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [], _entity_spawner_ref = null) -> void :

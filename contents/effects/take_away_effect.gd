@@ -19,7 +19,7 @@ func deferred_unapply(player_index) -> void:
 		var item_data = player_items_raw[index]
 		if item_data.my_id_hash == key_hash and item_data.is_cursed == (value2 != 0):
 			#DebugService.log_data("take away " + item_data.my_id)
-			RunData.foxlab_remove_item_by_index(index, player_index)
+			RunData.foxlab_remove_item_by_index(index, player_index, false)
 			count += 1
 	RunData.emit_signal("foxlab_item_gear_changed", player_index)
 

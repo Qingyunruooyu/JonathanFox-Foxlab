@@ -28,6 +28,9 @@
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/moon_fisher/moon_fisher_effect_0a.tres" type="Resource" id=27]
 
+[ext_resource path="res://weapons/ranged/blowgun/1/blowgun_data.tres" type="Resource" id=28]
+[ext_resource path="res://weapons/ranged/tranq_rifle/1/tranq_rifle_data.tres" type="Resource" id=29]
+[ext_resource path="res://weapons/ranged/carbon_bow/1/carbon_bow_1_data.tres" type="Resource" id=30]
 [resource]
 script = ExtResource( 1 )
 my_id = "character_foxlab_moon_fisher"
@@ -52,5 +55,5 @@ wanted_tags = [ "stat_crit_chance", "lock" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ) ]
+starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ) ]
 starting_items = [  ]

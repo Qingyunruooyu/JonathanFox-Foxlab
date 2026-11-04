@@ -11,7 +11,7 @@ const FOXLAB_MOM_LANDMINE_REUSABLE_SCENE_PATH = "res://mods-unpacked/JonathanFox
 var foxlab_mom_landmine_effect: Resource = null
 var foxlab_mom_landmine_spawned_this_wave: int = 0
 # 临时添加的武器（WeaponData，在players_data中，_clean_up时移除，敌袭结束后不保留）
-var foxlab_temp_weapons: = []
+var foxlab_temp_weapons= []
 
 var foxlab_ball_lighting_names = [Keys.generate_hash("item_foxlab_ball_lightning_3"), Keys.generate_hash("item_foxlab_ball_lightning_2"), Keys.generate_hash("item_foxlab_ball_lightning_1"), Keys.generate_hash("item_foxlab_ball_lightning_0"), ]
 
@@ -217,7 +217,7 @@ func on_foxlab_ball_lightning_timeout() -> void :
 	for i in ball_lightning_effect[0]:
 		var direction = (2 * PI / ball_lightning_effect[0]) * i
 		var auto_target_enemy: bool = ball_lightning_effect[2]
-		var args: = WeaponServiceSpawnProjectileArgs.new()
+		var args= WeaponServiceSpawnProjectileArgs.new()
 		args.damage_tracking_key_hash = tracking_key
 		args.from_player_index = player_index
 		var _projectile = WeaponService.manage_special_spawn_projectile(
@@ -251,7 +251,7 @@ func foxlab_manage_projectile_on_hit() -> void:
 	for i in proj_num:
 		var direction = (2 * PI / projectile_on_hit_effect[0]) * i
 		var auto_target_enemy: bool = projectile_on_hit_effect[2]
-		var args: = WeaponServiceSpawnProjectileArgs.new()
+		var args= WeaponServiceSpawnProjectileArgs.new()
 		args.damage_tracking_key_hash = projectile_on_hit_effect[5]
 		args.from_player_index = player_index
 		args.effects = _foxlab_projectile_on_hit_effects
@@ -404,7 +404,7 @@ func foxlab_remove_temp_weapon():
 
 ############ 函数扩展 #########
 #　修复官方bug
-func die(args: = Utils.default_die_args) -> void :
+func die(args= Utils.default_die_args) -> void :
 	var reset_to_default = false
 	if args == Utils.default_die_args:
 		_die_args_unit.knockback_vector = args.knockback_vector
@@ -483,6 +483,10 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	else:
 		if current_weapons.has(weapon):
 			emit_signal("wanted_to_spawn_gold", gold_dropped, weapon.global_position, 300)
+			var dlc_data = ItemService.get_dlc_data_by_id("primal_dread")
+			if dlc_data != null:
+				var weapon_data: WeaponData = RunData.get_player_weapons_ref(player_index)[weapon.weapon_pos]
+				dlc_data.refund_weapon_meca_parts(weapon_data, player_index)
 			var _r = RunData.remove_weapon_by_index(weapon.weapon_pos, player_index)
 			current_weapons.erase(weapon)
 			for current_weapon in current_weapons:
@@ -602,7 +606,7 @@ func heal(value: int, is_from_torture: bool = false) -> int:
 
 # 最大生命减少X时，若当前生命超过新上限，当前生命减X、最多减到新上限
 # 受击导致最大生命减少（机械恶魔）豁免同步扣减，避免受击在伤害之外再被扣一次当前生命
-func update_player_stats(reset_current_health: = false) -> void :
+func update_player_stats(reset_current_health= false) -> void :
 	var old_max_health: int = max_stats.health
 	.update_player_stats(reset_current_health)
 	var decreased_health: int = old_max_health - max_stats.health

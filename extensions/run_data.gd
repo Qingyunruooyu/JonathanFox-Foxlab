@@ -22,9 +22,9 @@ signal foxlab_item_gear_changed(player_index)
 signal foxlab_weapon_gear_changed(player_index)
 
 # 当前存活的构筑物（包括宠物类构筑物）
-var foxlab_current_living_structures: = 0
+var foxlab_current_living_structures= 0
 #当前存活的敌人的种类数
-var foxlab_current_different_enemies: = 0
+var foxlab_current_different_enemies= 0
 
 #紫外线灯相关，enemy_id_hash -> 当前被照射（暴露）的该类敌人实例数
 var foxlab_exposed_enemies = {}
@@ -128,7 +128,7 @@ func foxlab_forget_item(player_index: int):
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
 				# DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
-				foxlab_remove_item_from_end(item, player_index)
+				foxlab_remove_item_from_end(item, player_index, false)
 				# DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:
@@ -164,7 +164,7 @@ func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effec
 	if is_const_effect:
 		begin_effect.custom_key = "foxlab_const_effect_begin"
 		begin_effect.custom_key_hash = Utils.foxlab_const_effect_begin_hash
-	var new_effects := [begin_effect]
+	var new_effects = [begin_effect]
 	for effect in weapon_for_effect.effects:
 		effect = effect.duplicate()
 		new_effects.append(effect)
@@ -200,7 +200,7 @@ func foxlab_is_wave_started() -> bool:
 	return get_player_effect_bool(Utils.foxlab_wave_started_hash, 0)
 
 # 这个调用是为了避免原版remove_item，unapply和erase实际上不是同一个对象的问题
-func foxlab_remove_item_by_index(index: int, player_index: int) -> void :
+func foxlab_remove_item_by_index(index: int, player_index: int, apply_replacement: bool = true) -> void :
 	var item = players_data[player_index].items.pop_at(index)
 	_update_item_caches(item, player_index)
 	unapply_item_effects(item, player_index)
@@ -208,7 +208,7 @@ func foxlab_remove_item_by_index(index: int, player_index: int) -> void :
 	update_item_related_effects(player_index)
 	LinkedStats.reset_player(player_index)
 
-	if item.replaced_by:
+	if apply_replacement and item.replaced_by:
 		add_item(item.replaced_by, player_index)
 
 # item_data必须是已经在get_player_items_ref里的对象，这里为什么重写函数：
@@ -216,11 +216,11 @@ func foxlab_remove_item_by_index(index: int, player_index: int) -> void :
 # 这是由于RunData.remove_item写得有问题，里面erase的item和unapply_item_effect的item可能不是同一个，只是序列化之后的结果相同
 # 同理，RunData.remove_weapon也有这个问题，erase的weapon和unapply_item_effect的weapon不一样
 # 比如只装备6个白扳手，存档退出游戏，然后重进游戏，乱序卖掉其中几个，回到主菜单再回到商店，卖掉所有的，很有可能进游戏之后还有炮塔
-func foxlab_remove_item_from_end(item_data: ItemData, player_index: int) -> void:
+func foxlab_remove_item_from_end(item_data: ItemData, player_index: int, apply_replacement: bool = true) -> void:
 	var items = get_player_items_ref(player_index)
 	for i in range(items.size() - 1, -1, -1):
 		if item_data == items[i]:
-			foxlab_remove_item_by_index(i, player_index)
+			foxlab_remove_item_by_index(i, player_index, apply_replacement)
 			break
 
 ###### 扩展 ######
@@ -302,12 +302,12 @@ func foxlab_item_recycle_test():
 			continue
 		print("test ", item.my_id)
 		add_item(item, 0)
-		remove_item(item, 0)
+		remove_item(item, 0, false, false)
 		if not item.can_be_looted or item is CharacterData:
 			continue
 		var new_item = ItemService.apply_item_effect_modifications(item, 0)
 		add_item(new_item, 0)
-		remove_item(new_item, 0)
+		remove_item(new_item, 0, false, false)
 	return true
 
 func add_starting_items_and_weapons() -> void :
@@ -476,7 +476,7 @@ func foxlab_rebuild_extra_char_restrictions() -> void:
 		restrictions.clear()
 		_foxlab_backpack_char_effects_dirty[player_index] = true
 		var current_character = players_data[player_index].current_character
-		var skipped_own := false
+		var skipped_own = false
 		for item in players_data[player_index].items:
 			if not item is CharacterData:
 				continue

@@ -63,3 +63,10 @@ func _update_button_visibilities():
 		foxlab_pin_button.visible = visible
 		foxlab_pin_button.focus_mode = FOCUS_ALL if visible && _focused else FOCUS_NONE
 		call_deferred("foxlab_rebuild_focus_chain")
+
+# 机械化二选一期间基类不隐藏pin按钮，这里补上；取消/完成后 _update_button_visibilities 会恢复
+func _on_UpgradeButton_pressed():
+	._on_UpgradeButton_pressed()
+	if foxlab_pin_button != null and _effect_choice_container != null and _effect_choice_container.visible:
+		foxlab_pin_button.visible = false
+		foxlab_pin_button.focus_mode = FOCUS_NONE

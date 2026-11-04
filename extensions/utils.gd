@@ -194,7 +194,7 @@ var foxlab_primary_stat_gain_map = {}
 # stats in order of stat panel
 var foxlab_stats_in_container = []
 var foxlab_stats_container: Node = null
-var foxlab_stats_invisible_in_container: = {Keys.item_box_gold_hash: 0}
+var foxlab_stats_invisible_in_container= {Keys.item_box_gold_hash: 0}
 # 0: tier COMMON level up value of primary (defaults to 1)
 # 1: basic upgrade id
 var foxlab_primary_stat_level_up_map = []

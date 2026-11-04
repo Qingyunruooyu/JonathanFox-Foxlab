@@ -8,6 +8,6 @@ key = "lock_current_weapons"
 text_key = "[EMPTY]"
 value = 0
 custom_key = ""
-storage_method = 0
+storage_method = 2
 effect_sign = 3
 custom_args = [  ]

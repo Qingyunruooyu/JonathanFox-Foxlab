@@ -3,7 +3,7 @@ extends "res://entities/structures/turret/turret.gd"
 var distance = rand_range(100, 200)
 var rotation_speed = rand_range(2, 2.5)
 
-var _players: = []
+var _players= []
 var _angle = rand_range(0, 2 * PI)
 
 export (Resource) var slow_sound

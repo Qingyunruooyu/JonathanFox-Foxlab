@@ -199,8 +199,8 @@ func foxlab_get_builder_turret_at_level(new_level: int, player_index: int)-> Ite
 
 
 ####### 变异相关 ##############
-const FOXLAB_BOSS_CHANCE := 0.06
-const FOXLAB_CHARM_CHANCE := 0.03
+const FOXLAB_BOSS_CHANCE = 0.06
+const FOXLAB_CHARM_CHANCE = 0.03
 var foxlab_die_args = Entity.DieArgs.new()
 const FOXLAB_PLAYER_HP_BOOST = 20
 var foxlab_enemy_boost_args = BoostArgs.new()
@@ -232,20 +232,21 @@ func foxlab_get_enemy_from_item(enemy:Resource):
 ####### 敌人注册表 ##############
 # entry = {scene, texture, is_boss, collision_radii: Vector3（本体、受击、攻击半径）}
 # enemy_id_hash -> entry，跨存档稳定键（材料袋召唤、序列化入口）
-var foxlab_hash_to_entry := {}
+var foxlab_hash_to_entry = {}
 # PackedScene -> entry，运行时反查
-var foxlab_scene_to_entry := {}
+var foxlab_scene_to_entry = {}
 # 非精英/头目场景（变异/伪装的随机池）
-var foxlab_normal_scenes := []
+var foxlab_normal_scenes = []
 # scene实例id(=pool_id) -> SeedEffect（种子道具用，entity_spawner.spawn_entity懒写）
-var foxlab_enemy_seed_effect_map := {}
+var foxlab_enemy_seed_effect_map = {}
 
 func _foxlab_on_dlc_changed(_dlc_id: String) -> void:
 	_foxlab_clear_transform_character_caches()
 	foxlab_hash_to_entry.clear()
 	foxlab_scene_to_entry.clear()
 	foxlab_normal_scenes.clear()
-	Utils.foxlab_clear_wanted_caches()
+	# 完整重建：主属性表（含DLC属性补充）、gain映射、统计容器等全部依赖内容集状态
+	Utils.reset_stat_keys()
 	call_deferred("foxlab_ensure_enemy_registry")
 
 func _foxlab_on_item_sets_changed() -> void:
@@ -253,7 +254,7 @@ func _foxlab_on_item_sets_changed() -> void:
 	invalidate_items_cache()
 	invalidate_weapons_cache()
 	_foxlab_clear_transform_character_caches()
-	Utils.foxlab_clear_wanted_caches()
+	Utils.reset_stat_keys()
 	foxlab_hash_to_entry.clear()
 	foxlab_scene_to_entry.clear()
 	foxlab_normal_scenes.clear()
@@ -451,7 +452,7 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 	for locked_item in RunData.get_player_locked_shop_items(player_index):
 		if locked_item[0] is ItemData:
 			owned_items.push_back(locked_item[0])
-	var args: = GetRandItemForWaveArgs.new()
+	var args= GetRandItemForWaveArgs.new()
 	args.owned_and_shop_items = owned_items
 	for upgrade in old_upgrades:
 		if upgrade.has_meta("foxlab_item"):

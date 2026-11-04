@@ -1,8 +1,8 @@
 extends "res://singletons/progress_data.gd"
 
 var foxlab_data
-const FOXLAB_MOD_NAME:="JonathanFox-FoxLab"
-const FOXLAB_MOD_PATH:="res://mods-unpacked/" + FOXLAB_MOD_NAME + "/"
+const FOXLAB_MOD_NAME="JonathanFox-FoxLab"
+const FOXLAB_MOD_PATH="res://mods-unpacked/" + FOXLAB_MOD_NAME + "/"
 
 # =========================== Extension =========================== #
 func _ready() -> void:

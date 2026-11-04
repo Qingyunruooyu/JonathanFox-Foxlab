@@ -1,16 +1,18 @@
 extends "res://main.gd"
 
 #全局杀敌获得属性
-var foxlab_enemy_killed_this_wave := [0, 0, 0, 0]
-var foxlab_boss_killed_this_wave := [0, 0, 0, 0]
+var foxlab_enemy_killed_this_wave = [0, 0, 0, 0]
+var foxlab_boss_killed_this_wave = [0, 0, 0, 0]
 #基于当前属性值的击杀（分段）
-var foxlab_enemy_killed_this_wave_piecewise := [{}, {}, {}, {}]
-var foxlab_gain_stat_every_killed_enemies := [{}, {}, {}, {}] #有上限限制的属性
+var foxlab_enemy_killed_this_wave_piecewise = [{}, {}, {}, {}]
+var foxlab_gain_stat_every_killed_enemies = [{}, {}, {}, {}] #有上限限制的属性
 
 #异变相关
 var foxlab_mutate_chance:Array = [0, 0, 0, 0]
 var foxlab_should_check_mutation:Array = [false, false, false, false]
 var foxlab_bosses_this_wave = [0, 0, 0, 0]
+# 智械危机：构筑物暴击击杀的触发冷却（one_shot Timer，类似 lifesteal_timer）
+var foxlab_struct_crit_cd_timers = [null, null, null, null]
 const FOXLAB_STAT_MOD_CHANCE:float = 0.2
 var foxlab_mutate_boost = [null, null, null, null]
 
@@ -28,7 +30,7 @@ var FoxLabPriorityQueue = preload("res://mods-unpacked/JonathanFox-FoxLab/conten
 var foxlab_enemy_summary = {}
 var foxlab_enemy_hp_priority_queue = null
 var foxlab_enemy_dmg_priority_queue = null
-var _foxlab_proj_on_death_stat_caches: = [null, null, null, null]
+var _foxlab_proj_on_death_stat_caches= [null, null, null, null]
 var _foxlab_spawn_projectile_args = WeaponServiceSpawnProjectileArgs.new()
 var _foxlab_bullet_color_gradient:Gradient = null
 
@@ -72,7 +74,7 @@ func foxlab_receive_item_stat_ready():
 		# [key, value, starting_wave, end_wave]
 		var stats_end_of_wave_after_wave: Array = RunData.get_player_effect(Utils.foxlab_stats_end_of_wave_after_wave_hash, player_index)
 		if not stats_end_of_wave_after_wave.empty():
-			var remove_array: = []
+			var remove_array= []
 			for j in stats_end_of_wave_after_wave.size():
 				var eff = stats_end_of_wave_after_wave[j]
 				if RunData.current_wave == int(eff[2]):
@@ -142,7 +144,7 @@ func foxlab_spawn_enemy_via_gold_bag_ready():
 					break
 				RunData.remove_bonus_gold(cost)
 				gold_budget -= cost
-				var pos = ZoneService.get_rand_pos(Utils.EDGE_MAP_DIST)
+				var pos = ZoneService.get_rand_pos()
 				_entity_spawner.on_enemy_wanted_to_spawn_an_enemy(scene, pos, null, player_index if effect[2] else -1)
 				proc_left -= 1
 
@@ -220,7 +222,7 @@ func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
 			continue
 		_foxlab_spawn_entity_birth_for_fox_copy(EntityType.PET if original is Pet else EntityType.STRUCTURE,
 												scene,
-												ZoneService.get_rand_pos_in_area(original.global_position, 250) if original is Pet else ZoneService.get_rand_pos((Utils.EDGE_MAP_DIST * 2.5) as int),
+												ZoneService.get_rand_pos_in_area(original.global_position, 250) if original is Pet else ZoneService.get_rand_pos(),
 												data,
 												player_index,
 												selection[1])
@@ -230,7 +232,7 @@ func _foxlab_spawn_entity_birth_for_fox_copy(
 	scene: PackedScene,
 	pos: Vector2,
 	data: Resource = null,
-	player_index: = - 1,
+	player_index= - 1,
 	targetable: bool = false,
 	is_jellyshield: bool = false
 ):
@@ -244,18 +246,21 @@ func _foxlab_spawn_entity_birth_for_fox_copy(
 			entity_birth.disconnect("birth_timeout", _entity_spawner, "on_entity_birth_timeout")
 	entity_birth.connect("birth_timeout", self, "_on_foxlab_fox_entity_birth_timeout", [targetable, is_jellyshield])
 
-	entity_birth.start(type, scene, pos, data, player_index)
+	var request = SpawnRequest.new(type, scene, pos)
+	request.data = data
+	request.player_index = player_index
+	entity_birth.start(request)
 
 func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool, is_jellyshield: bool):
-	_entity_spawner._spawn_entity_args._init(birth.global_position, -1 if is_jellyshield else birth.type)
-	_entity_spawner._spawn_entity_args.player_index = birth.player_index
+	_entity_spawner._spawn_entity_args._init(birth.global_position, -1 if is_jellyshield else birth.request.type)
+	_entity_spawner._spawn_entity_args.player_index = birth.request.player_index
 
 	var copy = null
 	# 玩家死亡时，水母盾跟随死亡，不再召唤
-	if not _cleaning_up and (not is_jellyshield or not _players[birth.player_index].dead):
-		copy = _entity_spawner.spawn_entity(birth.scene, _entity_spawner._spawn_entity_args, birth.data, birth.source, birth.charmed_by)
+	if not _cleaning_up and (not is_jellyshield or not _players[birth.request.player_index].dead):
+		copy = _entity_spawner.spawn_entity(birth.request.scene, _entity_spawner._spawn_entity_args, birth.request.data, birth.request.source, birth.request.charmed_by)
 	if copy is Jellyshield:
-		var owner_player = _players[birth.player_index]
+		var owner_player = _players[birth.request.player_index]
 		owner_player.jellyshields.append(copy)
 		var angle: float = owner_player.jellyshields[0]._angle
 		for i in owner_player.jellyshields.size():
@@ -274,7 +279,7 @@ func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool, i
 	copy.add_outline(Color("#fd6a2d"))
 	if targetable and not (copy is Pet and copy.can_be_targeted_by_enemies):
 		var args = EntitySpawner.SpawnEntityArgs.new(copy.global_position, - 1)
-		args.player_index = birth.player_index
+		args.player_index = birth.request.player_index
 		var fake_fox_pet = _entity_spawner.spawn_entity(_foxlab_fox_tiger_scene,args)
 		fake_fox_pet.set_original(copy)
 		_foxlab_foxes.append(fake_fox_pet)
@@ -361,12 +366,22 @@ func foxlab_process_landmine_on_death(enemy, args: TakeDamageArgs):
 	for _i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
 		var pos = _entity_spawner.get_spawn_pos_in_area(enemy.global_position, 200)
 		var queue = _entity_spawner.queues_to_spawn_structures[args.from_player_index]
-		queue.push_back([EntityType.STRUCTURE, landmines_effect.scene, pos, landmines_effect])
+		var request = SpawnRequest.new(EntityType.STRUCTURE, landmines_effect.scene, pos)
+		request.data = landmines_effect
+		queue.push_back(request)
 
 func foxlab_process_struct_crit_kill(is_crit: bool, args: TakeDamageArgs):
 	if is_crit and args.hitbox.from is Structure :
-		for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
-			TempStats.add_stat(effect[0], effect[1], args.from_player_index)
+		if foxlab_struct_crit_cd_timers[args.from_player_index] == null:
+			var timer = Timer.new()
+			timer.one_shot = true
+			foxlab_struct_crit_cd_timers[args.from_player_index] = timer
+			add_child(timer)
+		var cd_timer = foxlab_struct_crit_cd_timers[args.from_player_index]
+		if cd_timer.is_stopped():
+			cd_timer.start()
+			for effect in RunData.get_player_effect(Utils.foxlab_temp_stats_on_structure_crit_hash, args.from_player_index):
+				TempStats.add_stat(effect[0], effect[1], args.from_player_index)
 
 func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 	var chance = foxlab_mutate_chance[args.from_player_index] / 100.0
@@ -400,7 +415,8 @@ func foxlab_process_immed_burn(enemy, value: int, args: TakeDamageArgs):
 	# 有hitbox（一定是非燃烧伤害）或者没有hitbox且没有燃烧（象宝宝之类）
 	if (args.hitbox or not args.is_burning) and RunData.get_player_effect_bool(Utils.foxlab_instant_burn_hash, args.from_player_index) and\
 		enemy._burning and (value >= enemy._burning.damage or Utils.get_chance_success(value / (enemy._burning.damage as float))):
-		enemy._burning.duration += 1
+		for _slot_id in enemy._burnings:
+			enemy._burnings[_slot_id].duration += 1
 		var health_before = enemy.current_stats.health
 		enemy._on_BurningTimer_timeout()
 		var health_after = enemy.current_stats.health
@@ -414,7 +430,7 @@ func foxlab_process_explode_on_burn(enemy, args: TakeDamageArgs):
 	var player_index = args.from_player_index
 	var effect = RunData.get_player_effect(Utils.foxlab_explode_on_burn_hash, player_index)
 
-	var explosion_chance: = 0.0
+	var explosion_chance= 0.0
 	for explosion in effect:
 		explosion_chance += explosion.chance
 	if not Utils.get_chance_success(explosion_chance):
@@ -519,7 +535,7 @@ func foxlab_spawn_seed(unit, player_index: int):
 	consumable.set_texture(seed_texture)
 	consumable.scale = Utils.foxlab_fit_item_icon_scale(seed_texture, 1.0)
 	var pos = unit.global_position
-	var dist: = rand_range(150, 200 + unit.stats.gold_spread)
+	var dist= rand_range(150, 200 + unit.stats.gold_spread)
 	var push_back_destination: Vector2 = ZoneService.get_rand_pos_in_area(pos, dist, 0)
 	consumable.drop(pos, rand_range(0.25*PI, 1.75*PI), push_back_destination)
 	_consumables.push_back(consumable)
@@ -580,7 +596,7 @@ func _foxlab_process_frozen_unit_kill(unit: Node2D, player_index: int):
 				RunData.add_tracked_value(player_index, Utils.character_foxlab_stargazer_hash, effect[1])
 #超度
 func _foxlab_enemy_interact(enemy: Node2D):
-	var sum: = 0
+	var sum= 0
 	for player_index in RunData.get_player_count():
 		var value = RunData.get_player_effect(Utils.foxlab_enemy_interact_hash, player_index)
 		if value > 0:
@@ -838,7 +854,7 @@ func _foxlab_on_EntityBirth_body_entered(body: Node, birth) -> void :
 	foxlab_process_spawn_landmine(body, birth)
 
 func foxlab_process_copy_weapon_on_summon_birth(player, birth) -> void :
-	if not (birth.charmed_by < 0 and is_instance_valid(birth.source) and birth.source is Enemy):
+	if not (birth.request.charmed_by < 0 and is_instance_valid(birth.request.source) and birth.request.source is Enemy):
 		return
 
 	if player.foxlab_temp_weapons.size() >= RunData.get_player_effect(Utils.foxlab_troubleshooter_crisis_num_hash, player.player_index):
@@ -865,7 +881,7 @@ func foxlab_process_copy_weapon_on_summon_birth(player, birth) -> void :
 
 # 踩到敌人出生点生成可反复爆炸的地雷（每波最多FOXLAB_MOM_LANDMINE_MAX_PER_WAVE个，魅惑的除外）
 func foxlab_process_spawn_landmine(player, birth) -> void :
-	if birth.charmed_by > 0:
+	if birth.request.charmed_by > 0:
 		return
 
 	var count: int = RunData.get_player_effect(Utils.foxlab_spawn_landmine_on_entering_birth_area_hash, player.player_index)
@@ -884,7 +900,9 @@ func foxlab_process_spawn_landmine(player, birth) -> void :
 	for _i in to_spawn:
 		var pos = _entity_spawner.get_spawn_pos_in_area(birth.global_position, 200)
 		var queue = _entity_spawner.queues_to_spawn_structures[player.player_index]
-		queue.push_back([EntityType.STRUCTURE, player.foxlab_mom_landmine_effect.scene, pos, player.foxlab_mom_landmine_effect])
+		var request = SpawnRequest.new(EntityType.STRUCTURE, player.foxlab_mom_landmine_effect.scene, pos)
+		request.data = player.foxlab_mom_landmine_effect
+		queue.push_back(request)
 
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
@@ -950,7 +968,7 @@ func _on_HalfWaveTimer_timeout() -> void :
 		_wave_timer_label.change_color(Color.deepskyblue)
 
 	if multi_stats:
-		var bg_changed: =false
+		var bg_changed=false
 		for i in range(RunData.get_player_count()):
 			if RunData.foxlab_is_midnight[i]:
 				_wave_timer_label.change_color(Utils.CURSE_COLOR)

@@ -1,6 +1,6 @@
 extends "res://items/global/effect.gd"
 
-var is_item_added := false
+var is_item_added = false
 
 static func get_id() -> String:
 	return "foxlab_get_item"
@@ -26,7 +26,7 @@ func _remove_item(player_index: int, item_id_hash: int, rm_count: int) -> int :
 		for i in range(items_ref.size() - 1, -1, -1):
 			var item = items_ref[i]
 			if item_id_hash == item.my_id_hash and item.curse_factor == 0.0:
-				RunData.foxlab_remove_item_by_index(i, player_index)
+				RunData.foxlab_remove_item_by_index(i, player_index, false)
 				rm_count = rm_count + 1
 				if not (rm_count < value and RunData.get_nb_item(item_id_hash, player_index) > 0):
 					break

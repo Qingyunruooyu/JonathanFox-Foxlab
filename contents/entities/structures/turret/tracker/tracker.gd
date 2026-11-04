@@ -7,11 +7,11 @@ var _orbit_angle: float = 0.0
 var _current_orbit_center: Vector2 = ZoneService.get_rand_pos_in_area(ZoneService.get_map_center(), 200)
 
 var _current_tracking_enemy = null
-var _player_tracked: = false
-var _in_assembling: = false
+var _player_tracked= false
+var _in_assembling= false
 
 var _angle = rand_range(0, 2 * PI)
-var _players: = []
+var _players= []
 var _current_player = null
 const _PLAYER_TRACKING_DISTANCE_SQUARED = 100.0 * 100.0
 
@@ -40,7 +40,7 @@ static func get_max_range_melee_weapon_range(stats: Resource, player_index:int) 
 			best_weapon = weapon
 			max_range = weapon.stats.max_range
 	if best_weapon:
-		var args := WeaponServiceInitStatsArgs.new()
+		var args = WeaponServiceInitStatsArgs.new()
 		args.sets = best_weapon.sets
 		args.effects = best_weapon.effects
 		var current_stats = WeaponService.init_melee_stats(best_weapon.stats, player_index, args)

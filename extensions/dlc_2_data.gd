@@ -12,6 +12,7 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"foxlab_get_rand_weapon",
 	"foxlab_magician",
 	"foxlab_multiply_stat",
+	"foxlab_projectile_on_hit",
 	"foxlab_set_stat",
 	"foxlab_stat_gain_mod",
 	"foxlab_stat_query",
@@ -20,7 +21,11 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"foxlab_swap_stats",
 	"foxlab_take_away",
 	"foxlab_task",
+	"foxlab_tracker",
+	"foxlab_uv_lamp",
 	"foxlab_weapon_class_price",
+	"foxlab_weapon_gain_stat_for_every_stat",
+	"foxlab_weapon_slow_on_hit",
 ]
 
 var _foxlab_mutation_rules_initialized = false
@@ -85,8 +90,6 @@ func can_effect_be_copied_by_mutation(effect, player_index: int = -1) -> bool:
 	_foxlab_init_mutation_rules()
 	if FOXLAB_MUTATION_COPY_BLACKLIST_IDS.has(effect.get_id()):
 		return false
-	if _foxlab_has_nested_effects(effect):
-		return false
 	return .can_effect_be_copied_by_mutation(effect, player_index)
 
 
@@ -95,7 +98,6 @@ func _get_removable_negative_effect_indexes(item_data) -> Array:
 	return ._get_removable_negative_effect_indexes(item_data)
 
 
-# 机械��掷点读的是当前角色，统一临时换成合并影子，保证所有调用点（商店生成/保底/预览/合成/渔网等）禁用一致
 func get_random_2_meca_stats(player_index: int, item_data: ItemParentData = null) -> Array:
 	if player_index < 0:
 		return .get_random_2_meca_stats(player_index, item_data)
@@ -108,19 +110,3 @@ func get_random_2_meca_stats(player_index: int, item_data: ItemParentData = null
 	if swapped and RunData.players_data[player_index].current_character == merged_character:
 		RunData.players_data[player_index].current_character = orig_character
 	return result
-
-
-func _foxlab_has_nested_effects(effect: Resource) -> bool:
-	var is_foxlab_effect: bool = effect.resource_path.begins_with(FOXLAB_CONTENT_PATH) \
-		or effect.get_script().resource_path.begins_with(FOXLAB_CONTENT_PATH) \
-		or effect.text_key.to_lower().begins_with("effect_foxlab_")
-	if not is_foxlab_effect and "scene" in effect and effect.scene != null:
-		is_foxlab_effect = effect.scene.resource_path.begins_with(FOXLAB_CONTENT_PATH)
-	if not is_foxlab_effect:
-		return false
-	for property_name in ["effects", "sub_effects"]:
-		if property_name in effect:
-			var sub_effects = effect.get(property_name)
-			if sub_effects is Array and not sub_effects.empty():
-				return true
-	return false

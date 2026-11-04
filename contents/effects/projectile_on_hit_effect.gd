@@ -7,7 +7,7 @@ var tracking_key_hash: int = Keys.empty_hash
 static func get_id() -> String:
 	return "foxlab_projectile_on_hit"
 
-func duplicate(subresources := false) -> Resource:
+func duplicate(subresources = false) -> Resource:
 	var duplication = .duplicate(subresources)
 	if tracking_key_hash == Keys.empty_hash and tracking_key != "":
 		tracking_key_hash = Keys.generate_hash(tracking_key)

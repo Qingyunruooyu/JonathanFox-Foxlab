@@ -60,7 +60,7 @@ func unapply(player_index: int) -> void:
 
 func get_args(_player_index: int) -> Array:
 	var text_raw = Text.text("EFFECT_GAIN_STAT_END_OF_WAVE", [str(value), tr(key.to_upper())], [effect_sign, effect_sign])
-	var args: = [
+	var args= [
 		str(starting_wave),
 		text_raw if end_wave < 1 else text_raw + \
 		Text.text("EFFECT_FOXLAB_STATS_END_OF_WAVE_BEFORE_WAVE", [str(end_wave)], [effect_sign])

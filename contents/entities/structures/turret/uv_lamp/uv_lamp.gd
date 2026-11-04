@@ -118,7 +118,7 @@ func _foxlab_cleanup_player(player, char_effects: Array, play_sound: bool) -> vo
 		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", sound_exit_zone, 2, global_position, 0, 0.1)
 
 
-func die(args: = Utils.default_die_args) -> void :
+func die(args= Utils.default_die_args) -> void :
 	if _instance_counted:
 		_instance_counted = false
 		RunData.get_player_effects(player_index)[Utils.foxlab_uv_lamp_instance_hash] -= 1

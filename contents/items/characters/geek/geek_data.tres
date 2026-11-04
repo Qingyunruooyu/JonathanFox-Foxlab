@@ -33,6 +33,9 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/tracker/tracker_data.tres" type="Resource" id=31]
 [ext_resource path="res://dlcs/dlc_1/items/whistle/whistle_data.tres" type="Resource" id=32]
 
+[ext_resource path="res://weapons/melee/crowbar/1/crowbar_data.tres" type="Resource" id=33]
+[ext_resource path="res://weapons/melee/awl/1/awl_data.tres" type="Resource" id=34]
+[ext_resource path="res://weapons/melee/shovel/1/shovel_data.tres" type="Resource" id=35]
 [resource]
 script = ExtResource( 6 )
 my_id = "character_foxlab_geek"
@@ -56,5 +59,5 @@ wanted_tags = [ "stat_engineering" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 11 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 16 ), ExtResource( 8 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 29 ) ]
+starting_weapons = [ ExtResource( 11 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 20 ), ExtResource( 16 ), ExtResource( 8 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 17 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ) ]
 starting_items = [ ExtResource( 31 ), ExtResource( 32 ) ]

@@ -112,7 +112,7 @@ func _foxlab_cleanup_player(player, char_effects: Array, play_sound: bool) -> vo
 		return
 	var player_index: int = player.player_index
 	player.disconnect("died", self, "_on_player_in_zone_died")
-	RunData.unapply_effects_array(char_effects, player_index)
+	RunData.foxlab_unapply_effects_array(char_effects, player_index)
 	player.remove_color_modulation(color_entity_modulation)
 	if play_sound and sound_exit_zone:
 		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", sound_exit_zone, 2, global_position, 0, 0.1)
@@ -131,11 +131,10 @@ func die(args= Utils.default_die_args) -> void :
 	.die(args)
 
 func _foxlab_expose(enemy) -> void :
-	var count: int = enemy.get_meta("foxlab_uv", 0) + 1
-	enemy.set_meta("foxlab_uv", count)
-	if count == 1:
-		if not enemy.has_meta("foxlab_uv_hurtbox_mask"):
-			enemy.set_meta("foxlab_uv_hurtbox_mask", enemy._hurtbox.collision_mask)
+	enemy.foxlab_uv_count += 1
+	if enemy.foxlab_uv_count == 1:
+		if enemy._foxlab_uv_hurtbox_mask == -1:
+			enemy._foxlab_uv_hurtbox_mask = enemy._hurtbox.collision_mask
 		_foxlab_set_exposed_hurtbox(enemy)
 		enemy._set_color_modulation(color_entity_modulation)
 		RunData.foxlab_exposed_enemies[enemy.enemy_id_hash] = RunData.foxlab_exposed_enemies.get(enemy.enemy_id_hash, 0) + 1
@@ -152,15 +151,14 @@ func _foxlab_set_exposed_hurtbox(enemy) -> void :
 func _foxlab_unexpose(body) -> void :
 	if not is_instance_valid(body):
 		return
-	var count: int = body.get_meta("foxlab_uv", 0) - 1
-	if count > 0:
-		body.set_meta("foxlab_uv", count)
+	body.foxlab_uv_count -= 1
+	if body.foxlab_uv_count > 0:
 		return
-	body.set_meta("foxlab_uv", 0)
+	body.foxlab_uv_count = 0
 	body.remove_color_modulation(color_entity_modulation)
-	if body.has_meta("foxlab_uv_hurtbox_mask"):
-		body._hurtbox.set_deferred("collision_mask", body.get_meta("foxlab_uv_hurtbox_mask"))
-		body.remove_meta("foxlab_uv_hurtbox_mask")
+	if body._foxlab_uv_hurtbox_mask != -1:
+		body._hurtbox.set_deferred("collision_mask", body._foxlab_uv_hurtbox_mask)
+		body._foxlab_uv_hurtbox_mask = -1
 	if body.get_charmed_by_player_index() != - 1:
 		body._hurtbox.disable()
 	var id_count: int = RunData.foxlab_exposed_enemies.get(body.enemy_id_hash, 0) - 1

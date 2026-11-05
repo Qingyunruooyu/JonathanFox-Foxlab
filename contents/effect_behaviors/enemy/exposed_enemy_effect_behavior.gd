@@ -15,7 +15,7 @@ func _on_Hurtbox_area_exited(hitbox) -> void :
 		hitbox.ignored_objects.erase(_parent)
 
 func should_add_on_spawn() -> bool:
-	return RunData.sum_all_player_effects(Utils.foxlab_uv_lamp_hash) > 0
+	return Utils.foxlab_uv_lamp_present()
 
 
 func get_bonus_damage(_hitbox: Hitbox, _from_player_index: int) -> int:

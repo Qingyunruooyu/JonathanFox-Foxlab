@@ -257,6 +257,10 @@ var foxlab_item_pinned_in_inventory = {
 		Keys.generate_hash("item_foxlab_thunder"): 0,
 }
 
+func foxlab_uv_lamp_present() -> bool:
+	return RunData.sum_all_player_effects(foxlab_uv_lamp_hash) > 0 or\
+		RunData.sum_all_player_effects(foxlab_uv_lamp_instance_hash) > 0
+
 static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  player_index: int) -> String:
 	var text : String = ""
 	if player_index != RunData.DUMMY_PLAYER_INDEX:

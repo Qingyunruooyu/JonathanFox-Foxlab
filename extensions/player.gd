@@ -324,7 +324,7 @@ func _foxlab_summon_disguised_enemy() -> void:
 	var pos = ZoneService.get_rand_pos()
 	_entity_spawner_ref.on_enemy_wanted_to_spawn_an_enemy(enemy_scene, pos, source, -1)
 
-func foxlab_process_lost_hp() -> bool:
+func foxlab_process_lost_hp() -> void :
 	var effects = RunData.get_player_effects(player_index)
 	var lost_hp = effects[Utils.foxlab_lost_hp_hash]
 	if lost_hp > 0:
@@ -336,7 +336,6 @@ func foxlab_process_lost_hp() -> bool:
 				check_hp_regen()
 				_attract_nearby_consumables()
 		emit_signal("health_updated", self, current_stats.health, max_stats.health)
-	return lost_hp > 0
 
 func foxlab_add_weapon_particle(cur_weapon: Weapon):
 	if not cur_weapon.muzzle.get_children().empty():
@@ -529,10 +528,22 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 				neg_max_hp_on_hit += -temp_stat_on_hit[1]
 		if neg_max_hp_on_hit > 0:
 			_foxlab_max_hp_shave_exempt += min(neg_max_hp_on_hit, ret[1])
-		var hitbox = args.hitbox
-		if _foxlab_has_projectile_on_hit and hitbox != null and is_instance_valid(hitbox.from) and hitbox.from.player_index == -1:
+		if _foxlab_has_projectile_on_hit and foxlab_is_enemy_damage(args):
 			foxlab_manage_projectile_on_hit()
 	return ret
+
+func foxlab_is_enemy_damage(args: TakeDamageArgs) -> bool:
+	if args.hitbox != null:
+		# from为null=攻击者节点已释放（受击入口对失效hitbox.from置null），视为敌方；
+		# 排除己方来源的hitbox（自己的武器/炮塔/宠物等，含毒奶叛变炮塔、teacher的炮塔打自己）
+		return args.from == null or args.from.player_index == -1
+	# 燃烧tick无hitbox：排除自燃和己方炮塔点燃（炮塔的burning_data.from为null，
+	# 只能用apply_burning按来源缓存的_burning_player_index判断，己方来源>=0）
+	if args.is_burning:
+		return _burning_player_index == -1
+	# 无hitbox非燃烧的伤害：排除毒果子（from为ItemData）和lose_hp_per_second（from=self），
+	# from==null的只剩酸液地形DoT，视为敌方
+	return args.from == null
 
 func _on_ItemAttractArea_area_entered(item: Item) -> void:
 	._on_ItemAttractArea_area_entered(item)
@@ -604,8 +615,8 @@ func heal(value: int, is_from_torture: bool = false) -> int:
 		return 0
 	return .heal(value, is_from_torture)
 
-# 最大生命减少X时，若当前生命超过新上限，当前生命减X、最多减到新上限
-# 受击导致最大生命减少（机械恶魔）豁免同步扣减，避免受击在伤害之外再被扣一次当前生命
+# 最大生命减少X时，当前生命同量扣减X，复用亡灵的代码，避免刷血（紫外灯来回蹭、或者有站立不动加血/减血等效果）
+# 受击导致最大生命减少（机械恶魔）按 min(总降幅, 实际伤害) 豁免，避免受击在伤害之外再被扣一次当前生命
 func update_player_stats(reset_current_health= false) -> void :
 	var old_max_health: int = max_stats.health
 	.update_player_stats(reset_current_health)
@@ -613,9 +624,9 @@ func update_player_stats(reset_current_health= false) -> void :
 	var exempt: int = min(decreased_health, _foxlab_max_hp_shave_exempt) if decreased_health > 0 else 0
 	decreased_health -= exempt
 	_foxlab_max_hp_shave_exempt = 0
-	if not reset_current_health and decreased_health > 0 and current_stats.health > max_stats.health:
-		current_stats.health = max(max_stats.health, current_stats.health - decreased_health) as int
-		emit_signal("health_updated", self, current_stats.health, max_stats.health)
+	if decreased_health > 0:
+		RunData.get_player_effects(player_index)[Utils.foxlab_lost_hp_hash] += decreased_health
+	foxlab_process_lost_hp()
 
 # 玩家被Buff怪增强，原版boost()立即给当前生命加血、boost_ended()把当前生命钳制回新上限，
 # 会与update_player_stats的生命调整重复计算（boost多加一次，结束时多扣一次），

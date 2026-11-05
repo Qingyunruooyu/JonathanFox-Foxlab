@@ -43,6 +43,8 @@ const EXTENSION_SCRIPTS = [
 	"coop_item_popup.gd",
 	"item_popup.gd",
 	"killed_by_container.gd",
+	"acid_puddle.gd",
+	"petrol_puddle.gd",
 ]
 
 const PC_EXTENSION_SCRIPTS = [

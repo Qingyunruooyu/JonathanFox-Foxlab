@@ -447,11 +447,18 @@ func unapply_item_effects(item_data: ItemParentData, player_index: int) -> void 
 		_foxlab_backpack_char_effects_dirty[player_index] = true
 	.unapply_item_effects(item_data, player_index)
 
+# effect.apply/unapply只写effects字典，不置dirty标志，stats_updated->StatsManager->update_player_stats
+# 整条刷新链不会启动（最大生命/当前生命/血条都不更新），此处手动补上
 func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
 	Utils.reset_stat_cache(player_index)
 	for effect in effects:
 		effect.apply(player_index)
+	_are_player_stats_dirty[player_index] = true
 	ChallengeService.check_stat_challenges(player_index)
+
+func foxlab_unapply_effects_array(effects: Array, player_index: int) -> void :
+	.unapply_effects_array(effects, player_index)
+	_are_player_stats_dirty[player_index] = true
 
 func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	if not _foxlab_backpack_char_effects_dirty[player_index]:

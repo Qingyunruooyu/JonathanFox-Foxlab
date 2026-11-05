@@ -10,6 +10,7 @@ static func get_id() -> String:
 func apply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
 	var stats_exception_hash = Utils.convert_to_hash_array(stats_exception)
+	stats_exception_hash.append(Keys.stat_evolution_hash)
 	for stat_gain in Utils.foxlab_primary_stat_gain_map:
 		if not Utils.foxlab_primary_stat_gain_map[stat_gain] in stats_exception_hash:
 			effects[stat_gain] += value
@@ -18,6 +19,7 @@ func apply(player_index: int) -> void:
 func unapply(player_index: int) -> void:
 	var effects = RunData.get_player_effects(player_index)
 	var stats_exception_hash = Utils.convert_to_hash_array(stats_exception)
+	stats_exception_hash.append(Keys.stat_evolution_hash)
 	for stat_gain in Utils.foxlab_primary_stat_gain_map:
 		if not Utils.foxlab_primary_stat_gain_map[stat_gain] in stats_exception_hash:
 			effects[stat_gain] -= value
@@ -29,7 +31,7 @@ func get_args(player_index: int) -> Array:
 		var stat_str = Keys.hash_to_string[stat]
 		var gain_stat = "gain_" + stat_str
 		var gain_stat_hash = Keys.generate_hash(gain_stat)
-		if stat_str in stats_exception or not gain_stat_hash in Utils.foxlab_primary_stat_gain_map:
+		if stat == Keys.stat_evolution_hash or stat_str in stats_exception or not gain_stat_hash in Utils.foxlab_primary_stat_gain_map:
 			exceptions.append(Utils.foxlab_get_colored_stat_str(stat, player_index))
 	if not exceptions.empty():
 		display_text += Text.text(tr("FOXLAB_EXCEPT"), ["/".join(exceptions)], [get_sign(effect_sign, value)])

@@ -309,8 +309,9 @@ func _get_rand_chars(player_index: int) -> Array:
 		var current_char = _get_one_character(player_index, chars_id, chars_return)
 		if _can_character_be_modified(current_char):
 			if curse_character:
-				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
-				current_char = dlc.curse_item(current_char, player_index)
+				var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
+				if dlc != null:
+					current_char = dlc.curse_item(current_char, player_index)
 			current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
 		chars_return.append(current_char)
 		chars_id.append(current_char.my_id_hash)
@@ -331,27 +332,27 @@ func _get_rand_chars(player_index: int) -> Array:
 				for _i in range(effect.value):
 					var weapon = ItemService.get_element(ItemService.get_weapons(),effect.key_hash)
 					container.append(weapon)
-			elif effect.custom_key_hash == Keys.cursed_starting_item_hash  and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
-				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
-				for _i in range(effect.value):
-					var item = ItemService.get_element(ItemService.get_items(), effect.key_hash)
-					if dlc:
+			elif effect.custom_key_hash == Keys.cursed_starting_item_hash:
+				var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
+				if dlc != null:
+					for _i in range(effect.value):
+						var item = ItemService.get_element(ItemService.get_items(), effect.key_hash)
 						item = dlc.curse_item(item, player_index, true)
-					container.append(item)
-			elif effect.custom_key_hash == Keys.cursed_starting_weapon_hash and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
-				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
-				for _i in range(effect.value):
-					var weapon = ItemService.get_element(ItemService.get_weapons(), effect.key_hash)
-					if dlc:
+						container.append(item)
+			elif effect.custom_key_hash == Keys.cursed_starting_weapon_hash:
+				var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
+				if dlc != null:
+					for _i in range(effect.value):
+						var weapon = ItemService.get_element(ItemService.get_weapons(), effect.key_hash)
 						weapon = dlc.curse_item(weapon, player_index, true)
-					container.append(weapon)
+						container.append(weapon)
 			elif effect.key == "brolab_effect_receive_item_at_wave" \
 				and effect.brolab_receive_item_wave == 1\
 				and effect.brolab_receive_item_end_wave == 1:
-				var dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
+				var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
 				for _i in range(effect.value):
 					var item = ItemService.get_element(ItemService.get_items(), Keys.generate_hash(effect.brolab_receive_item_id))
-					if dlc and effect.brolab_cursed_item:
+					if dlc != null and effect.brolab_cursed_item:
 						item = dlc.curse_item(item, player_index, true)
 					container.append(item)
 

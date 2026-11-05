@@ -483,7 +483,7 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	else:
 		if current_weapons.has(weapon):
 			emit_signal("wanted_to_spawn_gold", gold_dropped, weapon.global_position, 300)
-			var dlc_data = ItemService.get_dlc_data_by_id("primal_dread")
+			var dlc_data = Utils.foxlab_get_dlc("primal_dread")
 			if dlc_data != null:
 				var weapon_data: WeaponData = RunData.get_player_weapons_ref(player_index)[weapon.weapon_pos]
 				dlc_data.refund_weapon_meca_parts(weapon_data, player_index)

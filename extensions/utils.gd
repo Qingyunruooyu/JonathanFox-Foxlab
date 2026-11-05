@@ -559,6 +559,11 @@ func foxlab_item_has_object_effect(item_data) -> bool:
 					break
 	return foxlab_object_effect_item[item_data.my_id_hash]
 
+func foxlab_get_dlc(dlc_id: String):
+	if dlc_id in ProgressData.active_update_data:
+		return ItemService.get_dlc_data_by_id(dlc_id)
+	return null
+
 func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn_randomization_off: bool, min_modifier: float, ret: ItemParentData, dlc_data):
 	var max_effect_modifier = ret.curse_factor
 	var new_effects = []

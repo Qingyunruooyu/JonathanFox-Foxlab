@@ -56,10 +56,9 @@ func apply(player_index: int) -> void:
 
 	remained_weapon.effects = adjusted_effects
 	if curse_new_weapon:
-		for dlc_id in RunData.enabled_dlcs:
-			var dlc_data = ItemService.get_dlc_data_by_id(dlc_id)
-			if dlc_data and dlc_data.has_method("curse_item"):
-				remained_weapon = dlc_data.curse_item(remained_weapon, player_index, false, new_cursed_weapon_min_factor)
+		var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
+		if dlc != null:
+			remained_weapon = dlc.curse_item(remained_weapon, player_index, false, new_cursed_weapon_min_factor)
 	RunData.add_weapon(remained_weapon, player_index)
 	RunData.emit_signal("foxlab_item_added", remained_weapon, 1, player_index)
 	SoundManager.play(preload("res://resources/sounds/metal_small_movement_03.wav"))

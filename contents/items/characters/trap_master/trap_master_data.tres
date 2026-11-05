@@ -22,9 +22,9 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/trap_master/trap_master_icon.png" type="Texture" id=23]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/trap_master/trap_master_effect_0a.tres" type="Resource" id=24]
 
-[ext_resource path="res://weapons/melee/crowbar/1/crowbar_data.tres" type="Resource" id=25]
-[ext_resource path="res://weapons/melee/awl/1/awl_data.tres" type="Resource" id=26]
-[ext_resource path="res://weapons/melee/shovel/1/shovel_data.tres" type="Resource" id=27]
+[ext_resource path="res://weapons/melee/crowbar/2/crowbar_2_data.tres" type="Resource" id=25]
+[ext_resource path="res://weapons/melee/awl/2/awl_2_data.tres" type="Resource" id=26]
+[ext_resource path="res://weapons/melee/shovel/2/shovel_2_data.tres" type="Resource" id=27]
 [resource]
 script = ExtResource( 8 )
 my_id = "character_foxlab_trap_master"

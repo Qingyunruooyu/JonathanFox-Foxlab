@@ -486,8 +486,8 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 func apply_item_effect_modifications(item: ItemParentData, player_index: int) -> ItemParentData:
 	var new_item = .apply_item_effect_modifications(item, player_index)
 	if foxlab_is_android and new_item.is_cursed:
-		var dlc = get_dlc_data_by_id("abyssal_terrors")
-		if dlc:
+		var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
+		if dlc != null:
 			new_item = Utils.foxlab_extra_curse_item(item, player_index, false, 0.0, new_item, dlc)
 	return new_item
 

@@ -101,6 +101,8 @@ func foxlab_update_remembered_item(player_index: int):
 		var name = " %s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
 		if weapon.is_cursed:
 			name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+		if weapon.is_meca:
+			name += "([color=#%s]%s[/color])" % [Utils.get_evolution_color(1).to_html(), tr("FOXLAB_MECA_TEXT")]
 		previous_remembered_names.append(name)
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_mnemosyne_hash, previous_remembered.size())
 
@@ -157,16 +159,49 @@ func foxlab_adjust_weapon_effect(effect: Effect, weapon: WeaponData):
 		effect.key = weapon.weapon_id #保留的是武器大名，不是带等级的my_id
 		effect.key_hash = weapon.weapon_id_hash #保留的是武器大名，不是带等级的my_id
 
+# 复制某武器/道具的效果到另一把武器时的统一清洗（孟婆记忆、无面附魔、佛手附加共用）：
+# 机械化来源未购买时带两个未选择的EffectOption，随机保留一个并降级为普通Effect
+# （EffectOption在描述界面不渲染），跳过另一个和机械零件计数条目；返回duplicate后的效果数组
+func foxlab_duplicate_effects_for_copy(item_data) -> Array:
+	var option_indexes: Array = []
+	for i in item_data.effects.size():
+		if item_data.effects[i] is EffectOption:
+			option_indexes.append(i)
+	var skip_index: int = -1
+	if option_indexes.size() >= 2:
+		skip_index = Utils.get_rand_element(option_indexes)
+	var duplicated: Array = []
+	for i in item_data.effects.size():
+		var effect = item_data.effects[i]
+		if i == skip_index:
+			continue
+		if effect.key_hash == Keys.empty_hash and effect.text_key == ItemService.MECA_PARTS_TEXT_KEY:
+			continue
+		effect = effect.duplicate()
+		if effect is EffectOption:
+			var chosen = Effect.new()
+			chosen.key = effect.key
+			chosen.key_hash = effect.key_hash
+			chosen.value = effect.value
+			chosen.effect_sign = effect.effect_sign
+			effect = chosen
+		duplicated.append(effect)
+	return duplicated
+
 func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effect: WeaponData, is_const_effect: bool) -> Array:
 	var begin_effect = NullEffect.new()
 	begin_effect.key = " %s %s" % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
-	begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED" if weapon_for_effect.is_cursed else "EFFECT_FOXLAB_WEAPON_TEXT"
+	if weapon_for_effect.is_cursed:
+		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED"
+	elif weapon_for_effect.is_meca:
+		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_MECA"
+	else:
+		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT"
 	if is_const_effect:
 		begin_effect.custom_key = "foxlab_const_effect_begin"
 		begin_effect.custom_key_hash = Utils.foxlab_const_effect_begin_hash
 	var new_effects = [begin_effect]
-	for effect in weapon_for_effect.effects:
-		effect = effect.duplicate()
+	for effect in foxlab_duplicate_effects_for_copy(weapon_for_effect):
 		new_effects.append(effect)
 		foxlab_adjust_weapon_effect(effect, weapon)
 	if is_const_effect:
@@ -421,7 +456,7 @@ func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
 func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	if not _foxlab_backpack_char_effects_dirty[player_index]:
 		return foxlab_backpack_char_effects[player_index]
-	var dlc_data = ItemService.get_dlc_data_by_id("primal_dread")
+	var dlc_data = Utils.foxlab_get_dlc("primal_dread")
 	var effects: Array = []
 	for item in players_data[player_index].items:
 		if item is CharacterData:

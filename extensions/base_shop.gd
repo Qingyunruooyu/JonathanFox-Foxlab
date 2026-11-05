@@ -449,37 +449,38 @@ func foxlab_upgrade_locked_items(player_locked_items: Array, player_index: int) 
 	var chance = RunData.get_player_effect(Utils.foxlab_upgrade_locked_item_on_reroll_hash, player_index)
 	if chance <= 0:
 		return
-	var primal_dread = null
-	if "primal_dread" in ProgressData.active_update_data:
-		primal_dread = ItemService.get_dlc_data_by_id("primal_dread")
-	var abyssal_terrors = null
-	if "abyssal_terrors" in ProgressData.active_update_data:
-		abyssal_terrors = ItemService.get_dlc_data_by_id("abyssal_terrors")
+	var primal_dread = Utils.foxlab_get_dlc("primal_dread")
+	var abyssal_terrors = Utils.foxlab_get_dlc("abyssal_terrors")
 
 	for locked_item in player_locked_items:
 		if not Utils.get_chance_success(chance / 100.0):
 			continue
+		var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
+		if vanilla_item == null:
+			continue
 		var upgraded = null
 		if locked_item[0].is_cursed:
 			# 已诅咒：从原版基底重掷，诅咒系数严格更深才替换
-			var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
-			if vanilla_item != null and abyssal_terrors != null:
+			if abyssal_terrors != null:
 				var recursed = abyssal_terrors.curse_item(vanilla_item, player_index, false, locked_item[0].curse_factor)
-				if recursed != vanilla_item and recursed.curse_factor > locked_item[0].curse_factor:
+				if recursed.curse_factor > locked_item[0].curse_factor:
 					upgraded = recursed
 		elif locked_item[0] is WeaponData and locked_item[0].is_meca:
-			# 已机械化武器：再机械化必然更优（rank+1，零件与战力累加），无需比较
+			# 已机械化武器：从原版基底保持rank1重掷一对属性，打分严格更优才替换
 			if primal_dread != null:
-				upgraded = primal_dread.meca_item(locked_item[0], player_index)
+				var current_score = _foxlab_meca_pair_score(locked_item[0], player_index)
+				for _i in 500:
+					var rerolled = primal_dread.meca_item(vanilla_item, player_index)
+					if _foxlab_meca_pair_score(rerolled, player_index) > current_score:
+						upgraded = rerolled
+						break
 		elif not locked_item[0].is_mutant:
 			# 无附加状态：与普通刷新一致尝试一次，获得任一状态即视为升级
-			var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
-			if vanilla_item != null:
-				for _i in 500:
-					var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
-					if modified != vanilla_item:
-						upgraded = modified
-						break
+			for _i in 500:
+				var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
+				if modified != vanilla_item:
+					upgraded = modified
+					break
 		if upgraded != null:
 			locked_item[0] = upgraded
 			RunData.add_tracked_value(player_index, Utils.item_foxlab_fishing_net_hash, 1)
@@ -488,6 +489,29 @@ func _foxlab_get_vanilla_copy(item_data):
 	if item_data is WeaponData:
 		return ItemService.foxlab_get_weapon_from_weapon_id(item_data.weapon_id_hash, item_data.tier)
 	return ItemService.get_item_from_id(item_data.my_id_hash)
+
+func _foxlab_meca_pair_score(weapon: WeaponData, player_index: int) -> int:
+	var merged_character = ItemService._foxlab_get_merged_character(player_index)
+	var is_structure_weapon = EntityService.is_weapon_spawning_structure(weapon)
+	var score = 0
+	for effect in weapon.effects:
+		if not effect is EffectOption:
+			continue
+		var stat_name = Keys.hash_to_string[effect.key_hash]
+		if merged_character != null and stat_name in merged_character.wanted_tags:
+			score += 1
+		if not is_structure_weapon and (effect.key_hash == Keys.stat_attack_speed_hash
+			or effect.key_hash == Keys.stat_percent_damage_hash
+			or effect.key_hash == Keys.stat_crit_chance_hash):
+			score += 1
+		var in_scaling = false
+		for scaling_stat in weapon.stats.scaling_stats:
+			if scaling_stat[0] == effect.key_hash and float(scaling_stat[1]) > 0.0:
+				in_scaling = true
+				break
+		if in_scaling or (is_structure_weapon and effect.key_hash == Keys.stat_engineering_hash):
+			score += 2
+	return score
 
 func fill_shop_items(player_locked_items: Array, player_index: int, just_entered_shop: bool = false) -> void :
 	if not just_entered_shop:
@@ -531,8 +555,7 @@ func fill_shop_items(player_locked_items: Array, player_index: int, just_entered
 		if pos >= 0 and pos < get_player_shop_items(player_index).size():
 			var item = get_player_shop_items(player_index)[pos]
 			if not item[0].is_cursed:
-				for dlc_id in RunData.enabled_dlcs:
-					var dlc_data = ItemService.get_dlc_data_by_id(dlc_id)
-					if dlc_data and dlc_data.has_method("curse_item"):
-						item[0] = dlc_data.curse_item(item[0], player_index)
+				var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
+				if dlc != null:
+					item[0] = dlc.curse_item(item[0], player_index)
 	RunData.get_player_effects(player_index)[Utils.foxlab_price_digit_hash] = 0

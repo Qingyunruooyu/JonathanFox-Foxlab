@@ -719,8 +719,8 @@ func foxlab_get_item(item_id_hash: int, num: int, player_index: int, curse_mode:
 		var pre_states = foxlab_before_add_item(player_index)
 		var displayed_item = item_data
 		var dlc = null
-		if curse_mode > 0 and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
-			dlc = ItemService.get_dlc_data_by_id("abyssal_terrors")
+		if curse_mode > 0:
+			dlc = Utils.foxlab_get_dlc("abyssal_terrors")
 		for _i in num:
 			var actual_item_data = item_data
 			if dlc:

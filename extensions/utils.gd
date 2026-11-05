@@ -327,14 +327,14 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 	var extra_group_chance = 0.01
 	var zone_data = null
 	if zone_id != "":
-		for zone in ZoneService.zones:
+		for zone in foxlab_get_available_zones():
 			if zone.name == zone_id:
 				zone_data = zone
 				break;
 	if zone_data == null:
-		zone_data = get_rand_element(ZoneService.zones)
+		zone_data = get_rand_element(foxlab_get_available_zones())
 
-	if ResourceLoader.exists(FOXLAB_DRAGON_FISH_PATH) and ProgressData.is_dlc_available_and_active("abyssal_terrors"):
+	if ResourceLoader.exists(FOXLAB_DRAGON_FISH_PATH) and ProgressData.has_item_set("abyssal_terrors"):
 		if get_chance_success(extra_group_chance / 2.0):
 			if foxlab_gaster_group == null:
 				# preload会提前加载enemy.gd，导致兼容性问题
@@ -411,7 +411,7 @@ func foxlab_pickup_random_elites(is_unknown: bool) -> Array:
 func foxlab_generate_loot_alien_group_data(num: int, wave_timer)->Array:
 	var ret_groups = []
 	for i in num:
-		var zone_data = get_rand_element(ZoneService.zones)
+		var zone_data = get_rand_element(foxlab_get_available_zones())
 		for group in zone_data.loot_alien_groups:
 			var new_group = group.duplicate()
 			new_group.spawn_timing = rand_range(5, wave_timer.time_left - 10)
@@ -432,12 +432,17 @@ func foxlab_generate_evil_mob_group_data(num: int)->Array:
 		group.wave_units_data.append(foxlab_evil_mob_units.pick_random())
 	return [group]
 
-# 可用区域（dlc_id 为空或内容集启用）的 boss/精英并集；水滴石穿与通缉令的召唤池都从这里取
-func foxlab_get_available_zone_units(is_boss: bool) -> Array:
+func foxlab_get_available_zones() -> Array:
 	var result = []
 	for zone in ZoneService.zones:
 		if zone.dlc_id != "" and not ProgressData.has_item_set(zone.dlc_id):
 			continue
+		result.append(zone)
+	return result
+
+func foxlab_get_available_zone_units(is_boss: bool) -> Array:
+	var result = []
+	for zone in foxlab_get_available_zones():
 		result.append_array(zone.bosses if is_boss else zone.elites)
 	return result
 

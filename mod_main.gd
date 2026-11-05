@@ -18,6 +18,7 @@ const EXTENSION_SCRIPTS = [
 	"player.gd",
 	"player_run_data.gd",
 	"main.gd",
+	"wave_manager.gd",
 	"base_shop.gd",
 	"shop_item.gd",
 	"floating_text_manager.gd",
@@ -67,7 +68,8 @@ var foxlab_current_settings: Dictionary
 func _init():
 	ModLoaderLog.info("Init", MOD_NAME)
 	foxlab_current_settings = DEFAULT_SETTINGS.duplicate()
-	IS_ANDROID = (OS.get_name() == "Android")
+	# 1.2.0.0 开始，貌似不需要了
+	IS_ANDROID = false
 	_foxlab_overwrite_base_shop()
 	for script in EXTENSION_SCRIPTS:
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)

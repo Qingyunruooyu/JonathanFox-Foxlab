@@ -491,3 +491,9 @@ func after_weapon_removed(weapon: WeaponData, player_index: int) -> void :
 	# 孟婆中途武器碎了，把记忆抹除，避免重回商店时，记忆还在（逃过了 foxlab_forget_item 批量抹除代码)
 	if not foxlab_remembered_weapons[player_index].empty():
 		foxlab_forget_a_weapon(weapon, player_index)
+
+# 探测仪的官方bug，sl能白嫖
+func get_state() -> Dictionary:
+	var state = .get_state()
+	state.elites_spawn = state.elites_spawn.duplicate(true)
+	return state

@@ -464,11 +464,9 @@ func foxlab_upgrade_locked_items(player_locked_items: Array, player_index: int) 
 			# 已诅咒：从原版基底重掷，诅咒系数严格更深才替换
 			var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
 			if vanilla_item != null and abyssal_terrors != null:
-				for _i in 500:
-					var recursed = abyssal_terrors.curse_item(vanilla_item, player_index)
-					if recursed != vanilla_item and recursed.curse_factor > locked_item[0].curse_factor:
-						upgraded = recursed
-						break
+				var recursed = abyssal_terrors.curse_item(vanilla_item, player_index, false, locked_item[0].curse_factor)
+				if recursed != vanilla_item and recursed.curse_factor > locked_item[0].curse_factor:
+					upgraded = recursed
 		elif locked_item[0] is WeaponData and locked_item[0].is_meca:
 			# 已机械化武器：再机械化必然更优（rank+1，零件与战力累加），无需比较
 			if primal_dread != null:

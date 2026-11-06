@@ -614,6 +614,8 @@ func _on_foxlab_item_added(new_item, item_count: int, player_index: int):
 		SoundManager2D.play(Utils.get_rand_element(_floating_text_manager.stat_neg_sounds), player.global_position, -15)
 	if new_item.is_cursed:
 		color = Utils.CURSE_COLOR
+	elif new_item.is_meca:
+		color = Utils.get_evolution_color(1)
 	_floating_text_manager.display(text_str, pos, color, new_item.icon,\
 			_floating_text_manager.duration * 2.5, true,  _floating_text_manager.direction, false, icon_scale, player_index)
 

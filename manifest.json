@@ -36,12 +36,18 @@
 						"tooltip": "FOXLAB_DISABLE_ITEMS_TOOLTIP",
 						"default": false
 					},
-					"FOXLAB_DISABLE_CHARACTERS": {
-						"type": "boolean",
-						"title": "CHARACTER",
-						"tooltip": "FOXLAB_DISABLE_CHARACTERS_TOOLTIP",
-						"default": false
-					}
+				"FOXLAB_DISABLE_CHARACTERS": {
+					"type": "boolean",
+					"title": "CHARACTER",
+					"tooltip": "FOXLAB_DISABLE_CHARACTERS_TOOLTIP",
+					"default": false
+				},
+				"FOXLAB_PIN_CHARACTERS": {
+					"type": "boolean",
+					"title": "CHARACTER",
+					"tooltip": "FOXLAB_PIN_CHARACTERS_TOOLTIP",
+					"default": false
+				}
 				}
 			}
 		}

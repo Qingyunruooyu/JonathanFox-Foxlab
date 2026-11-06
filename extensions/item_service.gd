@@ -125,8 +125,14 @@ func _foxlab_init_configs():
 		call_deferred("_foxlab_init_transform_characters")
 
 func _on_setting_changed(setting_name, _value, mod_name)->void :
-	if mod_name == FOXLAB_MOD_NAME and setting_name == "FOXLAB_TRANSFORM_VANILLA_ONLY":
+	if mod_name != FOXLAB_MOD_NAME:
+		return
+	if setting_name == "FOXLAB_TRANSFORM_VANILLA_ONLY":
 		_foxlab_init_transform_characters()
+	elif setting_name == "FOXLAB_PIN_CHARACTERS":
+		invalidate_characters_cache()
+		# deferred 等所有 setting_changed 接收方（mod_main 更新 foxlab_current_settings）处理完再重建
+		call_deferred("get_characters")
 
 func _foxlab_init_transform_characters():
 	_foxlab_clear_transform_character_caches()
@@ -177,6 +183,26 @@ func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():
 		_foxlab_init_transform_characters()
 	return foxlab_transform_characters
+
+# 选角色界面按本列表顺序展示；开关开启且本mod物品集激活时，把本mod角色排到原版/DLC之前
+func _rebuild_characters() -> void:
+	._rebuild_characters()
+	if foxlab_mod == null or not foxlab_mod.is_pin_characters_enabled():
+		return
+	if not ProgressData.has_item_set("jonathanfox_foxlab"):
+		return
+	var foxlab_chars = []
+	var others = []
+	for character in _characters:
+		if character.required_item_set == "jonathanfox_foxlab":
+			foxlab_chars.push_back(character)
+		else:
+			others.push_back(character)
+	if foxlab_chars.empty():
+		return
+	_characters.clear()
+	_characters.append_array(foxlab_chars)
+	_characters.append_array(others)
 
 
 ######## 建造者的炮塔相关 ###############

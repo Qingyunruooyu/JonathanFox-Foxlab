@@ -498,7 +498,7 @@ func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	if current_weapons.size() < prev_weapons:
 		var get_item_on_break_effects = RunData.get_player_effect(Utils.foxlab_get_item_on_weapon_break_hash, player_index)
 		var main = Utils.get_scene_node()
-		RunData.emit_signal("foxlab_item_added", {"icon": weapon._original_sprite, "is_cursed": weapon.is_cursed}, -1, player_index)
+		RunData.emit_signal("foxlab_item_added", {"icon": weapon._original_sprite, "is_cursed": weapon.is_cursed, "is_meca": weapon.is_meca}, -1, player_index)
 		if not get_item_on_break_effects.empty():
 			for get_item_on_break_effect in get_item_on_break_effects:
 				var boost = Utils.get_stat(get_item_on_break_effect[2], player_index) / 100.0

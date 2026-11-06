@@ -319,6 +319,8 @@ func foxlab_get_colored_stat_str(stat_hash: int, player_index: int = RunData.DUM
 		var current_value = RunData.get_player_effect(stat_hash, player_index)
 		if current_value < 0:
 			color = stat_data.negative_color_override
+		elif current_value == 0:
+			color = Color.black
 
 	if color == Color.black:
 		return tr(stat_str.to_upper())

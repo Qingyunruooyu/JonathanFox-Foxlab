@@ -447,8 +447,6 @@ func unapply_item_effects(item_data: ItemParentData, player_index: int) -> void 
 		_foxlab_backpack_char_effects_dirty[player_index] = true
 	.unapply_item_effects(item_data, player_index)
 
-# effect.apply/unapply只写effects字典，不置dirty标志，stats_updated->StatsManager->update_player_stats
-# 整条刷新链不会启动（最大生命/当前生命/血条都不更新），此处手动补上
 func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
 	Utils.reset_stat_cache(player_index)
 	for effect in effects:

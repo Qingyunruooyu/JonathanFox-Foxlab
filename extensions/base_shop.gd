@@ -69,7 +69,7 @@ func _on_foxlab_item_added(new_items, player_index):
 	for item in new_items:
 		var icon = item.icon
 		var icon_scale = Utils.foxlab_fit_item_icon_scale(item.icon)
-		_floating_text_manager.display("+1", popup_pos, Utils.CURSE_COLOR if item.is_cursed else color, icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
+		_floating_text_manager.display("+1", popup_pos, Utils.CURSE_COLOR if item.is_cursed else (Utils.get_evolution_color(1) if item.is_meca else color), icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
 		popup_pos -= offset
 
 # 必须传 _ref（实时数组）而非 get_player_items() 的拷贝：deferred 到帧末才执行，

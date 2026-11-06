@@ -20,7 +20,7 @@ func apply(player_index: int) -> void:
 				new_cursed_weapon_min_factor = max(new_cursed_weapon_min_factor, effect.curse_factor)
 		if weapon != remained_weapon:
 			var is_useless = true
-			for effect in weapon.effects:
+			for effect in RunData.foxlab_duplicate_effects_for_copy(weapon):
 				# 只是显示作用
 				if effect is SlowInZoneEffect or effect is PlayerNoHitEffect or\
 					((effect.key_hash == Keys.bounce_on_crit_hash or effect.key_hash == Keys.pierce_on_crit_hash)\
@@ -51,8 +51,8 @@ func apply(player_index: int) -> void:
 	remained_weapon = remained_weapon.duplicate()
 	var adjusted_effects = remained_weapon.effects.duplicate()
 	for effect in effects:
-		adjusted_effects.append(effect.duplicate())
-		RunData.foxlab_adjust_weapon_effect(adjusted_effects.back(), remained_weapon)
+		RunData.foxlab_adjust_weapon_effect(effect, remained_weapon)
+		adjusted_effects.append(effect)
 
 	remained_weapon.effects = adjusted_effects
 	if curse_new_weapon:

@@ -38,6 +38,7 @@ const EXTENSION_SCRIPTS = [
 	"scapegoat.gd",
 	"consumable.gd",
 	"catling_gun.gd",
+	"dino_egg.gd",
 	"upgrades_ui_player_container.gd",
 	"upgrade_ui.gd",
 	"coop_item_popup.gd",
@@ -62,7 +63,8 @@ var ModsConfigInterface = null
 const DEFAULT_SETTINGS = {
 	"FOXLAB_TRANSFORM_VANILLA_ONLY": false,
 	"FOXLAB_DISABLE_CHARACTERS": false,
-	"FOXLAB_DISABLE_ITEMS": false
+	"FOXLAB_DISABLE_ITEMS": false,
+	"FOXLAB_PIN_CHARACTERS": false
 }
 var foxlab_config = null
 var foxlab_current_settings: Dictionary
@@ -112,6 +114,9 @@ func initialize_mod():
 
 func is_transform_vanilla_only():
 	return foxlab_current_settings["FOXLAB_TRANSFORM_VANILLA_ONLY"]
+
+func is_pin_characters_enabled():
+	return foxlab_current_settings["FOXLAB_PIN_CHARACTERS"]
 
 func _foxlab_init_configs():
 	ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")

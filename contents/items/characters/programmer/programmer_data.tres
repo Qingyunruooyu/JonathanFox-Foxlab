@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=24 format=2]
+[gd_resource type="Resource" load_steps=22 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/programmer/programmer_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/programmer/programmer_effect_11.tres" type="Resource" id=2]
@@ -24,9 +24,7 @@
 [ext_resource path="res://items/all/00_base_game/turret_flame/turret_flame_data.tres" type="Resource" id=22]
 [ext_resource path="res://items/all/03_paws_n_claws/bot_o_mine/bot_o_mine.tres" type="Resource" id=23]
 
-[ext_resource path="res://weapons/melee/crowbar/1/crowbar_data.tres" type="Resource" id=24]
 [ext_resource path="res://weapons/melee/awl/1/awl_data.tres" type="Resource" id=25]
-[ext_resource path="res://weapons/melee/shovel/1/shovel_data.tres" type="Resource" id=26]
 [resource]
 script = ExtResource( 9 )
 my_id = "character_foxlab_programmer"
@@ -50,5 +48,5 @@ wanted_tags = [ "stat_engineering", "structure" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ) ]
+starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 25 )]
 starting_items = [ ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ) ]

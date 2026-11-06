@@ -495,6 +495,20 @@ func foxlab_queue_free_weapon(weapon: Node2D):
 	disable_node(weapon)
 	#print("disable weapon ", weapon)
 
+# 鱼叉/电击枪减速区、轨道炮增伤、铲子挖箱、光剑反弹、碳弓箭矢属性、燃烧瓶火洼、连枷尖端暴击、回旋镖返回提示
+func foxlab_is_weapon_bound_effect(effect) -> bool:
+	return effect is SlowInZoneEffect or effect is PlayerNoHitEffect or effect is CrateDigChanceEffect\
+		or effect is DeflectProjectilesEffect or effect is CarbonBowStatEffect or effect is FirePuddleOnHitEffect\
+		or effect.key_hash == Keys.crit_on_whip_tip_hash\
+		or (effect.key_hash == Keys.empty_hash and effect.text_key == "EFFECT_BOOMERANG_RETURN")
+
+# 弹射/穿透暴击仅远战武器有效
+func foxlab_is_useless_weapon_effect(effect, weapon) -> bool:
+	if foxlab_is_weapon_bound_effect(effect):
+		return true
+	return (effect.key_hash == Keys.bounce_on_crit_hash or effect.key_hash == Keys.pierce_on_crit_hash)\
+		and weapon.type == WeaponData.Type.MELEE
+
 func foxlab_get_primary_stat_level_up_map():
 	if foxlab_primary_stat_level_up_map.empty():
 		foxlab_primary_stat_level_up_map = [{}, {}]

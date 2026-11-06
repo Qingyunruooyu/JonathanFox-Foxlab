@@ -56,8 +56,10 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 
 	if item.get_category() == Category.WEAPON:
 		var weapon = item as WeaponData
-		if not weapon.effects.empty():
-			foxlab_remembered_weapons[player_index].push_back(weapon)
+		for effect in weapon.effects:
+			if not Utils.foxlab_is_weapon_bound_effect(effect):
+				foxlab_remembered_weapons[player_index].push_back(weapon)
+				break
 	else:
 		foxlab_remembered_items[player_index].push_back(item as ItemData)
 		# DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
@@ -200,10 +202,15 @@ func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effec
 	if is_const_effect:
 		begin_effect.custom_key = "foxlab_const_effect_begin"
 		begin_effect.custom_key_hash = Utils.foxlab_const_effect_begin_hash
-	var new_effects = [begin_effect]
+	var new_effects = []
 	for effect in foxlab_duplicate_effects_for_copy(weapon_for_effect):
+		if Utils.foxlab_is_useless_weapon_effect(effect, weapon):
+			continue
 		new_effects.append(effect)
 		foxlab_adjust_weapon_effect(effect, weapon)
+	if new_effects.empty():
+		return new_effects
+	new_effects.push_front(begin_effect)
 	if is_const_effect:
 		var end_effect = NullEffect.new()
 		end_effect.text_key = "[EMPTY]"

@@ -21,10 +21,7 @@ func apply(player_index: int) -> void:
 		if weapon != remained_weapon:
 			var is_useless = true
 			for effect in RunData.foxlab_duplicate_effects_for_copy(weapon):
-				# 只是显示作用
-				if effect is SlowInZoneEffect or effect is PlayerNoHitEffect or\
-					((effect.key_hash == Keys.bounce_on_crit_hash or effect.key_hash == Keys.pierce_on_crit_hash)\
-					and remained_weapon.type == WeaponData.Type.MELEE):
+				if Utils.foxlab_is_useless_weapon_effect(effect, remained_weapon):
 					continue
 				is_useless = false
 				effects.append(effect)

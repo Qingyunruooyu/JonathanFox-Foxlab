@@ -170,16 +170,25 @@ func _duplicate_weapon(player_index: int):
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	#附魔后加一个价值， 避免建造者的炮塔不识货
 	weapon.value += 1
-	var weapon_for_effect = Utils.get_rand_element(ItemService.get_weapons())
+	var weapon_for_effect = null
 	# 附魔的武器的等级最多超过当前武器1级
-	while weapon_for_effect.effects.empty() or (weapon.tier + 1 < weapon_for_effect.tier):
-		weapon_for_effect = Utils.get_rand_element(ItemService.get_weapons())
-	weapon_for_effect = weapon_for_effect.duplicate()
-	weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
-	#DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
-
-	var new_effects :Array = RunData.foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect, true)
-	weapon.effects.append_array(new_effects)
+	for _i in 100:
+		var candidate = Utils.get_rand_element(ItemService.get_weapons())
+		if candidate.effects.empty() or weapon.tier + 1 < candidate.tier:
+			continue
+		var has_effect = false
+		for effect in candidate.effects:
+			if not Utils.foxlab_is_useless_weapon_effect(effect, weapon):
+				has_effect = true
+				break
+		if has_effect:
+			weapon_for_effect = candidate
+			break
+	if weapon_for_effect != null:
+		weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
+		#DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
+		var new_effects :Array = RunData.foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect, true)
+		weapon.effects.append_array(new_effects)
 	RunData.add_weapon(weapon, player_index)
 	#DebugService.log_data("duplicate weapon " + weapon.my_id)
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_faceless_hash, 1)

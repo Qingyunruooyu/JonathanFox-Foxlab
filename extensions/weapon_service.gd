@@ -36,6 +36,40 @@ func _set_common_ranged_stats(new_stats: RangedWeaponStats, from_stats: RangedWe
 	if from_stats.can_bounce:
 		new_stats.bounce += piercing
 
+# 玩家池与武器侧的每X投射效果按X分组合并，键为X，值为该X下全部效果
+func foxlab_group_every_x_effects(player_index: int, weapon_effects: Array) -> Dictionary:
+	var all_effects = []
+	all_effects.append_array(RunData.get_player_effect(Keys.modify_every_x_projectile_hash, player_index))
+	for effect in weapon_effects:
+		if effect is WeaponEffectWithSubEffects:
+			all_effects.append(effect)
+	var groups = {}
+	for effect in all_effects:
+		if not groups.has(effect.value):
+			groups[effect.value] = []
+		groups[effect.value].append(effect)
+	return groups
+
+# 原版每个效果独立快照后按X直接覆盖字典：同X效果互相覆盖只剩一个，spread还跨效果累加泄漏；
+# 这里按X分组，同组sub_effects全部apply后一次快照，spread只计本组投射物增量
+func init_stats_every_x_projectiles(base_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs) -> Dictionary:
+	var groups = foxlab_group_every_x_effects(player_index, args.effects)
+	var stats_every_x_shots = {}
+	for x in groups:
+		var nb_projectile_effect = 0
+		for effect in groups[x]:
+			for sub_effect in effect.sub_effects:
+				sub_effect.apply(player_index)
+				if sub_effect.key_hash == Keys.projectiles_hash:
+					nb_projectile_effect += sub_effect.value
+		var modified_stats: RangedWeaponStats = init_ranged_stats(base_stats, player_index, false, args)
+		modified_stats.projectile_spread += nb_projectile_effect * 0.15
+		stats_every_x_shots[x] = modified_stats
+		for effect in groups[x]:
+			for sub_effect in effect.sub_effects:
+				sub_effect.unapply(player_index)
+	return stats_every_x_shots
+
 func set_projectile_effects(base_effects: Array, player_index: int = - 1) -> Array:
 	if player_index >= 0 and RunData.get_player_effect_bool(Utils.foxlab_piercing_is_bounce_hash, player_index):
 		for effect in base_effects:
@@ -180,3 +214,30 @@ func foxlab_apply_scaling_stat_effects(extra_scaling_stat: Array, scaling_stats:
 		else:
 			new_scaling_stats.push_back([scaling_stat_hash, scaling_stat_value])
 	return new_scaling_stats
+
+# 同炮同时命中多个X时的组合快照：命中组的sub_effects全部apply后一次构建，spread计全部命中组的投射物增量
+# matched来自init时构建的字典键，波内玩家池可能已变化，组缺失时跳过该组
+func foxlab_build_combined_every_x_stats(weapon, matched) -> RangedWeaponStats:
+	var groups = foxlab_group_every_x_effects(weapon.player_index, weapon.effects)
+	var matched_effects = []
+	for x in matched:
+		if groups.has(x):
+			matched_effects.append_array(groups[x])
+
+	var nb_projectile_effect = 0
+	for effect in matched_effects:
+		for sub_effect in effect.sub_effects:
+			sub_effect.apply(weapon.player_index)
+			if sub_effect.key_hash == Keys.projectiles_hash:
+				nb_projectile_effect += sub_effect.value
+
+	var args = WeaponServiceInitStatsArgs.new()
+	args.sets = weapon.weapon_sets
+	args.effects = weapon.effects
+	var combined: RangedWeaponStats = init_ranged_stats(weapon.stats, weapon.player_index, false, args)
+	combined.projectile_spread += nb_projectile_effect * 0.15
+
+	for effect in matched_effects:
+		for sub_effect in effect.sub_effects:
+			sub_effect.unapply(weapon.player_index)
+	return combined

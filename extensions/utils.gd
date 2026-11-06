@@ -512,6 +512,12 @@ func foxlab_is_useless_weapon_effect(effect, weapon) -> bool:
 		or effect.key_hash == Keys.bounce_on_crit_hash\
 		or effect.key_hash == Keys.pierce_on_crit_hash
 
+func foxlab_has_useful_weapon_effect(effects: Array, weapon) -> bool:
+	for effect in effects:
+		if not foxlab_is_useless_weapon_effect(effect, weapon):
+			return true
+	return false
+
 func foxlab_get_primary_stat_level_up_map():
 	if foxlab_primary_stat_level_up_map.empty():
 		foxlab_primary_stat_level_up_map = [{}, {}]

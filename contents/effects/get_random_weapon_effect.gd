@@ -109,12 +109,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			item_for_effect = ItemService.get_element(ItemService.get_items(), debug_item_hash)
 	if item_for_effect == null:
 		item_for_effect = Utils.get_rand_element(ItemService.get_weapons())
-	var has_effect = false
-	for effect in item_for_effect.effects:
-		if not Utils.foxlab_is_useless_weapon_effect(effect, weapon):
-			has_effect = true
-			break
-	if not has_effect:
+	if not Utils.foxlab_has_useful_weapon_effect(item_for_effect.effects, weapon):
 		if _get_chance_success(CHANCE_LEGENDARY_ITEM, luck_chance):
 			args.increase_tier = 3
 			# items (except hourglass) can be get even if it may exceed the limited number

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=33 format=2]
+[gd_resource type="Resource" load_steps=35 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/turtle_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/turtle/turtle_effect_1.tres" type="Resource" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=8]
 [ext_resource path="res://weapons/ranged/double_barrel_shotgun/1/double_barrel_shotgun_data.tres" type="Resource" id=9]
 [ext_resource path="res://weapons/ranged/smg/1/smg_data.tres" type="Resource" id=10]
+[ext_resource path="res://weapons/ranged/machinegun/1/machinegun_data.tres" type="Resource" id=11]
 [ext_resource path="res://weapons/melee/scissors/1/scissors_data.tres" type="Resource" id=12]
 [ext_resource path="res://weapons/ranged/medical_gun/1/medical_gun_data.tres" type="Resource" id=13]
 [ext_resource path="res://weapons/ranged/shredder/1/shredder_data.tres" type="Resource" id=14]
@@ -17,6 +18,7 @@
 [ext_resource path="res://weapons/ranged/ghost_scepter/1/ghost_scepter_data.tres" type="Resource" id=16]
 [ext_resource path="res://weapons/melee/chopper/1/chopper_data.tres" type="Resource" id=17]
 [ext_resource path="res://weapons/melee/spiky_shield/1/spiky_shield_data.tres" type="Resource" id=18]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/turtle/turtle_effect_10.tres" type="Resource" id=19]
 [ext_resource path="res://weapons/melee/jousting_lance/1/jousting_lance_data.tres" type="Resource" id=20]
 [ext_resource path="res://weapons/melee/pruner/1/pruner_data.tres" type="Resource" id=21]
 [ext_resource path="res://weapons/melee/claw/1/claw_data.tres" type="Resource" id=22]
@@ -36,27 +38,30 @@
 [resource]
 script = ExtResource( 8 )
 my_id = "character_foxlab_turtle"
-foxlab_required_item_set = [ "abyssal_terrors" ]
-required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_TURTLE"
 tier = 0
 value = 1
-effects = [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 31 ), ExtResource( 3 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 35 ) ]
+effects = [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 31 ), ExtResource( 3 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 19 ) ]
 tracking_text = "DAMAGE_DEALT"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
+is_meca = false
+is_mutant = false
 max_nb = -1
 item_appearances = [ ExtResource( 6 ) ]
 tags = [  ]
+minimum_difficulty = 0
 wanted_tags = [ "stat_curse", "stat_speed" ]
 banned_item_groups = [ "melee_damage", "ranged_damage", "melee_and_ranged_damage", "engineering", "elemental_damage" ]
 banned_items = [ "item_mutation", "item_charcoal", "item_gnome", "item_handcuffs", "item_foxlab_omnic_crisis", "item_torture", "item_triangle_of_power" ]
 banned_upgrades = [ "upgrade_elemental_damage", "upgrade_melee_damage", "upgrade_engineering", "upgrade_ranged_damage" ]
 banned_meca_stats = [ "stat_elemental_damage", "stat_engineering", "stat_melee_damage", "stat_ranged_damage" ]
-starting_weapons = [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 29 ), ExtResource( 30 ) ]
+starting_weapons = [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 11 ) ]
 starting_items = [ ExtResource( 7 ) ]
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]

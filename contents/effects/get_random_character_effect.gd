@@ -174,14 +174,7 @@ func _duplicate_weapon(player_index: int):
 	# 附魔的武器的等级最多超过当前武器1级
 	for _i in 100:
 		var candidate = Utils.get_rand_element(ItemService.get_weapons())
-		if candidate.effects.empty() or weapon.tier + 1 < candidate.tier:
-			continue
-		var has_effect = false
-		for effect in candidate.effects:
-			if not Utils.foxlab_is_useless_weapon_effect(effect, weapon):
-				has_effect = true
-				break
-		if has_effect:
+		if weapon.tier + 1 >= candidate.tier and Utils.foxlab_has_useful_weapon_effect(candidate.effects, weapon):
 			weapon_for_effect = candidate
 			break
 	if weapon_for_effect != null:

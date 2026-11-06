@@ -449,7 +449,10 @@ func foxlab_get_available_zones() -> Array:
 func foxlab_get_available_zone_units(is_boss: bool) -> Array:
 	var result = []
 	for zone in foxlab_get_available_zones():
-		result.append_array(zone.bosses if is_boss else zone.elites)
+		if is_boss:
+			result.append_array(zone.bosses)
+		else:
+			result.append_array(zone.elites + zone.meca_elites + zone.mutant_elites)
 	return result
 
 func foxlab_collect_item_foxlab_wanted():

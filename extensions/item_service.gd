@@ -320,14 +320,20 @@ func _foxlab_register_enemy_scene(scene: PackedScene, is_boss: bool) -> void:
 			enemy.get_node("Hitbox/Collision").shape.radius
 		)
 	}
-	foxlab_hash_to_entry[Keys.generate_hash(enemy.enemy_id)] = entry
+	# 同enemy_id多场景（精英机械/变异/普通形态、吞兽和宝箱怪的地图皮肤等）
+	var id_hash: int = Keys.generate_hash(enemy.enemy_id)
+	if not foxlab_hash_to_entry.has(id_hash):
+		foxlab_hash_to_entry[id_hash] = []
+	foxlab_hash_to_entry[id_hash].append(entry)
 	foxlab_scene_to_entry[scene] = entry
 	enemy.free()
 
 func foxlab_get_enemy_scene(enemy_id_hash: int) -> PackedScene:
 	foxlab_ensure_enemy_registry()
-	var entry = foxlab_hash_to_entry.get(enemy_id_hash)
-	return entry.scene if entry != null else null
+	var entries = foxlab_hash_to_entry.get(enemy_id_hash)
+	if entries == null or entries.empty():
+		return null
+	return entries.pick_random().scene
 
 func foxlab_get_enemy_entry_by_scene(scene) -> Dictionary:
 	foxlab_ensure_enemy_registry()
@@ -406,14 +412,13 @@ func _foxlab_record_spawning_weapons():
 
 ####### 扩展 ###########
 func can_item_be_mutated(item) -> bool:
-	if "_foxlab_" in item.my_id and not item.can_be_looted \
-		and item.my_id_hash != Utils.item_foxlab_tortoise_shell_hash:
+	if not item.can_be_looted and "_foxlab_" in item.my_id:
 		return false
 	return .can_item_be_mutated(item)
 
 func can_item_be_cursed(item) -> bool:
-	if "_foxlab_" in item.my_id and not item.can_be_looted \
-		and item.my_id_hash != Utils.item_foxlab_tortoise_shell_hash:
+	if not item.can_be_looted and item.my_id_hash != Utils.item_foxlab_tortoise_shell_hash\
+		and "_foxlab_" in item.my_id:
 		return false
 	return .can_item_be_cursed(item)
 

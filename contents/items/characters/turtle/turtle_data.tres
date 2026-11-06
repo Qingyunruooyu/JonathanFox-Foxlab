@@ -18,7 +18,6 @@
 [ext_resource path="res://weapons/ranged/ghost_scepter/1/ghost_scepter_data.tres" type="Resource" id=16]
 [ext_resource path="res://weapons/melee/chopper/1/chopper_data.tres" type="Resource" id=17]
 [ext_resource path="res://weapons/melee/spiky_shield/1/spiky_shield_data.tres" type="Resource" id=18]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/turtle/turtle_effect_10.tres" type="Resource" id=19]
 [ext_resource path="res://weapons/melee/jousting_lance/1/jousting_lance_data.tres" type="Resource" id=20]
 [ext_resource path="res://weapons/melee/pruner/1/pruner_data.tres" type="Resource" id=21]
 [ext_resource path="res://weapons/melee/claw/1/claw_data.tres" type="Resource" id=22]
@@ -44,7 +43,7 @@ icon = ExtResource( 1 )
 name = "CHARACTER_FOXLAB_TURTLE"
 tier = 0
 value = 1
-effects = [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 31 ), ExtResource( 3 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 19 ) ]
+effects = [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 31 ), ExtResource( 3 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 35 )]
 tracking_text = "DAMAGE_DEALT"
 is_lockable = true
 unlock_codex_descr_after_get_it = 1

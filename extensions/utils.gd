@@ -502,12 +502,15 @@ func foxlab_is_weapon_bound_effect(effect) -> bool:
 		or effect.key_hash == Keys.crit_on_whip_tip_hash\
 		or (effect.key_hash == Keys.empty_hash and effect.text_key == "EFFECT_BOOMERANG_RETURN")
 
-# 弹射/穿透暴击仅远战武器有效
+# 弹射/穿透暴击、每X次投射物修改（标枪）仅远战武器有效
 func foxlab_is_useless_weapon_effect(effect, weapon) -> bool:
 	if foxlab_is_weapon_bound_effect(effect):
 		return true
-	return (effect.key_hash == Keys.bounce_on_crit_hash or effect.key_hash == Keys.pierce_on_crit_hash)\
-		and weapon.type == WeaponData.Type.MELEE
+	if weapon.type != WeaponData.Type.MELEE:
+		return false
+	return effect.key_hash == Keys.modify_every_x_projectile_hash\
+		or effect.key_hash == Keys.bounce_on_crit_hash\
+		or effect.key_hash == Keys.pierce_on_crit_hash
 
 func foxlab_get_primary_stat_level_up_map():
 	if foxlab_primary_stat_level_up_map.empty():

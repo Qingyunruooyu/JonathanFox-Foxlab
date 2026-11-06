@@ -1,6 +1,6 @@
 extends "res://ui/menus/ingame/upgrades_ui_player_container.gd"
 
-onready var _foxlab_item_popup = get_node_or_null("%ItemPopup")
+onready var _foxlab_item_popup = get_node_or_null("%ItemPopup") if RunData.is_coop_run else null
 
 var foxlab_current_ui = null
 
@@ -16,6 +16,8 @@ func _ready():
 		ctrl.add_child(_foxlab_item_popup)
 		_foxlab_item_popup.visible = false
 		_foxlab_item_popup.player_index = player_index
+		# 弹窗只做展示，鼠标事件穿透，不挡下面的升级/拿取按钮
+		_foxlab_item_popup.ignore_mouse_outside_card()
 
 	for ui in _get_upgrade_uis():
 		if not ui.is_connected("foxlab_hovered", self, "on_foxlab_upgrade_hovered"):

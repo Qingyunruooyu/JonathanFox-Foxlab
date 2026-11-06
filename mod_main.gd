@@ -53,8 +53,7 @@ const PC_EXTENSION_SCRIPTS = [
 	"dlc_2_data.gd",
 	"effects/burning_effect.gd",
 	"evil_mob.gd",
-	"melee_weapon.gd",
-	"ranged_weapon.gd",
+	"weapon.gd",
 	"enemy.gd",
 ]
 

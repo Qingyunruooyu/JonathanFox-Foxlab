@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=32 format=2]
+[gd_resource type="Resource" load_steps=34 format=2]
 
 [ext_resource path="res://weapons/ranged/medical_gun/1/medical_gun_data.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/yin_yang_master/yin_yang_master_effect_3.tres" type="Resource" id=2]
@@ -31,6 +31,8 @@
 [ext_resource path="res://weapons/melee/spiky_shield/1/spiky_shield_data.tres" type="Resource" id=29]
 [ext_resource path="res://weapons/melee/scissors/1/scissors_data.tres" type="Resource" id=30]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/spacetime_machine_yang/spacetime_machine_yang_data.tres" type="Resource" id=31]
+[ext_resource path="res://weapons/melee/meat_tenderizer/1/meat_tenderizer_1_data.tres" type="Resource" id=32]
+[ext_resource path="res://weapons/melee/flail/1/flail_1_data.tres" type="Resource" id=33]
 
 [resource]
 script = ExtResource( 7 )
@@ -55,5 +57,5 @@ wanted_tags = [ "exploration" ]
 banned_item_groups = [  ]
 banned_items = [ "item_bag" ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 19 ), ExtResource( 1 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 18 ) ]
+starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 19 ), ExtResource( 1 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 18 ), ExtResource( 32 ), ExtResource( 33 ) ]
 starting_items = [ ExtResource( 20 ), ExtResource( 31 ) ]

@@ -27,7 +27,7 @@ func unapply(player_index: int) -> void:
 func get_args(player_index: int) -> Array:
 	var display_text = tr(stat_displayed.to_upper())
 	var exceptions = []
-	for stat in Utils._primary_stat_keys:
+	for stat in Utils.foxlab_primary_stat_keys:
 		var stat_str = Keys.hash_to_string[stat]
 		var gain_stat = "gain_" + stat_str
 		var gain_stat_hash = Keys.generate_hash(gain_stat)

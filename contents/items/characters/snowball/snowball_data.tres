@@ -25,7 +25,6 @@
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/anchor/2/anchor_2_data.tres" type="Resource" id=23]
 [ext_resource path="res://weapons/ranged/revolver/2/revolver_2_data.tres" type="Resource" id=24]
 [ext_resource path="res://weapons/melee/ghost_axe/2/ghost_axe_2_data.tres" type="Resource" id=25]
-[ext_resource path="res://weapons/melee/vorpal_sword/2/vorpal_sword_2_data.tres" type="Resource" id=26]
 [ext_resource path="res://weapons/melee/sword/2/sword_2_data.tres" type="Resource" id=27]
 [ext_resource path="res://weapons/melee/flaming_knuckles/2/flaming_knuckles_2_data.tres" type="Resource" id=28]
 [ext_resource path="res://items/all/00_base_game/little_frog/little_frog_data.tres" type="Resource" id=29]
@@ -43,6 +42,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_0a.tres" type="Resource" id=41]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_4.tres" type="Resource" id=42]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/snowball/snowball_effect_5.tres" type="Resource" id=43]
+[ext_resource path="res://weapons/ranged/combat_shotgun/2/combat_shotgun_2_data.tres" type="Resource" id=44]
 
 [resource]
 script = ExtResource( 13 )
@@ -69,5 +69,5 @@ banned_item_groups = [  ]
 banned_items = [ "item_pearl", "item_baby_elephant", "item_cyberball", "item_lost_duck", "item_lucky_charm", "item_lucky_coin", "item_propeller_hat", "item_shady_potion" ]
 banned_upgrades = [ "upgrade_luck" ]
 banned_meca_stats = [ "stat_luck" ]
-starting_weapons = [ ExtResource( 4 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 16 ), ExtResource( 27 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 24 ), ExtResource( 15 ), ExtResource( 8 ), ExtResource( 34 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 30 ), ExtResource( 36 ), ExtResource( 26 ), ExtResource( 38 ), ExtResource( 5 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 20 ), ExtResource( 3 ) ]
+starting_weapons = [ ExtResource( 4 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 16 ), ExtResource( 27 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 24 ), ExtResource( 15 ), ExtResource( 8 ), ExtResource( 34 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 30 ), ExtResource( 36 ), ExtResource( 38 ), ExtResource( 5 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 20 ), ExtResource( 3 ), ExtResource( 44 ) ]
 starting_items = [ ExtResource( 32 ), ExtResource( 14 ), ExtResource( 37 ), ExtResource( 29 ) ]

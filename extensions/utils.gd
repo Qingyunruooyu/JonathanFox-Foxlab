@@ -191,6 +191,8 @@ var foxlab_ignored_floating_stat_hash = {
 	}
 # primary stat gain -> primary stat
 var foxlab_primary_stat_gain_map = {}
+# 主属性表（本体 + DLC 诅咒/进化）。不改动 _primary_stat_keys，官方蝾螈保持只换本体属性的原版行为
+var foxlab_primary_stat_keys = []
 # stats in order of stat panel
 var foxlab_stats_in_container = []
 var foxlab_stats_container: Node = null
@@ -302,7 +304,7 @@ func _foxlab_init_primary_stat_gain_map():
 	# 不能读 RunData.dummy_player_effects：它在 RunData._ready 才赋值，而本函数随 reset_stat_keys
 	# 在 ProgressData/ItemService 初始化期被调（自动加载顺序都在 RunData 之前），读到的恒为空字典
 	var effects = PlayerRunData.init_effects()
-	for stat in _primary_stat_keys:
+	for stat in foxlab_primary_stat_keys:
 		var gain_stat = "gain_" + Keys.hash_to_string[stat]
 		var gain_stat_hash = Keys.generate_hash(gain_stat)
 		if gain_stat_hash in effects:
@@ -709,13 +711,14 @@ func foxlab_clear_wanted_caches() -> void :
 func reset_stat_keys() -> void :
 	.reset_stat_keys()
 	# 原版 ItemService.stats 是编辑器数组，只含本体属性；DLC 主属性（诅咒/进化）挂在
-	# 各内容集的 item_set.stats 里，补进主属性表，主属性修改/例外显示才能覆盖它们
+	# 各内容集的 item_set.stats 里，补进 mod 自建的主属性表，主属性修改/例外显示才能覆盖它们
+	foxlab_primary_stat_keys = _primary_stat_keys.duplicate()
 	for update_data in ItemService.update_data_list:
 		if update_data == null or update_data.item_set == null:
 			continue
 		for stat in update_data.item_set.stats:
-			if stat.is_primary_stat and not _primary_stat_keys.has(stat.stat_hash):
-				_primary_stat_keys.push_back(stat.stat_hash)
+			if stat.is_primary_stat and not foxlab_primary_stat_keys.has(stat.stat_hash):
+				foxlab_primary_stat_keys.append(stat.stat_hash)
 	foxlab_clear_wanted_caches()
 	foxlab_evil_mob_units.clear()
 	foxlab_exploding_turret_tracking_keys = null

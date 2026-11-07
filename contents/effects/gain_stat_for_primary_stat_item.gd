@@ -9,7 +9,7 @@ func apply_effects_core(player_index: int, call_func: String):
 	effect.storage_method = storage_method
 	effect.key_hash = key_hash
 	effect.value = value
-	for stat in Utils.get_primary_stat_keys():
+	for stat in Utils.foxlab_primary_stat_keys:
 		effect.key2_hash = stat
 		effect.call(call_func, player_index)
 

@@ -8,7 +8,7 @@ static func is_ignored_stats(effects, stat_hash, stat_gain_hash):
 	if effects.has(stat_gain_hash): #有修改
 		if effects[stat_gain_hash] == -100: #但修改减少100%
 			return true
-	elif stat_hash in Utils._primary_stat_keys: #没有修改，但是是主属性
+	elif stat_hash in Utils.foxlab_primary_stat_keys: #没有修改，但是是主属性
 		return true
 	return false
 

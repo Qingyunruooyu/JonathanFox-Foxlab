@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=32 format=2]
+[gd_resource type="Resource" load_steps=37 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/rampaging_vagabond/rampaging_vagabond_icon.png" type="Texture" id=1]
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=2]
@@ -31,6 +31,11 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/rampaging_vagabond/rampaging_vagabond_effect_55.tres" type="Resource" id=71]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/rampaging_vagabond/rampaging_vagabond_effect_51.tres" type="Resource" id=72]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/rampaging_vagabond/rampaging_vagabond_effect_56.tres" type="Resource" id=73]
+[ext_resource path="res://weapons/ranged/machinegun/1/machinegun_data.tres" type="Resource" id=74]
+[ext_resource path="res://weapons/ranged/blowgun/1/blowgun_data.tres" type="Resource" id=75]
+[ext_resource path="res://weapons/ranged/boomerang/1/boomerang_1_data.tres" type="Resource" id=76]
+[ext_resource path="res://weapons/ranged/pan_flute/1/pan_flute_data.tres" type="Resource" id=77]
+[ext_resource path="res://weapons/ranged/carbon_bow/1/carbon_bow_1_data.tres" type="Resource" id=78]
 
 [resource]
 script = ExtResource( 7 )
@@ -56,5 +61,5 @@ wanted_tags = [ "stat_luck", "consumable" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 2 ) ]
+starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 2 ), ExtResource( 74 ), ExtResource( 75 ), ExtResource( 76 ), ExtResource( 77 ), ExtResource( 78 ) ]
 starting_items = [  ]

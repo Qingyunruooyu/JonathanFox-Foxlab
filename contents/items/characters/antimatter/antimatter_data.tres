@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=31 format=2]
+[gd_resource type="Resource" load_steps=33 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/antimatter/antimatter_effect_0.tres" type="Resource" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/antimatter/antimatter_effect_2.tres" type="Resource" id=2]
@@ -30,6 +30,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/antimatter/antimatter_outfit.tres" type="Resource" id=28]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/spoon/1/spoon_data.tres" type="Resource" id=29]
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=30]
+[ext_resource path="res://weapons/melee/meat_tenderizer/1/meat_tenderizer_1_data.tres" type="Resource" id=31]
+[ext_resource path="res://weapons/ranged/sticky_grenade/1/sticky_grenade_data.tres" type="Resource" id=32]
 
 [resource]
 script = ExtResource( 6 )
@@ -55,5 +57,5 @@ wanted_tags = [ "xp_gain" ]
 banned_item_groups = [  ]
 banned_items = [ "item_potato", "item_alloy", "item_medal" ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 29 ), ExtResource( 30 ) ]
+starting_weapons = [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ) ]
 starting_items = [  ]

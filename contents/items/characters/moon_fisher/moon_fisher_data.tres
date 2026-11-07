@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=28 format=2]
+[gd_resource type="Resource" load_steps=35 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/character_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/moon_fisher/moon_fisher_icon.png" type="Texture" id=2]
@@ -31,6 +31,10 @@
 [ext_resource path="res://weapons/ranged/blowgun/1/blowgun_data.tres" type="Resource" id=28]
 [ext_resource path="res://weapons/ranged/tranq_rifle/1/tranq_rifle_data.tres" type="Resource" id=29]
 [ext_resource path="res://weapons/ranged/carbon_bow/1/carbon_bow_1_data.tres" type="Resource" id=30]
+[ext_resource path="res://weapons/melee/whip/1/whip_data.tres" type="Resource" id=31]
+[ext_resource path="res://weapons/melee/shovel/1/shovel_data.tres" type="Resource" id=32]
+[ext_resource path="res://weapons/melee/flail/1/flail_1_data.tres" type="Resource" id=33]
+[ext_resource path="res://weapons/ranged/boomerang/1/boomerang_1_data.tres" type="Resource" id=34]
 [resource]
 script = ExtResource( 1 )
 my_id = "character_foxlab_moon_fisher"
@@ -55,5 +59,5 @@ wanted_tags = [ "stat_crit_chance", "lock" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ) ]
+starting_weapons = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ) ]
 starting_items = [  ]

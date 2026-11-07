@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=22 format=2]
+[gd_resource type="Resource" load_steps=25 format=2]
 
 [ext_resource path="res://items/characters/character_data.gd" type="Script" id=1]
 [ext_resource path="res://items/all/00_base_game/tyler/tyler_data.tres" type="Resource" id=2]
@@ -22,9 +22,9 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_3a.tres" type="Resource" id=26]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/teacher/teacher_effect_4.tres" type="Resource" id=27]
 
-[ext_resource path="res://weapons/melee/crowbar/1/crowbar_data.tres" type="Resource" id=28]
-[ext_resource path="res://weapons/melee/awl/1/awl_data.tres" type="Resource" id=29]
-[ext_resource path="res://weapons/melee/shovel/1/shovel_data.tres" type="Resource" id=30]
+[ext_resource path="res://weapons/melee/crowbar/2/crowbar_2_data.tres" type="Resource" id=28]
+[ext_resource path="res://weapons/melee/awl/2/awl_2_data.tres" type="Resource" id=29]
+[ext_resource path="res://weapons/melee/shovel/2/shovel_2_data.tres" type="Resource" id=30]
 [resource]
 script = ExtResource( 1 )
 my_id = "character_foxlab_teacher"
@@ -49,5 +49,5 @@ banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [ "upgrade_elemental_damage", "upgrade_melee_damage", "upgrade_percent_damage", "upgrade_ranged_damage" ]
 banned_meca_stats = [ "stat_elemental_damage", "stat_melee_damage", "stat_percent_damage", "stat_ranged_damage" ]
-starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 15 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ) ]
+starting_weapons = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 15 ) ]
 starting_items = [ ExtResource( 12 ), ExtResource( 10 ), ExtResource( 2 ), ExtResource( 13 ) ]

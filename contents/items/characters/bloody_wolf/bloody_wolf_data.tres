@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=37 format=2]
+[gd_resource type="Resource" load_steps=41 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bloody_wolf/bloody_wolf_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bloody_wolf/bloody_wolf_effect_1.tres" type="Resource" id=2]
@@ -36,6 +36,10 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bloody_wolf/bloody_wolf_effect_8.tres" type="Resource" id=35]
 [ext_resource path="res://weapons/melee/cactus_mace/1/cactus_mace_data.tres" type="Resource" id=36]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/bloody_wolf/bloody_wolf_effect_0b.tres" type="Resource" id=37]
+[ext_resource path="res://weapons/ranged/machinegun/1/machinegun_data.tres" type="Resource" id=38]
+[ext_resource path="res://weapons/melee/flail/1/flail_1_data.tres" type="Resource" id=39]
+[ext_resource path="res://weapons/melee/meat_tenderizer/1/meat_tenderizer_1_data.tres" type="Resource" id=40]
+[ext_resource path="res://weapons/melee/whip/1/whip_data.tres" type="Resource" id=41]
 
 [resource]
 script = ExtResource( 11 )
@@ -61,5 +65,5 @@ banned_item_groups = [ "dodge" ]
 banned_items = [ "item_retromations_hoodie" ]
 banned_upgrades = [ "upgrade_dodge" ]
 banned_meca_stats = [ "stat_dodge" ]
-starting_weapons = [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 33 ), ExtResource( 7 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 36 ), ExtResource( 8 ) ]
+starting_weapons = [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 33 ), ExtResource( 7 ), ExtResource( 34 ), ExtResource( 29 ), ExtResource( 36 ), ExtResource( 8 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 41 ) ]
 starting_items = [  ]

@@ -90,7 +90,6 @@ func _foxlab_union_unique(base: Array, restrictions: Dictionary, key: String) ->
 	return result
 
 const FOXLAB_MOD_NAME = "JonathanFox-FoxLab"
-var foxlab_is_android = false
 var foxlab_mod = null
 
 func _ready() -> void :
@@ -117,8 +116,6 @@ func _foxlab_init_resources():
 func _foxlab_init_configs():
 	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
 	foxlab_mod = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME)
-	foxlab_is_android = foxlab_mod.IS_ANDROID
-	DebugService.log_data("run on andriod: " + str(foxlab_is_android))
 	if ModsConfigInterface:
 		if not ModsConfigInterface.is_connected("setting_changed", self, "_on_setting_changed"):
 			ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
@@ -514,14 +511,6 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 			player_appearances_ref.append(foxlab_stargazer_new_app)
 			player_appearances_ref.sort_custom(Sorter, "sort_depth_ascending")
 	return items_ret
-
-func apply_item_effect_modifications(item: ItemParentData, player_index: int) -> ItemParentData:
-	var new_item = .apply_item_effect_modifications(item, player_index)
-	if foxlab_is_android and new_item.is_cursed:
-		var dlc = Utils.foxlab_get_dlc("abyssal_terrors")
-		if dlc != null:
-			new_item = Utils.foxlab_extra_curse_item(item, player_index, false, 0.0, new_item, dlc)
-	return new_item
 
 # 原版 get_weapon_from_weapon_id 永远返回 _weapon_id_lookup[weapon_id] 的第一把（最低阶），
 # 这里借用原版填好 lookup 缓存后，在同 id 列表里按 tier 匹配

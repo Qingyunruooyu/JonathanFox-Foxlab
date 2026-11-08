@@ -2,8 +2,6 @@ extends "res://global/entity_spawner.gd"
 
 var foxlab_pets_structures_node_data_map = {}
 
-const FOXLAB_CHARMED_PROJ_ORIGINAL_META= "foxlab_charmed_original"
-
 ##### 扩展 #####
 func on_group_spawn_timing_reached(group_data: WaveGroupData) -> void :
 	if group_data.is_neutral:
@@ -29,7 +27,6 @@ func on_enemy_charmed(enemy: Entity) -> void :
 			continue
 		for proj in enemy._all_additional_projectiles:
 			if is_instance_valid(proj):
-				proj.set_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META, [proj._hitbox.collision_layer, proj._sprite.material])
 				proj.set_collision_layer(Utils.PET_PROJECTILES_BIT)
 				var new_shader = effect_behavior.projectile_shader.duplicate()
 				new_shader.set_shader_param("hue", Utils.CHARM_COLOR.h)
@@ -40,11 +37,10 @@ func on_enemy_charmed(enemy: Entity) -> void :
 func _on_enemy_died(enemy: Node2D, _args: Entity.DieArgs) -> void :
 	._on_enemy_died(enemy, _args)
 	for proj in enemy._all_additional_projectiles:
-		if is_instance_valid(proj) and proj.has_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META):
-			var original = proj.get_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META)
-			proj.set_collision_layer(original[0])
-			proj.set_sprite_material(original[1])
-			proj.remove_meta(FOXLAB_CHARMED_PROJ_ORIGINAL_META)
+		if is_instance_valid(proj) and proj._has_custom_material:
+			proj.set_collision_layer(proj._original_collision_layer)
+			proj._has_custom_material = false
+			proj._sprite.material = Utils.projectile_outline_petrol_shadermat if proj.evolution_puddle_type == proj.EVOLUTION_PUDDLE_PETROL else Utils.projectile_outline_shadermat
 
 func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = null, source = null, charmed_by: int = - 1) -> KinematicBody2D:
 	if args.type == EntityType.ENEMY or args.type == EntityType.BOSS:
@@ -57,10 +53,6 @@ func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = nu
 	if entity is Structure or entity is Pet:
 		Utils.foxlab_pets_structures_pool_id_scene_map[entity.pool_id] = scene
 		foxlab_pets_structures_node_data_map[entity] = data
-	if ItemService.foxlab_is_android and entity is Enemy and entity.enemy_id_hash == Utils.foxlab_evil_mob_hash:
-		entity.evolve(0)
-		entity.gold_count = 0
-		entity.on_health_updated(entity, entity.current_stats.health, entity.max_stats.health)
 
 	if args.type == EntityType.PET and data.is_structure:
 		RunData.foxlab_current_living_structures += 1

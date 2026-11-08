@@ -56,16 +56,16 @@ func modify_characters():
 			if not already_has_starting_weapon:
 				character_data.starting_weapons.push_back(weapon)
 
+
 func add_stats():
 	for stat in stats:
 		stat.generate_hashes()
-		if "foxlab" in stat.stat_name or not ItemService.get_stat(stat.stat_hash):
-			ItemService.stats.append(stat)
+		if not ItemService.get_stat(stat.stat_hash):
+			ItemService.base_game_item_set.stats.append(stat)
 
 func add_resources(settings: Dictionary):
 	update_data.item_set.items = items
 	update_data.item_set.characters = characters if not settings["FOXLAB_DISABLE_CHARACTERS"] else [get_element_by_id(characters, "character_foxlab_faceless")]
-	update_data.item_set.stats = stats
 	ProgressData._append_without_duplicates(ItemService.update_data_list, [update_data])
 	ProgressData.refresh_active_update_data()
 	ItemService.invalidate_characters_cache()

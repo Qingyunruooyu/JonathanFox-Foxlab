@@ -5,7 +5,85 @@ func curse_item(item_data: ItemParentData, player_index: int, turn_randomization
 	var ret = .curse_item(item_data, player_index, turn_randomization_off, min_modifier)
 	if already_cursed or not ret.is_cursed:
 		return ret
-	return Utils.foxlab_extra_curse_item(item_data, player_index, turn_randomization_off, min_modifier, ret, self)
+	return foxlab_extra_curse_item(item_data, player_index, turn_randomization_off, min_modifier, ret)
+
+func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn_randomization_off: bool, min_modifier: float, ret: ItemParentData):
+	var max_effect_modifier = ret.curse_factor
+	var new_effects = []
+	var effect_to_move = []
+	if item_data.my_id_hash in Utils.FOXLAB_STRUCT_WITH_EFFECTS:
+		var structure_effect = null
+		var extra_effects = []
+		for effect in ret.effects:
+			if effect is StructureEffect:
+				structure_effect = effect
+			elif not (effect is CharmEffect and effect.value2 == 0 and effect.value == 0):
+				extra_effects.append(effect)
+		if structure_effect:
+			structure_effect.effects = extra_effects
+	else:
+		for effect in ret.effects:
+			var effect_modifier = _get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
+			var override = false
+			var overriden_sign = Sign.POSITIVE
+			var id: String = effect.get_id()
+			var cskey: int = effect.custom_key_hash
+			match [id, cskey]:
+				[_, Keys.extra_item_in_crate_hash]:
+					if effect.key_hash == Utils.item_foxlab_wanted_hash:
+						max_effect_modifier = max(max_effect_modifier, effect_modifier)
+						var extra_effect = Effect.new()
+						extra_effect.key = "crate_chance"
+						extra_effect.key_hash = Keys.crate_chance_hash
+						extra_effect.value = Utils.FOXLAB_ENCHANTED_EYES_CRATE_CHANCE
+						extra_effect.effect_sign = Sign.POSITIVE
+						extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
+						ret.effects.insert(1, extra_effect)
+				["foxlab_get_rand_weapon", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var extra_effect = Effect.new()
+					extra_effect.key = "stat_luck"
+					extra_effect.key_hash = Keys.stat_luck_hash
+					extra_effect.value = treasure_map_luck
+					extra_effect.effect_sign = Sign.POSITIVE
+					extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
+					new_effects.append(extra_effect)
+				["foxlab_uv_lamp", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var boosted_stats = effect.stats.duplicate()
+					boosted_stats.max_range = int(ceil(effect.stats.max_range * (1.0 + effect_modifier)))
+					effect.stats = boosted_stats
+				[_, Utils.foxlab_heal_when_kill_nearby_hash]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					effect.value2 = _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
+				["foxlab_stat_query", _]:
+					effect_to_move.push_back(effect)
+				["foxlab_get_rand_character", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					effect.value2 = sqrt(effect.value2 * _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)) as int
+				["foxlab_copy_pets_structures_on_wave_start", _]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var extra_effect = Effect.new()
+					extra_effect.key = "free_rerolls"
+					extra_effect.key_hash = Keys.free_rerolls_hash
+					extra_effect.value = Utils.FOXLAB_FOX_FREE_REROLL
+					extra_effect.text_key = "EFFECT_FREE_SHOP_REROLL"
+					extra_effect.effect_sign = Sign.POSITIVE
+					extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
+					ret.effects.insert(1, extra_effect)
+
+	ret.curse_factor = max_effect_modifier
+
+	if not new_effects.empty():
+		var back = ret.effects.pop_back()
+		ret.effects.append_array(new_effects)
+		ret.effects.append(back)
+
+	if not effect_to_move.empty():
+		for effect in effect_to_move:
+			ret.effects.erase(effect)
+		ret.effects.append_array(effect_to_move)
+	return ret
 
 func update_consumable_to_get(base_consumable_data: ConsumableData) -> ConsumableData:
 	if base_consumable_data != null and base_consumable_data.my_id_hash == Keys.consumable_fruit_hash:

@@ -477,23 +477,7 @@ func foxlab_add_temp_weapon(weapon: WeaponData) -> void :
 
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	var prev_weapons = current_weapons.size()
-	if not ItemService.foxlab_is_android:
-		.on_weapon_wanted_to_break(weapon, gold_dropped)
-	else:
-		if current_weapons.has(weapon):
-			emit_signal("wanted_to_spawn_gold", gold_dropped, weapon.global_position, 300)
-			var dlc_data = Utils.foxlab_get_dlc("primal_dread")
-			if dlc_data != null:
-				var weapon_data: WeaponData = RunData.get_player_weapons_ref(player_index)[weapon.weapon_pos]
-				dlc_data.refund_weapon_meca_parts(weapon_data, player_index)
-			var _r = RunData.remove_weapon_by_index(weapon.weapon_pos, player_index)
-			current_weapons.erase(weapon)
-			for current_weapon in current_weapons:
-				if current_weapon.weapon_pos > weapon.weapon_pos:
-					current_weapon.weapon_pos -= 1
-			SoundManager.play(Utils.get_rand_element(WeaponService.breaking_sounds), - 15, 0.1, true)
-			Utils.foxlab_queue_free_weapon(weapon)
-			.on_weapon_wanted_to_break(weapon, gold_dropped)
+	.on_weapon_wanted_to_break(weapon, gold_dropped)
 
 	if current_weapons.size() < prev_weapons:
 		var get_item_on_break_effects = RunData.get_player_effect(Utils.foxlab_get_item_on_weapon_break_hash, player_index)

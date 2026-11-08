@@ -373,7 +373,7 @@ func foxlab_pickup_random_bosses() -> Array:
 	var all_bosses = foxlab_get_available_zone_units(true)
 	if all_bosses.empty():
 		return [ ]
-	if not ItemService.foxlab_is_android and ResourceLoader.exists(FOXLAB_EXTRA_BOSS_PATH):
+	if ResourceLoader.exists(FOXLAB_EXTRA_BOSS_PATH):
 		all_bosses.append({"scene": load(FOXLAB_EXTRA_BOSS_PATH)})
 
 	var bosses = all_bosses.duplicate()
@@ -597,84 +597,6 @@ func foxlab_get_dlc(dlc_id: String):
 	if dlc_id in ProgressData.active_update_data:
 		return ItemService.get_dlc_data_by_id(dlc_id)
 	return null
-
-func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn_randomization_off: bool, min_modifier: float, ret: ItemParentData, dlc_data):
-	var max_effect_modifier = ret.curse_factor
-	var new_effects = []
-	var effect_to_move = []
-	if item_data.my_id_hash in FOXLAB_STRUCT_WITH_EFFECTS:
-		var structure_effect = null
-		var extra_effects = []
-		for effect in ret.effects:
-			if effect is StructureEffect:
-				structure_effect = effect
-			elif not (effect is CharmEffect and effect.value2 == 0 and effect.value == 0):
-				extra_effects.append(effect)
-		if structure_effect:
-			structure_effect.effects = extra_effects
-	else:
-		for effect in ret.effects:
-			var effect_modifier = dlc_data._get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
-			var override = false
-			var overriden_sign = Sign.POSITIVE
-			var id: String = effect.get_id()
-			var cskey: int = effect.custom_key_hash
-			match [id, cskey]:
-				[_, Keys.extra_item_in_crate_hash]:
-					if effect.key_hash == Utils.item_foxlab_wanted_hash:
-						max_effect_modifier = max(max_effect_modifier, effect_modifier)
-						var extra_effect = Effect.new()
-						extra_effect.key = "crate_chance"
-						extra_effect.key_hash = Keys.crate_chance_hash
-						extra_effect.value = FOXLAB_ENCHANTED_EYES_CRATE_CHANCE
-						extra_effect.effect_sign = Sign.POSITIVE
-						extra_effect.value = dlc_data._boost_effect_value_positively(extra_effect, effect_modifier)
-						ret.effects.insert(1, extra_effect)
-				["foxlab_get_rand_weapon", _]:
-					max_effect_modifier = max(max_effect_modifier, effect_modifier)
-					var extra_effect = Effect.new()
-					extra_effect.key = "stat_luck"
-					extra_effect.key_hash = Keys.stat_luck_hash
-					extra_effect.value = dlc_data.treasure_map_luck
-					extra_effect.effect_sign = Sign.POSITIVE
-					extra_effect.value = dlc_data._boost_effect_value_positively(extra_effect, effect_modifier)
-					new_effects.append(extra_effect)
-				["foxlab_uv_lamp", _]:
-					max_effect_modifier = max(max_effect_modifier, effect_modifier)
-					var boosted_stats = effect.stats.duplicate()
-					boosted_stats.max_range = int(ceil(effect.stats.max_range * (1.0 + effect_modifier)))
-					effect.stats = boosted_stats
-				[_, Utils.foxlab_heal_when_kill_nearby_hash]:
-					max_effect_modifier = max(max_effect_modifier, effect_modifier)
-					effect.value2 = dlc_data._boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
-				["foxlab_stat_query", _]:
-					effect_to_move.push_back(effect)
-				["foxlab_get_rand_character", _]:
-					max_effect_modifier = max(max_effect_modifier, effect_modifier)
-					effect.value2 = sqrt(effect.value2 * dlc_data._boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)) as int
-				["foxlab_copy_pets_structures_on_wave_start", _]:
-					max_effect_modifier = max(max_effect_modifier, effect_modifier)
-					var extra_effect = Effect.new()
-					extra_effect.key = "free_rerolls"
-					extra_effect.key_hash = Keys.free_rerolls_hash
-					extra_effect.value = FOXLAB_FOX_FREE_REROLL
-					extra_effect.text_key = "EFFECT_FREE_SHOP_REROLL"
-					extra_effect.effect_sign = Sign.POSITIVE
-					extra_effect.value = dlc_data._boost_effect_value_positively(extra_effect, effect_modifier)
-					ret.effects.insert(1, extra_effect)
-
-	ret.curse_factor = max_effect_modifier
-
-	if not new_effects.empty():
-		var back = ret.effects.pop_back()
-		ret.effects.append_array(new_effects)
-		ret.effects.append(back)
-
-	if not effect_to_move.empty():
-		for effect in effect_to_move:
-			ret.effects.erase(effect)
-		ret.effects.append_array(effect_to_move)
-	return ret
 
 func foxlab_fit_item_icon_scale(texture: Texture, base_scale: float = 0.5) -> Vector2:
 	var standard_icon_size = ItemService.get_characters()[0].icon.get_size()

@@ -468,15 +468,11 @@ func foxlab_unapply_effects_array(effects: Array, player_index: int) -> void :
 func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	if not _foxlab_backpack_char_effects_dirty[player_index]:
 		return foxlab_backpack_char_effects[player_index]
-	var dlc_data = Utils.foxlab_get_dlc("primal_dread")
 	var effects: Array = []
 	for item in players_data[player_index].items:
 		if item is CharacterData:
 			for effect in item.effects:
-				if effect.storage_method == Effect.StorageMethod.REPLACE:
-					continue
-				# 不传player_index：只按效果本身判定，避免缓存列表随波次状态失效
-				if dlc_data == null or not dlc_data.can_effect_be_copied_by_mutation(effect):
+				if effect.storage_method == Effect.StorageMethod.REPLACE or effect.key_hash == Keys.next_level_xp_needed_hash:
 					continue
 				effects.append(effect)
 	foxlab_backpack_char_effects[player_index] = effects

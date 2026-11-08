@@ -55,6 +55,8 @@ const PC_EXTENSION_SCRIPTS = [
 	"evil_mob.gd",
 	"weapon.gd",
 	"enemy.gd",
+	"railgun.gd",
+	"builder_turret.gd",
 ]
 
 

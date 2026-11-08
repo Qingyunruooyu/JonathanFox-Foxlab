@@ -7,6 +7,7 @@ var _foxlab_weapon_class_explode_args = WeaponServiceInitStatsArgs.new()
 
 ### 扩展 ###
 func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service, is_structure= false, is_special_spawn= false, is_pet= false) -> WeaponStats:
+	args = foxlab_merge_burning_effects(args)
 	args = foxlab_add_weapon_class_explode_stats(from_stats, player_index, args)
 	var new_stats = .init_base_stats(from_stats, player_index, args, is_structure, is_special_spawn, is_pet)
 	# 命中率超过100%反而会降低命中率，不合理
@@ -135,6 +136,50 @@ func init_burning_data(base_burning_data: BurningData, player_index: int, is_str
 	return new_burning_data
 
 ### 功能 ###
+func foxlab_merge_burning_effects(args: WeaponServiceInitStatsArgs) -> WeaponServiceInitStatsArgs:
+	var first_index = -1
+	var extra_effects = []
+	for i in range(args.effects.size()):
+		if args.effects[i] is BurningEffect:
+			if first_index == -1:
+				first_index = i
+			else:
+				extra_effects.append(args.effects[i])
+	if extra_effects.empty():
+		return args
+
+	var new_args = WeaponServiceInitStatsArgs.new()
+	new_args.sets = args.sets
+	new_args.from = args.from
+	new_args.effects = args.effects.duplicate()
+	var merged_effect = args.effects[first_index].duplicate()
+	merged_effect.burning_data = args.effects[first_index].burning_data.duplicate()
+	for extra_effect in extra_effects:
+		merged_effect.burning_data.merge(extra_effect.burning_data)
+	new_args.effects[first_index] = merged_effect
+	for i in range(new_args.effects.size() - 1, -1, -1):
+		if i != first_index and new_args.effects[i] is BurningEffect:
+			new_args.effects.remove(i)
+	return new_args
+
+func foxlab_merge_projectiles_on_hit(effects: Array, player_index: int, init_first_stats: bool) -> Array:
+	var on_hit_count = 0
+	var first_stats = null
+	var auto_target = false
+	var on_hit_args = WeaponServiceInitStatsArgs.new()
+	for effect in effects:
+		if effect is ProjectilesOnHitEffect:
+			if first_stats == null:
+				if init_first_stats:
+					first_stats = init_ranged_stats(effect.weapon_stats, player_index, true, on_hit_args)
+				else:
+					first_stats = effect.weapon_stats
+			auto_target = auto_target or effect.auto_target_enemy
+			on_hit_count += effect.value
+	if first_stats == null:
+		return []
+	return [on_hit_count, first_stats, auto_target]
+
 func foxlab_connect_signal_for_projectile(from: Node, projectile: Node):
 	var _killed_sthing = projectile._hitbox.connect("killed_something", from, "on_killed_something", [projectile._hitbox])
 	projectile.killed_something_connected = true

@@ -9,6 +9,7 @@ func queue_free():
 func init_stats(at_wave_begin: bool = true) -> void:
 	.init_stats(at_wave_begin)
 	_foxlab_every_x_combo_cache.clear()
+	_hitbox.projectiles_on_hit = WeaponService.foxlab_merge_projectiles_on_hit(effects, player_index, true)
 
 func shoot() -> void:
 	var shot_nb = _nb_shots_taken + 1

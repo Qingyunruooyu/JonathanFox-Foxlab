@@ -25,7 +25,7 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"foxlab_uv_lamp",
 	"foxlab_weapon_class_price",
 	"foxlab_weapon_gain_stat_for_every_stat",
-	"foxlab_weapon_slow_on_hit",
+	"foxlab_weapon_slow_on_hit"
 ]
 
 var _foxlab_mutation_rules_initialized = false

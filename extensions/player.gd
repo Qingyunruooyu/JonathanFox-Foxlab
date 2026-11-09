@@ -499,6 +499,8 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 		ret = [0, 0, false]
 	else:
 		ret = .take_damage(value, args)
+	if dead or cleaning_up:
+		return ret
 	if ret[2]:
 		foxlab_one_shot_on_dodge(args)
 	if ret[1] > 0:

@@ -54,8 +54,9 @@ func _on_range_enemy_removed(enemy: Node) -> void:
 	if not _enemies_in_range.has(enemy):
 		return
 	_enemies_in_range.erase(enemy)
-	enemy.disconnect("died", self, "_on_range_enemy_died")
-	enemy.disconnect("tree_exiting", self, "_on_range_enemy_removed")
+	if is_instance_valid(enemy):
+		enemy.disconnect("died", self, "_on_range_enemy_died")
+		enemy.disconnect("tree_exiting", self, "_on_range_enemy_removed")
 	_update_overload()
 
 func _on_OverloadTimer_timeout() -> void:
@@ -88,9 +89,11 @@ func die(args = Utils.default_die_args) -> void :
 	_overload_timer.stop()
 	for enemy in _enemies_in_range.keys():
 		_on_range_enemy_removed(enemy)
-	original.disconnect("died", self, "_on_original_died")
-	original.disconnect("tree_exiting", self, "_on_original_tree_exiting")
-	_entity_spawner_ref.targetable_pets.erase(self)
-	if not args.cleaning_up and not _entity_spawner_ref._cleaning_up:
-		emit_signal("died", self, args)
+	if is_instance_valid(original):
+		original.disconnect("died", self, "_on_original_died")
+		original.disconnect("tree_exiting", self, "_on_original_tree_exiting")
+	if is_instance_valid(_entity_spawner_ref):
+		_entity_spawner_ref.targetable_pets.erase(self)
+		if not args.cleaning_up and not _entity_spawner_ref._cleaning_up:
+			emit_signal("died", self, args)
 	queue_free()

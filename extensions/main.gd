@@ -362,8 +362,17 @@ func _on_enemy_took_damage_foxlab(enemy, value: int, _knockback_direction: Vecto
 
 func _on_neutral_took_damage_foxlab(neutral, _value: int, _knockback_direction: Vector2, _is_crit: bool, _is_dodge: bool, \
 	_is_protected: bool, _armor_did_something: bool, args: TakeDamageArgs, _hit_type: int, _is_one_shot: bool) -> void :
-	if neutral._pending_die and args.from_player_index >= 0 and args.from_player_index < RunData.get_player_count():
-		_foxlab_process_frozen_unit_kill(neutral, args.from_player_index)
+	if args.from_player_index >= 0 and args.from_player_index < RunData.get_player_count():
+		neutral._die_args_unit.from = args.from
+		neutral._die_args_unit.killed_by_player_index = args.from_player_index
+
+func _on_neutral_died(neutral, args: Entity.DieArgs) -> void :
+	._on_neutral_died(neutral, args)
+	if args.cleaning_up or _cleaning_up:
+		return
+	var player_index: int = neutral._die_args_unit.killed_by_player_index
+	if player_index >= 0 and player_index < RunData.get_player_count():
+		_foxlab_process_frozen_unit_kill(neutral, player_index)
 
 func foxlab_process_landmine_on_death(enemy, args: TakeDamageArgs):
 	for _i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
@@ -945,6 +954,8 @@ func _on_WaveTimer_timeout() -> void :
 		# 先移除临时武器，避免排险者的异变会合入临时武器
 		_players[player_index].foxlab_remove_temp_weapon()
 
+		if _players[player_index].dead:
+			continue
 		var gain_effects = RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index)
 		if !(gain_effects.empty() or RunData.foxlab_nb_died_scapegoat[player_index]):
 			for gain_effect in gain_effects:
@@ -1178,8 +1189,9 @@ func clean_up_room() -> void :
 		if timer is Timer:
 			timer.stop()
 	for fox in _foxlab_foxes:
-		if is_instance_valid(fox):
+		if is_instance_valid(fox) and not fox._ending:
 			fox.die(_entity_spawner._die_args_spawner)
+	_foxlab_foxes.clear()
 
 func _on_player_died(player, args) -> void:
 	RunData.foxlab_killed_by_textures[player.player_index] = null

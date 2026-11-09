@@ -409,7 +409,9 @@ func _foxlab_record_spawning_weapons():
 
 ####### 扩展 ###########
 func can_item_be_mutated(item) -> bool:
-	if not item.can_be_looted and "_foxlab_" in item.my_id:
+	if (not item.can_be_looted and "_foxlab_" in item.my_id) or \
+		item.my_id_hash == Utils.item_foxlab_mask_hash or \
+		item.my_id_hash == Utils.item_foxlab_buddhas_hand_hash:
 		return false
 	return .can_item_be_mutated(item)
 

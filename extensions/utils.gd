@@ -368,14 +368,10 @@ func foxlab_pickup_random_group_data(zone_id: String = "") -> Array:
 				ret_groups.append(get_rand_element(groups))
 	return ret_groups
 
-const FOXLAB_EXTRA_BOSS_PATH = "res://mods-unpacked/Alexandre-BeyondDanger/content/enemies/boss/architect/architect.tscn"
 func foxlab_pickup_random_bosses() -> Array:
 	var all_bosses = foxlab_get_available_zone_units(true)
 	if all_bosses.empty():
 		return [ ]
-	if ResourceLoader.exists(FOXLAB_EXTRA_BOSS_PATH):
-		all_bosses.append({"scene": load(FOXLAB_EXTRA_BOSS_PATH)})
-
 	var bosses = all_bosses.duplicate()
 	if bosses.size() != FOXLAB_BOSS_SPAWN_NUM:
 		if bosses.size() > FOXLAB_BOSS_SPAWN_NUM:

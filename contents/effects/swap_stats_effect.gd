@@ -5,14 +5,11 @@ var foxlab_black_list_stats = [Keys.generate_hash("stat_capybara_enemies_killed"
 static func get_id() -> String:
 	return "foxlab_swap_stats"
 
-# 跳过修改减少100%的属性和没有修改的主属性
+# 跳过修改减少100%的属性
 func is_ignored_stats(effects, stat_hash, stat_gain_hash):
 	if stat_hash in foxlab_black_list_stats:
 		return true
-	if effects.has(stat_gain_hash): #有修改
-		if effects[stat_gain_hash] == -100: #但修改减少100%
-			return true
-	elif stat_hash in Utils.foxlab_primary_stat_keys: #没有修改，但是是主属性
+	if effects.has(stat_gain_hash) and effects[stat_gain_hash] == -100:
 		return true
 	return false
 

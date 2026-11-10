@@ -764,3 +764,8 @@ func convert_remainder(stats: Array, player_index:int):
 		else:
 			RunData.remove_stat(stat_name, actual_stat_removed, player_index)
 
+# 不用 is BuilderTurret：解析期引用全局类会提前加载脚本链，且被扩展重绑定后判定失效；
+# projectiles_on_hit 成员为 builder_turret 独有，get() 对缺失成员返回 null 不会报错
+func foxlab_is_builder_turret(node) -> bool:
+	return node != null and node.get("projectiles_on_hit") != null
+

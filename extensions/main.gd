@@ -15,6 +15,7 @@ var foxlab_bosses_this_wave = [0, 0, 0, 0]
 # 智械危机：构筑物暴击击杀的触发冷却（one_shot Timer，类似 lifesteal_timer）
 var foxlab_struct_crit_cd_timers = [null, null, null, null]
 var _foxlab_builder_turret_tracking_hash = [null, null, null, null]
+var _foxlab_builder_turrets = [[], [], [], []]
 
 const FOXLAB_STAT_MOD_CHANCE:float = 0.2
 var foxlab_mutate_boost = [null, null, null, null]
@@ -418,7 +419,7 @@ func foxlab_is_exploding_turret_hitbox(hitbox, player_index: int) -> bool:
 	if _foxlab_builder_turret_tracking_hash[player_index] == null:
 		_foxlab_builder_turret_tracking_hash = [Keys.empty_hash, Keys.empty_hash, Keys.empty_hash, Keys.empty_hash]
 		for structure in _entity_spawner.structures:
-			if structure.has_method("on_bonus_gold_converted"):
+			if Utils.foxlab_is_builder_turret(structure):
 				for effect in structure.effects:
 					if effect is ExplodingEffect:
 						_foxlab_builder_turret_tracking_hash[structure.player_index] = structure._damage_tracking_key_hash
@@ -804,6 +805,8 @@ func _foxlab_remove_turret_outline(turret: Node) -> void:
 
 func _on_foxlab_structure_died(_structure, _die_args) -> void:
 	RunData.foxlab_current_living_structures -= 1
+	for turret_list in _foxlab_builder_turrets:
+		turret_list.erase(_structure)
 
 func _on_foxlab_EndWaveTimer_timeout() -> void :
 	if not _is_wave_failed:
@@ -1189,6 +1192,19 @@ func _on_EntitySpawner_structure_spawned(structure) -> void :
 func _on_EntitySpawner_structure_respawned(structure):
 	._on_EntitySpawner_structure_respawned(structure)
 	RunData.foxlab_current_living_structures += 1
+	if Utils.foxlab_is_builder_turret(structure) and structure.player_index >= 0 and structure.player_index < _foxlab_builder_turrets.size():
+		var turret_list = _foxlab_builder_turrets[structure.player_index]
+		if not structure in turret_list:
+			turret_list.append(structure)
+
+func _foxlab_refresh_builder_turret_on_hit(player_index: int) -> void:
+	var builder_turrets = _foxlab_builder_turrets[player_index]
+	for i in range(builder_turrets.size() - 1, -1, -1):
+		var turret = builder_turrets[i]
+		if not is_instance_valid(turret) or turret.dead:
+			builder_turrets.remove(i)
+			continue
+		turret.set("projectiles_on_hit", WeaponService.foxlab_merge_projectiles_on_hit(turret.effects, player_index, true))
 
 func on_upgrade_selected(upgrade_data: UpgradeData, upgrade) -> void :
 	if upgrade_data.has_meta("foxlab_item"):
@@ -1239,6 +1255,7 @@ func on_stats_updated(player_index: int) -> void :
 	_foxlab_proj_on_death_stat_caches[player_index] = null
 	_players[player_index].foxlab_burning_data = null
 	_foxlab_explode_on_burn_stats[player_index] = null
+	_foxlab_refresh_builder_turret_on_hit(player_index)
 
 # 扩展 entity_birth.gd 兼容性不好（The BOSS rush）
 func add_birth(instance: EntityBirth) -> void :

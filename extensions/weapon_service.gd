@@ -100,7 +100,7 @@ func manage_special_spawn_projectile(
 	args = _default_spawn_projectile_args
 ) -> Node:
 	var projectile = .manage_special_spawn_projectile(entity_from, weapon_stats, direction, auto_target_enemy, entity_spawner_ref, from, args)
-	if (from is Weapon or from.has_method("on_bonus_gold_converted")) and from.effects.size() > 0 and not projectile.killed_something_connected:
+	if (from is Weapon or Utils.foxlab_is_builder_turret(from)) and from.effects.size() > 0 and not projectile.killed_something_connected:
 		call_deferred("foxlab_connect_signal_for_projectile", from, projectile)
 	return projectile
 
@@ -260,10 +260,17 @@ func foxlab_apply_scaling_stat_effects(extra_scaling_stat: Array, scaling_stats:
 			new_scaling_stats.push_back([scaling_stat_hash, scaling_stat_value])
 	return new_scaling_stats
 
-# 同炮同时命中多个X时的组合快照：命中组的sub_effects全部apply后一次构建，spread计全部命中组的投射物增量
-# matched来自init时构建的字典键，波内玩家池可能已变化，组缺失时跳过该组
 func foxlab_build_combined_every_x_stats(weapon, matched) -> RangedWeaponStats:
-	var groups = foxlab_group_every_x_effects(weapon.player_index, weapon.effects)
+	var args = WeaponServiceInitStatsArgs.new()
+	args.sets = weapon.weapon_sets
+	args.effects = weapon.effects
+	return foxlab_build_combined_every_x(weapon.player_index, weapon.effects, matched, weapon.stats, args, weapon)
+
+func foxlab_build_combined_every_x_turret_stats(turret, matched) -> RangedWeaponStats:
+	return foxlab_build_combined_every_x(turret.player_index, turret.effects, matched, turret.base_stats, turret.get("_init_stats_args_build"), turret)
+
+func foxlab_build_combined_every_x(player_index: int, effects: Array, matched, from_stats, args, from_node) -> RangedWeaponStats:
+	var groups = foxlab_group_every_x_effects(player_index, effects)
 	var matched_effects = []
 	for x in matched:
 		if groups.has(x):
@@ -272,17 +279,15 @@ func foxlab_build_combined_every_x_stats(weapon, matched) -> RangedWeaponStats:
 	var nb_projectile_effect = 0
 	for effect in matched_effects:
 		for sub_effect in effect.sub_effects:
-			sub_effect.apply(weapon.player_index)
+			sub_effect.apply(player_index)
 			if sub_effect.key_hash == Keys.projectiles_hash:
 				nb_projectile_effect += sub_effect.value
 
-	var args = WeaponServiceInitStatsArgs.new()
-	args.sets = weapon.weapon_sets
-	args.effects = weapon.effects
-	var combined: RangedWeaponStats = init_ranged_stats(weapon.stats, weapon.player_index, false, args)
+	var combined: RangedWeaponStats = init_ranged_stats(from_stats, player_index, false, args)
+	combined.burning_data.from = from_node
 	combined.projectile_spread += nb_projectile_effect * 0.15
 
 	for effect in matched_effects:
 		for sub_effect in effect.sub_effects:
-			sub_effect.unapply(weapon.player_index)
+			sub_effect.unapply(player_index)
 	return combined

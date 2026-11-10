@@ -418,7 +418,7 @@ func foxlab_is_exploding_turret_hitbox(hitbox, player_index: int) -> bool:
 	if _foxlab_builder_turret_tracking_hash[player_index] == null:
 		_foxlab_builder_turret_tracking_hash = [Keys.empty_hash, Keys.empty_hash, Keys.empty_hash, Keys.empty_hash]
 		for structure in _entity_spawner.structures:
-			if structure is BuilderTurret:
+			if structure.has_method("on_bonus_gold_converted"):
 				for effect in structure.effects:
 					if effect is ExplodingEffect:
 						_foxlab_builder_turret_tracking_hash[structure.player_index] = structure._damage_tracking_key_hash

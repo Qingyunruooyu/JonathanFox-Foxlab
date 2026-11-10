@@ -100,7 +100,7 @@ func manage_special_spawn_projectile(
 	args = _default_spawn_projectile_args
 ) -> Node:
 	var projectile = .manage_special_spawn_projectile(entity_from, weapon_stats, direction, auto_target_enemy, entity_spawner_ref, from, args)
-	if (from is Weapon or from is BuilderTurret) and from.effects.size() > 0 and not projectile.killed_something_connected:
+	if (from is Weapon or from.has_method("on_bonus_gold_converted")) and from.effects.size() > 0 and not projectile.killed_something_connected:
 		call_deferred("foxlab_connect_signal_for_projectile", from, projectile)
 	return projectile
 

@@ -1,10 +1,14 @@
 extends "res://items/global/effect.gd"
 
+var foxlab_black_list_stats = [Keys.generate_hash("stat_capybara_enemies_killed")]
+
 static func get_id() -> String:
 	return "foxlab_swap_stats"
 
 # 跳过修改减少100%的属性和没有修改的主属性
-static func is_ignored_stats(effects, stat_hash, stat_gain_hash):
+func is_ignored_stats(effects, stat_hash, stat_gain_hash):
+	if stat_hash in foxlab_black_list_stats:
+		return true
 	if effects.has(stat_gain_hash): #有修改
 		if effects[stat_gain_hash] == -100: #但修改减少100%
 			return true

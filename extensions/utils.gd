@@ -309,6 +309,7 @@ func _foxlab_init_primary_stat_gain_map():
 		var gain_stat_hash = Keys.generate_hash(gain_stat)
 		if gain_stat_hash in effects:
 			foxlab_primary_stat_gain_map[gain_stat_hash] = stat
+			# print("gain stat ", gain_stat)
 
 func foxlab_get_colored_stat_str(stat_hash: int, player_index: int = RunData.DUMMY_PLAYER_INDEX) -> String:
 	var stat_data = ItemService.get_stat(stat_hash)
@@ -555,7 +556,7 @@ func foxlab_get_stats_in_container():
 				var stats_added = {}
 				var stats = foxlab_stats_in_container.back()
 				for stat in container.get_children():
-					if not stat.key_hash in foxlab_stats_invisible_in_container and not stat.key_hash in stats_added:
+					if "key_hash" in stat and not stat.key_hash in foxlab_stats_invisible_in_container and not stat.key_hash in stats_added:
 						stats.append(stat.key_hash)
 						stats_added[stat.key_hash] = 1
 						# print(Keys.hash_to_string[stat.key_hash], " visible: ", stat.visible)
@@ -637,6 +638,8 @@ func reset_stat_keys() -> void :
 		for stat in update_data.item_set.stats:
 			if stat.is_primary_stat and not foxlab_primary_stat_keys.has(stat.stat_hash):
 				foxlab_primary_stat_keys.append(stat.stat_hash)
+				print("stat: ", Keys.hash_to_string[stat.stat_hash])
+	print("======end======")
 	foxlab_clear_wanted_caches()
 	foxlab_evil_mob_units.clear()
 	foxlab_exploding_turret_tracking_keys = null

@@ -76,6 +76,8 @@ func _init():
 #1.2.0.1的base_shop.gd用":= RunData.get_next_wave()"做类型推导，装扩展阶段RunData等autoload尚未实例化，
 #解析器无法得知返回类型，基类解析失败会导致extensions/base_shop.gd装不上。vanilla自身能解析时不介入
 func _foxlab_overwrite_base_shop():
+	if CrashReporter.VERSION != FOXLAB_BASE_SHOP_SNAPSHOT_VERSION:
+		return
 	var vanilla_shop = load("res://ui/menus/shop/base_shop.gd")
 	if vanilla_shop != null and vanilla_shop.can_instance():
 		return
@@ -83,8 +85,6 @@ func _foxlab_overwrite_base_shop():
 	foxlab_base_shop_overwrite.take_over_path("res://ui/menus/shop/base_shop.gd")
 
 func _ready():
-	if foxlab_base_shop_overwrite != null and CrashReporter.VERSION != FOXLAB_BASE_SHOP_SNAPSHOT_VERSION:
-		push_warning("FoxLab: base_shop overwrite is built for v%s but game is v%s, update the mod if the shop misbehaves" % [FOXLAB_BASE_SHOP_SNAPSHOT_VERSION, CrashReporter.VERSION])
 	call_deferred("_foxlab_init_configs")
 
 func is_transform_vanilla_only():

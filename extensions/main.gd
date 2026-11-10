@@ -51,6 +51,7 @@ func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
 	_err = RunData.connect("foxlab_item_added", self, "_on_foxlab_item_added")
+	_err = RunData.connect("foxlab_gear_recovered", self, "_on_foxlab_gear_recovered")
 	_err = _end_wave_timer.connect("timeout", self, "_on_foxlab_EndWaveTimer_timeout")
 
 	foxlab_receive_item_stat_ready()
@@ -591,6 +592,18 @@ func _on_foxlab_sec_char_changed(new_characters, player_index):
 		_floating_text_manager.display("", pos, Color.white, icon, _floating_text_manager.duration * 2, true,  _floating_text_manager.direction, false, icon_scale)
 		pos -= Vector2(30, 30)
 	SoundManager2D.play(Utils.get_rand_element(_floating_text_manager.stat_pos_sounds), pos, -10)
+
+func _on_foxlab_gear_recovered(item_data: Resource, player_index: int) -> void:
+	if not RunData.wave_in_progress or player_index >= _players.size():
+		return
+	var player = _players[player_index]
+	if not is_instance_valid(player) or player.dead or player.cleaning_up:
+		return
+	if item_data is WeaponData:
+		_on_foxlab_weapon_added(item_data, player_index)
+	else:
+		foxlab_after_add_item({}, player_index)
+		_on_foxlab_item_added(item_data, 1, player_index)
 
 #中途添加武器相关（佛手）
 func _on_foxlab_weapon_added(new_weapon: WeaponData, player_index: int):

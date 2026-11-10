@@ -56,6 +56,10 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 				[_, Utils.foxlab_heal_when_kill_nearby_hash]:
 					max_effect_modifier = max(max_effect_modifier, effect_modifier)
 					effect.value2 = _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
+				[_, Utils.foxlab_recover_lost_item_hash]:
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					effect.value = Utils.randi_range(13, 18)
+					effect.value2 = _boost_effect_value_positively(effect, effect_modifier, override, overriden_sign, true)
 				["foxlab_stat_query", _]:
 					effect_to_move.push_back(effect)
 				["foxlab_get_rand_character", _]:

@@ -56,17 +56,22 @@ func _on_foxlab_item_added(new_items, player_index):
 	SoundManager.play(foxlab_mask_success_sound, - 2, 0.2, true)
 	if pos[0] == null or pos[1] == null:
 		return
-	var offset = Vector2(-30, 30)
 	var popup_pos = pos[0]
 	var direction: Vector2
-	var color = Color(ProgressData.settings.color_positive)
 	if RunData.is_coop_run:
 		popup_pos.x += 35
 		direction = Vector2(0, - 30)
 	else:
 		popup_pos.x += pos[1]
 		direction = Vector2(25, - 100)
-	for item in new_items:
+	foxlab_display_items_added(new_items, popup_pos, direction, false)
+
+func foxlab_display_items_added(items: Array, popup_pos: Vector2, direction: Vector2, play_sound: bool = true) -> void:
+	if play_sound:
+		SoundManager.play(foxlab_mask_success_sound, -2, 0.2, true)
+	var offset = Vector2(-30, 30)
+	var color = Color(ProgressData.settings.color_positive)
+	for item in items:
 		var icon = item.icon
 		var icon_scale = Utils.foxlab_fit_item_icon_scale(item.icon)
 		_floating_text_manager.display("+1", popup_pos, Utils.CURSE_COLOR if item.is_cursed else (Utils.get_evolution_color(1) if item.is_meca else color), icon, _floating_text_manager.duration * 2, true, direction, false, icon_scale)
@@ -78,6 +83,11 @@ func _on_foxlab_item_gear_changed(player_index):
 	var player_gear_container = _get_gear_container(player_index)
 	var items = RunData.get_player_items_ref(player_index)
 	player_gear_container.call_deferred("set_items_data", items)
+
+func _on_foxlab_gear_recovered(item_data, player_index):
+	var rect = _get_gear_container(player_index).get_global_rect()
+	var popup_pos = rect.position + Vector2(rect.size.x * 0.5, 20) + Vector2(Utils.randi_range(-15, 15), 0)
+	foxlab_display_items_added([item_data], popup_pos, Vector2(0, -30))
 
 func _on_foxlab_weapon_gear_changed(player_index):
 	var player_gear_container = _get_gear_container(player_index)
@@ -179,6 +189,8 @@ func _ready() -> void :
 		var _err = RunData.connect("foxlab_item_gear_changed", self, "_on_foxlab_item_gear_changed")
 	if not RunData.is_connected("foxlab_weapon_gear_changed", self, "_on_foxlab_weapon_gear_changed"):
 		var _err = RunData.connect("foxlab_weapon_gear_changed", self, "_on_foxlab_weapon_gear_changed")
+	if not RunData.is_connected("foxlab_gear_recovered", self, "_on_foxlab_gear_recovered"):
+		var _err = RunData.connect("foxlab_gear_recovered", self, "_on_foxlab_gear_recovered")
 
 	for player_index in RunData.get_player_count():
 		# 新按钮连接信号

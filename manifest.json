@@ -1,56 +1,60 @@
 {
-	"name": "FoxLab",
-	"namespace": "JonathanFox",
-	"version_number": "3.2.0",
-	"description": "[font=res://resources/fonts/actual/base/font_22.tres][color=#fdba74]狐狸实验室 · FoxLab[/color][/font]\n疯狂的土豆机制合集。\n• 新增 53 位[color=#6ee7a8]角色[/color]、17 件可掉落[color=#fdba74]道具[/color]，以及通缉令等[color=#d8b4fe]特殊道具[/color]。\n• 特色机制：[color=#67e8f9]属性数值移动[/color]、[color=#93c5fd]觉醒技能[/color]、[color=#fde047]敌人伪装[/color]、[color=#fca5a5]复合武器[/color]、[color=#d8b4fe]敌人种子[/color]、[color=#6ee7a8]变身面具[/color]、[color=#c4b5fd]敌人蜕变[/color]等等。\nA collection of crazy potato mechanics.\n• Adds 53 [color=#6ee7a8]characters[/color] and 17 droppable [color=#fdba74]items[/color], plus [color=#d8b4fe]special items[/color] such as wanted notices.\n• New mechanics: [color=#67e8f9]stat digit movement[/color], [color=#93c5fd]awakened skills[/color], [color=#fde047]enemy disguises[/color], [color=#fca5a5]hybrid weapons[/color], [color=#d8b4fe]enemy seeds[/color], [color=#6ee7a8]transformation masks[/color], [color=#c4b5fd]enemy metamorphosis[/color] and more.\n",
-	"website_url": "https://github.com/Qingyunruooyu/JonathanFox-Foxlab/",
-	"dependencies": [],
-	"extra": {
-		"godot": {
-			"incompatibilities": [],
-			"authors": [ "JonathanFox" ],
-			"optional_dependencies": [
-				"dami-ModOptions"
-			],
-			"tags": [
-				"characters",
-				"items"
-			],
-			"compatible_mod_loader_version": "6.2.2",
-			"compatible_game_version": [ "1.2.0.2" ],
-			"config_defaults": {},
-			"config_schema": {
-				"title": "foxlab_config",
-				"description": "Config for FoxLab",
-				"type": "object",
-				"properties": {
-					"FOXLAB_TRANSFORM_VANILLA_ONLY": {
-						"type": "boolean",
-						"title": "ITEM_FOXLAB_MASK",
-						"tooltip": "FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP",
-						"default": false
-					},
-					"FOXLAB_DISABLE_ITEMS": {
-						"type": "boolean",
-						"title": "ITEM",
-						"tooltip": "FOXLAB_DISABLE_ITEMS_TOOLTIP",
-						"default": false
-					},
-				"FOXLAB_DISABLE_CHARACTERS": {
-					"type": "boolean",
-					"title": "CHARACTER",
-					"tooltip": "FOXLAB_DISABLE_CHARACTERS_TOOLTIP",
-					"default": false
-				},
-				"FOXLAB_PIN_CHARACTERS": {
-					"type": "boolean",
-					"title": "CHARACTER",
-					"tooltip": "FOXLAB_PIN_CHARACTERS_TOOLTIP",
-					"default": false
-				}
-				}
-			},
-			"description_rich": "[font=res://resources/fonts/actual/base/font_22.tres][color=#fdba74]狐狸实验室 · FoxLab[/color][/font]\n疯狂的土豆机制合集。\n• 新增 53 位[color=#6ee7a8]角色[/color]、17 件可掉落[color=#fdba74]道具[/color]，以及通缉令等[color=#d8b4fe]特殊道具[/color]。\n• 特色机制：[color=#67e8f9]属性数值移动[/color]、[color=#93c5fd]觉醒技能[/color]、[color=#fde047]敌人伪装[/color]、[color=#fca5a5]复合武器[/color]、[color=#d8b4fe]敌人种子[/color]、[color=#6ee7a8]变身面具[/color]、[color=#c4b5fd]敌人蜕变[/color]等等。\nA collection of crazy potato mechanics.\n• Adds 53 [color=#6ee7a8]characters[/color] and 17 droppable [color=#fdba74]items[/color], plus [color=#d8b4fe]special items[/color] such as wanted notices.\n• New mechanics: [color=#67e8f9]stat digit movement[/color], [color=#93c5fd]awakened skills[/color], [color=#fde047]enemy disguises[/color], [color=#fca5a5]hybrid weapons[/color], [color=#d8b4fe]enemy seeds[/color], [color=#6ee7a8]transformation masks[/color], [color=#c4b5fd]enemy metamorphosis[/color] and more.\n"
-		}
-	}
+  "name": "FoxLab",
+  "namespace": "JonathanFox",
+  "version_number": "3.2.0",
+  "description": "[font=res://resources/fonts/actual/base/font_22.tres][color=#fdba74]狐狸实验室 · FoxLab[/color][/font]\n疯狂的土豆机制合集。\n• 新增 53 位[color=#6ee7a8]角色[/color]、18 件可掉落[color=#fdba74]道具[/color]，以及通缉令等[color=#d8b4fe]特殊道具[/color]。\n• 特色机制：[color=#67e8f9]属性数值移动[/color]、[color=#93c5fd]觉醒技能[/color]、[color=#fde047]敌人伪装[/color]、[color=#fca5a5]复合武器[/color]、[color=#d8b4fe]敌人种子[/color]、[color=#6ee7a8]变身面具[/color]、[color=#c4b5fd]敌人蜕变[/color]等等。\nA collection of crazy potato mechanics.\n• Adds 53 [color=#6ee7a8]characters[/color] and 18 droppable [color=#fdba74]items[/color], plus [color=#d8b4fe]special items[/color] such as wanted notices.\n• New mechanics: [color=#67e8f9]stat digit movement[/color], [color=#93c5fd]awakened skills[/color], [color=#fde047]enemy disguises[/color], [color=#fca5a5]hybrid weapons[/color], [color=#d8b4fe]enemy seeds[/color], [color=#6ee7a8]transformation masks[/color], [color=#c4b5fd]enemy metamorphosis[/color] and more.\n",
+  "website_url": "https://github.com/Qingyunruooyu/JonathanFox-Foxlab/",
+  "dependencies": [],
+  "extra": {
+    "godot": {
+      "incompatibilities": [],
+      "authors": [
+        "JonathanFox"
+      ],
+      "optional_dependencies": [
+        "dami-ModOptions"
+      ],
+      "tags": [
+        "characters",
+        "items"
+      ],
+      "compatible_mod_loader_version": "6.2.2",
+      "compatible_game_version": [
+        "1.2.0.2"
+      ],
+      "config_defaults": {},
+      "config_schema": {
+        "title": "foxlab_config",
+        "description": "Config for FoxLab",
+        "type": "object",
+        "properties": {
+          "FOXLAB_TRANSFORM_VANILLA_ONLY": {
+            "type": "boolean",
+            "title": "ITEM_FOXLAB_MASK",
+            "tooltip": "FOXLAB_TRANSFORM_VANILLA_ONLY_TOOLTIP",
+            "default": false
+          },
+          "FOXLAB_DISABLE_ITEMS": {
+            "type": "boolean",
+            "title": "ITEM",
+            "tooltip": "FOXLAB_DISABLE_ITEMS_TOOLTIP",
+            "default": false
+          },
+          "FOXLAB_DISABLE_CHARACTERS": {
+            "type": "boolean",
+            "title": "CHARACTER",
+            "tooltip": "FOXLAB_DISABLE_CHARACTERS_TOOLTIP",
+            "default": false
+          },
+          "FOXLAB_PIN_CHARACTERS": {
+            "type": "boolean",
+            "title": "CHARACTER",
+            "tooltip": "FOXLAB_PIN_CHARACTERS_TOOLTIP",
+            "default": false
+          }
+        }
+      },
+      "description_rich": "[font=res://resources/fonts/actual/base/font_22.tres][color=#fdba74]狐狸实验室 · FoxLab[/color][/font]\n疯狂的土豆机制合集。\n• 新增 53 位[color=#6ee7a8]角色[/color]、18 件可掉落[color=#fdba74]道具[/color]，以及通缉令等[color=#d8b4fe]特殊道具[/color]。\n• 特色机制：[color=#67e8f9]属性数值移动[/color]、[color=#93c5fd]觉醒技能[/color]、[color=#fde047]敌人伪装[/color]、[color=#fca5a5]复合武器[/color]、[color=#d8b4fe]敌人种子[/color]、[color=#6ee7a8]变身面具[/color]、[color=#c4b5fd]敌人蜕变[/color]等等。\nA collection of crazy potato mechanics.\n• Adds 53 [color=#6ee7a8]characters[/color] and 18 droppable [color=#fdba74]items[/color], plus [color=#d8b4fe]special items[/color] such as wanted notices.\n• New mechanics: [color=#67e8f9]stat digit movement[/color], [color=#93c5fd]awakened skills[/color], [color=#fde047]enemy disguises[/color], [color=#fca5a5]hybrid weapons[/color], [color=#d8b4fe]enemy seeds[/color], [color=#6ee7a8]transformation masks[/color], [color=#c4b5fd]enemy metamorphosis[/color] and more.\n"
+    }
+  }
 }

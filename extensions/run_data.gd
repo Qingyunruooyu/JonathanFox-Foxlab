@@ -20,6 +20,7 @@ signal foxlab_item_added(new_item, item_num, player_index)
 #刷新商店的道具/武器仓库界面
 signal foxlab_item_gear_changed(player_index)
 signal foxlab_weapon_gear_changed(player_index)
+signal foxlab_gear_recovered(item_data, player_index)
 
 # 当前存活的构筑物（包括宠物类构筑物）
 var foxlab_current_living_structures= 0
@@ -319,6 +320,8 @@ func remove_gold(value: int, player_index: int) -> void :
 	foxlab_process_gold(-value, player_index)
 
 func on_wave_start(timer: WaveTimer) -> void :
+	for player_index in get_player_count():
+		get_player_effects(player_index)[Utils.foxlab_recovered_items_this_wave_hash] = 0
 	.on_wave_start(timer)
 	var effects = get_player_effects(0)
 	effects[Utils.foxlab_shop_effects_checked_hash] = 0
@@ -449,10 +452,59 @@ func apply_item_effects(item_data: ItemParentData, player_index: int) -> void :
 			_foxlab_register_extra_char(item_data, player_index)
 
 func unapply_item_effects(item_data: ItemParentData, player_index: int) -> void :
+	_foxlab_try_recover_lost_item(item_data, player_index)
 	if item_data is CharacterData:
 		_foxlab_unregister_extra_char(item_data, player_index)
 		_foxlab_backpack_char_effects_dirty[player_index] = true
 	.unapply_item_effects(item_data, player_index)
+
+func _foxlab_try_recover_lost_item(item_data: Resource, player_index: int) -> void:
+	if item_data == null or not item_data.can_be_looted:
+		return
+	if not (item_data is WeaponData or item_data is ItemData):
+		return
+	if item_data is CharacterData or item_data is UpgradeData or item_data is ConsumableData:
+		return
+	var effects = get_player_effects(player_index)
+	var recover_effects: Array = effects.get(Utils.foxlab_recover_lost_item_hash, [])
+	if recover_effects.empty():
+		return
+	var chance: int = 0
+	var max_recoveries: int = 0
+	for recover_effect in recover_effects:
+		chance += recover_effect[0]
+		max_recoveries = max(max_recoveries, recover_effect[1])
+	var recovered: int = effects.get(Utils.foxlab_recovered_items_this_wave_hash, 0)
+	if chance <= 0 or max_recoveries <= 0 or recovered >= max_recoveries:
+		return
+	if not Utils.get_chance_success(chance / 100.0):
+		return
+	effects[Utils.foxlab_recovered_items_this_wave_hash] = recovered + 1
+	add_tracked_value(player_index, Utils.item_foxlab_experiment_log_hash, 1)
+	var recovered_item = item_data.duplicate()
+	recovered_item.effects = []
+	for effect in item_data.effects:
+		recovered_item.effects.append(effect.duplicate())
+	if recovered_item is WeaponData:
+		recovered_item.stats = item_data.stats.duplicate()
+		recovered_item.tracked_value = 0
+		recovered_item.tracked_value_added_this_wave = 0
+		recovered_item.dmg_dealt_last_wave = 0
+	call_deferred("_foxlab_recover_lost_item", recovered_item, player_index, players_data[player_index])
+
+func _foxlab_recover_lost_item(item_data: Resource, player_index: int, player_data) -> void:
+	if player_index >= players_data.size() or players_data[player_index] != player_data:
+		return
+	if item_data is WeaponData:
+		var new_weapon = add_weapon(item_data, player_index)
+		if new_weapon == null:
+			return
+		item_data = new_weapon
+		emit_signal("foxlab_weapon_gear_changed", player_index)
+	else:
+		add_item(item_data, player_index)
+		emit_signal("foxlab_item_gear_changed", player_index)
+	emit_signal("foxlab_gear_recovered", item_data, player_index)
 
 func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
 	Utils.reset_stat_cache(player_index)

@@ -17,6 +17,8 @@ const FOXLAB_COPY_PETS_STRUCTURES_DELAY = 8.0
 var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Keys.generate_hash("item_foxlab_tracker")]
 
 # Effects
+var foxlab_recover_lost_item_hash: int = Keys.generate_hash("foxlab_recover_lost_item")
+var foxlab_recovered_items_this_wave_hash: int = Keys.generate_hash("foxlab_recovered_items_this_wave")
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
 var foxlab_gain_xp_gain_hash: int = Keys.generate_hash("gain_xp_gain")
 var foxlab_gain_enemy_health_hash: int = Keys.generate_hash("gain_enemy_health")
@@ -79,6 +81,7 @@ var foxlab_piercing_is_bounce_hash: int = Keys.generate_hash("foxlab_piercing_is
 var item_foxlab_stargazer_hash: int = Keys.generate_hash("item_foxlab_stargazer")
 var item_foxlab_split_hash: int = Keys.generate_hash("item_foxlab_split")
 var item_foxlab_eggs_hash: int = Keys.generate_hash("item_foxlab_eggs")
+var item_foxlab_experiment_log_hash: int = Keys.generate_hash("item_foxlab_experiment_log")
 var foxlab_bonus_reroll_weapon_tier_hash: int = Keys.generate_hash("foxlab_bonus_reroll_weapon_tier")
 var foxlab_level_up_bonus_crate_hash: int = Keys.generate_hash("foxlab_level_up_bonus_crate")
 var foxlab_keep_random_weapon_hash: int = Keys.generate_hash("foxlab_keep_random_weapon")

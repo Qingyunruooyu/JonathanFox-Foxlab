@@ -257,6 +257,8 @@ static func init_effects()->Dictionary:
 			if not gain_stat in vanilla_effects:
 				vanilla_effects[gain_stat] = 0
 		var new_effects= {
+			Utils.foxlab_recover_lost_item_hash: [],
+			Utils.foxlab_recovered_items_this_wave_hash: 0,
 			Utils.foxlab_gain_xp_gain_hash: 0,
 			Utils.foxlab_gain_enemy_health_hash: 0,
 			Utils.foxlab_gain_enemy_speed_hash: 0,

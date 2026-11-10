@@ -408,16 +408,39 @@ func _foxlab_record_spawning_weapons():
 			foxlab_weapon_spawning_pet.push_back([weapon, 0])
 
 ####### 扩展 ###########
+const FOXLAB_UNAPPLY_SIDE_EFFECT_IDS = [
+	"foxlab_stat_recover",
+	"foxlab_take_away",
+]
+var _foxlab_no_mutate_curse_char_hashes: Array = []
+var _foxlab_no_mutate_curse_chars_scanned = false
+
+func _foxlab_init_no_mutate_curse_characters() -> void:
+	if _foxlab_no_mutate_curse_chars_scanned:
+		return
+	_foxlab_no_mutate_curse_chars_scanned = true
+	for character in get_characters():
+		for effect in character.effects:
+			if FOXLAB_UNAPPLY_SIDE_EFFECT_IDS.has(effect.get_id()):
+				_foxlab_no_mutate_curse_char_hashes.append(character.my_id_hash)
+				break
+
 func can_item_be_mutated(item) -> bool:
 	if (not item.can_be_looted and "_foxlab_" in item.my_id) or \
 		item.my_id_hash == Utils.item_foxlab_mask_hash or \
 		item.my_id_hash == Utils.item_foxlab_buddhas_hand_hash:
+		return false
+	_foxlab_init_no_mutate_curse_characters()
+	if item is CharacterData and _foxlab_no_mutate_curse_char_hashes.has(item.my_id_hash):
 		return false
 	return .can_item_be_mutated(item)
 
 func can_item_be_cursed(item) -> bool:
 	if not item.can_be_looted and item.my_id_hash != Utils.item_foxlab_tortoise_shell_hash\
 		and "_foxlab_" in item.my_id:
+		return false
+	_foxlab_init_no_mutate_curse_characters()
+	if item is CharacterData and _foxlab_no_mutate_curse_char_hashes.has(item.my_id_hash):
 		return false
 	return .can_item_be_cursed(item)
 

@@ -19,6 +19,9 @@ func _ready():
 	_range_shape.shape.radius = overload_radius
 
 func _physics_process(_delta: float) -> void :
+	if original == null or not is_instance_valid(original):
+		die()
+		return
 	global_position = original.global_position
 
 func _update_overload() -> void:

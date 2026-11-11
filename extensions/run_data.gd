@@ -465,6 +465,8 @@ func _foxlab_try_recover_lost_item(item_data: Resource, player_index: int) -> vo
 		return
 	if item_data is CharacterData or item_data is UpgradeData or item_data is ConsumableData:
 		return
+	if item_data.my_id_hash in Utils.foxlab_recover_item_blacklist:
+		return
 	var effects = get_player_effects(player_index)
 	var recover_effects: Array = effects.get(Utils.foxlab_recover_lost_item_hash, [])
 	if recover_effects.empty():
@@ -517,6 +519,21 @@ func foxlab_unapply_effects_array(effects: Array, player_index: int) -> void :
 	.unapply_effects_array(effects, player_index)
 	_are_player_stats_dirty[player_index] = true
 
+const FOXLAB_AURA_UNSAFE_EFFECT_IDS = {
+	"foxlab_alter_append": true,
+	"foxlab_apply_only": true,
+	"foxlab_destroy_weapons": true,
+	"foxlab_food_price": true,
+	"foxlab_get_item": true,
+	"foxlab_get_rand_character": true,
+	"foxlab_get_rand_weapon": true,
+	"foxlab_set_stat": true,
+	"foxlab_stat_recover": true,
+	"foxlab_stats_end_of_wave_after_wave": true,
+	"foxlab_swap_stats": true,
+	"foxlab_take_away": true,
+}
+
 func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	if not _foxlab_backpack_char_effects_dirty[player_index]:
 		return foxlab_backpack_char_effects[player_index]
@@ -524,7 +541,11 @@ func get_foxlab_backpack_char_effects(player_index: int) -> Array:
 	for item in players_data[player_index].items:
 		if item is CharacterData:
 			for effect in item.effects:
-				if effect.storage_method == Effect.StorageMethod.REPLACE or effect.key_hash == Keys.next_level_xp_needed_hash:
+				if effect is StructureEffect or effect is SwapMaxMinStatEffect or effect is StatCapEffect\
+					or effect is LinearScalingEffect or effect is GainMecaPartsEffect or effect is BurnChanceEffect\
+					or effect.storage_method == Effect.StorageMethod.REPLACE or effect.storage_method == Effect.StorageMethod.APPEND_KEY\
+					or effect.key_hash == Keys.next_level_xp_needed_hash\
+					or effect.get_id() in FOXLAB_AURA_UNSAFE_EFFECT_IDS:
 					continue
 				effects.append(effect)
 	foxlab_backpack_char_effects[player_index] = effects

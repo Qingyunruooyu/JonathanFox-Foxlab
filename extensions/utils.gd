@@ -168,6 +168,7 @@ var item_foxlab_mask_hash: int = Keys.generate_hash("item_foxlab_mask")
 var item_foxlab_reactor_hash: int = Keys.generate_hash("item_foxlab_reactor")
 var item_foxlab_tracker_hash: int = Keys.generate_hash("item_foxlab_tracker")
 var item_foxlab_tortoise_shell_hash: int = Keys.generate_hash("item_foxlab_tortoise_shell")
+var item_foxlab_uv_lamp_hash: int = Keys.generate_hash("item_foxlab_uv_lamp")
 var item_foxlab_faceless_guide_hash: int = Keys.generate_hash("item_foxlab_faceless_guide")
 var item_foxlab_enchanted_eyes_hash: int = Keys.generate_hash("item_foxlab_enchanted_eyes")
 var item_foxlab_wanted_hash: int = Keys.generate_hash("item_foxlab_wanted")
@@ -177,8 +178,14 @@ var consumable_foxlab_seed_hash: int = Keys.generate_hash("consumable_foxlab_see
 var item_foxlab_shadow_hash: int = Keys.generate_hash("item_foxlab_shadow")
 var character_foxlab_nyuba_hash: int = Keys.generate_hash("character_foxlab_nyuba")
 
-# enemy names
-var foxlab_evil_mob_hash: int = Keys.generate_hash("evil_mob")
+var foxlab_recover_item_blacklist = {
+	item_foxlab_experiment_log_hash: 0,
+	Keys.generate_hash("item_knot"): 0,
+	Keys.generate_hash("item_handcuffs"): 0,
+	Keys.generate_hash("item_shackles"): 0,
+	Keys.generate_hash("item_axolotl"): 0,
+	Keys.generate_hash("item_foxlab_mask"): 0,
+}
 
 # hash sets
 var foxlab_ignored_floating_stat_hash = {
@@ -292,6 +299,8 @@ static func foxlab_get_tracking_text(item_id: int, tracking_text: String,  playe
 						tracking_text_to_use = "FOXLAB_SEEDS_ACTIVATED"
 					[Utils.item_foxlab_shadow_hash, 1]:
 						tracking_text_to_use = "ONE_SHOT_COUNT"
+					[Utils.item_foxlab_uv_lamp_hash, 1]:
+						tracking_text_to_use = "FOXLAB_ENEMIES_MUTUAL_DAMAGE"
 					_:
 						tracking_text_to_use = tracking_text
 

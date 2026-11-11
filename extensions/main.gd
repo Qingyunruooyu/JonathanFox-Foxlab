@@ -176,15 +176,17 @@ func _foxlab_copy_pets_structures_for_player(player_index: int) -> void:
 		return
 
 	# 只保留非空列表
-	var lists: Array = []
-	for list in [_entity_spawner.structures, _entity_spawner.pets]:
-		if not list.empty():
-			lists.append(list)
 	var jellyshields: Array = []
 	for owner_player in _players:
 		jellyshields.append_array(owner_player.jellyshields)
-	if not jellyshields.empty():
-		lists.append(jellyshields)
+	var lists: Array = []
+	for list in [_entity_spawner.structures, _entity_spawner.pets, jellyshields]:
+		var visible_list: Array = []
+		for entity in list:
+			if entity.sprite.visible:
+				visible_list.append(entity)
+		if not visible_list.empty():
+			lists.append(visible_list)
 	if lists.empty():
 		return
 
@@ -256,6 +258,8 @@ func _foxlab_spawn_entity_birth_for_fox_copy(
 	entity_birth.start(request)
 
 func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool, is_jellyshield: bool):
+	if _cleaning_up:
+		return
 	_entity_spawner._spawn_entity_args._init(birth.global_position, -1 if is_jellyshield else birth.request.type)
 	_entity_spawner._spawn_entity_args.player_index = birth.request.player_index
 

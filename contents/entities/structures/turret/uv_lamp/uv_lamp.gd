@@ -131,8 +131,9 @@ func die(args= Utils.default_die_args) -> void :
 	.die(args)
 
 func _foxlab_expose(enemy) -> void :
-	enemy.foxlab_uv_count += 1
-	if enemy.foxlab_uv_count == 1:
+	enemy._foxlab_uv_lamps.push_back(self)
+	enemy.foxlab_try_apply_puddle_colors()
+	if enemy._foxlab_uv_lamps.size() == 1:
 		if enemy._foxlab_uv_hurtbox_mask == -1:
 			enemy._foxlab_uv_hurtbox_mask = enemy._hurtbox.collision_mask
 		_foxlab_set_exposed_hurtbox(enemy)
@@ -151,10 +152,9 @@ func _foxlab_set_exposed_hurtbox(enemy) -> void :
 func _foxlab_unexpose(body) -> void :
 	if not is_instance_valid(body):
 		return
-	body.foxlab_uv_count -= 1
-	if body.foxlab_uv_count > 0:
+	body._foxlab_uv_lamps.erase(self)
+	if not body._foxlab_uv_lamps.empty():
 		return
-	body.foxlab_uv_count = 0
 	body.remove_color_modulation(color_entity_modulation)
 	if body._foxlab_uv_hurtbox_mask != -1:
 		body._hurtbox.set_deferred("collision_mask", body._foxlab_uv_hurtbox_mask)

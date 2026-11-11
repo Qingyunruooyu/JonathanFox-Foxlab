@@ -52,8 +52,7 @@ const EXTENSION_SCRIPTS = [
 	"weapon.gd",
 	"enemy.gd",
 	"railgun.gd",
-	"turret.gd",
-	#"builder_turret.gd",
+	"builder_turret.gd",
 ]
 
 

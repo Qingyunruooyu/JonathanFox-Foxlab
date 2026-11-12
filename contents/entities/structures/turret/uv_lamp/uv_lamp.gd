@@ -6,8 +6,8 @@ export (AudioStreamSample) var sound_exit_zone = null
 
 var _instance_counted: bool = false
 var _exposed_enemies: Dictionary = {}
-# player -> 进照射区时 apply 的那组 effects 数组引用；退出时按同一引用 unapply，
-# 避免照射期间背包角色变动、缓存重建导致 apply/unapply 数组错配
+# player -> 进照射区时 apply 的紫外印记（effects 即该组叠加效果）；退出时按同一印记 unapply 并移除，
+# 避免照射期间背包角色变动、缓存重建导致 apply/unapply 错配
 var _players_in_zone: Dictionary = {}
 var _expose_range_ratio: float = 2.0
 var _aura_base_radius: float = 0.0
@@ -91,12 +91,14 @@ func _on_player_in_zone_died(player, _args) -> void :
 
 func _foxlab_player_entered(player) -> void :
 	var player_index: int = player.player_index
-	var char_effects: Array = RunData.get_foxlab_backpack_char_effects(player_index)
-	RunData.foxlab_apply_effects_array(char_effects, player_index)
+	var mark = RunData.get_foxlab_backpack_char_effects(player_index)
+	RunData.foxlab_apply_effects_array(mark.effects, player_index)
+	RunData.get_player_items_ref(player_index).push_back(mark)
+	RunData.emit_signal("foxlab_item_added", mark, 1, player_index)
 	player._set_color_modulation(color_entity_modulation)
 	if sound_enter_zone:
 		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", sound_enter_zone, 2, global_position, 0, 0.1)
-	_players_in_zone[player] = char_effects
+	_players_in_zone[player] = mark
 	var _error = player.connect("died", self, "_on_player_in_zone_died")
 
 
@@ -107,12 +109,14 @@ func _foxlab_player_left(player) -> void :
 	_players_in_zone.erase(player)
 
 
-func _foxlab_cleanup_player(player, char_effects: Array, play_sound: bool) -> void :
+func _foxlab_cleanup_player(player, mark, play_sound: bool) -> void :
 	if not is_instance_valid(player):
 		return
 	var player_index: int = player.player_index
 	player.disconnect("died", self, "_on_player_in_zone_died")
-	RunData.foxlab_unapply_effects_array(char_effects, player_index)
+	RunData.foxlab_unapply_effects_array(mark.effects, player_index)
+	RunData.get_player_items_ref(player_index).erase(mark)
+	RunData.emit_signal("foxlab_item_added", mark, -1, player_index)
 	player.remove_color_modulation(color_entity_modulation)
 	if play_sound and sound_exit_zone:
 		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", sound_exit_zone, 2, global_position, 0, 0.1)

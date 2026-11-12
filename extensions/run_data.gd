@@ -30,9 +30,10 @@ var foxlab_current_different_enemies= 0
 #紫外线灯相关，enemy_id_hash -> 当前被照射（暴露）的该类敌人实例数
 var foxlab_exposed_enemies = {}
 
-#紫外线灯相关，缓存各玩家背包内全部 CharacterData（含主角）的 effects 扁平数组，
-#dirty 时在 get_foxlab_backpack_char_effects 中惰性重建；紫外灯照射区按玩家进入次数整组 apply/unapply（多灯叠加）
-var foxlab_backpack_char_effects = [[], [], [], []]
+#紫外线灯相关，缓存各玩家的紫外印记道具（effects 为该玩家背包内全部 CharacterData（含主角）
+#过滤后的 effects 扁平数组），dirty 时在 get_foxlab_backpack_char_effects 中惰性重建新印记；
+#紫外灯照射区按玩家进入次数以印记为单位整组 apply/unapply（多灯叠加，灯持有进入时的印记引用保证 unapply 配对）
+var foxlab_backpack_char_effects = [null, null, null, null]
 var _foxlab_backpack_char_effects_dirty = [true, true, true, true]
 
 var foxlab_current_picking_player = -1
@@ -434,7 +435,7 @@ func reset(restart: bool = false) -> void :
 		restrictions.clear()
 	for player_index in _foxlab_backpack_char_effects_dirty.size():
 		_foxlab_backpack_char_effects_dirty[player_index] = true
-		foxlab_backpack_char_effects[player_index] = []
+		foxlab_backpack_char_effects[player_index] = null
 	ItemService.foxlab_clear_merged_char_cache()
 	.reset(restart)
 
@@ -534,23 +535,61 @@ const FOXLAB_AURA_UNSAFE_EFFECT_IDS = {
 	"foxlab_take_away": true,
 }
 
-func get_foxlab_backpack_char_effects(player_index: int) -> Array:
+var FOXLAB_AURA_BLACKLIST_EFFECT = {
+	Keys.map_size_hash:  true,
+	Keys.hp_start_wave_hash: true,
+	Keys.extra_item_in_crate_hash: true,
+	Keys.item_box_recycling_gains_hash: true,
+	Keys.dig_sites_hash: true,
+	Keys.level_upgrades_modifications_hash: true,
+	Keys.knockback_aura_hash: true,
+	Keys.extra_loot_aliens_hash: true,
+	Keys.starting_item_hash: true,
+	Keys.starting_weapon_hash: true,
+	Keys.cursed_starting_item_hash: true,
+	Keys.cursed_starting_weapon_hash: true,
+	Keys.next_level_xp_needed_hash: true,
+	Keys.guaranteed_shop_items_hash: true,
+	Keys.weapon_slot_upgrades_hash: true,
+	Keys.specific_items_price_hash: true,
+	Keys.effect_mutate_end_of_wave_hash: true,
+	Keys.effect_no_weapon_in_shop_hash: true,
+	Keys.upgrade_random_weapon_hash: true,
+	Keys.extra_starting_weapon_choices_hash: true,
+	Keys.effect_mixing_up_wave_hash: true,
+	Keys.burn_weapon_hash: true,
+}
+
+func get_foxlab_backpack_char_effects(player_index: int):
 	if not _foxlab_backpack_char_effects_dirty[player_index]:
 		return foxlab_backpack_char_effects[player_index]
+	var mark_template = ItemService.get_element(ItemService.get_items(), Utils.item_foxlab_uv_mark_hash)
+	if mark_template == null:
+		return null
+	var mark = mark_template.duplicate()
+	var boolean_keys: Array = []
+	var dlc_2_data = ItemService.get_dlc_data_by_id("primal_dread")
+	if dlc_2_data != null:
+		dlc_2_data._foxlab_init_mutation_rules()
+		boolean_keys = dlc_2_data.mutation_boolean_keys
 	var effects: Array = []
 	for item in players_data[player_index].items:
-		if item is CharacterData:
-			for effect in item.effects:
-				if effect is StructureEffect or effect is SwapMaxMinStatEffect or effect is StatCapEffect\
-					or effect is LinearScalingEffect or effect is GainMecaPartsEffect or effect is BurnChanceEffect\
-					or effect.storage_method == Effect.StorageMethod.REPLACE or effect.storage_method == Effect.StorageMethod.APPEND_KEY\
-					or effect.key_hash == Keys.next_level_xp_needed_hash\
-					or effect.get_id() in FOXLAB_AURA_UNSAFE_EFFECT_IDS:
-					continue
-				effects.append(effect)
-	foxlab_backpack_char_effects[player_index] = effects
+		if not item is CharacterData:
+			continue
+		for effect in item.effects:
+			if effect is TurretEffect or effect is SwapMaxMinStatEffect or effect is StatCapEffect\
+				or effect is LinearScalingEffect or effect is GainMecaPartsEffect or effect is BurnChanceEffect\
+				or effect.storage_method == Effect.StorageMethod.REPLACE or effect.storage_method == Effect.StorageMethod.APPEND_KEY\
+				or effect.key_hash in FOXLAB_AURA_BLACKLIST_EFFECT or effect.custom_key_hash in FOXLAB_AURA_BLACKLIST_EFFECT\
+				or boolean_keys.has(effect.key_hash)\
+				or effect.get_id() in FOXLAB_AURA_UNSAFE_EFFECT_IDS:
+				continue
+			effects.append(effect)
+	mark.effects = effects
+	foxlab_backpack_char_effects[player_index] = mark
+	add_item_to_item_count(mark)
 	_foxlab_backpack_char_effects_dirty[player_index] = false
-	return effects
+	return mark
 
 
 func _foxlab_register_extra_char(character: CharacterData, player_index: int) -> void:

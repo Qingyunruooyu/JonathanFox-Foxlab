@@ -18,6 +18,14 @@ func _ready():
 	set_physics_process(false)
 	_range_shape.shape.radius = overload_radius
 
+func respawn():
+	.respawn()
+	_ending = false
+	_enemies_in_range.clear()
+	original = null
+	set_physics_process(false)
+	_range.set_deferred("monitoring", false)
+
 func _physics_process(_delta: float) -> void :
 	if original == null or not is_instance_valid(original):
 		die()
@@ -99,4 +107,7 @@ func die(args = Utils.default_die_args) -> void :
 		_entity_spawner_ref.targetable_pets.erase(self)
 		if not args.cleaning_up and not _entity_spawner_ref._cleaning_up:
 			emit_signal("died", self, args)
-	queue_free()
+	if is_instance_valid(targetable_particles_instance):
+		targetable_particles_instance.queue_free()
+		targetable_particles_instance = null
+	free_entity()

@@ -43,7 +43,6 @@ var _foxlab_init_stats_args = WeaponServiceInitStatsArgs.new()
 
 var foxlab_burning_particle = load("res://particles/burning/torch_burning_particles.tscn")
 var _foxlab_fox_tiger_scene = load("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/units/pet/fox_tiger/fox_tiger.tscn")
-var _foxlab_foxes = [ ]
 
 var _foxlab_entity_birth_entered_players = {}
 
@@ -290,7 +289,6 @@ func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool, i
 		args.player_index = birth.request.player_index
 		var fake_fox_pet = _entity_spawner.spawn_entity(_foxlab_fox_tiger_scene,args)
 		fake_fox_pet.set_original(copy)
-		_foxlab_foxes.append(fake_fox_pet)
 
 ########### 异变相关 ###############
 func _foxlab_should_check_mutation(player_index: int)-> bool:
@@ -1205,10 +1203,6 @@ func clean_up_room() -> void :
 	for timer in foxlab_seed_timers:
 		if timer is Timer:
 			timer.stop()
-	for fox in _foxlab_foxes:
-		if is_instance_valid(fox) and not fox._ending:
-			fox.die(_entity_spawner._die_args_spawner)
-	_foxlab_foxes.clear()
 
 func _on_player_died(player, args) -> void:
 	RunData.foxlab_killed_by_textures[player.player_index] = null

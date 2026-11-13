@@ -46,6 +46,9 @@ var _foxlab_fox_tiger_scene = load("res://mods-unpacked/JonathanFox-FoxLab/conte
 
 var _foxlab_entity_birth_entered_players = {}
 
+var FoxLabBuilderTurretManager = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/builder_turret_manager.gd")
+var foxlab_builder_turret_manager = null
+
 func _ready():
 	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
 	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
@@ -62,6 +65,12 @@ func _ready():
 	foxlab_seed_timers_ready()
 	foxlab_extra_hit_ready()
 	foxlab_enemy_priority_queue_ready()
+
+func foxlab_get_builder_turret_manager():
+	if foxlab_builder_turret_manager == null:
+		foxlab_builder_turret_manager = FoxLabBuilderTurretManager.new()
+		add_child(foxlab_builder_turret_manager)
+	return foxlab_builder_turret_manager
 
 ########### 波次开始获得东西相关 ##############
 func foxlab_receive_item_stat_ready():

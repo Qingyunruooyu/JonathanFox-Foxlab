@@ -50,6 +50,8 @@ func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = nu
 			ItemService.foxlab_enemy_seed_effect_map[scene.get_instance_id()] = effect
 
 	var entity = .spawn_entity(scene, args, data, source, charmed_by)
+	if args.type == EntityType.STRUCTURE:
+		foxlab_register_builder_turret(entity)
 	if entity is Structure or entity is Pet:
 		Utils.foxlab_pets_structures_pool_id_scene_map[entity.pool_id] = scene
 		foxlab_pets_structures_node_data_map[entity] = data
@@ -58,3 +60,7 @@ func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = nu
 		RunData.foxlab_current_living_structures += 1
 
 	return entity
+
+func foxlab_register_builder_turret(entity) -> void:
+	if Utils.foxlab_is_builder_turret(entity):
+		_main.foxlab_get_builder_turret_manager().foxlab_register(entity)

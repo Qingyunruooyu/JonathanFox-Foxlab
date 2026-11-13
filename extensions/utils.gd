@@ -633,6 +633,37 @@ func foxlab_fit_item_icon_scale(texture: Texture, base_scale: float = 0.5) -> Ve
 func foxlab_is_sellable_item(item_data: ItemData)->bool:
 	return item_data.can_be_looted and not item_data is CharacterData
 
+func foxlab_shopaholic_get_items_to_lose(player_index: int, count: int) -> Array:
+	var result: Array = []
+	if count <= 0:
+		return result
+	var effects = RunData.get_player_effects(player_index)
+	var forced_hashes = {}
+	for entry in effects[foxlab_force_remove_on_reroll_hash]:
+		forced_hashes[entry[0]] = true
+	var items_ref = RunData.get_player_items_ref(player_index)
+	var tier_consumed_item = null
+	var increase_tier_effects: Array = RunData.get_player_effect(Keys.increase_tier_on_reroll_hash, player_index)
+	if not increase_tier_effects.empty():
+		for player_item in items_ref:
+			if player_item.my_id_hash != increase_tier_effects[0][0]:
+				continue
+			for effect in player_item.effects:
+				if effect.custom_key_hash == Keys.increase_tier_on_reroll_hash and effect.value == increase_tier_effects[0][1]:
+					tier_consumed_item = player_item
+					break
+			if tier_consumed_item != null:
+				break
+	for i in range(items_ref.size() - 1, -1, -1):
+		var item_data = items_ref[i]
+		if item_data == tier_consumed_item or forced_hashes.has(item_data.my_id_hash):
+			continue
+		if foxlab_is_sellable_item(item_data):
+			result.append(item_data)
+			if result.size() >= count:
+				break
+	return result
+
 # 同名商店商品的同一性判断（用于区分诅咒/普通等同名不同数据的变体）：
 # 不同名直接判不同；同名先比实例（会话内各处共享实例，正常游玩都在此命中）；
 # 实例不同（存档恢复后是两批实例）再按序列化数据比较，与原版 is_same_item 同法，武器同样适用

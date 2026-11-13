@@ -88,6 +88,7 @@ func _on_foxlab_gear_recovered(item_data, player_index):
 	var rect = _get_gear_container(player_index).get_global_rect()
 	var popup_pos = rect.position + Vector2(rect.size.x * 0.5, 20) + Vector2(Utils.randi_range(-15, 15), 0)
 	foxlab_display_items_added([item_data], popup_pos, Vector2(0, -30))
+	foxlab_update_lose_item_icons(player_index)
 
 func _on_foxlab_weapon_gear_changed(player_index):
 	var player_gear_container = _get_gear_container(player_index)
@@ -148,6 +149,7 @@ func foxlab_add_bonus_items(player_index: int):
 			player_gear_container.items_container._elements.add_element(bonus_item, true)
 		_on_foxlab_item_added(items, player_index)
 		items.clear()
+		foxlab_update_lose_item_icons(player_index)
 
 func foxlab_remember_shop_items(player_index: int) -> void:
 	RunData.foxlab_forget_item_entry(player_index)
@@ -217,6 +219,7 @@ func _ready() -> void :
 				update_item = true
 		if update_item:
 			_on_foxlab_item_gear_changed(player_index)
+			foxlab_update_lose_item_icons(player_index)
 
 		# 保留随机一把武器
 		if RunData.get_player_effect_bool(Utils.foxlab_keep_random_weapon_hash, player_index) and RunData.get_player_weapons_ref(player_index).size() > 0:
@@ -364,6 +367,7 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 
 	if update_item:
 		_on_foxlab_item_gear_changed(player_index)
+		foxlab_update_lose_item_icons(player_index)
 
 func _on_GoButton_pressed(player_index: int) -> void :
 	if RunData.get_player_effect_bool(Utils.foxlab_remember_shop_items_hash, player_index):
@@ -571,3 +575,39 @@ func fill_shop_items(player_locked_items: Array, player_index: int, just_entered
 				if dlc != null:
 					item[0] = dlc.curse_item(item[0], player_index)
 	RunData.get_player_effects(player_index)[Utils.foxlab_price_digit_hash] = 0
+
+func set_reroll_button_price(player_index: int) -> void :
+	.set_reroll_button_price(player_index)
+	foxlab_update_lose_item_icons(player_index)
+
+func foxlab_update_lose_item_icons(player_index: int) -> void :
+	var reroll_button = _get_reroll_button(player_index)
+	if reroll_button == null:
+		return
+	var icons: Array = []
+	var lose_item_num = RunData.get_player_effect(Utils.foxlab_lose_item_on_reroll_hash, player_index)
+	for item_data in Utils.foxlab_shopaholic_get_items_to_lose(player_index, lose_item_num):
+		icons.append(item_data.icon)
+	var icon_container = reroll_button.get_node_or_null("HBoxContainer/FoxlabLoseItemIcons")
+	if icon_container == null:
+		if icons.empty():
+			return
+		var hbox = reroll_button.get_node_or_null("HBoxContainer")
+		if hbox == null:
+			return
+		icon_container = HBoxContainer.new()
+		icon_container.name = "FoxlabLoseItemIcons"
+		icon_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hbox.add_child(icon_container)
+	for child in icon_container.get_children():
+		icon_container.remove_child(child)
+		child.queue_free()
+	icon_container.visible = not icons.empty()
+	for icon_texture in icons:
+		var icon = TextureRect.new()
+		icon.texture = icon_texture
+		icon.expand = true
+		icon.stretch_mode = 6
+		icon.rect_min_size = Vector2(64, 0)
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon_container.add_child(icon)

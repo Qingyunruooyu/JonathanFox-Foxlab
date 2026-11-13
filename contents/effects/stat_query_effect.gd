@@ -67,13 +67,16 @@ func get_args(player_index: int) -> Array:
 			for i in range(items_ref.size() - 1, -1, -1):
 				var item_data = items_ref[i]
 				if Utils.foxlab_is_sellable_item(item_data):
-					var name = tr(item_data.name)
-					if item_data.is_cursed:
-						name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
-					item_names.append(name)
+					item_names.append(Utils.foxlab_append_item_flavor_text(tr(item_data.name), item_data))
 					if item_names.size() >= lose_item_num:
 						break
 			return [tr("FOXLAB_DISABLE") if item_names.empty() else ", ".join(item_names), tr("CATEGORY_ITEM")]
+		12: #字符串数组，数组记录名字：个数加括号明细
+			var named_items: Array = RunData.get_player_effect(key_hash, player_index)
+			var detail = ""
+			if not named_items.empty():
+				detail = " (%s)" % ", ".join(named_items)
+			return [str(named_items.size()), tr(key.to_upper()), detail]
 		_:
 			return []
 

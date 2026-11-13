@@ -96,18 +96,10 @@ func foxlab_update_remembered_item(player_index: int):
 	previous_remembered_names.clear()
 	for item in foxlab_remembered_items[player_index]:
 		previous_remembered.append(item.my_id_hash)
-		var name = tr(item.name)
-		if item.is_cursed:
-			name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
-		previous_remembered_names.append(name)
+		previous_remembered_names.append(Utils.foxlab_append_item_flavor_text(tr(item.name), item))
 	for weapon in foxlab_remembered_weapons[player_index]:
 		previous_remembered.append(weapon.my_id_hash)
-		var name = " %s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
-		if weapon.is_cursed:
-			name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
-		if weapon.is_meca:
-			name += "([color=#%s]%s[/color])" % [Utils.get_evolution_color(1).to_html(), tr("FOXLAB_MECA_TEXT")]
-		previous_remembered_names.append(name)
+		previous_remembered_names.append(Utils.foxlab_append_item_flavor_text(" %s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)], weapon))
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_mnemosyne_hash, previous_remembered.size())
 
 # 大部分时候没用，非主角位置的孟婆，记忆了商店的面具道具将孟婆换掉之后
@@ -322,7 +314,7 @@ func remove_gold(value: int, player_index: int) -> void :
 
 func on_wave_start(timer: WaveTimer) -> void :
 	for player_index in get_player_count():
-		get_player_effects(player_index)[Utils.foxlab_recovered_items_this_wave_hash] = 0
+		get_player_effects(player_index)[Utils.foxlab_recovered_items_this_wave_hash] = []
 	.on_wave_start(timer)
 	var effects = get_player_effects(0)
 	effects[Utils.foxlab_shop_effects_checked_hash] = 0
@@ -477,14 +469,14 @@ func _foxlab_try_recover_lost_item(item_data: Resource, player_index: int) -> vo
 	for recover_effect in recover_effects:
 		chance += recover_effect[0]
 		max_recoveries = max(max_recoveries, recover_effect[1])
-	var recovered: int = effects.get(Utils.foxlab_recovered_items_this_wave_hash, 0)
-	if chance <= 0 or max_recoveries <= 0 or recovered >= max_recoveries:
+	var recovered_items: Array = effects.get(Utils.foxlab_recovered_items_this_wave_hash, [])
+	if chance <= 0 or max_recoveries <= 0 or recovered_items.size() >= max_recoveries:
 		return
 	if not Utils.get_chance_success(chance / 100.0):
 		return
-	effects[Utils.foxlab_recovered_items_this_wave_hash] = recovered + 1
 	add_tracked_value(player_index, Utils.item_foxlab_experiment_log_hash, 1)
 	var recovered_item = item_data.duplicate()
+	recovered_items.append(Utils.foxlab_append_item_flavor_text(tr(recovered_item.name), recovered_item))
 	recovered_item.effects = []
 	for effect in item_data.effects:
 		recovered_item.effects.append(effect.duplicate())

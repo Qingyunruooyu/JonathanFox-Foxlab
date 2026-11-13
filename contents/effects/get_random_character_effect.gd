@@ -317,10 +317,7 @@ func _get_rand_chars(player_index: int) -> Array:
 			current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
 		chars_return.append(current_char)
 		chars_id.append(current_char.my_id_hash)
-		meta.names += tr(current_char.name)
-
-		if current_char.is_cursed:
-			meta.names += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+		meta.names += Utils.foxlab_append_item_flavor_text(tr(current_char.name), current_char)
 		if char_idx + 1 < final_value:
 			meta.names += ", "
 

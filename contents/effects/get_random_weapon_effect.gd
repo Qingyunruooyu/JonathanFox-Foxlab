@@ -142,20 +142,16 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			else:
 				RunData.foxlab_adjust_weapon_effect(effect, weapon)
 
-	meta.weapon_id = "%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)]
-	if weapon.is_cursed:
-		meta.weapon_id += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
-	if weapon.is_meca:
-		meta.weapon_id += "([color=#%s]%s[/color])" % [Utils.get_evolution_color(1).to_html(), tr("FOXLAB_MECA_TEXT")]
+	meta.weapon_id = Utils.foxlab_append_item_flavor_text("%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)], weapon)
 
 	if item_for_effect is WeaponData:
 		meta.extra_item_id = "%s %s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
 	else:
 		meta.extra_item_id = tr(item_for_effect.name)
 	begin_effect.key = meta.extra_item_id
+	meta.extra_item_id = Utils.foxlab_append_item_flavor_text(meta.extra_item_id, item_for_effect)
 
 	if item_for_effect.is_cursed:
-		meta.extra_item_id += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
 		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED"
 	else:
 		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT"

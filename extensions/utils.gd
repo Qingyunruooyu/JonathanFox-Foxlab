@@ -217,7 +217,7 @@ var foxlab_structure_stats = {
 	}
 var foxlab_enemy_stats = [Keys.enemy_damage_hash, Keys.enemy_health_hash, Keys.enemy_speed_hash]
 
-var foxlab_keys_raw_text = [foxlab_mask_history_hash, foxlab_previous_remembered_names_hash]
+var foxlab_keys_raw_text = [foxlab_mask_history_hash, foxlab_previous_remembered_names_hash, foxlab_recovered_items_this_wave_hash]
 
 var foxlab_item_wanted = []
 var foxlab_item_wanted_hash = {}
@@ -341,6 +341,20 @@ func foxlab_get_colored_stat_str(stat_hash: int, player_index: int = RunData.DUM
 	if color == Color.black:
 		return tr(stat_str.to_upper())
 	return "[color=#%s]%s[/color]" % [color.to_html(), tr(stat_str.to_upper())]
+
+func foxlab_append_item_flavor_text(text: String, item) -> String:
+	if item == null:
+		return text
+	return foxlab_append_flavor_text(text, item.is_cursed, item.is_meca, item.is_mutant)
+
+func foxlab_append_flavor_text(text: String, is_cursed: bool, is_meca: bool = false, is_mutant: bool = false) -> String:
+	if is_cursed:
+		text += "([color=#%s]%s[/color])" % [CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+	if is_meca:
+		text += "([color=#%s]%s[/color])" % [get_evolution_color(1).to_html(), tr("FOXLAB_MECA_TEXT")]
+	if is_mutant:
+		text += "([color=#%s]%s[/color])" % [get_evolution_color(-1).to_html(), tr("FOXLAB_MUT_TEXT")]
+	return text
 
 ####### 生成敌人相关 ##########
 const FOXLAB_DRAGON_FISH_PATH = "res://dlcs/dlc_1/zones/common/gangster/gangster_group.tres"

@@ -7,7 +7,5 @@ static func get_id() -> String:
 # custom_key决定获得时机：foxlab_effect_receive_item_at_wave 敌袭开始时；foxlab_effect_receive_item_at_wave_end 敌袭结束后
 # storage_method须为KEY_VALUE，条目格式：[道具key, 个数, 诅咒标记]
 func get_args(_player_index: int) -> Array:
-	var item_name: String = tr(key.to_upper())
-	if value2 > 0:
-		item_name += "([color=#%s]%s[/color])" % [Utils.CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+	var item_name: String = Utils.foxlab_append_flavor_text(tr(key.to_upper()), value2 > 0)
 	return [str(value), item_name]

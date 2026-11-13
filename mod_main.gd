@@ -47,7 +47,6 @@ const EXTENSION_SCRIPTS = [
 	"petrol_puddle.gd",
 	"dlc_1_data.gd",
 	"dlc_2_data.gd",
-	"effects/burning_effect.gd",
 	"evil_mob.gd",
 	"weapon.gd",
 	"enemy.gd",

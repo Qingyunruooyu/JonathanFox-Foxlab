@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource( 1 )
 key = "foxlab_recovered_items_this_wave"
-text_key = "EFFECT_FOXLAB_STAT_QUERY"
-value = 3
+text_key = "EFFECT_FOXLAB_STAT_QUERY_DETAIL"
+value = 12
 custom_key = ""
 storage_method = 0
 effect_sign = 2

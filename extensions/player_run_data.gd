@@ -136,6 +136,8 @@ func serialize() -> Dictionary:
 			else:
 				var data = []
 				for res in value:
+					if res == null:
+						continue
 					assert(res is Resource)
 					data.push_back(res.serialize())
 				meta[key] = data

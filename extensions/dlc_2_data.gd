@@ -12,7 +12,6 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"foxlab_get_rand_weapon",
 	"foxlab_magician",
 	"foxlab_multiply_stat",
-	"foxlab_projectile_on_hit",
 	"foxlab_set_stat",
 	"foxlab_stat_gain_mod",
 	"foxlab_stat_query",
@@ -45,8 +44,6 @@ func _foxlab_init_mutation_rules() -> void:
 		Utils.foxlab_effect_receive_item_at_wave_end_hash,
 		Utils.foxlab_force_remove_on_reroll_hash,
 		Utils.foxlab_gain_scapegoat_no_hurt_hash,
-		Utils.foxlab_gain_stat_every_killed_enemies_hash,
-		Utils.foxlab_heal_when_kill_nearby_hash,
 		Utils.foxlab_increase_tier_on_rerolls_hash,
 		Utils.foxlab_instant_poisoned_attracting_hash,
 		Utils.foxlab_knockback_aura_hash,
@@ -83,6 +80,9 @@ func _foxlab_init_mutation_rules() -> void:
 	mutation_remove_blacklist.append_array(boolean_keys)
 	mutation_cumulative_explosion_keys.append(Utils.foxlab_explode_on_burn_hash)
 	mutation_saturating_chance_keys.append(Utils.foxlab_upgrade_locked_item_on_reroll_hash)
+	mutation_saturating_chance_custom_keys.append(Utils.foxlab_landmines_on_death_chance_hash)
+	mutation_scaled_value2_keys.append(Utils.foxlab_heal_when_kill_nearby_hash)
+	mutation_min_scale[Utils.foxlab_projectile_on_hit_hash] = 0.7
 	_foxlab_mutation_rules_initialized = true
 
 
@@ -90,7 +90,30 @@ func can_effect_be_copied_by_mutation(effect, player_index: int = -1) -> bool:
 	_foxlab_init_mutation_rules()
 	if FOXLAB_MUTATION_COPY_BLACKLIST_IDS.has(effect.get_id()):
 		return false
+	if effect.custom_key_hash == Utils.foxlab_gain_stat_every_killed_enemies_hash and effect.value2 <= 0:
+		return false
+	if player_index >= 0 and effect.key_hash == Utils.foxlab_recover_lost_item_hash:
+		var chance: int = 0
+		for entry in RunData.get_player_effect(Utils.foxlab_recover_lost_item_hash, player_index):
+			chance += entry[0]
+		if chance >= MAX_USEFUL_CHANCE:
+			return false
 	return .can_effect_be_copied_by_mutation(effect, player_index)
+
+
+func _scale_copied_effect(effect, player_index: int) -> void:
+	if effect.key_hash == Utils.foxlab_projectile_on_hit_hash:
+		effect.value = max(1, int(ceil(abs(effect.value) * pow(get_mutation_scale(player_index), 2.0))))
+		return
+	._scale_copied_effect(effect, player_index)
+	if effect.custom_key_hash == Utils.foxlab_gain_stat_every_killed_enemies_hash and effect.value2 > 0:
+		effect.value2 = int(ceil(effect.value2 / get_mutation_scale(player_index)))
+
+
+func _can_merge_tumor_effects(a, b) -> bool:
+	if a.custom_key_hash == Utils.foxlab_heal_when_kill_nearby_hash or b.custom_key_hash == Utils.foxlab_heal_when_kill_nearby_hash:
+		return false
+	return ._can_merge_tumor_effects(a, b)
 
 
 func _get_removable_negative_effect_indexes(item_data) -> Array:

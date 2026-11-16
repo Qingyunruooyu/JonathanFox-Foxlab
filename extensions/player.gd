@@ -577,16 +577,6 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 					SoundManager.play(preload("res://ui/sounds/Shield 4.mp3"))
 	return value_healed
 
-func on_alien_eyes_timeout() -> void :
-	var alien_eyes_effect = RunData.get_player_effect(Keys.alien_eyes_hash, player_index)
-	# 唯一的异形眼球效果敌袭期间被回收
-	if not alien_eyes_effect.empty():
-		.on_alien_eyes_timeout()
-	elif _alien_eyes_timer:
-		print("alien eyes is cleaned")
-		_alien_eyes_timer.stop()
-		_alien_eyes_timer.paused = true
-
 func _on_BurningTimer_timeout() -> void :
 	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
 		._on_BurningTimer_timeout()

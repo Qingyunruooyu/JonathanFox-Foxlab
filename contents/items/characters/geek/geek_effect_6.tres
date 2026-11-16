@@ -11,5 +11,5 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-stat_displayed = "STAT_FOXLAB_PRIMARY_DAMAGE"
+stat_displayed = "stat_foxlab_primary_damage"
 stats_modified = [ "stat_ranged_damage", "stat_melee_damage", "stat_elemental_damage" ]

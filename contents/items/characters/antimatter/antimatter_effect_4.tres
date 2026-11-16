@@ -12,4 +12,4 @@ storage_method = 0
 effect_sign = 3
 custom_args = [  ]
 stats_exception = [ "stat_curse" ]
-stat_displayed = "STAT_FOXLAB_PRIMARY"
+stat_displayed = "stat_foxlab_primary"

@@ -11,5 +11,5 @@ custom_key = ""
 storage_method = 0
 effect_sign = 3
 custom_args = [  ]
-stat_displayed = "STAT_FOXLAB_ARMOR_DODGE_HARVESTING"
+stat_displayed = "stat_foxlab_armor_dodge_harvesting"
 stats_modified = [ "stat_armor", "stat_harvesting", "stat_dodge" ]

@@ -88,7 +88,24 @@ func _on_foxlab_gear_recovered(item_data, player_index):
 	var rect = _get_gear_container(player_index).get_global_rect()
 	var popup_pos = rect.position + Vector2(rect.size.x * 0.5, 20) + Vector2(Utils.randi_range(-15, 15), 0)
 	foxlab_display_items_added([item_data], popup_pos, Vector2(0, -30))
-	foxlab_update_lose_item_icons(player_index)
+	foxlab_refresh_shop_after_gear_change(item_data, player_index)
+
+# 找回走call_deferred，落地时商店UI已按"物品已失去"刷新过（reroll丢失/强制移除路径），
+# 需要仿照原版on_shop_item_bought买后的刷新：重载商店物品（价格、复制x2标记、数量）、
+# 重算刷新价格与免费刷新（set_reroll_button_price同时会更新丢失图标）
+func foxlab_refresh_shop_after_gear_change(item_data, player_index: int) -> void:
+	_update_stats(player_index)
+	_get_shop_items_container(player_index).reload_shop_items()
+	var result: Array = ItemService.get_reroll_price(RunData.current_wave, _paid_reroll_count[player_index], player_index)
+	_reroll_price[player_index] = result[0]
+	_reroll_discount[player_index] = result[1]
+	var total_free_rerolls = RunData.get_player_effect(Keys.free_rerolls_hash, player_index)
+	if total_free_rerolls > _initial_free_rerolls[player_index]:
+		_free_rerolls[player_index] += total_free_rerolls - _initial_free_rerolls[player_index]
+		_initial_free_rerolls[player_index] = total_free_rerolls
+	set_reroll_button_price(player_index)
+	if item_data != null and item_data.my_id_hash == Keys.item_hourglass_hash:
+		update_go_next_button_text()
 
 func _on_foxlab_weapon_gear_changed(player_index):
 	var player_gear_container = _get_gear_container(player_index)

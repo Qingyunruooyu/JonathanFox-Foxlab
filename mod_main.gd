@@ -31,7 +31,6 @@ const EXTENSION_SCRIPTS = [
 	"sort_inventory_button.gd",
 	"item_description.gd",
 	"weapon_selection.gd",
-	"effects/projectile_effect.gd",
 	"tag_panel.gd",
 	"tags_container.gd",
 	"scapegoat.gd",

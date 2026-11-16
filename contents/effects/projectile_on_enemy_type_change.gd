@@ -1,4 +1,4 @@
-extends "res://effects/items/projectile_effect.gd"
+extends "res://mods-unpacked/JonathanFox-FoxLab/contents/base_effects/projectile_effect.gd"
 
 static func get_id() -> String:
 	return "foxlab_projectile_on_enemy_type_change"

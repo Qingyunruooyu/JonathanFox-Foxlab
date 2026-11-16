@@ -1,4 +1,4 @@
-extends "res://effects/items/projectile_effect.gd"
+extends "res://mods-unpacked/JonathanFox-FoxLab/contents/base_effects/projectile_effect.gd"
 
 export(Array, String) var effects = []
 export(String) var tracking_key = ""

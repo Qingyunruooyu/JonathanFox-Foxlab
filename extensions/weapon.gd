@@ -1,6 +1,5 @@
 extends "res://weapons/weapon.gd"
 
-# 同炮命中多个X的每X投射组合变体缓存，键为排序后的X组合；init_stats时清空
 var _foxlab_every_x_combo_cache = {}
 
 func queue_free():
@@ -12,22 +11,37 @@ func init_stats(at_wave_begin: bool = true) -> void:
 	_hitbox.projectiles_on_hit = WeaponService.foxlab_merge_projectiles_on_hit(effects, player_index, true)
 
 func shoot() -> void:
-	var shot_nb = _nb_shots_taken + 1
-	var matched = []
-	for x in _stats_every_x_shots:
-		if shot_nb % x == 0:
-			matched.append(x)
-	if matched.size() <= 1:
+	var dict = _stats_every_x_shots
+	var dict_size = dict.size()
+	if dict_size <= 1 or dict_size > 62:
 		.shoot()
 		return
-	# 原版多命中时快照互相覆盖、结束时恢复成错误stats；换成组合快照，
-	# 字典临时替换成唯一命中键（用本炮序号，必被整除），基类换入/恢复各只执行一次
-	matched.sort()
-	var combined = _foxlab_every_x_combo_cache.get(str(matched))
-	if combined == null:
-		combined = WeaponService.foxlab_build_combined_every_x_stats(self, matched)
-		_foxlab_every_x_combo_cache[str(matched)] = combined
-	var dict_backup = _stats_every_x_shots
-	_stats_every_x_shots = {shot_nb: combined}
+	var shot_nb = _nb_shots_taken + 1
+	var bits = 0
+	var count = 0
+	var lowest = 0
+	var i = 0
+	for x in dict:
+		if shot_nb % x == 0:
+			bits |= 1 << i
+			if count == 0:
+				lowest = x
+			count += 1
+		i += 1
+	if count <= 1:
+		.shoot()
+		return
+	var combo_dict = _foxlab_every_x_combo_cache.get(bits)
+	if combo_dict == null:
+		var matched = []
+		i = 0
+		for x in dict:
+			if bits & (1 << i):
+				matched.append(x)
+			i += 1
+		combo_dict = {lowest: WeaponService.foxlab_build_combined_every_x_stats(self, matched)}
+		_foxlab_every_x_combo_cache[bits] = combo_dict
+	var dict_backup = dict
+	_stats_every_x_shots = combo_dict
 	.shoot()
 	_stats_every_x_shots = dict_backup

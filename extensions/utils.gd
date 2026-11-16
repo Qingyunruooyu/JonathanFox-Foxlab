@@ -342,10 +342,10 @@ func foxlab_get_colored_stat_str(stat_hash: int, player_index: int = RunData.DUM
 		return tr(stat_str.to_upper())
 	return "[color=#%s]%s[/color]" % [color.to_html(), tr(stat_str.to_upper())]
 
-func foxlab_append_item_flavor_text(text: String, item) -> String:
+func foxlab_get_item_name_with_flavor(item) -> String:
 	if item == null:
-		return text
-	return foxlab_append_flavor_text(text, item.is_cursed, item.is_meca, item.is_mutant)
+		return ""
+	return foxlab_append_flavor_text(item.get_name_text(), item.is_cursed, item.is_meca, item.is_mutant)
 
 func foxlab_append_flavor_text(text: String, is_cursed: bool, is_meca: bool = false, is_mutant: bool = false) -> String:
 	if is_cursed:

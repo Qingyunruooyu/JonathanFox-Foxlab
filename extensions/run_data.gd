@@ -49,6 +49,15 @@ var foxlab_is_horde_wave = null
 # 主角（current_character）不登记；数组为登记时的静态快照；供ItemService生成道具时，合并到主角
 var foxlab_extra_char_restrictions = [{}, {}, {}, {}]
 
+func add_item(item: ItemData, player_index: int, is_selection: bool = false) -> void :
+	var triggers_before: bool = _triggers_stat_gain_effects
+	if not item is UpgradeData and not item is CharacterData and not item is ConsumableData:
+		_triggers_stat_gain_effects = true
+	else:
+		_triggers_stat_gain_effects = false
+	.add_item(item, player_index, is_selection)
+	_triggers_stat_gain_effects = triggers_before
+
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
 	# DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
@@ -96,10 +105,10 @@ func foxlab_update_remembered_item(player_index: int):
 	previous_remembered_names.clear()
 	for item in foxlab_remembered_items[player_index]:
 		previous_remembered.append(item.my_id_hash)
-		previous_remembered_names.append(Utils.foxlab_append_item_flavor_text(tr(item.name), item))
+		previous_remembered_names.append(Utils.foxlab_get_item_name_with_flavor(item))
 	for weapon in foxlab_remembered_weapons[player_index]:
 		previous_remembered.append(weapon.my_id_hash)
-		previous_remembered_names.append(Utils.foxlab_append_item_flavor_text(" %s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)], weapon))
+		previous_remembered_names.append(Utils.foxlab_get_item_name_with_flavor(weapon))
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_mnemosyne_hash, previous_remembered.size())
 
 # 大部分时候没用，非主角位置的孟婆，记忆了商店的面具道具将孟婆换掉之后
@@ -185,14 +194,9 @@ func foxlab_duplicate_effects_for_copy(item_data) -> Array:
 	return duplicated
 
 func foxlab_get_effects_from_another_weapon(weapon: WeaponData, weapon_for_effect: WeaponData, is_const_effect: bool) -> Array:
-	var begin_effect = NullEffect.new()
-	begin_effect.key = " %s %s" % [tr(weapon_for_effect.name), ItemService.get_tier_number(weapon_for_effect.tier)]
-	if weapon_for_effect.is_cursed:
-		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED"
-	elif weapon_for_effect.is_meca:
-		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_MECA"
-	else:
-		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT"
+	var begin_effect = load("res://mods-unpacked/JonathanFox-FoxLab/contents/effects/weapon_text_effect.gd").new()
+	begin_effect.key = Utils.foxlab_get_item_name_with_flavor(weapon_for_effect)
+	begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT"
 	if is_const_effect:
 		begin_effect.custom_key = "foxlab_const_effect_begin"
 		begin_effect.custom_key_hash = Utils.foxlab_const_effect_begin_hash
@@ -476,7 +480,7 @@ func _foxlab_try_recover_lost_item(item_data: Resource, player_index: int) -> vo
 		return
 	add_tracked_value(player_index, Utils.item_foxlab_experiment_log_hash, 1)
 	var recovered_item = item_data.duplicate()
-	recovered_items.append(Utils.foxlab_append_item_flavor_text(tr(recovered_item.name), recovered_item))
+	recovered_items.append(Utils.foxlab_get_item_name_with_flavor(recovered_item))
 	recovered_item.effects = []
 	for effect in item_data.effects:
 		recovered_item.effects.append(effect.duplicate())

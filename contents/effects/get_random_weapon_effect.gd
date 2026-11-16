@@ -129,7 +129,7 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 					meta.item = item_for_effect
 					break
 
-	var begin_effect = NullEffect.new()
+	var begin_effect = load("res://mods-unpacked/JonathanFox-FoxLab/contents/effects/weapon_text_effect.gd").new()
 	var new_effects = [begin_effect]
 	if meta.item == null:
 		for effect in RunData.foxlab_duplicate_effects_for_copy(item_for_effect):
@@ -142,19 +142,11 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			else:
 				RunData.foxlab_adjust_weapon_effect(effect, weapon)
 
-	meta.weapon_id = Utils.foxlab_append_item_flavor_text("%s %s" % [tr(weapon.name), ItemService.get_tier_number(weapon.tier)], weapon)
+	meta.weapon_id = Utils.foxlab_get_item_name_with_flavor(weapon)
 
-	if item_for_effect is WeaponData:
-		meta.extra_item_id = "%s %s" % [tr(item_for_effect.name), ItemService.get_tier_number(item_for_effect.tier)]
-	else:
-		meta.extra_item_id = tr(item_for_effect.name)
-	begin_effect.key = meta.extra_item_id
-	meta.extra_item_id = Utils.foxlab_append_item_flavor_text(meta.extra_item_id, item_for_effect)
-
-	if item_for_effect.is_cursed:
-		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT_CURSED"
-	else:
-		begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT"
+	begin_effect.key = Utils.foxlab_get_item_name_with_flavor(item_for_effect)
+	meta.extra_item_id = begin_effect.key
+	begin_effect.text_key = "EFFECT_FOXLAB_WEAPON_TEXT"
 
 	meta.is_const_weapon = 1
 	if !_get_chance_success(CHANCE_CONST_WEAPON, luck_chance):

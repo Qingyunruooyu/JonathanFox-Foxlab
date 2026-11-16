@@ -64,7 +64,7 @@ func get_args(player_index: int) -> Array:
 			var item_names = [ ]
 			var lose_item_num = RunData.get_player_effect(key_hash, player_index) + 3
 			for item_data in Utils.foxlab_shopaholic_get_items_to_lose(player_index, lose_item_num):
-				item_names.append(Utils.foxlab_append_item_flavor_text(tr(item_data.name), item_data))
+				item_names.append(Utils.foxlab_get_item_name_with_flavor(item_data))
 			return [tr("FOXLAB_DISABLE") if item_names.empty() else ", ".join(item_names), tr("FOXLAB_LOSE_ITEMS")]
 		12: #字符串数组，数组记录名字：个数加括号明细
 			var named_items: Array = RunData.get_player_effect(key_hash, player_index)

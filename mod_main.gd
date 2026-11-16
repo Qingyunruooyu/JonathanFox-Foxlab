@@ -70,6 +70,8 @@ func _init():
 	foxlab_current_settings = DEFAULT_SETTINGS.duplicate()
 	_foxlab_overwrite_base_shop()
 	for script in EXTENSION_SCRIPTS:
+		if script == "base_shop.gd" and foxlab_base_shop_overwrite != null:
+			continue
 		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + script)
 
 #1.2.0.1的base_shop.gd用":= RunData.get_next_wave()"做类型推导，装扩展阶段RunData等autoload尚未实例化，
@@ -84,6 +86,8 @@ func _foxlab_overwrite_base_shop():
 	foxlab_base_shop_overwrite.take_over_path("res://ui/menus/shop/base_shop.gd")
 
 func _ready():
+	if foxlab_base_shop_overwrite != null:
+		ModLoaderMod.install_script_extension(FOXLAB_EXTENSION_DIR + "base_shop.gd")
 	call_deferred("_foxlab_init_configs")
 
 func is_transform_vanilla_only():

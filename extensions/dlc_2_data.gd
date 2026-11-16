@@ -82,7 +82,9 @@ func _foxlab_init_mutation_rules() -> void:
 	mutation_remove_blacklist.append_array(boolean_keys)
 	mutation_cumulative_explosion_keys.append(Utils.foxlab_explode_on_burn_hash)
 	mutation_saturating_chance_keys.append(Utils.foxlab_upgrade_locked_item_on_reroll_hash)
-	mutation_saturating_chance_custom_keys.append(Utils.foxlab_landmines_on_death_chance_hash)
+	var saturating_chance_custom_keys = get("mutation_saturating_chance_custom_keys")
+	if saturating_chance_custom_keys != null:
+		saturating_chance_custom_keys.append(Utils.foxlab_landmines_on_death_chance_hash)
 	mutation_scaled_value2_keys.append(Utils.foxlab_heal_when_kill_nearby_hash)
 	mutation_min_scale[Utils.foxlab_projectile_on_hit_hash] = 0.7
 	_foxlab_mutation_rules_initialized = true

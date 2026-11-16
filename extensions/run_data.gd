@@ -50,13 +50,16 @@ var foxlab_is_horde_wave = null
 var foxlab_extra_char_restrictions = [{}, {}, {}, {}]
 
 func add_item(item: ItemData, player_index: int, is_selection: bool = false) -> void :
-	var triggers_before: bool = _triggers_stat_gain_effects
+	var triggers_before = get("_triggers_stat_gain_effects")
+	if triggers_before == null:
+		.add_item(item, player_index, is_selection)
+		return
 	if not item is UpgradeData and not item is CharacterData and not item is ConsumableData:
-		_triggers_stat_gain_effects = true
+		set("_triggers_stat_gain_effects", true)
 	else:
-		_triggers_stat_gain_effects = false
+		set("_triggers_stat_gain_effects", false)
 	.add_item(item, player_index, is_selection)
-	_triggers_stat_gain_effects = triggers_before
+	set("_triggers_stat_gain_effects", triggers_before)
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)

@@ -727,9 +727,9 @@ func buy_item(item_data: ItemData, player_index: int) -> void :
 			were_items_duplicated = true
 			var source_item = RunData.get_player_item(duplicate_item_effect[0], player_index)
 			RunData.remove_item(source_item, player_index)
-			RunData.add_item(item_data, player_index)
+			RunData.foxlab_add_item_triggering_stat_gain_effects(item_data, player_index)
 
-	RunData.add_item(item_data, player_index)
+	RunData.foxlab_add_item_triggering_stat_gain_effects(item_data, player_index)
 
 	var player_gear_container = _get_gear_container(player_index)
 	if were_items_duplicated:

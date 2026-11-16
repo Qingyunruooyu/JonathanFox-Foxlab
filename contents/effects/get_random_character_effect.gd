@@ -86,7 +86,7 @@ func apply(player_index: int) -> void:
 	convert_stats_end_of_wave.clear()
 	for character in meta.chars:
 		var added_character = _update_character_bg(character)
-		RunData.add_item(added_character, player_index)
+		RunData.foxlab_add_item_triggering_stat_gain_effects(added_character, player_index)
 		#DebugService.log_data("add character " + character.my_id)
 		prev_items.append(added_character)
 	convert_stats_half_wave.append_array(convert_stats_half_wave_bak)
@@ -94,7 +94,7 @@ func apply(player_index: int) -> void:
 	meta.chars.clear()
 
 	for item in meta.items:
-		RunData.add_item(item, player_index)
+		RunData.foxlab_add_item_triggering_stat_gain_effects(item, player_index)
 		#DebugService.log_data("add item " + item.my_id)
 		prev_items.append(item)
 

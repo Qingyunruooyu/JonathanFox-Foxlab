@@ -17,7 +17,7 @@ func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: i
 			break
 
 	var new_item = ItemService.foxlab_get_builder_turret_at_level(new_level, p_player_index)
-	RunData.add_item(new_item, p_player_index)
+	RunData.foxlab_add_item_triggering_stat_gain_effects(new_item, p_player_index)
 
 func foxlab_modify_weapon_upgrade(weapon: WeaponData):
 	assert(weapon.upgrades_into != null)
@@ -162,7 +162,7 @@ func foxlab_add_bonus_items(player_index: int):
 	if not items.empty():
 		var player_gear_container = _get_gear_container(player_index)
 		for bonus_item in items:
-			RunData.add_item(bonus_item, player_index)
+			RunData.foxlab_add_item_triggering_stat_gain_effects(bonus_item, player_index)
 			player_gear_container.items_container._elements.add_element(bonus_item, true)
 		_on_foxlab_item_added(items, player_index)
 		items.clear()

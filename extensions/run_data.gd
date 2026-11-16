@@ -49,16 +49,16 @@ var foxlab_is_horde_wave = null
 # 主角（current_character）不登记；数组为登记时的静态快照；供ItemService生成道具时，合并到主角
 var foxlab_extra_char_restrictions = [{}, {}, {}, {}]
 
-func add_item(item: ItemData, player_index: int, is_selection: bool = false) -> void :
+func foxlab_add_item_triggering_stat_gain_effects(item_data: ItemParentData, player_index: int) -> void :
 	var triggers_before = get("_triggers_stat_gain_effects")
 	if triggers_before == null:
-		.add_item(item, player_index, is_selection)
+		add_item(item_data, player_index)
 		return
-	if not item is UpgradeData and not item is CharacterData and not item is ConsumableData:
+	if item_data is ItemData and not item_data is UpgradeData and not item_data is CharacterData and not item_data is ConsumableData:
 		set("_triggers_stat_gain_effects", true)
 	else:
 		set("_triggers_stat_gain_effects", false)
-	.add_item(item, player_index, is_selection)
+	add_item(item_data, player_index)
 	set("_triggers_stat_gain_effects", triggers_before)
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
@@ -77,7 +77,7 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 	else:
 		foxlab_remembered_items[player_index].push_back(item as ItemData)
 		# DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
-		add_item(item, player_index)
+		foxlab_add_item_triggering_stat_gain_effects(item, player_index)
 		# DebugService.log_data("after add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 
 func foxlab_modify_weapon(player_index: int):
@@ -252,7 +252,7 @@ func foxlab_remove_item_by_index(index: int, player_index: int, apply_replacemen
 	LinkedStats.reset_player(player_index)
 
 	if apply_replacement and item.replaced_by:
-		add_item(item.replaced_by, player_index)
+		foxlab_add_item_triggering_stat_gain_effects(item.replaced_by, player_index)
 
 # item_data必须是已经在get_player_items_ref里的对象，这里为什么重写函数：
 # 从存档反序列化恢复的游戏，如果初始物品相同且有构筑物等append(self)的效果，需要找到第一个相同的，才不会错位（例如炼丹师+陷阱大师的地雷）
@@ -346,12 +346,12 @@ func foxlab_item_recycle_test():
 		if item.my_id in failed_items:
 			continue
 		print("test ", item.my_id)
-		add_item(item, 0)
+		foxlab_add_item_triggering_stat_gain_effects(item, 0)
 		remove_item(item, 0, false, false)
 		if not item.can_be_looted or item is CharacterData:
 			continue
 		var new_item = ItemService.apply_item_effect_modifications(item, 0)
-		add_item(new_item, 0)
+		foxlab_add_item_triggering_stat_gain_effects(new_item, 0)
 		remove_item(new_item, 0, false, false)
 	return true
 
@@ -504,7 +504,7 @@ func _foxlab_recover_lost_item(item_data: Resource, player_index: int, player_da
 		item_data = new_weapon
 		emit_signal("foxlab_weapon_gear_changed", player_index)
 	else:
-		add_item(item_data, player_index)
+		foxlab_add_item_triggering_stat_gain_effects(item_data, player_index)
 		emit_signal("foxlab_item_gear_changed", player_index)
 	emit_signal("foxlab_gear_recovered", item_data, player_index)
 

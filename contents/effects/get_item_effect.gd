@@ -15,7 +15,7 @@ func apply(player_index: int) -> void:
 		item_to_add = ItemService.get_element(ItemService.get_items(), key_hash)
 	if item_to_add != null:
 		for _i in range(value):
-			RunData.add_item(item_to_add, player_index)
+			RunData.foxlab_add_item_triggering_stat_gain_effects(item_to_add, player_index)
 			is_item_added = true
 		RunData.emit_signal("foxlab_item_added", item_to_add, value, player_index)
 		RunData.emit_signal("foxlab_item_gear_changed", player_index)

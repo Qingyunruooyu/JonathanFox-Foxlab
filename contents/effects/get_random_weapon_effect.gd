@@ -36,7 +36,7 @@ func apply(player_index: int) -> void:
 	if meta.is_const_weapon:
 		RunData.add_tracked_value(player_index, Utils.item_foxlab_buddhas_hand_hash, 1)
 	if meta.item != null:
-		RunData.add_item(meta.item, player_index)
+		RunData.foxlab_add_item_triggering_stat_gain_effects(meta.item, player_index)
 		RunData.emit_signal("foxlab_item_added", meta.item, 1, player_index)
 		meta.item = null
 		RunData.emit_signal("foxlab_item_gear_changed", player_index)

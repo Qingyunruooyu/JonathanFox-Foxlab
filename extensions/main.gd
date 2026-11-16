@@ -767,7 +767,7 @@ func foxlab_get_item(item_id_hash: int, num: int, player_index: int, curse_mode:
 					if effect is SwapMaxMinStatEffect:
 						effect.has_been_applied = false
 						effect.stats_swapped = effect._find_min_max_stat_keys(player_index)
-			RunData.add_item(actual_item_data, player_index)
+			RunData.foxlab_add_item_triggering_stat_gain_effects(actual_item_data, player_index)
 			if actual_item_data.is_cursed:
 				displayed_item = actual_item_data
 		foxlab_after_add_item(pre_states, player_index)
@@ -1203,7 +1203,7 @@ func _on_EntitySpawner_structure_respawned(structure):
 
 func on_upgrade_selected(upgrade_data: UpgradeData, upgrade) -> void :
 	if upgrade_data.has_meta("foxlab_item"):
-		RunData.add_item(upgrade_data.get_meta("foxlab_item"), upgrade.player_index)
+		RunData.foxlab_add_item_triggering_stat_gain_effects(upgrade_data.get_meta("foxlab_item"), upgrade.player_index)
 	else:
 		.on_upgrade_selected(upgrade_data, upgrade)
 

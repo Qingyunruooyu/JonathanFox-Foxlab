@@ -1,4 +1,4 @@
-extends  "res://effects/items/turret_effect.gd"
+extends  "res://mods-unpacked/JonathanFox-FoxLab/contents/effects/turret_effect.gd"
 
 var tracker = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/tracker/tracker.gd")
 

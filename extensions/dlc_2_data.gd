@@ -1,6 +1,5 @@
 extends "res://dlcs/dlc_2/dlc_2_data.gd"
 
-const FOXLAB_CONTENT_PATH = "res://mods-unpacked/JonathanFox-FoxLab/contents/"
 const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"foxlab_all_or_nothing",
 	"foxlab_apply_only",
@@ -20,7 +19,6 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"foxlab_swap_stats",
 	"foxlab_take_away",
 	"foxlab_task",
-	"foxlab_tracker",
 	"foxlab_uv_lamp",
 	"foxlab_weapon_class_price",
 	"foxlab_weapon_gain_stat_for_every_stat",
@@ -78,8 +76,6 @@ func _foxlab_init_mutation_rules() -> void:
 		Utils.foxlab_turret_target_hash,
 	]
 	mutation_boolean_keys.append_array(boolean_keys)
-	mutation_copy_blacklist.append_array(boolean_keys)
-	mutation_remove_blacklist.append_array(boolean_keys)
 	mutation_cumulative_explosion_keys.append(Utils.foxlab_explode_on_burn_hash)
 	mutation_saturating_chance_keys.append(Utils.foxlab_upgrade_locked_item_on_reroll_hash)
 	var saturating_chance_custom_keys = get("mutation_saturating_chance_custom_keys")

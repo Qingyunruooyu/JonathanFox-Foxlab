@@ -12,15 +12,16 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 	var new_effects = []
 	var effect_to_move = []
 	if item_data.my_id_hash in Utils.FOXLAB_STRUCT_WITH_EFFECTS:
-		var structure_effect = null
-		var extra_effects = []
 		for effect in ret.effects:
-			if effect is StructureEffect:
-				structure_effect = effect
-			elif not (effect is CharmEffect and effect.value2 == 0 and effect.value == 0):
-				extra_effects.append(effect)
-		if structure_effect:
-			structure_effect.effects = extra_effects
+			if effect is StructureEffect and not effect.effects.empty():
+				var boosted_effects = []
+				for inner_effect in effect.effects:
+					var effect_modifier = _get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)
+					max_effect_modifier = max(max_effect_modifier, effect_modifier)
+					var boosted_effect = inner_effect.duplicate()
+					boosted_effect.value = _boost_effect_value_positively(boosted_effect, effect_modifier)
+					boosted_effects.append(boosted_effect)
+				effect.effects = boosted_effects
 	else:
 		for effect in ret.effects:
 			var effect_modifier = _get_cursed_item_effect_modifier(turn_randomization_off, min_modifier)

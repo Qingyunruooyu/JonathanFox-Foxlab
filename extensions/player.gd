@@ -606,13 +606,16 @@ func heal(value: int, is_from_torture: bool = false) -> int:
 func update_player_stats(reset_current_health= false) -> void :
 	var old_max_health: int = max_stats.health
 	.update_player_stats(reset_current_health)
+	if cleaning_up:
+		return
 	var decreased_health: int = old_max_health - max_stats.health
 	var exempt: int = min(decreased_health, _foxlab_max_hp_shave_exempt) if decreased_health > 0 else 0
 	decreased_health -= exempt
 	_foxlab_max_hp_shave_exempt = 0
 	if decreased_health > 0:
 		RunData.get_player_effects(player_index)[Utils.foxlab_lost_hp_hash] += decreased_health
-	foxlab_process_lost_hp()
+	if not reset_current_health:
+		foxlab_process_lost_hp()
 
 # 玩家被Buff怪增强，原版boost()立即给当前生命加血、boost_ended()把当前生命钳制回新上限，
 # 会与update_player_stats的生命调整重复计算（boost多加一次，结束时多扣一次），

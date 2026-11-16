@@ -249,6 +249,8 @@ var foxlab_item_pinned_in_inventory = {
 		item_foxlab_ball_lightning_3_hash: 0,
 		item_foxlab_demon_hash: 0,
 		item_foxlab_angel_hash: 0,
+		item_foxlab_experiment_log_hash: 0,
+		item_foxlab_uv_mark_hash: 0,
 		Keys.generate_hash("item_foxlab_devil_trigger"): 0,
 		Keys.generate_hash("item_foxlab_magical_hat"): 0,
 		item_foxlab_split_hash: 0,

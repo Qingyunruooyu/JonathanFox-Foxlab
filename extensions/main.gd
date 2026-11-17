@@ -46,7 +46,7 @@ var _foxlab_fox_tiger_scene = load("res://mods-unpacked/JonathanFox-FoxLab/conte
 
 var _foxlab_entity_birth_entered_players = {}
 
-var FoxLabBuilderTurretManager = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/builder_turret_manager.gd")
+var FoxLabBuilderTurretManager = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/builder_turret_mamaner/builder_turret_manager.gd")
 var foxlab_builder_turret_manager = null
 
 func _ready():

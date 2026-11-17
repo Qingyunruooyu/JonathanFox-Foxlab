@@ -49,6 +49,7 @@ var foxlab_is_horde_wave = null
 # 主角（current_character）不登记；数组为登记时的静态快照；供ItemService生成道具时，合并到主角
 var foxlab_extra_char_restrictions = [{}, {}, {}, {}]
 
+# TODO(jona): remove when compatible
 func foxlab_add_item_triggering_stat_gain_effects(item_data: ItemParentData, player_index: int) -> void :
 	var triggers_before = get("_triggers_stat_gain_effects")
 	if triggers_before == null:
@@ -384,6 +385,11 @@ func init_elites_spawn(base_wave: int = 10, horde_chance: float = 0.4) -> void :
 				horde_chance = 1.0
 	.init_elites_spawn(base_wave, horde_chance)
 
+# TODO(jona): remove when compatible
+func apply_evolution_to_current_elite() -> void :
+	.apply_evolution_to_current_elite()
+	start_wave_state.elites_spawn = elites_spawn.duplicate(true)
+
 # 初始携带就能增加统计数据的角色/道具（如面具、佛手、无面）
 func revert_all_selections() -> void :
 	.revert_all_selections()
@@ -646,6 +652,7 @@ func after_weapon_removed(weapon: WeaponData, player_index: int) -> void :
 	if not foxlab_remembered_weapons[player_index].empty():
 		foxlab_forget_a_weapon(weapon, player_index)
 
+# TODO(jona): remove when compatible
 # 探测仪的官方bug，sl能白嫖
 func get_state() -> Dictionary:
 	var state = .get_state()

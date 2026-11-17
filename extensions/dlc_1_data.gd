@@ -37,6 +37,7 @@ func foxlab_extra_curse_item(item_data: ItemParentData, _player_index: int, turn
 						extra_effect.key = "crate_chance"
 						extra_effect.key_hash = Keys.crate_chance_hash
 						extra_effect.value = Utils.FOXLAB_ENCHANTED_EYES_CRATE_CHANCE
+						extra_effect.text_key = "EFFECT_CRATE_CHANCE"
 						extra_effect.effect_sign = Sign.POSITIVE
 						extra_effect.value = _boost_effect_value_positively(extra_effect, effect_modifier)
 						ret.effects.insert(1, extra_effect)

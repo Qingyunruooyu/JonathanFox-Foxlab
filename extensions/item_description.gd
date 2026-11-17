@@ -35,7 +35,7 @@ func set_item(item_data: ItemParentData, player_index: int, item_count: int = 1)
 	.set_item(item_data, player_index, item_count)
 	foxlab_update_visibility()
 
-	if item_data is ItemData and not item_data is CharacterData and not item_data is UpgradeData and not item_data is DifficultyData:
+	if item_data is ItemData and not item_data is CharacterData and not item_data is UpgradeData:
 		if item_data.max_nb <= 0:
 			var number = RunData.get_nb_item(item_data.my_id_hash, player_index);
 			_category.text += tr("EFFECT_FOXLAB_LPAREN") + "%s/∞" % [str(number)] + tr("EFFECT_FOXLAB_RPAREN")

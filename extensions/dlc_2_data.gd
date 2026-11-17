@@ -78,6 +78,7 @@ func _foxlab_init_mutation_rules() -> void:
 	mutation_boolean_keys.append_array(boolean_keys)
 	mutation_cumulative_explosion_keys.append(Utils.foxlab_explode_on_burn_hash)
 	mutation_saturating_chance_keys.append(Utils.foxlab_upgrade_locked_item_on_reroll_hash)
+	# TODO(jona): remove when compatible
 	var saturating_chance_custom_keys = get("mutation_saturating_chance_custom_keys")
 	if saturating_chance_custom_keys != null:
 		saturating_chance_custom_keys.append(Utils.foxlab_landmines_on_death_chance_hash)

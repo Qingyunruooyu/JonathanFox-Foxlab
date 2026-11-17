@@ -50,7 +50,6 @@ const EXTENSION_SCRIPTS = [
 	"weapon.gd",
 	"enemy.gd",
 	"railgun.gd",
-	# "builder_turret.gd",# 兼容性差
 ]
 
 

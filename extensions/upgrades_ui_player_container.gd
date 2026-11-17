@@ -60,5 +60,9 @@ func show_item(item_data: ItemParentData) -> void :
 
 func show_upgrades_for_level(level: int) -> void :
 	.show_upgrades_for_level(level)
-	if foxlab_current_ui:
+	if foxlab_current_ui and foxlab_current_ui.is_visible_in_tree():
 		on_foxlab_upgrade_hovered(foxlab_current_ui.upgrade_data, foxlab_current_ui)
+	else:
+		if foxlab_current_ui:
+			foxlab_current_ui = null
+		on_foxlab_item_left()

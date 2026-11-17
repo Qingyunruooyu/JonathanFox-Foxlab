@@ -7,13 +7,13 @@ func _ready() -> void :
     foxlab_expand_indefinitely = expand_indefinitely
 
 func foxlab_should_scroll() -> bool:
-	return (RunData.shop_effects_checked and item is WeaponData and item.effects.size() > 9)\
-		or (not RunData.is_coop_run and foxlab_item_is_special_upgrade)
+	return not RunData.is_coop_run and foxlab_item_is_special_upgrade
 
 func foxlab_update_visibility() -> void:
 	expand_indefinitely = (get_effects() == _effects)
 	_vbox_container.visible = show_details and expand_indefinitely
 	_scroll_container.visible = show_details and not expand_indefinitely
+	_set_scroll_input_enabled(_scroll_container.visible)
 
 ########## 扩展 ############
 func get_weapon_stats():

@@ -51,7 +51,7 @@ func get_args(player_index: int) -> Array:
 			return [str(val), tr("EFFECT_FOXLAB_NEXT_WAVE") + tr(key.to_upper())]
 		9: #字符串数组
 			var items: Array = RunData.get_player_effect(key_hash, player_index)
-			return [tr("FOXLAB_DISABLE") if items.empty() else ", ".join(items), tr(key.to_upper())]
+			return [tr("FOXLAB_DISABLE") if items.empty() else tr("EFFECT_FOXLAB_COMMA").join(items), tr(key.to_upper())]
 		10: #无面是否能复制武器
 			var upgrade_wave =  RunData.get_player_effect(Utils.foxlab_faceless_upgrade_on_transform_wave_hash, player_index)
 			var txt = ""
@@ -65,12 +65,12 @@ func get_args(player_index: int) -> Array:
 			var lose_item_num = RunData.get_player_effect(key_hash, player_index) + 3
 			for item_data in Utils.foxlab_shopaholic_get_items_to_lose(player_index, lose_item_num):
 				item_names.append(Utils.foxlab_get_item_name_with_flavor(item_data))
-			return [tr("FOXLAB_DISABLE") if item_names.empty() else ", ".join(item_names), tr("FOXLAB_LOSE_ITEMS")]
+			return [tr("FOXLAB_DISABLE") if item_names.empty() else tr("EFFECT_FOXLAB_COMMA").join(item_names), tr("FOXLAB_LOSE_ITEMS")]
 		12: #字符串数组，数组记录名字：个数加括号明细
 			var named_items: Array = RunData.get_player_effect(key_hash, player_index)
 			var detail = ""
 			if not named_items.empty():
-				detail = " (%s)" % ", ".join(named_items)
+				detail = tr("EFFECT_FOXLAB_LPAREN") + tr("EFFECT_FOXLAB_COMMA").join(named_items) + tr("EFFECT_FOXLAB_RPAREN")
 			return [str(named_items.size()), tr(key.to_upper()), detail]
 		_:
 			return []

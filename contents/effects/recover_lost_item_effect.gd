@@ -10,4 +10,4 @@ func get_text(player_index: int, colored: bool = true) -> String:
 		names.append("[color=#%s]%s[/color]" % [ProgressData.settings.color_negative, tr(Keys.hash_to_string[item_hash].to_upper())])
 	if names.empty():
 		return text
-	return text + "\n" + Text.text(tr("FOXLAB_WONT_RECOVER"), [", ".join(names)])
+	return text + "\n" + Text.text(tr("FOXLAB_WONT_RECOVER"), [tr("EFFECT_FOXLAB_COMMA").join(names)])

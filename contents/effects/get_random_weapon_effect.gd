@@ -153,8 +153,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		var level_suffix = "" if weapon.tier == 0 else ("_%d" % [weapon.tier + 1])
 		var break_effect = load("res://dlcs/dlc_1/weapons/melee/brick/%d/brick%s_effect_0.tres" % [weapon.tier + 1, level_suffix])
 		new_effects.append(break_effect)
-		meta.extra_item_id += "([color=#%s]+%s[/color])" % [ ProgressData.settings.color_negative, tr("WEAPON_BRICK")]
-		begin_effect.key += "(+%s)" % [tr("WEAPON_BRICK")]
+		meta.extra_item_id += tr("EFFECT_FOXLAB_LPAREN") + "[color=#%s]+%s[/color]" % [ ProgressData.settings.color_negative, tr("WEAPON_BRICK")] + tr("EFFECT_FOXLAB_RPAREN")
+		begin_effect.key += tr("EFFECT_FOXLAB_LPAREN") + "+%s" % [tr("WEAPON_BRICK")] + tr("EFFECT_FOXLAB_RPAREN")
 		meta.is_const_weapon = 0
 		weapon.effects.append_array(new_effects)
 	elif meta.item == null:

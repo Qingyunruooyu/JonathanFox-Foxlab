@@ -253,7 +253,7 @@ func cleanup(player_index: int) -> void:
 func get_args(player_index: int) -> Array:
 	# 最后一位{3}为该效果key对应属性的名称
 	if RunData.get_player_character(player_index) == null:
-		return ["%s ~ %s" % [str(floor(MIN_TRANSFORM_NUM)), str(ceil(MAX_TRANSFORM_NUM))], tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr(key.to_upper())]
+		return [str(floor(MIN_TRANSFORM_NUM)) + tr("EFFECT_FOXLAB_TILDE") + str(ceil(MAX_TRANSFORM_NUM)), tr("FOXLAB_RANDOM"), tr("FOXLAB_RANDOM"), tr(key.to_upper())]
 	try_generate(player_index)
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_mask_meta(player_index)[is_cursed]
@@ -319,7 +319,7 @@ func _get_rand_chars(player_index: int) -> Array:
 		chars_id.append(current_char.my_id_hash)
 		meta.names += Utils.foxlab_get_item_name_with_flavor(current_char)
 		if char_idx + 1 < final_value:
-			meta.names += ", "
+			meta.names += tr("EFFECT_FOXLAB_COMMA")
 
 		var container = []
 		for effect in current_char.effects:

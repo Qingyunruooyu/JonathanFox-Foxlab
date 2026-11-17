@@ -351,11 +351,11 @@ func foxlab_get_item_name_with_flavor(item) -> String:
 
 func foxlab_append_flavor_text(text: String, is_cursed: bool, is_meca: bool = false, is_mutant: bool = false) -> String:
 	if is_cursed:
-		text += "([color=#%s]%s[/color])" % [CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")]
+		text += tr("EFFECT_FOXLAB_LPAREN") + "[color=#%s]%s[/color]" % [CURSE_COLOR.to_html(), tr("FOXLAB_CURSED_TEXT")] + tr("EFFECT_FOXLAB_RPAREN")
 	if is_meca:
-		text += "([color=#%s]%s[/color])" % [get_evolution_color(1).to_html(), tr("FOXLAB_MECA_TEXT")]
+		text += tr("EFFECT_FOXLAB_LPAREN") + "[color=#%s]%s[/color]" % [get_evolution_color(1).to_html(), tr("FOXLAB_MECA_TEXT")] + tr("EFFECT_FOXLAB_RPAREN")
 	if is_mutant:
-		text += "([color=#%s]%s[/color])" % [get_evolution_color(-1).to_html(), tr("FOXLAB_MUT_TEXT")]
+		text += tr("EFFECT_FOXLAB_LPAREN") + "[color=#%s]%s[/color]" % [get_evolution_color(-1).to_html(), tr("FOXLAB_MUT_TEXT")] + tr("EFFECT_FOXLAB_RPAREN")
 	return text
 
 ####### 生成敌人相关 ##########

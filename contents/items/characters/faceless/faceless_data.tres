@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=28 format=2]
+[gd_resource type="Resource" load_steps=30 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/faceless/faceless_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/faceless/faceless_effect_0.tres" type="Resource" id=2]
@@ -27,6 +27,8 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/faceless/faceless_effect_6.tres" type="Resource" id=35]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/faceless/faceless_effect_2.tres" type="Resource" id=36]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/faceless/faceless_effect_3.tres" type="Resource" id=37]
+[ext_resource path="res://weapons/ranged/blowgun/1/blowgun_data.tres" type="Resource" id=38]
+[ext_resource path="res://weapons/ranged/pan_flute/1/pan_flute_data.tres" type="Resource" id=39]
 
 [resource]
 script = ExtResource( 7 )
@@ -51,5 +53,5 @@ wanted_tags = [  ]
 banned_item_groups = [  ]
 banned_items = [ "item_recycling_machine" ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 8 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 15 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 24 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 30 ), ExtResource( 32 ), ExtResource( 6 ) ]
+starting_weapons = [ ExtResource( 8 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 15 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 24 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 30 ), ExtResource( 32 ), ExtResource( 6 ), ExtResource( 38 ), ExtResource( 39 ) ]
 starting_items = [  ]

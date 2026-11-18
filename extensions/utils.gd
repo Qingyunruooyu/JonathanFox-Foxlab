@@ -207,7 +207,7 @@ var foxlab_primary_stat_keys = []
 # stats in order of stat panel
 var foxlab_stats_in_container = []
 var foxlab_stats_container: Node = null
-var foxlab_stats_invisible_in_container= {Keys.item_box_gold_hash: 0}
+var foxlab_stats_invisible_in_container = {}
 # 0: tier COMMON level up value of primary (defaults to 1)
 # 1: basic upgrade id
 var foxlab_primary_stat_level_up_map = []
@@ -573,11 +573,49 @@ func foxlab_is_vanilla_upgrade(upgrade_data:UpgradeData):
 	return upgrade_data.effects.size() == 1 and (upgrade_data.upgrade_id_hash in Utils.foxlab_get_primary_stat_level_up_map()[1] or\
 			upgrade_data.upgrade_id_hash == ItemService.weapon_slot_upgrade_data.upgrade_id_hash)
 
+class FoxlabHiddenStatRow extends Reference:
+	var row
+	var parent: Node
+	var index: int = 0
+
+func foxlab_snapshot_hidden_stat_rows(stats_container) -> Array:
+	var hidden_stat_rows = []
+	for stats_vbox_path in ["MarginContainer/VBoxContainer2/PrimaryStats", "MarginContainer/VBoxContainer2/SecondaryStats"]:
+		var stats_vbox = stats_container.get_node_or_null(stats_vbox_path)
+		if stats_vbox == null:
+			continue
+		for stat_row in stats_vbox.get_children():
+			if "key" in stat_row and not stat_row.visible:
+				var hidden_row = FoxlabHiddenStatRow.new()
+				hidden_row.row = stat_row
+				hidden_row.parent = stats_vbox
+				hidden_row.index = stat_row.get_index()
+				hidden_stat_rows.append(hidden_row)
+	for hidden_row in hidden_stat_rows:
+		hidden_row.parent.move_child(hidden_row.row, 0)
+	return hidden_stat_rows
+
+func foxlab_restore_hidden_stat_rows(hidden_stat_rows: Array) -> void:
+	for i in range(hidden_stat_rows.size() - 1, -1, -1):
+		var hidden_row = hidden_stat_rows[i]
+		hidden_row.parent.move_child(hidden_row.row, hidden_row.index)
+
 func foxlab_get_stats_in_container():
 	if foxlab_stats_in_container.empty():
 		var stats_container = foxlab_stats_container
+		var hidden_stat_rows = foxlab_snapshot_hidden_stat_rows(stats_container)
 		add_child(stats_container)
 		stats_container.visible = false
+		var hidden_stats_shown = false
+		for tab_value in [stats_container.Tab.SECONDARY, stats_container.Tab.PRIMARY]:
+			stats_container.update_tab(tab_value)
+			for hidden_row in hidden_stat_rows:
+				if hidden_row.row.visible:
+					hidden_stats_shown = true
+		foxlab_restore_hidden_stat_rows(hidden_stat_rows)
+		if not hidden_stats_shown:
+			for hidden_row in hidden_stat_rows:
+				foxlab_stats_invisible_in_container[Keys.generate_hash(hidden_row.row.key.to_lower())] = 0
 		# print("stats container order: ")
 		if stats_container._primary_stats != null and stats_container._secondary_stats != null:
 			for container in [stats_container._primary_stats, stats_container._secondary_stats]:

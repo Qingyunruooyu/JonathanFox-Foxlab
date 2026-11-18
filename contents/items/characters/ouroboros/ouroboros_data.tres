@@ -29,7 +29,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/ouroboros/ouroboros_icon.png" type="Texture" id=27]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/tick_tock/tick_tock_data.tres" type="Resource" id=28]
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=29]
-[ext_resource path="res://weapons/ranged/tranq_rifle/1/tranq_rifle_data.tres" type="Resource" id=30]
+[ext_resource path="res://weapons/ranged/carbon_bow/1/carbon_bow_1_data.tres" type="Resource" id=30]
 [ext_resource path="res://weapons/ranged/machinegun/1/machinegun_data.tres" type="Resource" id=31]
 
 [resource]

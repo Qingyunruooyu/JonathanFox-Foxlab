@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=206 format=2]
+[gd_resource type="Resource" load_steps=207 format=2]
 
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/content_data.gd" type="Script" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/content_data/foxlab_update_data.tres" type="Resource" id=195]
@@ -205,6 +205,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/stats/stat_foxlab_armor_dodge_harvesting.tres" type="Resource" id=203]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/stats/stat_foxlab_primary_damage.tres" type="Resource" id=204]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/stats/stat_foxlab_primary.tres" type="Resource" id=205]
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effect_behaviors/enemy/empowered_hit_damage_enemy_effect_behavior_data.tres" type="Resource" id=206]
 
 [resource]
 script = ExtResource( 1 )
@@ -362,6 +363,7 @@ translation_keys_needing_percent = {
 "effect_foxlab_food_price": [ 0 ],
 "effect_foxlab_get_item_on_weapon_break": [ 2 ],
 "effect_foxlab_heal_when_kill_nearby": [ 2 ],
+"effect_foxlab_hit_damage_against_empowered_enemies": [ 0 ],
 "effect_foxlab_increase_damage_received": [ 0, 3 ],
 "effect_foxlab_increase_material_value": [ 0 ],
 "effect_foxlab_instant_poisoned_attracting": [ 0 ],
@@ -392,7 +394,7 @@ translation_keys_needing_percent = {
 "effect_stat_on_every_step_valid_lowest_two": [ 0 ]
 }
 player_effect_behaviors = [ ExtResource( 166 ) ]
-enemy_effect_behaviors = [ ExtResource( 193 )]
+enemy_effect_behaviors = [ ExtResource( 193 ), ExtResource( 206 ) ]
 translations = [ ExtResource( 172 ), ExtResource( 173 ), ExtResource( 171 ), ExtResource( 179 ), ExtResource( 174 ), ExtResource( 175 ), ExtResource( 169 ), ExtResource( 176 ), ExtResource( 167 ), ExtResource( 177 ), ExtResource( 170 ), ExtResource( 178 ), ExtResource( 168 ) ]
 weapon_characters = {
 }

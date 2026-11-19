@@ -1,13 +1,41 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=7 format=2]
 
 [ext_resource path="res://items/global/effect.gd" type="Script" id=1]
+[ext_resource path="res://items/global/custom_arg.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+arg_index = 0
+arg_sign = 1
+arg_value = 11
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 2 )
+arg_index = 2
+arg_sign = 5
+arg_value = 2
+arg_key = "FOXLAB_CURSED_TEXT"
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 2 )
+arg_index = 3
+arg_sign = 7
+arg_value = 2
+arg_key = "FOXLAB_MUT_TEXT"
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 2 )
+arg_index = 4
+arg_sign = 6
+arg_value = 2
+arg_key = "FOXLAB_MECA_TEXT"
 
 [resource]
 script = ExtResource( 1 )
-key = "weapon_class_elemental"
-text_key = "effect_bonus_weapon_class_damage_against_cursed_enemies"
+key = "stat_elemental_damage"
+text_key = "effect_foxlab_hit_damage_against_empowered_enemies"
 value = -200
-custom_key = "bonus_weapon_class_damage_against_cursed_enemies"
+custom_key = "foxlab_hit_damage_against_empowered_enemies"
 storage_method = 1
 effect_sign = 3
-custom_args = [  ]
+custom_args = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 )]

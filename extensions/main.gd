@@ -1151,7 +1151,7 @@ func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 			foxlab_on_enemy_type_change(1, enemy)
 		foxlab_enemy_summary[enemy.pool_id] += 1
 
-	if is_instance_valid(enemy.source_spawner) and enemy.source_spawner is Enemy and enemy.get_charmed_by_player_index() == -1:
+	if is_instance_valid(enemy.source_spawner) and enemy.source_spawner is Enemy and not enemy._is_charmed:
 		_foxlab_enemy_interact(enemy)
 
 	if enemy.source_spawner is Reference and "foxlab_scene" in enemy.source_spawner:

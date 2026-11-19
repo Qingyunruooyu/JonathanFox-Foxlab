@@ -16,6 +16,10 @@ var _foxlab_acid_color_applied: bool = false
 const FOXLAB_COLOR_ACID: Color = Color(1.2, 1.5, 0.2, 1)
 const FOXLAB_COLOR_PETROL: Color = Color(0.537255, 0.607843, 0.768627, 1)
 
+# 原版燃烧速度最多生效80%，超出的部分线性折算成额外的dot伤害：每10%燃烧速度增加10%每一跳的燃烧伤害
+const FOXLAB_BURN_SURPLUS_START: float = 0.8
+var _foxlab_burn_surplus: float = 0.0
+
 # 汽油减速（petrol_puddle 调用），与玩家侧apply_petrol_effect/notify_petrol_exit同构；
 var _foxlab_petrol_puddle_count: int = 0
 var _foxlab_petrol_in_puddle: bool = false
@@ -27,6 +31,11 @@ func _ready():
 	add_child(_foxlab_acid_timer)
 	_foxlab_acid_damage_args.dodgeable = false
 	_foxlab_acid_damage_args.armor_applied = false
+
+func init(zone_min_pos: Vector2, zone_max_pos: Vector2, p_players_ref: Array = [], entity_spawner_ref = null) -> void:
+	.init(zone_min_pos, zone_max_pos, p_players_ref, entity_spawner_ref)
+	_foxlab_burn_surplus = max(0.0, (RunData.sum_all_player_effects(Keys.burning_cooldown_reduction_hash)\
+		- RunData.sum_all_player_effects(Keys.burning_cooldown_increase_hash)) / 100.0 - FOXLAB_BURN_SURPLUS_START)
 
 func respawn() -> void :
 	.respawn()
@@ -103,7 +112,7 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 
 func get_move_speed() -> float:
 	var speed: float = .get_move_speed()
-	if _foxlab_petrol_in_puddle and not _foxlab_uv_lamps.empty() and get_charmed_by_player_index() == -1:
+	if _foxlab_petrol_in_puddle and not _foxlab_uv_lamps.empty() and not _is_charmed:
 		speed = speed / 2.0
 	return speed
 
@@ -115,7 +124,7 @@ func _on_foxlab_acid_timer_timeout() -> void :
 			_foxlab_acid_color_applied = false
 			remove_color_modulation(FOXLAB_COLOR_ACID)
 			return
-	if dead or _foxlab_uv_lamps.empty() or get_charmed_by_player_index() != -1:
+	if dead or _foxlab_uv_lamps.empty() or _is_charmed:
 		return
 	var dmg_taken: Array = take_damage(_foxlab_acid_damage_per_tick, _foxlab_acid_damage_args)
 	if dmg_taken[1] > 0:
@@ -124,7 +133,16 @@ func _on_foxlab_acid_timer_timeout() -> void :
 			RunData.add_tracked_value(lamp_owner, Utils.item_foxlab_uv_lamp_hash, dmg_taken[1], 1)
 
 func _on_BurningTimer_timeout() -> void :
-	if _burning != null and RunData.get_nb_item(Utils.character_foxlab_nyuba_hash, _burning_player_index) > 0:
+	if _burning == null:
+		._on_BurningTimer_timeout()
+		return
+	var saved_burning = _burning
+	var saved_damage: int = _burning.damage
+	var bumped_damage: int = saved_damage
+	if _foxlab_burn_surplus > 0.0:
+		bumped_damage = (saved_damage * (1.0 + _foxlab_burn_surplus)) as int
+		_burning.damage = bumped_damage
+	if RunData.get_nb_item(Utils.character_foxlab_nyuba_hash, _burning_player_index) > 0:
 		var nb_nyuba = RunData.get_nb_item(Utils.character_foxlab_nyuba_hash, _burning_player_index)
 		if not _burning.is_global_burn:
 			._on_BurningTimer_timeout()
@@ -142,3 +160,5 @@ func _on_BurningTimer_timeout() -> void :
 			RunData.set_tracked_value(_burning_player_index, Keys.item_scared_sausage_hash, before_sausage + sausage_value)
 	else:
 		._on_BurningTimer_timeout()
+	if _burning == saved_burning and _burning.damage == bumped_damage:
+		_burning.damage = saved_damage

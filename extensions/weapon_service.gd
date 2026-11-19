@@ -188,10 +188,13 @@ func foxlab_connect_signal_for_projectile(from: Node, projectile: Node):
 			projectile._hitbox.effects.append(effect)
 
 func foxlab_add_weapon_effects_for_explosion(explosion: Node):
+	var dst_hitbox = explosion._hitbox
+	if dst_hitbox.has_meta("foxlab_weapon_explosion"):
+		dst_hitbox.remove_meta("foxlab_weapon_explosion")
 	for connection in explosion.get_signal_connection_list("hit_something"):
 		if connection.target is Weapon:
-			var dst_hitbox = explosion._hitbox
 			var src_hitbox = connection.target._hitbox
+			dst_hitbox.set_meta("foxlab_weapon_explosion", true)
 			for effect in connection.target.effects:
 				if not effect is ExplodingEffect and not effect is ProjectilesOnHitEffect:
 					dst_hitbox.effects.append(effect)
@@ -202,7 +205,6 @@ func foxlab_spawn_landmines_on_enemy_death_count(hitbox: Hitbox, was_burning: bo
 	if landmines_on_death_effects.empty():
 		return 0
 
-	var from = hitbox.from if hitbox != null else null
 	var landmine_count = 0
 	for landmines_on_death_effect in landmines_on_death_effects:
 		var effect_stat = landmines_on_death_effect[0]
@@ -210,9 +212,9 @@ func foxlab_spawn_landmines_on_enemy_death_count(hitbox: Hitbox, was_burning: bo
 		var chance = landmines_on_death_effect[1] / 100.0
 		if not Utils.get_chance_success(chance):
 			continue
-		var weapon_did_stat_damage = from is Weapon and find_scaling_stat(effect_stat, from.current_stats.scaling_stats) != null
-		var burning_did_stat_damage = effect_stat == Keys.stat_elemental_damage_hash and was_burning
-		if weapon_did_stat_damage or burning_did_stat_damage:
+		if (effect_stat == Keys.stat_elemental_damage_hash and was_burning) or \
+			(hitbox != null and (hitbox.from is Weapon or hitbox.has_meta("foxlab_weapon_explosion")) \
+				and (effect_stat == Keys.stat_all_hash or find_scaling_stat(effect_stat, hitbox.scaling_stats) != null)):
 			landmine_count += 1
 	return landmine_count
 

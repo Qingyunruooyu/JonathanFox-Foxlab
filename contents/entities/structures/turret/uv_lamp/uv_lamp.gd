@@ -146,7 +146,7 @@ func _foxlab_expose(enemy) -> void :
 
 
 func _foxlab_set_exposed_hurtbox(enemy) -> void :
-	if enemy.get_charmed_by_player_index() != - 1:
+	if enemy._is_charmed:
 		# 魅惑禁用了 hurtbox：打开但只允许敌方来源，玩家方弹幕不打自己的魅惑盟友
 		enemy._hurtbox.set_deferred("collision_mask", Utils.ENEMY_PROJECTILES_BIT | Utils.ENEMIES_BIT)
 		enemy._hurtbox.enable()
@@ -163,7 +163,7 @@ func _foxlab_unexpose(body) -> void :
 	if body._foxlab_uv_hurtbox_mask != -1:
 		body._hurtbox.set_deferred("collision_mask", body._foxlab_uv_hurtbox_mask)
 		body._foxlab_uv_hurtbox_mask = -1
-	if body.get_charmed_by_player_index() != - 1:
+	if body._is_charmed:
 		body._hurtbox.disable()
 	var id_count: int = RunData.foxlab_exposed_enemies.get(body.enemy_id_hash, 0) - 1
 	if id_count > 0:

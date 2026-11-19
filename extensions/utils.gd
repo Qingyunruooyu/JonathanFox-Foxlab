@@ -18,6 +18,7 @@ var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Key
 
 # Effects
 var foxlab_recover_lost_item_hash: int = Keys.generate_hash("foxlab_recover_lost_item")
+var foxlab_hit_damage_against_empowered_enemies_hash: int = Keys.generate_hash("foxlab_hit_damage_against_empowered_enemies")
 var foxlab_recovered_items_this_wave_hash: int = Keys.generate_hash("foxlab_recovered_items_this_wave")
 var foxlab_cat_duplicate_item_hash = Keys.generate_hash("foxlab_cat_duplicate_item")
 var foxlab_gain_xp_gain_hash: int = Keys.generate_hash("gain_xp_gain")

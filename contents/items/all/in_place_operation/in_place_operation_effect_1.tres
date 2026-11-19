@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-key = "stat_engineering"
+key = "stat_all"
 text_key = "EFFECT_FOXLAB_SPAWN_LANDMINE_CHANCE"
 value = 25
 custom_key = "foxlab_landmines_on_death_chance"

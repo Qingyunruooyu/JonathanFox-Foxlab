@@ -283,6 +283,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_faceless_convert_stat_characters_hash:{},
 			Utils.foxlab_faceless_transform_stack_hash:[0, false], #如果同时有多个面具，或者面具化身了无面，则挨个变身，避免嵌套变身
 			Utils.foxlab_mask_history_hash: [],
+			Utils.foxlab_transform_recent_hash: [],
 			Utils.foxlab_buddhas_hand_stack_hash:[0, false], #如果佛手给的武器有佛手效果，避免嵌套
 			Utils.foxlab_convert_remainder_end_of_wave_hash:[],
 			Utils.foxlab_temp_stats_on_structure_crit_hash: [], # 被删掉的原版词条

@@ -4,6 +4,8 @@ const MIN_TRANSFORM_CHANCE = 10.0
 const MAX_TRANSFORM_NUM = 3.05
 const MIN_TRANSFORM_NUM = 0.95
 const VALUE_BASE = 2
+const NO_REPEAT_WAVES = 10
+const MAX_COMPAT_RETRIES = 50
 # character_builder, character_druid, character_technomage, character_engineer, character_foxlab_monk, character_foxlab_survivor, character_foxlab_infernal_machine
 # character_foxlab_architect, character_foxlab_trap_master, character_foxlab_alchemist
 var debug_item_name: Array = []
@@ -283,20 +285,72 @@ func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_da
 	#DebugService.log_data("convert_stat_num: %d" % [conver_stat_num])
 	return ( conver_stat_num <= 1)
 
+func _get_max_entries() -> int:
+	return int(ItemService.get_foxlab_transform_characters().size() / 2.0)
+
+func _prune_recent(player_index: int) -> Array:
+	var recent = RunData.get_player_effect(Utils.foxlab_transform_recent_hash, player_index)
+	var count_start = int(max(recent.size() - 2 * _get_max_entries(), 0))
+	var prune_to = 0
+	while prune_to < count_start and RunData.current_wave - recent[prune_to + 1] >= NO_REPEAT_WAVES:
+		prune_to += 2
+	for _i in range(prune_to):
+		recent.pop_front()
+	return recent
+
+func _get_exclusion_start(recent: Array) -> int:
+	var start = int(max(recent.size() - 2 * _get_max_entries(), 0))
+	var wave_start = 0
+	while wave_start < start and RunData.current_wave - recent[wave_start + 1] >= NO_REPEAT_WAVES:
+		wave_start += 2
+	return wave_start
+
+func _get_fresh_characters(allowed: Array, recent: Array, start: int) -> Array:
+	var fresh = []
+	for character in allowed:
+		var is_blocked = false
+		for i in range(start, recent.size(), 2):
+			if recent[i] == character.my_id_hash:
+				is_blocked = true
+				break
+		if not is_blocked:
+			fresh.append(character)
+	return fresh
+
 func _get_one_character(player_index: int, chars_id: Array, chars_data: Array) -> CharacterData:
-	var current_char = null
-	while current_char == null:
-		var candidate = null
-		if !debug_item_name.empty():
-			var item_name_hash = Keys.generate_hash(debug_item_name.pop_front())
-			candidate = ItemService.get_element(ItemService.get_characters(), item_name_hash)
-		if candidate == null:
-			candidate = Utils.get_rand_element(ItemService.get_foxlab_transform_characters())
-		while candidate.my_id_hash in chars_id or RunData.get_nb_item(candidate.my_id_hash, player_index) > 0:
-			candidate = Utils.get_rand_element(ItemService.get_foxlab_transform_characters())
-		if _are_chars_compatible(player_index, candidate, chars_data):
-			current_char = candidate
-	return current_char
+	var pool = ItemService.get_foxlab_transform_characters()
+	var allowed = []
+	for character in pool:
+		if character.my_id_hash in chars_id or RunData.get_nb_item(character.my_id_hash, player_index) > 0:
+			continue
+		allowed.append(character)
+	if allowed.empty():
+		allowed = pool.duplicate()
+
+	var candidate = null
+	var reroll_pool = allowed
+	if not debug_item_name.empty():
+		candidate = ItemService.get_element(ItemService.get_characters(), Keys.generate_hash(debug_item_name.pop_front()))
+		if candidate != null:
+			while candidate.my_id_hash in chars_id or RunData.get_nb_item(candidate.my_id_hash, player_index) > 0:
+				candidate = Utils.get_rand_element(pool)
+	if candidate == null:
+		var recent = _prune_recent(player_index)
+		var start = _get_exclusion_start(recent)
+		var fresh = _get_fresh_characters(allowed, recent, start)
+		while fresh.empty() and start < recent.size():
+			start += 2
+			fresh = _get_fresh_characters(allowed, recent, start)
+		if fresh.empty():
+			fresh = allowed
+		candidate = Utils.get_rand_element(fresh)
+		reroll_pool = fresh
+
+	var tries = 0
+	while not _are_chars_compatible(player_index, candidate, chars_data) and tries < MAX_COMPAT_RETRIES:
+		candidate = Utils.get_rand_element(reroll_pool)
+		tries += 1
+	return candidate
 
 func _get_rand_chars(player_index: int) -> Array:
 	var chars_return:Array=[]
@@ -317,6 +371,9 @@ func _get_rand_chars(player_index: int) -> Array:
 			current_char = ItemService.apply_item_effect_modifications(current_char, player_index)
 		chars_return.append(current_char)
 		chars_id.append(current_char.my_id_hash)
+		var recent = RunData.get_player_effect(Utils.foxlab_transform_recent_hash, player_index)
+		recent.append(current_char.my_id_hash)
+		recent.append(RunData.current_wave)
 		meta.names += Utils.foxlab_get_item_name_with_flavor(current_char)
 		if char_idx + 1 < final_value:
 			meta.names += tr("EFFECT_FOXLAB_COMMA")

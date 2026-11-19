@@ -49,6 +49,7 @@ var foxlab_mask_fail_refund_hash: int = Keys.generate_hash("foxlab_mask_fail_ref
 var foxlab_faceless_convert_stat_characters_hash: int = Keys.generate_hash("foxlab_faceless_convert_stat_characters")
 var foxlab_faceless_transform_stack_hash: int = Keys.generate_hash("foxlab_faceless_transform_stack")
 var foxlab_mask_history_hash: int=Keys.generate_hash("foxlab_mask_history")
+var foxlab_transform_recent_hash: int = Keys.generate_hash("foxlab_transform_recent")
 var foxlab_buddhas_hand_stack_hash: int = Keys.generate_hash("foxlab_buddhas_hand_stack")
 var foxlab_convert_remainder_end_of_wave_hash: int = Keys.generate_hash("foxlab_convert_remainder_end_of_wave")
 var foxlab_temp_stats_on_structure_crit_hash: int = Keys.generate_hash("foxlab_temp_stats_on_structure_crit")

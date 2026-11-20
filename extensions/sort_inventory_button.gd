@@ -15,6 +15,8 @@ func foxlab_need_pin(elements: Array) -> bool:
 			return true
 	return false
 
+######## 扩展 ######
+
 func _sort_inventory(index: int = - 10, _inventory: Inventory = null):
 	._sort_inventory(index, _inventory)
 	var elements = inventory_to_sort.get_children()

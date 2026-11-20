@@ -4,10 +4,6 @@ var foxlab_data
 const FOXLAB_MOD_NAME="JonathanFox-FoxLab"
 const FOXLAB_MOD_PATH="res://mods-unpacked/" + FOXLAB_MOD_NAME + "/"
 
-# =========================== Extension =========================== #
-func _ready() -> void:
-	_foxlab_ready()
-
 # =========================== Custom =========================== #
 func _foxlab_ready() -> void:
 	foxlab_data = load("%s/content_data/content_data.tres" % [FOXLAB_MOD_PATH])
@@ -25,3 +21,10 @@ func _foxlab_ready() -> void:
 	load_game_file()
 	add_unlocked_by_default()
 	set_max_selectable_difficulty()
+
+######## 扩展 ######
+
+# =========================== Extension =========================== #
+func _ready() -> void:
+	_foxlab_ready()
+

@@ -3,6 +3,21 @@ extends "res://entities/gpe/acid_puddle/acid_puddle.gd"
 var _foxlab_enemy_area: Area2D = null
 var _foxlab_enemies: Dictionary = {}
 
+func _on_foxlab_enemy_area_body_entered(body) -> void:
+	if _is_dying or not body is Enemy or _foxlab_enemies.has(body):
+		return
+	_foxlab_enemies[body] = true
+	body.foxlab_apply_acid_dot(get_tick_damage(), tick_interval, dot_duration_after_exit, true)
+
+func _on_foxlab_enemy_area_body_exited(body) -> void:
+	if not _foxlab_enemies.has(body):
+		return
+	_foxlab_enemies.erase(body)
+	if is_instance_valid(body):
+		body.foxlab_notify_acid_exit(dot_duration_after_exit)
+
+######## 扩展 ######
+
 func _ready():
 	_foxlab_enemy_area = Area2D.new()
 	_foxlab_enemy_area.name = "FoxlabEnemyArea"
@@ -31,15 +46,3 @@ func despawn():
 	if _foxlab_enemy_area != null:
 		_foxlab_enemy_area.set_deferred("monitoring", false)
 
-func _on_foxlab_enemy_area_body_entered(body) -> void:
-	if _is_dying or not body is Enemy or _foxlab_enemies.has(body):
-		return
-	_foxlab_enemies[body] = true
-	body.foxlab_apply_acid_dot(get_tick_damage(), tick_interval, dot_duration_after_exit, true)
-
-func _on_foxlab_enemy_area_body_exited(body) -> void:
-	if not _foxlab_enemies.has(body):
-		return
-	_foxlab_enemies.erase(body)
-	if is_instance_valid(body):
-		body.foxlab_notify_acid_exit(dot_duration_after_exit)

@@ -92,6 +92,8 @@ func _foxlab_has_character(char_hash: int, player_index: int) -> bool:
 	return player_index >= 0 and RunData.get_nb_item(char_hash, player_index) > 0
 
 
+######## 扩展 ######
+
 func mutant_item(item_data, player_index: int):
 	_foxlab_mutation_context_player = player_index
 	var result = .mutant_item(item_data, player_index)

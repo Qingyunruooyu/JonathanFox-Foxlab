@@ -7,9 +7,6 @@ var _foxlab_target_behavior = load("res://entities/units/target_behavior/closest
 var _foxlab_movement_ins = null
 var _foxlab_target_ins = null
 
-func _ready():
-	call_deferred("_foxlab_ready")
-
 func _foxlab_ready():
 	if not RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index).empty() or \
 		not RunData.get_player_effect(Utils.foxlab_stats_on_scapegoat_death_hash, player_index).empty():
@@ -26,17 +23,32 @@ func _foxlab_ready():
 		_current_movement_behavior = _foxlab_movement_ins
 		add_child(_foxlab_movement_ins)
 
-func update_highlight(_value: bool = true):
-	.update_highlight(_value)
-	if RunData.is_coop_run and \
-		not RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index).empty():
-		call_deferred("_foxlab_update_coop_hightlight")
-
 func _foxlab_update_coop_hightlight():
 	var highlight_color: Color = CoopService.get_player_color(player_index)
 	highlight_color.a = 0.5
 	if not has_outline(highlight_color):
 		add_outline(highlight_color)
+
+func _foxlab_alter_movement_behavior():
+	if _current_target_behavior == _foxlab_target_ins:
+		_current_movement_behavior = _movement_behavior
+		_current_target_behavior = _target_behavior
+		_current_target_behavior.update_target()
+	else:
+		_current_target_behavior = _foxlab_target_ins
+		_current_target_behavior.update_target()
+		_current_movement_behavior = _foxlab_movement_ins
+
+######## 扩展 ######
+
+func _ready():
+	call_deferred("_foxlab_ready")
+
+func update_highlight(_value: bool = true):
+	.update_highlight(_value)
+	if RunData.is_coop_run and \
+		not RunData.get_player_effect(Utils.foxlab_gain_scapegoat_no_hurt_hash, player_index).empty():
+		call_deferred("_foxlab_update_coop_hightlight")
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	var dmg_taken = [0, 0]
@@ -59,16 +71,6 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 				_foxlab_alter_movement_behavior()
 
 	return dmg_taken
-
-func _foxlab_alter_movement_behavior():
-	if _current_target_behavior == _foxlab_target_ins:
-		_current_movement_behavior = _movement_behavior
-		_current_target_behavior = _target_behavior
-		_current_target_behavior.update_target()
-	else:
-		_current_target_behavior = _foxlab_target_ins
-		_current_target_behavior.update_target()
-		_current_movement_behavior = _foxlab_movement_ins
 
 func die(args= Entity.DieArgs.new()) -> void :
 	.die(args)

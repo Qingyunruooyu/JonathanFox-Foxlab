@@ -11,6 +11,8 @@ func on_foxlab_upgrade_hovered():
 func on_foxlab_upgrade_left():
 	emit_signal("foxlab_left")
 
+######## 扩展 ######
+
 func _ready():
 	if not button.is_connected("focus_entered", self, "on_foxlab_upgrade_hovered"):
 		button.connect("focus_entered", self, "on_foxlab_upgrade_hovered")
@@ -32,4 +34,3 @@ func set_upgrade(p_upgrade_data: UpgradeData, player_index: int) -> void :
 func _process(_delta: float) -> void:
 	if _upgrade_description.get_effects().visible:
 		_upgrade_description.get_effects().visible = false
-

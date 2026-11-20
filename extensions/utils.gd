@@ -862,16 +862,16 @@ func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> v
 			foxlab_multiply_stats(RunData.get_player_effect(foxlab_multiply_stats_end_of_wave_hash, player_index), player_index, permanent)
 			foxlab_convert_remainder(RunData.get_player_effect(foxlab_convert_remainder_end_of_wave_hash, player_index), player_index)
 			for effect in RunData.get_player_effect(foxlab_always_convert_stats_end_of_wave_hash, player_index):
-				.convert_stats([effect], player_index)
+				.convert_stats([effect], player_index, permanent)
 		else: #敌袭中途
 			foxlab_multiply_stats(RunData.get_player_effect(foxlab_multiply_stats_half_wave_hash, player_index), player_index, permanent)
 			for effect in RunData.get_player_effect(foxlab_always_convert_stats_half_wave_hash, player_index):
-				.convert_stats([effect], player_index)
+				.convert_stats([effect], player_index, permanent)
 
-	.convert_stats(stats, player_index)
+	.convert_stats(stats, player_index, permanent)
 
 	if _foxlab_vanilla_convert:
 		if permanent:
 			foxlab_try_complete_tasks(player_index)
 
-		LinkedStats.reset_player(player_index)
+	LinkedStats.reset_player(player_index)

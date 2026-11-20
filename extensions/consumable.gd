@@ -2,6 +2,17 @@ extends "res://items/consumables/consumable.gd"
 
 var foxlab_seed_timer = null
 
+func on_foxlab_seed_timer_timeout():
+	if not already_picked_up:
+		var main = Utils.get_scene_node()
+		already_picked_up = true
+		main._consumables.erase(self)
+		main.add_node_to_pool(self, main._consumable_pool_id)
+		# print("disappear, id: ", consumable_data.my_id, self)
+		reset()
+
+######## 扩展 ######
+
 func drop(pos: Vector2, p_rotation: float, p_push_back_destiation: Vector2) -> void :
 	.drop(pos, p_rotation, p_push_back_destiation)
 	if consumable_data.my_id_hash == Keys.consumable_poisoned_fruit_hash:
@@ -30,11 +41,3 @@ func reset() -> void :
 		# print("stop the timer, my_id: ", consumable_data.my_id, self)
 		foxlab_seed_timer.stop()
 
-func on_foxlab_seed_timer_timeout():
-	if not already_picked_up:
-		var main = Utils.get_scene_node()
-		already_picked_up = true
-		main._consumables.erase(self)
-		main.add_node_to_pool(self, main._consumable_pool_id)
-		# print("disappear, id: ", consumable_data.my_id, self)
-		reset()

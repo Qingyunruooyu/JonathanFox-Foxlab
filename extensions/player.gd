@@ -410,15 +410,6 @@ func foxlab_is_enemy_damage(args: TakeDamageArgs) -> bool:
 	# from==null的只剩酸液地形DoT，视为敌方
 	return args.from == null
 
-func _on_BurningTimer_timeout() -> void :
-	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
-		._on_BurningTimer_timeout()
-
-# 燃烧会按敌人的方式重置unit速度， 玩家不需要
-func reset_speed_stat(percent_modifier: int = 0) -> void :
-	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
-		.reset_speed_stat(percent_modifier)
-
 ############ 函数扩展 #########
 #　修复官方bug
 func die(args= Utils.default_die_args) -> void :
@@ -620,3 +611,12 @@ func _ready() -> void :
 	foxlab_bounce_player_projectile_ready()
 	_foxlab_has_charmed_all = RunData.get_player_effect(Utils.foxlab_charm_all_when_fully_heal_hash, player_index).empty()
 	call_deferred("foxlab_connect_jelly_shields")
+
+func _on_BurningTimer_timeout() -> void :
+	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		._on_BurningTimer_timeout()
+
+# 燃烧会按敌人的方式重置unit速度， 玩家不需要
+func reset_speed_stat(percent_modifier: int = 0) -> void :
+	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		.reset_speed_stat(percent_modifier)

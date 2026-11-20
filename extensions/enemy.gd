@@ -25,33 +25,6 @@ var _foxlab_petrol_puddle_count: int = 0
 var _foxlab_petrol_in_puddle: bool = false
 var _foxlab_petrol_color_applied: bool = false
 
-func _ready():
-	_foxlab_acid_timer = Timer.new()
-	var _err = _foxlab_acid_timer.connect("timeout", self, "_on_foxlab_acid_timer_timeout")
-	add_child(_foxlab_acid_timer)
-	_foxlab_acid_damage_args.dodgeable = false
-	_foxlab_acid_damage_args.armor_applied = false
-
-func init(zone_min_pos: Vector2, zone_max_pos: Vector2, p_players_ref: Array = [], entity_spawner_ref = null) -> void:
-	.init(zone_min_pos, zone_max_pos, p_players_ref, entity_spawner_ref)
-	_foxlab_burn_surplus = max(0.0, (RunData.sum_all_player_effects(Keys.burning_cooldown_reduction_hash)\
-		- RunData.sum_all_player_effects(Keys.burning_cooldown_increase_hash)) / 100.0 - FOXLAB_BURN_SURPLUS_START)
-
-func respawn() -> void :
-	.respawn()
-	_foxlab_uv_lamps.clear()
-	_foxlab_uv_hurtbox_mask = -1
-	_foxlab_acid_puddle_count = 0
-	_foxlab_acid_in_puddle = false
-	_foxlab_acid_color_applied = false
-	_foxlab_petrol_puddle_count = 0
-	_foxlab_petrol_in_puddle = false
-	_foxlab_petrol_color_applied = false
-	remove_color_modulation(FOXLAB_COLOR_ACID)
-	remove_color_modulation(FOXLAB_COLOR_PETROL)
-	if _foxlab_acid_timer != null:
-		_foxlab_acid_timer.stop()
-
 func foxlab_try_apply_puddle_colors() -> void:
 	if _foxlab_uv_lamps.empty():
 		return
@@ -100,22 +73,6 @@ func foxlab_get_uv_lamp_owner() -> int:
 		return -1
 	return _foxlab_uv_lamps.back().player_index
 
-func take_damage(value: int, args: TakeDamageArgs) -> Array:
-	var dmg_taken: Array = .take_damage(value, args)
-	if not _foxlab_uv_lamps.empty() and args.hitbox != null and dmg_taken[1] > 0:
-		var layer: int = args.hitbox.collision_layer
-		if (layer & (Utils.ENEMY_PROJECTILES_BIT | Utils.ENEMIES_BIT)) != 0 and (layer & (Utils.PLAYER_PROJECTILES_BIT | Utils.PET_PROJECTILES_BIT)) == 0:
-			var lamp_owner: int = foxlab_get_uv_lamp_owner()
-			if lamp_owner >= 0:
-				RunData.add_tracked_value(lamp_owner, Utils.item_foxlab_uv_lamp_hash, dmg_taken[1], 1)
-	return dmg_taken
-
-func get_move_speed() -> float:
-	var speed: float = .get_move_speed()
-	if _foxlab_petrol_in_puddle and not _foxlab_uv_lamps.empty() and not _is_charmed:
-		speed = speed / 2.0
-	return speed
-
 func _on_foxlab_acid_timer_timeout() -> void :
 	if not _foxlab_acid_in_puddle:
 		_foxlab_acid_remaining_time -= _foxlab_acid_tick_interval
@@ -131,6 +88,51 @@ func _on_foxlab_acid_timer_timeout() -> void :
 		var lamp_owner: int = foxlab_get_uv_lamp_owner()
 		if lamp_owner >= 0:
 			RunData.add_tracked_value(lamp_owner, Utils.item_foxlab_uv_lamp_hash, dmg_taken[1], 1)
+
+######## 扩展 ######
+
+func _ready():
+	_foxlab_acid_timer = Timer.new()
+	var _err = _foxlab_acid_timer.connect("timeout", self, "_on_foxlab_acid_timer_timeout")
+	add_child(_foxlab_acid_timer)
+	_foxlab_acid_damage_args.dodgeable = false
+	_foxlab_acid_damage_args.armor_applied = false
+
+func init(zone_min_pos: Vector2, zone_max_pos: Vector2, p_players_ref: Array = [], entity_spawner_ref = null) -> void:
+	.init(zone_min_pos, zone_max_pos, p_players_ref, entity_spawner_ref)
+	_foxlab_burn_surplus = max(0.0, (RunData.sum_all_player_effects(Keys.burning_cooldown_reduction_hash)\
+		- RunData.sum_all_player_effects(Keys.burning_cooldown_increase_hash)) / 100.0 - FOXLAB_BURN_SURPLUS_START)
+
+func respawn() -> void :
+	.respawn()
+	_foxlab_uv_lamps.clear()
+	_foxlab_uv_hurtbox_mask = -1
+	_foxlab_acid_puddle_count = 0
+	_foxlab_acid_in_puddle = false
+	_foxlab_acid_color_applied = false
+	_foxlab_petrol_puddle_count = 0
+	_foxlab_petrol_in_puddle = false
+	_foxlab_petrol_color_applied = false
+	remove_color_modulation(FOXLAB_COLOR_ACID)
+	remove_color_modulation(FOXLAB_COLOR_PETROL)
+	if _foxlab_acid_timer != null:
+		_foxlab_acid_timer.stop()
+
+func take_damage(value: int, args: TakeDamageArgs) -> Array:
+	var dmg_taken: Array = .take_damage(value, args)
+	if not _foxlab_uv_lamps.empty() and args.hitbox != null and dmg_taken[1] > 0:
+		var layer: int = args.hitbox.collision_layer
+		if (layer & (Utils.ENEMY_PROJECTILES_BIT | Utils.ENEMIES_BIT)) != 0 and (layer & (Utils.PLAYER_PROJECTILES_BIT | Utils.PET_PROJECTILES_BIT)) == 0:
+			var lamp_owner: int = foxlab_get_uv_lamp_owner()
+			if lamp_owner >= 0:
+				RunData.add_tracked_value(lamp_owner, Utils.item_foxlab_uv_lamp_hash, dmg_taken[1], 1)
+	return dmg_taken
+
+func get_move_speed() -> float:
+	var speed: float = .get_move_speed()
+	if _foxlab_petrol_in_puddle and not _foxlab_uv_lamps.empty() and not _is_charmed:
+		speed = speed / 2.0
+	return speed
 
 func _on_BurningTimer_timeout() -> void :
 	if _burning == null:

@@ -985,7 +985,9 @@ func _on_WaveTimer_timeout() -> void :
 			for gain_effect in gain_effects:
 				foxlab_get_item(gain_effect[0], gain_effect[1], player_index)
 
+	Utils._foxlab_vanilla_convert = true
 	._on_WaveTimer_timeout()
+	Utils._foxlab_vanilla_convert = false
 
 	for player_index in range(RunData.get_player_count()):
 		var effects = RunData.get_player_effects(player_index)
@@ -1030,7 +1032,9 @@ func on_levelled_up(player_index: int) -> void :
 		_things_to_process_player_containers[player_index].consumables.add_element(consumable_to_drop)
 
 func _on_HalfWaveTimer_timeout() -> void :
+	Utils._foxlab_vanilla_convert = true
 	._on_HalfWaveTimer_timeout()
+	Utils._foxlab_vanilla_convert = false
 
 	var multi_stats = RunData.concat_all_player_effects(Utils.foxlab_multiply_stats_half_wave_hash).size()
 	if multi_stats or RunData.concat_all_player_effects(Utils.foxlab_always_convert_stats_half_wave_hash).size() > 0:

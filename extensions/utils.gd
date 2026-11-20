@@ -723,38 +723,6 @@ func foxlab_same_shop_item(a, b) -> bool:
 func foxlab_same_shop_tuple(a: Array, b: Array) -> bool:
 	return a[1] == b[1] and foxlab_same_shop_item(a[0], b[0])
 
-######## 扩展 ######
-# 通缉令缓存依赖内容集/DLC状态，懒重建；item_sets_changed / dlc 变化时主动清空
-func foxlab_clear_wanted_caches() -> void :
-	foxlab_item_wanted.clear()
-	foxlab_item_wanted_hash.clear()
-	foxlab_unknown_elites.clear()
-
-func reset_stat_keys() -> void :
-	.reset_stat_keys()
-	# 原版 ItemService.stats 是编辑器数组，只含本体属性；DLC 主属性（诅咒/进化）挂在
-	# 各内容集的 item_set.stats 里，补进 mod 自建的主属性表，主属性修改/例外显示才能覆盖它们
-	foxlab_primary_stat_keys = _primary_stat_keys.duplicate()
-	for update_data in ItemService.update_data_list:
-		if update_data == null or update_data.item_set == null:
-			continue
-		for stat in update_data.item_set.stats:
-			if stat.is_primary_stat and not foxlab_primary_stat_keys.has(stat.stat_hash):
-				foxlab_primary_stat_keys.append(stat.stat_hash)
-				print("stat: ", Keys.hash_to_string[stat.stat_hash])
-	print("======end======")
-	foxlab_clear_wanted_caches()
-	foxlab_evil_mob_units.clear()
-	foxlab_exploding_turret_tracking_keys = null
-
-	foxlab_stats_in_container.clear()
-	if is_instance_valid(foxlab_stats_container):
-		foxlab_stats_container.queue_free()
-	foxlab_stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()
-
-	foxlab_primary_stat_level_up_map.clear()
-	foxlab_primary_stat_gain_map.clear()
-	_foxlab_init_primary_stat_gain_map()
 
 func foxlab_multiply_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
 	if stats.empty():
@@ -786,26 +754,10 @@ func foxlab_multiply_stats(stats: Array, player_index: int, permanent: bool = tr
 					TempStats.add_stat(stat, actual_value_delta, player_index)
 					RunData.emit_signal("stat_added", stat, value_delta, 0.0, player_index)
 
-func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
-	# 敌袭结束时，在恶魔转换执行之前执行尾数转换
-	if permanent: #敌袭结束
-		foxlab_multiply_stats(RunData.get_player_effect(foxlab_multiply_stats_end_of_wave_hash, player_index), player_index, permanent)
-		convert_remainder(RunData.get_player_effect(foxlab_convert_remainder_end_of_wave_hash, player_index), player_index)
-		for effect in RunData.get_player_effect(foxlab_always_convert_stats_end_of_wave_hash, player_index):
-			.convert_stats([effect], player_index, permanent)
-	else: #敌袭中途
-		foxlab_multiply_stats(RunData.get_player_effect(foxlab_multiply_stats_half_wave_hash, player_index), player_index, permanent)
-		for effect in RunData.get_player_effect(foxlab_always_convert_stats_half_wave_hash, player_index):
-			.convert_stats([effect], player_index, permanent)
+var _foxlab_vanilla_convert = false
 
-	.convert_stats(stats, player_index, permanent)
 
-	if permanent:
-		foxlab_try_complete_tasks(player_index)
-
-	LinkedStats.reset_player(player_index)
-
-func convert_remainder(stats: Array, player_index:int):
+func foxlab_convert_remainder(stats: Array, player_index:int):
 	if stats.empty():
 		return
 	for stat_to_convert in stats:
@@ -869,3 +821,56 @@ func convert_remainder(stats: Array, player_index:int):
 func foxlab_is_builder_turret(node) -> bool:
 	return node != null and node.get("projectiles_on_hit") != null
 
+######## 扩展 ######
+# 通缉令缓存依赖内容集/DLC状态，懒重建；item_sets_changed / dlc 变化时主动清空
+func foxlab_clear_wanted_caches() -> void :
+	foxlab_item_wanted.clear()
+	foxlab_item_wanted_hash.clear()
+	foxlab_unknown_elites.clear()
+
+func reset_stat_keys() -> void :
+	.reset_stat_keys()
+	# 原版 ItemService.stats 是编辑器数组，只含本体属性；DLC 主属性（诅咒/进化）挂在
+	# 各内容集的 item_set.stats 里，补进 mod 自建的主属性表，主属性修改/例外显示才能覆盖它们
+	foxlab_primary_stat_keys = _primary_stat_keys.duplicate()
+	for update_data in ItemService.update_data_list:
+		if update_data == null or update_data.item_set == null:
+			continue
+		for stat in update_data.item_set.stats:
+			if stat.is_primary_stat and not foxlab_primary_stat_keys.has(stat.stat_hash):
+				foxlab_primary_stat_keys.append(stat.stat_hash)
+				print("stat: ", Keys.hash_to_string[stat.stat_hash])
+	print("======end======")
+	foxlab_clear_wanted_caches()
+	foxlab_evil_mob_units.clear()
+	foxlab_exploding_turret_tracking_keys = null
+
+	foxlab_stats_in_container.clear()
+	if is_instance_valid(foxlab_stats_container):
+		foxlab_stats_container.queue_free()
+	foxlab_stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()
+
+	foxlab_primary_stat_level_up_map.clear()
+	foxlab_primary_stat_gain_map.clear()
+	_foxlab_init_primary_stat_gain_map()
+
+func convert_stats(stats: Array, player_index: int, permanent: bool = true) -> void :
+	# 敌袭结束时，在恶魔转换执行之前执行尾数转换
+	if _foxlab_vanilla_convert:
+		if permanent: #敌袭结束
+			foxlab_multiply_stats(RunData.get_player_effect(foxlab_multiply_stats_end_of_wave_hash, player_index), player_index, permanent)
+			foxlab_convert_remainder(RunData.get_player_effect(foxlab_convert_remainder_end_of_wave_hash, player_index), player_index)
+			for effect in RunData.get_player_effect(foxlab_always_convert_stats_end_of_wave_hash, player_index):
+				.convert_stats([effect], player_index)
+		else: #敌袭中途
+			foxlab_multiply_stats(RunData.get_player_effect(foxlab_multiply_stats_half_wave_hash, player_index), player_index, permanent)
+			for effect in RunData.get_player_effect(foxlab_always_convert_stats_half_wave_hash, player_index):
+				.convert_stats([effect], player_index)
+
+	.convert_stats(stats, player_index)
+
+	if _foxlab_vanilla_convert:
+		if permanent:
+			foxlab_try_complete_tasks(player_index)
+
+		LinkedStats.reset_player(player_index)

@@ -12,6 +12,17 @@ func set_shop_item(p_item_data: ItemParentData, p_wave_value: int = RunData.curr
 		else:
 			_button.set_material_icon(foxlab_material_icon, Utils.GOLD_COLOR)
 
+func manage_effect_choice_button_visibility() -> void :
+	.manage_effect_choice_button_visibility()
+	var effect_options = []
+	for effect in item_data.effects:
+		if effect is EffectOption:
+			effect_options.append(effect)
+	for i in effect_options.size():
+		if effect_options[i].value < 0:
+			var button = _effect_button_0 if i == 0 else _effect_button_1
+			button.set_text(str(effect_options[i].value))
+
 func steal_item() -> void :
 	#既能偷又能锁，则双击是偷，单击只会切换锁定
 	if not _lock_button.disabled:

@@ -290,6 +290,7 @@ static func init_effects()->Dictionary:
 			Utils.foxlab_temp_stats_on_structure_crit_hash: [], # 被删掉的原版词条
 			Utils.foxlab_landmines_on_death_chance_hash: [],
 			Utils.foxlab_spawn_landmine_on_entering_birth_area_hash: 0, # 踩到敌人出生点时生成structure的个数
+			Utils.foxlab_meca_upgrade_modifications_hash: 0,
 			Utils.foxlab_copy_weapon_on_summon_birth_hash: [], # 踩到被召唤敌人的生成标记时[stat key, stat value, 复制武器数]
 			Utils.foxlab_spawn_enemy_via_gold_bag_hash: [], # 敌袭开始消耗材料袋召唤敌人 [类型key, 消耗材料数, 是否魅惑, 每波上限]
 			Utils.foxlab_killed_enemies_hash: {Utils.foxlab_killed_boss_hash: {}, Utils.foxlab_killed_looting_enemies_hash: {}}, # 击杀过的敌人记录 {enemy_id_hash: 1}（统一记在0号玩家，全队共享）

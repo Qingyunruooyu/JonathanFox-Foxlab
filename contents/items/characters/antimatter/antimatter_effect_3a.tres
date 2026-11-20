@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/effects/dlc_depend_effect.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+key = "foxlab_meca_upgrade_modifications"
+text_key = "effect_foxlab_meca_upgrade_modifications"
+value = -200
+custom_key = ""
+storage_method = 0
+effect_sign = 3
+custom_args = [  ]
+required_item_set = [ "primal_dread" ]

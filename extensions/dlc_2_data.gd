@@ -99,6 +99,19 @@ func mutant_item(item_data, player_index: int):
 	return result
 
 
+func meca_item(item_data, player_index: int, do_not_add_effect: bool = false):
+	var result = .meca_item(item_data, player_index, do_not_add_effect)
+	if do_not_add_effect:
+		return result
+	var modifications: int = RunData.get_player_effect(Utils.foxlab_meca_upgrade_modifications_hash, player_index)
+	if modifications == 0:
+		return result
+	for effect in result.effects:
+		if effect is EffectOption:
+			effect.value = int(effect.value * (1.0 + modifications / 100.0))
+	return result
+
+
 func can_effect_be_copied_by_mutation(effect, player_index: int = -1) -> bool:
 	_foxlab_init_mutation_rules()
 	if FOXLAB_MUTATION_COPY_BLACKLIST_IDS.has(effect.get_id()):

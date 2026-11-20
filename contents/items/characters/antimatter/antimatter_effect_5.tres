@@ -9,5 +9,5 @@ text_key = "effect_cursed_starting_item"
 value = 1
 custom_key = "cursed_starting_item"
 storage_method = 1
-effect_sign = 5
+effect_sign = 3
 custom_args = [  ]

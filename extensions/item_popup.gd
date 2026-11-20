@@ -70,3 +70,9 @@ func _on_UpgradeButton_pressed():
 	if foxlab_pin_button != null and _effect_choice_container != null and _effect_choice_container.visible:
 		foxlab_pin_button.visible = false
 		foxlab_pin_button.focus_mode = FOCUS_NONE
+	if _effect_choice_container != null and _effect_choice_container.visible and _pending_upgrade != null:
+		var options = _get_effect_options(_pending_upgrade)
+		for i in options.size():
+			if options[i].value < 0:
+				var button = _effect_button_0 if i == 0 else _effect_button_1
+				button.set_text(str(options[i].value))

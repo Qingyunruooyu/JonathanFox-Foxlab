@@ -58,6 +58,7 @@ var foxlab_landmines_on_death_chance_hash: int = Keys.generate_hash("foxlab_land
 var foxlab_spawn_landmine_on_entering_birth_area_hash: int = Keys.generate_hash("foxlab_spawn_landmine_on_entering_birth_area")
 var foxlab_copy_weapon_on_summon_birth_hash: int = Keys.generate_hash("foxlab_copy_weapon_on_summon_birth")
 var foxlab_spawn_enemy_via_gold_bag_hash: int = Keys.generate_hash("foxlab_spawn_enemy_via_gold_bag")
+var foxlab_meca_upgrade_modifications_hash: int = Keys.generate_hash("foxlab_meca_upgrade_modifications")
 var foxlab_killed_enemies_hash: int = Keys.generate_hash("foxlab_killed_enemies")
 var foxlab_killed_boss_hash: int = Keys.generate_hash("foxlab_boss")
 var foxlab_killed_looting_enemies_hash: int = Keys.generate_hash("foxlab_looting_enemies")

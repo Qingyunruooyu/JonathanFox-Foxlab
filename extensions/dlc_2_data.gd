@@ -28,6 +28,7 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 ]
 
 var _foxlab_mutation_rules_initialized = false
+var _foxlab_mutation_context_player: int = -1
 
 
 func _foxlab_init_mutation_rules() -> void:
@@ -87,11 +88,28 @@ func _foxlab_init_mutation_rules() -> void:
 	_foxlab_mutation_rules_initialized = true
 
 
+func _foxlab_has_character(char_hash: int, player_index: int) -> bool:
+	return player_index >= 0 and RunData.get_nb_item(char_hash, player_index) > 0
+
+
+func mutant_item(item_data, player_index: int):
+	_foxlab_mutation_context_player = player_index
+	var result = .mutant_item(item_data, player_index)
+	_foxlab_mutation_context_player = -1
+	return result
+
+
 func can_effect_be_copied_by_mutation(effect, player_index: int = -1) -> bool:
 	_foxlab_init_mutation_rules()
 	if FOXLAB_MUTATION_COPY_BLACKLIST_IDS.has(effect.get_id()):
 		return false
 	if effect.custom_key_hash == Utils.foxlab_gain_stat_every_killed_enemies_hash and effect.value2 <= 0:
+		return false
+	if player_index >= 0 and effect.key_hash == Keys.consumable_heal_hash \
+			and _foxlab_has_character(Utils.character_foxlab_alchemist_hash, player_index):
+		return false
+	if player_index >= 0 and _foxlab_has_character(Utils.character_foxlab_antimatter_hash, player_index) \
+			and RunData.get_stat_gain(effect.key_hash, player_index) < 0.0:
 		return false
 	if player_index >= 0 and effect.key_hash == Utils.foxlab_recover_lost_item_hash:
 		var chance: int = 0
@@ -119,18 +137,17 @@ func _can_merge_tumor_effects(a, b) -> bool:
 
 func _get_removable_negative_effect_indexes(item_data) -> Array:
 	_foxlab_init_mutation_rules()
-	return ._get_removable_negative_effect_indexes(item_data)
-
-
-func get_random_2_meca_stats(player_index: int, item_data: ItemParentData = null) -> Array:
+	var indexes = ._get_removable_negative_effect_indexes(item_data)
+	var player_index: int = _foxlab_mutation_context_player
 	if player_index < 0:
-		return .get_random_2_meca_stats(player_index, item_data)
-	var orig_character = RunData.players_data[player_index].current_character
-	var merged_character = ItemService._foxlab_get_merged_character(player_index)
-	var swapped: bool = merged_character != orig_character
-	if swapped:
-		RunData.players_data[player_index].current_character = merged_character
-	var result = .get_random_2_meca_stats(player_index, item_data)
-	if swapped and RunData.players_data[player_index].current_character == merged_character:
-		RunData.players_data[player_index].current_character = orig_character
-	return result
+		return indexes
+	var has_alchemist: bool = _foxlab_has_character(Utils.character_foxlab_alchemist_hash, player_index)
+	var has_antimatter: bool = _foxlab_has_character(Utils.character_foxlab_antimatter_hash, player_index)
+	if not has_alchemist and not has_antimatter:
+		return indexes
+	for i in range(indexes.size() - 1, -1, -1):
+		var effect = item_data.effects[indexes[i]]
+		if (has_alchemist and effect.key_hash == Keys.consumable_heal_hash) \
+				or (has_antimatter and RunData.get_stat_gain(effect.key_hash, player_index) < 0.0):
+			indexes.remove(i)
+	return indexes

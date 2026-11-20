@@ -22,7 +22,6 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/mnemosyne/mnemosyne_effect_2.tres" type="Resource" id=21]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/sickle/1/sickle_data.tres" type="Resource" id=22]
 [ext_resource path="res://weapons/melee/lightning_shiv/1/lightning_shiv_data.tres" type="Resource" id=23]
-[ext_resource path="res://weapons/melee/claw/1/claw_data.tres" type="Resource" id=24]
 [ext_resource path="res://weapons/ranged/shuriken/1/shuriken_data.tres" type="Resource" id=25]
 [ext_resource path="res://weapons/ranged/rail_gun/1/rail_gun_1_data.tres" type="Resource" id=28]
 [ext_resource path="res://weapons/melee/plank/1/plank_data.tres" type="Resource" id=29]
@@ -41,6 +40,7 @@
 [ext_resource path="res://weapons/melee/shovel/1/shovel_data.tres" type="Resource" id=44]
 [ext_resource path="res://weapons/ranged/pistol/1/pistol_data.tres" type="Resource" id=45]
 [ext_resource path="res://weapons/ranged/boomerang/1/boomerang_1_data.tres" type="Resource" id=46]
+[ext_resource path="res://weapons/melee/crowbar/1/crowbar_data.tres" type="Resource" id=47]
 
 [resource]
 script = ExtResource( 1 )
@@ -65,5 +65,5 @@ wanted_tags = [ "economy", "xp_gain", "stat_harvesting" ]
 banned_item_groups = [  ]
 banned_items = [  ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 35 ), ExtResource( 10 ), ExtResource( 31 ), ExtResource( 18 ), ExtResource( 24 ), ExtResource( 14 ), ExtResource( 23 ), ExtResource( 29 ), ExtResource( 9 ), ExtResource( 34 ), ExtResource( 12 ), ExtResource( 20 ), ExtResource( 13 ), ExtResource( 25 ), ExtResource( 19 ), ExtResource( 16 ), ExtResource( 22 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 17 ), ExtResource( 36 ), ExtResource( 30 ), ExtResource( 44 ), ExtResource( 28 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 33 ), ExtResource( 45 ), ExtResource( 46 ) ]
+starting_weapons = [ ExtResource( 35 ), ExtResource( 10 ), ExtResource( 31 ), ExtResource( 18 ), ExtResource( 14 ), ExtResource( 23 ), ExtResource( 29 ), ExtResource( 9 ), ExtResource( 34 ), ExtResource( 12 ), ExtResource( 20 ), ExtResource( 13 ), ExtResource( 25 ), ExtResource( 19 ), ExtResource( 16 ), ExtResource( 22 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 17 ), ExtResource( 36 ), ExtResource( 30 ), ExtResource( 44 ), ExtResource( 28 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 33 ), ExtResource( 45 ), ExtResource( 46 ), ExtResource( 47 ) ]
 starting_items = [  ]

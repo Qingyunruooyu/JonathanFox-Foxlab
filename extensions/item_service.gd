@@ -17,7 +17,7 @@ var foxlab_transform_characters:Array=[]
 var foxlab_vanilla_characters:Array=[]
 
 ######### 次要角色限制合并缓存 ############
-# 影子=主角+身上全部次要角色（变身/佛手等）的 wanted_tags/banned_items/banned_item_groups/banned_upgrades/banned_meca_stats 的并集
+# 影子=主角+身上全部次要角色（变身/佛手等）的 wanted_tags/banned_items/banned_item_groups/banned_upgrades/banned_meca_stats/banned_consumables 的并集
 # 仅登记表变化（RunData标脏）或 current_character 引用变化时重建；登记表为空时影子即主角本身
 var _foxlab_merged_chars = [null, null, null, null]
 var _foxlab_merged_char_sources = [null, null, null, null]
@@ -54,6 +54,13 @@ func _foxlab_get_merged_character(player_index: int) -> CharacterData:
 			if union_meca.size() > base_meca.size():
 				changed = true
 			candidate.banned_meca_stats = union_meca
+		# TODO(jona): remove when compatible
+		if _foxlab_restrictions_have_data(restrictions, "banned_consumables") and orig.get("banned_consumables") != null:
+			var base_consumables: Array = orig.banned_consumables
+			var union_consumables: Array = _foxlab_union_unique(base_consumables, restrictions, "banned_consumables")
+			if union_consumables.size() > base_consumables.size():
+				changed = true
+			candidate.banned_consumables = union_consumables
 		if RunData.current_wave < RunData.nb_of_waves:
 			for restriction_key in ["banned_items", "banned_item_groups", "banned_upgrades"]:
 				if not _foxlab_restrictions_have_data(restrictions, restriction_key):
@@ -474,16 +481,7 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 	if type == TierData.WEAPONS and RunData.get_player_effect(Keys.remove_shop_items_hash, player_index).has(Keys.pet_hash):
 		args.excluded_items.append_array(foxlab_weapon_spawning_pet)
 
-	# 次要角色限制：原版在函数内部读current_character，临时以合并影子替换主角
-	var orig_character = RunData.players_data[player_index].current_character
-	var merged_character = _foxlab_get_merged_character(player_index)
-	var swapped: bool = merged_character != orig_character
-	if swapped:
-		RunData.players_data[player_index].current_character = merged_character
 	var elt = ._get_rand_item_for_wave(wave, player_index, type, args)
-	# 条件还原：窗口内若有人改动了current_character则不覆盖
-	if swapped and RunData.players_data[player_index].current_character == merged_character:
-		RunData.players_data[player_index].current_character = orig_character
 
 	# 非诅咒的蝾螈，刷新状态
 	if elt.my_id_hash == Keys.item_axolotl_hash and elt.effects.size() > 0 and "has_been_applied" in elt.effects[0]:
@@ -491,14 +489,7 @@ func _get_rand_item_for_wave(wave: int, player_index: int, type: int, args: GetR
 	return elt
 
 func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: int) -> Array:
-	var orig_character = RunData.players_data[player_index].current_character
-	var merged_character = _foxlab_get_merged_character(player_index)
-	var swapped: bool = merged_character != orig_character
-	if swapped:
-		RunData.players_data[player_index].current_character = merged_character
 	var upgrades = .get_upgrades(level, number, old_upgrades, player_index)
-	if swapped and RunData.players_data[player_index].current_character == merged_character:
-		RunData.players_data[player_index].current_character = orig_character
 	if not RunData.get_player_effect_bool(Utils.foxlab_item_upgrade_hash, player_index):
 		return upgrades
 

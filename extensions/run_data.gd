@@ -143,7 +143,7 @@ func foxlab_forget_item(player_index: int):
 				# DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:
-			add_item_displayed(get_player_character(player_index), player_index)
+			add_item_displayed(players_data[player_index].current_character, player_index)
 		foxlab_remembered_items[player_index].clear()
 		# 数字型临时属性，回收的时候会让属性减少，实际上在出发的时候就被Main清空了
 		# 数组型由于不存在那个key了，所以回收的时候无事发生
@@ -450,6 +450,13 @@ func resume_from_state(state: Dictionary) -> void :
 	foxlab_rebuild_extra_char_restrictions()
 
 ######### 次要角色限制登记 ############
+func get_player_character(player_index: int) -> CharacterData:
+	if player_index >= 0 and player_index < players_data.size():
+		var merged_character: CharacterData = ItemService._foxlab_get_merged_character(player_index)
+		if merged_character != null:
+			return merged_character
+	return .get_player_character(player_index)
+
 func apply_item_effects(item_data: ItemParentData, player_index: int) -> void :
 	.apply_item_effects(item_data, player_index)
 	if item_data is CharacterData:
@@ -615,7 +622,9 @@ func _foxlab_unregister_extra_char(character: CharacterData, player_index: int) 
 
 func _foxlab_register_extra_char_into(restrictions: Dictionary, character: CharacterData) -> void:
 	var in_endless: bool = current_wave >= nb_of_waves
-	if character.wanted_tags.empty() and (in_endless or (character.banned_items.empty() and character.banned_item_groups.empty() and character.banned_upgrades.empty() and character.banned_meca_stats.empty())):
+	# TODO(jona): remove when compatible
+	var banned_consumables = character.get("banned_consumables")
+	if character.wanted_tags.empty() and (banned_consumables == null or banned_consumables.empty()) and (in_endless or (character.banned_items.empty() and character.banned_item_groups.empty() and character.banned_upgrades.empty() and character.banned_meca_stats.empty())):
 		return
 	var entry = restrictions.get(character.my_id_hash)
 	if entry == null:
@@ -626,6 +635,7 @@ func _foxlab_register_extra_char_into(restrictions: Dictionary, character: Chara
 			"banned_item_groups": [] if in_endless else character.banned_item_groups.duplicate(),
 			"banned_upgrades": [] if in_endless else character.banned_upgrades.duplicate(),
 			"banned_meca_stats": character.banned_meca_stats.duplicate(),
+			"banned_consumables": [] if banned_consumables == null else banned_consumables.duplicate(),
 		}
 		restrictions[character.my_id_hash] = entry
 	entry["count"] += 1

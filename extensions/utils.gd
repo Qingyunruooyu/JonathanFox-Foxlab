@@ -141,6 +141,8 @@ var foxlab_const_effect_end_hash: int = Keys.generate_hash("foxlab_const_effect_
 var foxlab_remembered_effect_begin_hash: int = Keys.generate_hash("foxlab_remembered_effect_begin")
 
 # items
+var character_foxlab_alchemist_hash: int = Keys.generate_hash("character_foxlab_alchemist")
+var character_foxlab_antimatter_hash: int = Keys.generate_hash("character_foxlab_antimatter")
 var character_foxlab_bloody_wolf_hash: int = Keys.generate_hash("character_foxlab_bloody_wolf")
 var character_foxlab_faceless_hash: int = Keys.generate_hash("character_foxlab_faceless")
 var character_foxlab_ghost_envoy_hash: int = Keys.generate_hash("character_foxlab_ghost_envoy")

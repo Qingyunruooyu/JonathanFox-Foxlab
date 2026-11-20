@@ -399,7 +399,7 @@ func _on_tree_exited() -> void :
 		foxlab_remember_shop_items(player_index)
 		if RunData.get_player_effect_bool(Utils.foxlab_lose_item_on_reroll_hash, player_index) and\
 			not ProgressData.settings.no_item_appearance:
-				RunData.add_item_displayed(RunData.get_player_character(player_index), player_index)
+				RunData.add_item_displayed(RunData.players_data[player_index].current_character, player_index)
 
 	# 孟婆记忆能把商店沙漏、探测仪加入背包
 	var wave_reset_count = RunData.get_wave_reset_count()

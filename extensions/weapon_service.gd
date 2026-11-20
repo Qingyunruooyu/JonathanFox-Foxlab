@@ -5,37 +5,7 @@ const FOXLAB_WEAPON_CLASS_EXPLODE_EFFECT_RANGED = "res://mods-unpacked/JonathanF
 
 var _foxlab_weapon_class_explode_args = WeaponServiceInitStatsArgs.new()
 
-### 扩展 ###
-func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service, is_structure= false, is_special_spawn= false, is_pet= false) -> WeaponStats:
-	args = foxlab_merge_burning_effects(args)
-	args = foxlab_add_weapon_class_explode_stats(from_stats, player_index, args)
-	var new_stats = .init_base_stats(from_stats, player_index, args, is_structure, is_special_spawn, is_pet)
-	# 命中率超过100%反而会降低命中率，不合理
-	new_stats.accuracy = min(1.0, new_stats.accuracy)
-	# 原版中 构筑物+宠物 的道具，暴击率和生命窃取按构筑物来算了，比如布雷机器人要有一堆书才能暴击，并且无法生命窃取，这是不对的
-	if is_structure and is_pet:
-		var corrected_stats = .init_base_stats(from_stats, player_index, args, false, is_special_spawn, is_pet)
-		new_stats.lifesteal = corrected_stats.lifesteal
-		new_stats.crit_chance = corrected_stats.crit_chance
-		new_stats.crit_damage = corrected_stats.crit_damage
-
-	return new_stats
-
-func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service):
-	var new_stats = .init_melee_stats(from_stats, player_index, args)
-	new_stats.deal_dmg_on_return = from_stats.deal_dmg_on_return
-	return new_stats
-
-func _set_common_ranged_stats(new_stats: RangedWeaponStats, from_stats: RangedWeaponStats, player_index: int):
-	._set_common_ranged_stats(new_stats, from_stats, player_index)
-	new_stats.increase_projectile_speed_with_range = from_stats.increase_projectile_speed_with_range
-
-	if not RunData.get_player_effect_bool(Utils.foxlab_piercing_is_bounce_hash, player_index):
-		return
-	var piercing = new_stats.piercing
-	new_stats.piercing = 0
-	if from_stats.can_bounce:
-		new_stats.bounce += piercing
+### 功能 ###
 
 # 玩家池与武器侧的每X投射效果按X分组合并，键为X，值为该X下全部效果
 func foxlab_group_every_x_effects(player_index: int, weapon_effects: Array) -> Dictionary:
@@ -51,91 +21,6 @@ func foxlab_group_every_x_effects(player_index: int, weapon_effects: Array) -> D
 		groups[effect.value].append(effect)
 	return groups
 
-# 原版每个效果独立快照后按X直接覆盖字典：同X效果互相覆盖只剩一个，spread还跨效果累加泄漏；
-# 这里按X分组，同组sub_effects全部apply后一次快照，spread只计本组投射物增量
-func init_stats_every_x_projectiles(base_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs) -> Dictionary:
-	var groups = foxlab_group_every_x_effects(player_index, args.effects)
-	var stats_every_x_shots = {}
-	for x in groups:
-		var nb_projectile_effect = 0
-		for effect in groups[x]:
-			for sub_effect in effect.sub_effects:
-				sub_effect.apply(player_index)
-				if sub_effect.key_hash == Keys.projectiles_hash:
-					nb_projectile_effect += sub_effect.value
-		var modified_stats: RangedWeaponStats = init_ranged_stats(base_stats, player_index, false, args)
-		modified_stats.projectile_spread += nb_projectile_effect * 0.15
-		stats_every_x_shots[x] = modified_stats
-		for effect in groups[x]:
-			for sub_effect in effect.sub_effects:
-				sub_effect.unapply(player_index)
-	return stats_every_x_shots
-
-func set_projectile_effects(base_effects: Array, player_index: int = - 1) -> Array:
-	if player_index >= 0 and RunData.get_player_effect_bool(Utils.foxlab_piercing_is_bounce_hash, player_index):
-		for effect in base_effects:
-			if effect.key_hash == Keys.pierce_on_crit_hash:
-				effect.key = "bounce_on_crit"
-				effect.key_hash = Keys.bounce_on_crit_hash
-	return .set_projectile_effects(base_effects, player_index)
-
-func explode(effect: ExplodingEffect, args: WeaponServiceExplodeArgs) -> Node:
-	var instance = .explode(effect, args)
-	# 原版在start_explosion里面，又覆盖掉了from，影响狂骨判断伤害来源是不是构筑物/宠物
-	if args.from != null:
-		instance.set_from(args.from)
-	var explosion_hitbox = instance._hitbox
-	explosion_hitbox.effects = [ ]
-	explosion_hitbox.set_knockback(Vector2.ZERO, 0.0, 0.0)
-	call_deferred("foxlab_add_weapon_effects_for_explosion", instance)
-	return instance
-
-func manage_special_spawn_projectile(
-	entity_from,
-	weapon_stats,
-	direction: float,
-	auto_target_enemy: bool,
-	entity_spawner_ref,
-	from: Node,
-	args = _default_spawn_projectile_args
-) -> Node:
-	var projectile = .manage_special_spawn_projectile(entity_from, weapon_stats, direction, auto_target_enemy, entity_spawner_ref, from, args)
-	if (from is Weapon or Utils.foxlab_is_builder_turret(from)) and from.effects.size() > 0 and not projectile.killed_something_connected:
-		call_deferred("foxlab_connect_signal_for_projectile", from, projectile)
-	return projectile
-
-func init_burning_data(base_burning_data: BurningData, player_index: int, is_structure: bool = false, is_pet: bool = false) -> BurningData:
-	var burning_scaling_stat_effects = RunData.get_player_effect(Utils.foxlab_burning_scaling_stats_hash, player_index)
-	if not burning_scaling_stat_effects.empty():
-		base_burning_data = base_burning_data.duplicate()
-		base_burning_data.scaling_stats = foxlab_apply_scaling_stat_effects(burning_scaling_stat_effects, base_burning_data.scaling_stats, false)
-
-	var new_burning_data = .init_burning_data(base_burning_data, player_index, is_structure, is_pet)
-
-	# 燃烧能爆炸时，重新加算爆炸伤害
-	if not new_burning_data.is_not_burning() and not RunData.get_player_effect(Utils.foxlab_explode_on_burn_hash, player_index).empty():
-		var global_burning = RunData.get_player_effect(Keys.burn_chance_hash, player_index)
-		var base_damage = global_burning.damage
-		if not new_burning_data.is_global_burn:
-			base_damage += base_burning_data.damage
-
-		var percent_dmg_bonus = (1 + (Utils.get_stat(Keys.stat_percent_damage_hash, player_index) / 100.0))
-		if is_structure:
-			if is_pet:
-				percent_dmg_bonus += Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0
-			else:
-				percent_dmg_bonus = (1 + (Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0))
-		var exploding_dmg_bonus = (Utils.get_stat(Keys.explosion_damage_hash, player_index) / 100.0)
-
-		if is_pet or not is_structure: # 和 get_explosion_damage 一致
-			new_burning_data.scaling_stats = _apply_weapon_scaling_stat_effects(new_burning_data.scaling_stats, player_index)
-		base_damage =  apply_scaling_stats_to_damage(base_damage, new_burning_data.scaling_stats, player_index)
-
-		new_burning_data.damage = max(1, round(base_damage * (percent_dmg_bonus + exploding_dmg_bonus))) as int
-
-	return new_burning_data
-
-### 功能 ###
 func foxlab_merge_burning_effects(args: WeaponServiceInitStatsArgs) -> WeaponServiceInitStatsArgs:
 	var first_index = -1
 	var extra_effects = []
@@ -293,3 +178,120 @@ func foxlab_build_combined_every_x(player_index: int, effects: Array, matched, f
 		for sub_effect in effect.sub_effects:
 			sub_effect.unapply(player_index)
 	return combined
+
+### 扩展 ###
+func init_base_stats(from_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service, is_structure= false, is_special_spawn= false, is_pet= false) -> WeaponStats:
+	args = foxlab_merge_burning_effects(args)
+	args = foxlab_add_weapon_class_explode_stats(from_stats, player_index, args)
+	var new_stats = .init_base_stats(from_stats, player_index, args, is_structure, is_special_spawn, is_pet)
+	# 命中率超过100%反而会降低命中率，不合理
+	new_stats.accuracy = min(1.0, new_stats.accuracy)
+	# 原版中 构筑物+宠物 的道具，暴击率和生命窃取按构筑物来算了，比如布雷机器人要有一堆书才能暴击，并且无法生命窃取，这是不对的
+	if is_structure and is_pet:
+		var corrected_stats = .init_base_stats(from_stats, player_index, args, false, is_special_spawn, is_pet)
+		new_stats.lifesteal = corrected_stats.lifesteal
+		new_stats.crit_chance = corrected_stats.crit_chance
+		new_stats.crit_damage = corrected_stats.crit_damage
+
+	return new_stats
+
+func init_melee_stats(from_stats: MeleeWeaponStats, player_index: int, args: WeaponServiceInitStatsArgs = _init_stats_args_service):
+	var new_stats = .init_melee_stats(from_stats, player_index, args)
+	new_stats.deal_dmg_on_return = from_stats.deal_dmg_on_return
+	return new_stats
+
+func _set_common_ranged_stats(new_stats: RangedWeaponStats, from_stats: RangedWeaponStats, player_index: int):
+	._set_common_ranged_stats(new_stats, from_stats, player_index)
+	new_stats.increase_projectile_speed_with_range = from_stats.increase_projectile_speed_with_range
+
+	if not RunData.get_player_effect_bool(Utils.foxlab_piercing_is_bounce_hash, player_index):
+		return
+	var piercing = new_stats.piercing
+	new_stats.piercing = 0
+	if from_stats.can_bounce:
+		new_stats.bounce += piercing
+
+# 原版每个效果独立快照后按X直接覆盖字典：同X效果互相覆盖只剩一个，spread还跨效果累加泄漏；
+# 这里按X分组，同组sub_effects全部apply后一次快照，spread只计本组投射物增量
+func init_stats_every_x_projectiles(base_stats: WeaponStats, player_index: int, args: WeaponServiceInitStatsArgs) -> Dictionary:
+	var groups = foxlab_group_every_x_effects(player_index, args.effects)
+	var stats_every_x_shots = {}
+	for x in groups:
+		var nb_projectile_effect = 0
+		for effect in groups[x]:
+			for sub_effect in effect.sub_effects:
+				sub_effect.apply(player_index)
+				if sub_effect.key_hash == Keys.projectiles_hash:
+					nb_projectile_effect += sub_effect.value
+		var modified_stats: RangedWeaponStats = init_ranged_stats(base_stats, player_index, false, args)
+		modified_stats.projectile_spread += nb_projectile_effect * 0.15
+		stats_every_x_shots[x] = modified_stats
+		for effect in groups[x]:
+			for sub_effect in effect.sub_effects:
+				sub_effect.unapply(player_index)
+	return stats_every_x_shots
+
+func set_projectile_effects(base_effects: Array, player_index: int = - 1) -> Array:
+	if player_index >= 0 and RunData.get_player_effect_bool(Utils.foxlab_piercing_is_bounce_hash, player_index):
+		for effect in base_effects:
+			if effect.key_hash == Keys.pierce_on_crit_hash:
+				effect.key = "bounce_on_crit"
+				effect.key_hash = Keys.bounce_on_crit_hash
+	return .set_projectile_effects(base_effects, player_index)
+
+func explode(effect: ExplodingEffect, args: WeaponServiceExplodeArgs) -> Node:
+	var instance = .explode(effect, args)
+	# 原版在start_explosion里面，又覆盖掉了from，影响狂骨判断伤害来源是不是构筑物/宠物
+	if args.from != null:
+		instance.set_from(args.from)
+	var explosion_hitbox = instance._hitbox
+	explosion_hitbox.effects = [ ]
+	explosion_hitbox.set_knockback(Vector2.ZERO, 0.0, 0.0)
+	call_deferred("foxlab_add_weapon_effects_for_explosion", instance)
+	return instance
+
+func manage_special_spawn_projectile(
+	entity_from,
+	weapon_stats,
+	direction: float,
+	auto_target_enemy: bool,
+	entity_spawner_ref,
+	from: Node,
+	args = _default_spawn_projectile_args
+) -> Node:
+	var projectile = .manage_special_spawn_projectile(entity_from, weapon_stats, direction, auto_target_enemy, entity_spawner_ref, from, args)
+	if (from is Weapon or Utils.foxlab_is_builder_turret(from)) and from.effects.size() > 0 and not projectile.killed_something_connected:
+		call_deferred("foxlab_connect_signal_for_projectile", from, projectile)
+	return projectile
+
+func init_burning_data(base_burning_data: BurningData, player_index: int, is_structure: bool = false, is_pet: bool = false) -> BurningData:
+	var burning_scaling_stat_effects = RunData.get_player_effect(Utils.foxlab_burning_scaling_stats_hash, player_index)
+	if not burning_scaling_stat_effects.empty():
+		base_burning_data = base_burning_data.duplicate()
+		base_burning_data.scaling_stats = foxlab_apply_scaling_stat_effects(burning_scaling_stat_effects, base_burning_data.scaling_stats, false)
+
+	var new_burning_data = .init_burning_data(base_burning_data, player_index, is_structure, is_pet)
+
+	# 燃烧能爆炸时，重新加算爆炸伤害
+	if not new_burning_data.is_not_burning() and not RunData.get_player_effect(Utils.foxlab_explode_on_burn_hash, player_index).empty():
+		var global_burning = RunData.get_player_effect(Keys.burn_chance_hash, player_index)
+		var base_damage = global_burning.damage
+		if not new_burning_data.is_global_burn:
+			base_damage += base_burning_data.damage
+
+		var percent_dmg_bonus = (1 + (Utils.get_stat(Keys.stat_percent_damage_hash, player_index) / 100.0))
+		if is_structure:
+			if is_pet:
+				percent_dmg_bonus += Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0
+			else:
+				percent_dmg_bonus = (1 + (Utils.get_stat(Keys.structure_percent_damage_hash, player_index) / 100.0))
+		var exploding_dmg_bonus = (Utils.get_stat(Keys.explosion_damage_hash, player_index) / 100.0)
+
+		if is_pet or not is_structure: # 和 get_explosion_damage 一致
+			new_burning_data.scaling_stats = _apply_weapon_scaling_stat_effects(new_burning_data.scaling_stats, player_index)
+		base_damage =  apply_scaling_stats_to_damage(base_damage, new_burning_data.scaling_stats, player_index)
+
+		new_burning_data.damage = max(1, round(base_damage * (percent_dmg_bonus + exploding_dmg_bonus))) as int
+
+	return new_burning_data
+

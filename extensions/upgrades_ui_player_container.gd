@@ -4,36 +4,6 @@ onready var _foxlab_item_popup = get_node_or_null("%ItemPopup") if RunData.is_co
 
 var foxlab_current_ui = null
 
-func _ready():
-	if player_index >= RunData.get_player_count():
-		return
-	if _foxlab_item_popup == null:
-		# 加这个Control让界面不要晃动
-		var ctrl = Control.new()
-		add_child(ctrl)
-		var popup = load("res://ui/menus/shop/item_popup.tscn")
-		_foxlab_item_popup = popup.instance()
-		ctrl.add_child(_foxlab_item_popup)
-		_foxlab_item_popup.visible = false
-		_foxlab_item_popup.player_index = player_index
-		# 弹窗只做展示，鼠标事件穿透，不挡下面的升级/拿取按钮
-		_foxlab_item_popup.ignore_mouse_outside_card()
-
-	for ui in _get_upgrade_uis():
-		if not ui.is_connected("foxlab_hovered", self, "on_foxlab_upgrade_hovered"):
-			ui.connect("foxlab_hovered", self, "on_foxlab_upgrade_hovered")
-		if not ui.is_connected("foxlab_left", self, "on_foxlab_item_left"):
-			ui.connect("foxlab_left", self, "on_foxlab_item_left")
-
-	if not _take_button.is_connected("focus_entered", self, "on_foxlab_item_hovered"):
-		_take_button.connect("focus_entered", self, "on_foxlab_item_hovered")
-	if not _take_button.is_connected("mouse_entered", self, "on_foxlab_item_hovered"):
-		_take_button.connect("mouse_entered", self, "on_foxlab_item_hovered")
-	if not _take_button.is_connected("focus_exited", self, "on_foxlab_item_left"):
-		_take_button.connect("focus_exited", self, "on_foxlab_item_left")
-	if not _take_button.is_connected("mouse_exited", self, "on_foxlab_item_left"):
-		_take_button.connect("mouse_exited", self, "on_foxlab_item_left")
-
 func on_foxlab_upgrade_hovered(upgrade_data: UpgradeData, control: Control):
 	foxlab_current_ui = control
 	if not Utils.foxlab_is_vanilla_upgrade(upgrade_data):
@@ -66,3 +36,33 @@ func show_upgrades_for_level(level: int) -> void :
 		if foxlab_current_ui:
 			foxlab_current_ui = null
 		on_foxlab_item_left()
+
+func _ready():
+	if player_index >= RunData.get_player_count():
+		return
+	if _foxlab_item_popup == null:
+		# 加这个Control让界面不要晃动
+		var ctrl = Control.new()
+		add_child(ctrl)
+		var popup = load("res://ui/menus/shop/item_popup.tscn")
+		_foxlab_item_popup = popup.instance()
+		ctrl.add_child(_foxlab_item_popup)
+		_foxlab_item_popup.visible = false
+		_foxlab_item_popup.player_index = player_index
+		# 弹窗只做展示，鼠标事件穿透，不挡下面的升级/拿取按钮
+		_foxlab_item_popup.ignore_mouse_outside_card()
+
+	for ui in _get_upgrade_uis():
+		if not ui.is_connected("foxlab_hovered", self, "on_foxlab_upgrade_hovered"):
+			ui.connect("foxlab_hovered", self, "on_foxlab_upgrade_hovered")
+		if not ui.is_connected("foxlab_left", self, "on_foxlab_item_left"):
+			ui.connect("foxlab_left", self, "on_foxlab_item_left")
+
+	if not _take_button.is_connected("focus_entered", self, "on_foxlab_item_hovered"):
+		_take_button.connect("focus_entered", self, "on_foxlab_item_hovered")
+	if not _take_button.is_connected("mouse_entered", self, "on_foxlab_item_hovered"):
+		_take_button.connect("mouse_entered", self, "on_foxlab_item_hovered")
+	if not _take_button.is_connected("focus_exited", self, "on_foxlab_item_left"):
+		_take_button.connect("focus_exited", self, "on_foxlab_item_left")
+	if not _take_button.is_connected("mouse_exited", self, "on_foxlab_item_left"):
+		_take_button.connect("mouse_exited", self, "on_foxlab_item_left")

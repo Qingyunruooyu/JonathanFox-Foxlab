@@ -267,6 +267,163 @@ func foxlab_remove_item_from_end(item_data: ItemData, player_index: int, apply_r
 			foxlab_remove_item_by_index(i, player_index, apply_replacement)
 			break
 
+func foxlab_item_recycle_test():
+	var failed_items = []
+	for item in ItemService.get_items() + ItemService.get_characters():
+		if item.my_id in failed_items:
+			continue
+		print("test ", item.my_id)
+		foxlab_add_item_triggering_stat_gain_effects(item, 0)
+		remove_item(item, 0, false, false)
+		if not item.can_be_looted or item is CharacterData:
+			continue
+		var new_item = ItemService.apply_item_effect_modifications(item, 0)
+		foxlab_add_item_triggering_stat_gain_effects(new_item, 0)
+		remove_item(new_item, 0, false, false)
+	return true
+
+func _foxlab_try_recover_lost_item(item_data: Resource, player_index: int) -> void:
+	if item_data == null or not item_data.can_be_looted:
+		return
+	if not (item_data is WeaponData or item_data is ItemData):
+		return
+	if item_data is CharacterData or item_data is UpgradeData or item_data is ConsumableData:
+		return
+	if item_data.my_id_hash in Utils.foxlab_recover_item_blacklist:
+		return
+	var effects = get_player_effects(player_index)
+	var recover_effects: Array = effects.get(Utils.foxlab_recover_lost_item_hash, [])
+	if recover_effects.empty():
+		return
+	var chance: int = 0
+	var max_recoveries: int = 0
+	for recover_effect in recover_effects:
+		chance += recover_effect[0]
+		max_recoveries = max(max_recoveries, recover_effect[1])
+	var recovered_items: Array = effects.get(Utils.foxlab_recovered_items_this_wave_hash, [])
+	if chance <= 0 or max_recoveries <= 0 or recovered_items.size() >= max_recoveries:
+		return
+	if not Utils.get_chance_success(chance / 100.0):
+		return
+	add_tracked_value(player_index, Utils.item_foxlab_experiment_log_hash, 1)
+	var recovered_item = item_data.duplicate()
+	recovered_items.append(Utils.foxlab_get_item_name_with_flavor(recovered_item))
+	recovered_item.effects = []
+	for effect in item_data.effects:
+		recovered_item.effects.append(effect.duplicate())
+	if recovered_item is WeaponData:
+		recovered_item.stats = item_data.stats.duplicate()
+		recovered_item.tracked_value = 0
+		recovered_item.tracked_value_added_this_wave = 0
+		recovered_item.dmg_dealt_last_wave = 0
+	call_deferred("_foxlab_recover_lost_item", recovered_item, player_index, players_data[player_index])
+
+func _foxlab_recover_lost_item(item_data: Resource, player_index: int, player_data) -> void:
+	if player_index >= players_data.size() or players_data[player_index] != player_data:
+		return
+	if item_data is WeaponData:
+		var new_weapon = add_weapon(item_data, player_index)
+		if new_weapon == null:
+			return
+		item_data = new_weapon
+		emit_signal("foxlab_weapon_gear_changed", player_index)
+	else:
+		foxlab_add_item_triggering_stat_gain_effects(item_data, player_index)
+		emit_signal("foxlab_item_gear_changed", player_index)
+	emit_signal("foxlab_gear_recovered", item_data, player_index)
+
+func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
+	Utils.reset_stat_cache(player_index)
+	for effect in effects:
+		effect.apply(player_index)
+	_are_player_stats_dirty[player_index] = true
+	ChallengeService.check_stat_challenges(player_index)
+
+func foxlab_unapply_effects_array(effects: Array, player_index: int) -> void :
+	.unapply_effects_array(effects, player_index)
+	_are_player_stats_dirty[player_index] = true
+
+func get_foxlab_backpack_char_effects(player_index: int):
+	if not _foxlab_backpack_char_effects_dirty[player_index]:
+		return foxlab_backpack_char_effects[player_index]
+	var mark_template = ItemService.get_element(ItemService.get_items(), Utils.item_foxlab_uv_mark_hash)
+	if mark_template == null:
+		return null
+	var mark = mark_template.duplicate()
+	var boolean_keys: Array = []
+	var dlc_2_data = ItemService.get_dlc_data_by_id("primal_dread")
+	if dlc_2_data != null:
+		dlc_2_data._foxlab_init_mutation_rules()
+		boolean_keys = dlc_2_data.mutation_boolean_keys
+	var effects: Array = []
+	for item in players_data[player_index].items:
+		if not item is CharacterData:
+			continue
+		for effect in item.effects:
+			if effect is TurretEffect or effect is SwapMaxMinStatEffect or effect is StatCapEffect\
+				or effect is LinearScalingEffect or effect is GainMecaPartsEffect or effect is BurnChanceEffect\
+				or effect.storage_method == Effect.StorageMethod.REPLACE or effect.storage_method == Effect.StorageMethod.APPEND_KEY\
+				or effect.key_hash in FOXLAB_AURA_BLACKLIST_EFFECT or effect.custom_key_hash in FOXLAB_AURA_BLACKLIST_EFFECT\
+				or boolean_keys.has(effect.key_hash)\
+				or effect.get_id() in FOXLAB_AURA_UNSAFE_EFFECT_IDS:
+				continue
+			effects.append(effect)
+	mark.effects = effects
+	foxlab_backpack_char_effects[player_index] = mark
+	add_item_to_item_count(mark)
+	_foxlab_backpack_char_effects_dirty[player_index] = false
+	return mark
+
+func _foxlab_register_extra_char(character: CharacterData, player_index: int) -> void:
+	_foxlab_register_extra_char_into(foxlab_extra_char_restrictions[player_index], character)
+	ItemService.foxlab_mark_merged_char_dirty(player_index)
+
+func _foxlab_unregister_extra_char(character: CharacterData, player_index: int) -> void:
+	var restrictions: Dictionary = foxlab_extra_char_restrictions[player_index]
+	var entry = restrictions.get(character.my_id_hash)
+	if entry == null:
+		return
+	entry["count"] -= 1
+	if entry["count"] <= 0:
+		restrictions.erase(character.my_id_hash)
+	ItemService.foxlab_mark_merged_char_dirty(player_index)
+
+func _foxlab_register_extra_char_into(restrictions: Dictionary, character: CharacterData) -> void:
+	var in_endless: bool = current_wave >= nb_of_waves
+	# TODO(jona): remove when compatible
+	var banned_consumables = character.get("banned_consumables")
+	if character.wanted_tags.empty() and (banned_consumables == null or banned_consumables.empty()) and (in_endless or (character.banned_items.empty() and character.banned_item_groups.empty() and character.banned_upgrades.empty() and character.banned_meca_stats.empty())):
+		return
+	var entry = restrictions.get(character.my_id_hash)
+	if entry == null:
+		entry = {
+			"count": 0,
+			"wanted_tags": character.wanted_tags.duplicate(),
+			"banned_items": [] if in_endless else character.banned_items.duplicate(),
+			"banned_item_groups": [] if in_endless else character.banned_item_groups.duplicate(),
+			"banned_upgrades": [] if in_endless else character.banned_upgrades.duplicate(),
+			"banned_meca_stats": character.banned_meca_stats.duplicate(),
+			"banned_consumables": [] if banned_consumables == null else banned_consumables.duplicate(),
+		}
+		restrictions[character.my_id_hash] = entry
+	entry["count"] += 1
+
+func foxlab_rebuild_extra_char_restrictions() -> void:
+	for player_index in players_data.size():
+		var restrictions: Dictionary = foxlab_extra_char_restrictions[player_index]
+		restrictions.clear()
+		_foxlab_backpack_char_effects_dirty[player_index] = true
+		var current_character = players_data[player_index].current_character
+		var skipped_own = false
+		for item in players_data[player_index].items:
+			if not item is CharacterData:
+				continue
+			if not skipped_own and current_character != null and item.my_id_hash == current_character.my_id_hash:
+				skipped_own = true
+				continue
+			_foxlab_register_extra_char_into(restrictions, item)
+	ItemService.foxlab_clear_merged_char_cache()
+
 ###### 扩展 ######
 # 原版按 my_id 擦除第一个匹配的锁定条目，锁定列表里存在同名不同数据的商品（如诅咒+普通）时会擦错；
 # 无重名、或精确匹配恰为首个同名条目时基类行为等价，走基类，否则精确移除
@@ -340,21 +497,6 @@ func get_next_level_xp_needed(player_index) -> float:
 	# 防止需要的经验不是正数，导致无限升级爆栈
 	var xp_needed_effect = max(get_player_effect(Keys.next_level_xp_needed_hash, player_index), -99)
 	return get_xp_needed(get_player_level(player_index) + 1) * (1.0 + xp_needed_effect / 100.0)
-
-func foxlab_item_recycle_test():
-	var failed_items = []
-	for item in ItemService.get_items() + ItemService.get_characters():
-		if item.my_id in failed_items:
-			continue
-		print("test ", item.my_id)
-		foxlab_add_item_triggering_stat_gain_effects(item, 0)
-		remove_item(item, 0, false, false)
-		if not item.can_be_looted or item is CharacterData:
-			continue
-		var new_item = ItemService.apply_item_effect_modifications(item, 0)
-		foxlab_add_item_triggering_stat_gain_effects(new_item, 0)
-		remove_item(new_item, 0, false, false)
-	return true
 
 func add_starting_items_and_weapons() -> void :
 #	assert(foxlab_item_recycle_test())
@@ -471,67 +613,6 @@ func unapply_item_effects(item_data: ItemParentData, player_index: int) -> void 
 		_foxlab_backpack_char_effects_dirty[player_index] = true
 	.unapply_item_effects(item_data, player_index)
 
-func _foxlab_try_recover_lost_item(item_data: Resource, player_index: int) -> void:
-	if item_data == null or not item_data.can_be_looted:
-		return
-	if not (item_data is WeaponData or item_data is ItemData):
-		return
-	if item_data is CharacterData or item_data is UpgradeData or item_data is ConsumableData:
-		return
-	if item_data.my_id_hash in Utils.foxlab_recover_item_blacklist:
-		return
-	var effects = get_player_effects(player_index)
-	var recover_effects: Array = effects.get(Utils.foxlab_recover_lost_item_hash, [])
-	if recover_effects.empty():
-		return
-	var chance: int = 0
-	var max_recoveries: int = 0
-	for recover_effect in recover_effects:
-		chance += recover_effect[0]
-		max_recoveries = max(max_recoveries, recover_effect[1])
-	var recovered_items: Array = effects.get(Utils.foxlab_recovered_items_this_wave_hash, [])
-	if chance <= 0 or max_recoveries <= 0 or recovered_items.size() >= max_recoveries:
-		return
-	if not Utils.get_chance_success(chance / 100.0):
-		return
-	add_tracked_value(player_index, Utils.item_foxlab_experiment_log_hash, 1)
-	var recovered_item = item_data.duplicate()
-	recovered_items.append(Utils.foxlab_get_item_name_with_flavor(recovered_item))
-	recovered_item.effects = []
-	for effect in item_data.effects:
-		recovered_item.effects.append(effect.duplicate())
-	if recovered_item is WeaponData:
-		recovered_item.stats = item_data.stats.duplicate()
-		recovered_item.tracked_value = 0
-		recovered_item.tracked_value_added_this_wave = 0
-		recovered_item.dmg_dealt_last_wave = 0
-	call_deferred("_foxlab_recover_lost_item", recovered_item, player_index, players_data[player_index])
-
-func _foxlab_recover_lost_item(item_data: Resource, player_index: int, player_data) -> void:
-	if player_index >= players_data.size() or players_data[player_index] != player_data:
-		return
-	if item_data is WeaponData:
-		var new_weapon = add_weapon(item_data, player_index)
-		if new_weapon == null:
-			return
-		item_data = new_weapon
-		emit_signal("foxlab_weapon_gear_changed", player_index)
-	else:
-		foxlab_add_item_triggering_stat_gain_effects(item_data, player_index)
-		emit_signal("foxlab_item_gear_changed", player_index)
-	emit_signal("foxlab_gear_recovered", item_data, player_index)
-
-func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
-	Utils.reset_stat_cache(player_index)
-	for effect in effects:
-		effect.apply(player_index)
-	_are_player_stats_dirty[player_index] = true
-	ChallengeService.check_stat_challenges(player_index)
-
-func foxlab_unapply_effects_array(effects: Array, player_index: int) -> void :
-	.unapply_effects_array(effects, player_index)
-	_are_player_stats_dirty[player_index] = true
-
 const FOXLAB_AURA_UNSAFE_EFFECT_IDS = {
 	"foxlab_alter_append": true,
 	"foxlab_apply_only": true,
@@ -572,89 +653,8 @@ var FOXLAB_AURA_BLACKLIST_EFFECT = {
 	Keys.burn_weapon_hash: true,
 }
 
-func get_foxlab_backpack_char_effects(player_index: int):
-	if not _foxlab_backpack_char_effects_dirty[player_index]:
-		return foxlab_backpack_char_effects[player_index]
-	var mark_template = ItemService.get_element(ItemService.get_items(), Utils.item_foxlab_uv_mark_hash)
-	if mark_template == null:
-		return null
-	var mark = mark_template.duplicate()
-	var boolean_keys: Array = []
-	var dlc_2_data = ItemService.get_dlc_data_by_id("primal_dread")
-	if dlc_2_data != null:
-		dlc_2_data._foxlab_init_mutation_rules()
-		boolean_keys = dlc_2_data.mutation_boolean_keys
-	var effects: Array = []
-	for item in players_data[player_index].items:
-		if not item is CharacterData:
-			continue
-		for effect in item.effects:
-			if effect is TurretEffect or effect is SwapMaxMinStatEffect or effect is StatCapEffect\
-				or effect is LinearScalingEffect or effect is GainMecaPartsEffect or effect is BurnChanceEffect\
-				or effect.storage_method == Effect.StorageMethod.REPLACE or effect.storage_method == Effect.StorageMethod.APPEND_KEY\
-				or effect.key_hash in FOXLAB_AURA_BLACKLIST_EFFECT or effect.custom_key_hash in FOXLAB_AURA_BLACKLIST_EFFECT\
-				or boolean_keys.has(effect.key_hash)\
-				or effect.get_id() in FOXLAB_AURA_UNSAFE_EFFECT_IDS:
-				continue
-			effects.append(effect)
-	mark.effects = effects
-	foxlab_backpack_char_effects[player_index] = mark
-	add_item_to_item_count(mark)
-	_foxlab_backpack_char_effects_dirty[player_index] = false
-	return mark
 
 
-func _foxlab_register_extra_char(character: CharacterData, player_index: int) -> void:
-	_foxlab_register_extra_char_into(foxlab_extra_char_restrictions[player_index], character)
-	ItemService.foxlab_mark_merged_char_dirty(player_index)
-
-
-func _foxlab_unregister_extra_char(character: CharacterData, player_index: int) -> void:
-	var restrictions: Dictionary = foxlab_extra_char_restrictions[player_index]
-	var entry = restrictions.get(character.my_id_hash)
-	if entry == null:
-		return
-	entry["count"] -= 1
-	if entry["count"] <= 0:
-		restrictions.erase(character.my_id_hash)
-	ItemService.foxlab_mark_merged_char_dirty(player_index)
-
-
-func _foxlab_register_extra_char_into(restrictions: Dictionary, character: CharacterData) -> void:
-	var in_endless: bool = current_wave >= nb_of_waves
-	# TODO(jona): remove when compatible
-	var banned_consumables = character.get("banned_consumables")
-	if character.wanted_tags.empty() and (banned_consumables == null or banned_consumables.empty()) and (in_endless or (character.banned_items.empty() and character.banned_item_groups.empty() and character.banned_upgrades.empty() and character.banned_meca_stats.empty())):
-		return
-	var entry = restrictions.get(character.my_id_hash)
-	if entry == null:
-		entry = {
-			"count": 0,
-			"wanted_tags": character.wanted_tags.duplicate(),
-			"banned_items": [] if in_endless else character.banned_items.duplicate(),
-			"banned_item_groups": [] if in_endless else character.banned_item_groups.duplicate(),
-			"banned_upgrades": [] if in_endless else character.banned_upgrades.duplicate(),
-			"banned_meca_stats": character.banned_meca_stats.duplicate(),
-			"banned_consumables": [] if banned_consumables == null else banned_consumables.duplicate(),
-		}
-		restrictions[character.my_id_hash] = entry
-	entry["count"] += 1
-
-func foxlab_rebuild_extra_char_restrictions() -> void:
-	for player_index in players_data.size():
-		var restrictions: Dictionary = foxlab_extra_char_restrictions[player_index]
-		restrictions.clear()
-		_foxlab_backpack_char_effects_dirty[player_index] = true
-		var current_character = players_data[player_index].current_character
-		var skipped_own = false
-		for item in players_data[player_index].items:
-			if not item is CharacterData:
-				continue
-			if not skipped_own and current_character != null and item.my_id_hash == current_character.my_id_hash:
-				skipped_own = true
-				continue
-			_foxlab_register_extra_char_into(restrictions, item)
-	ItemService.foxlab_clear_merged_char_cache()
 
 func after_weapon_removed(weapon: WeaponData, player_index: int) -> void :
 	.after_weapon_removed(weapon, player_index)

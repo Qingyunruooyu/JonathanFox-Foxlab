@@ -2,6 +2,10 @@ extends "res://global/entity_spawner.gd"
 
 var foxlab_pets_structures_node_data_map = {}
 
+func foxlab_register_builder_turret(entity) -> void:
+	if Utils.foxlab_is_builder_turret(entity):
+		_main.foxlab_get_builder_turret_manager().foxlab_register(entity)
+
 ##### 扩展 #####
 func on_group_spawn_timing_reached(group_data: WaveGroupData) -> void :
 	if group_data.is_neutral:
@@ -61,6 +65,3 @@ func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = nu
 
 	return entity
 
-func foxlab_register_builder_turret(entity) -> void:
-	if Utils.foxlab_is_builder_turret(entity):
-		_main.foxlab_get_builder_turret_manager().foxlab_register(entity)

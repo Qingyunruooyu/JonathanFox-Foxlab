@@ -821,12 +821,13 @@ func foxlab_convert_remainder(stats: Array, player_index:int):
 func foxlab_is_builder_turret(node) -> bool:
 	return node != null and node.get("projectiles_on_hit") != null
 
-######## 扩展 ######
 # 通缉令缓存依赖内容集/DLC状态，懒重建；item_sets_changed / dlc 变化时主动清空
 func foxlab_clear_wanted_caches() -> void :
 	foxlab_item_wanted.clear()
 	foxlab_item_wanted_hash.clear()
 	foxlab_unknown_elites.clear()
+
+######## 扩展 ######
 
 func reset_stat_keys() -> void :
 	.reset_stat_keys()

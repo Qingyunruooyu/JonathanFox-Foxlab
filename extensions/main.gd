@@ -49,23 +49,6 @@ var _foxlab_entity_birth_entered_players = {}
 var FoxLabBuilderTurretManager = preload("res://mods-unpacked/JonathanFox-FoxLab/contents/entities/structures/turret/builder_turret_mamaner/builder_turret_manager.gd")
 var foxlab_builder_turret_manager = null
 
-func _ready():
-	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
-	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
-	_err = RunData.connect("foxlab_item_added", self, "_on_foxlab_item_added")
-	_err = RunData.connect("foxlab_gear_recovered", self, "_on_foxlab_gear_recovered")
-	_err = _end_wave_timer.connect("timeout", self, "_on_foxlab_EndWaveTimer_timeout")
-
-	foxlab_receive_item_stat_ready()
-	foxlab_spawn_enemy_via_gold_bag_ready()
-	foxlab_copy_pets_structures_ready()
-	foxlab_mutation_ready()
-	foxlab_piercing_is_bounce_ready()
-	foxlab_gain_stat_every_killed_enemies_ready()
-	foxlab_seed_timers_ready()
-	foxlab_extra_hit_ready()
-	foxlab_enemy_priority_queue_ready()
-
 func foxlab_get_builder_turret_manager():
 	if foxlab_builder_turret_manager == null:
 		foxlab_builder_turret_manager = FoxLabBuilderTurretManager.new()
@@ -377,14 +360,6 @@ func _on_neutral_took_damage_foxlab(neutral, _value: int, _knockback_direction: 
 	if args.from_player_index >= 0 and args.from_player_index < RunData.get_player_count():
 		neutral._die_args_unit.from = args.from
 		neutral._die_args_unit.killed_by_player_index = args.from_player_index
-
-func _on_neutral_died(neutral, args: Entity.DieArgs) -> void :
-	._on_neutral_died(neutral, args)
-	if args.cleaning_up or _cleaning_up:
-		return
-	var player_index: int = neutral._die_args_unit.killed_by_player_index
-	if player_index >= 0 and player_index < RunData.get_player_count():
-		_foxlab_process_frozen_unit_kill(neutral, player_index)
 
 func foxlab_process_landmine_on_death(enemy, args: TakeDamageArgs):
 	for _i in range(WeaponService.foxlab_spawn_landmines_on_enemy_death_count(args.hitbox, args.is_burning, args.from_player_index)):
@@ -971,6 +946,14 @@ func foxlab_process_spawn_landmine(player, birth) -> void :
 		request.data = player.foxlab_mom_landmine_effect
 		queue.push_back(request)
 
+func _on_foxlab_disguise_enemy_tree_exiting(enemy, original_texture, collision_delta: Vector2, hurtbox_delta: Vector2, hitbox_delta: Vector2) -> void :
+	enemy.sprite.texture = original_texture
+	# 只减去换皮时的缩放差值，保留 set_size 后续添加的成长增量。
+	enemy._collision.scale -= collision_delta
+	enemy._hurtbox.scale -= hurtbox_delta
+	enemy._hitbox.scale -= hitbox_delta
+	enemy.disconnect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting")
+
 ##############扩展################
 func _on_WaveTimer_timeout() -> void :
 	for player_index in range(RunData.get_player_count()):
@@ -1178,14 +1161,6 @@ func _on_EntitySpawner_enemy_respawned(enemy) -> void :
 		if not enemy is EvilMob:
 			enemy.can_drop_loot = false
 
-func _on_foxlab_disguise_enemy_tree_exiting(enemy, original_texture, collision_delta: Vector2, hurtbox_delta: Vector2, hitbox_delta: Vector2) -> void :
-	enemy.sprite.texture = original_texture
-	# 只减去换皮时的缩放差值，保留 set_size 后续添加的成长增量。
-	enemy._collision.scale -= collision_delta
-	enemy._hurtbox.scale -= hurtbox_delta
-	enemy._hitbox.scale -= hitbox_delta
-	enemy.disconnect("tree_exiting", self, "_on_foxlab_disguise_enemy_tree_exiting")
-
 func _on_EntitySpawner_neutral_spawned(neutral) -> void :
 	._on_EntitySpawner_neutral_spawned(neutral)
 	var _error_took_damage = neutral.connect("took_damage", self, "_on_neutral_took_damage_foxlab")
@@ -1257,3 +1232,28 @@ func add_birth(instance: EntityBirth) -> void :
 	instance.connect("body_entered", self, "_foxlab_on_EntityBirth_body_entered", [instance])
 	instance.connect("birth_timeout", self, "foxlab_on_entity_birth_timeout")
 	_foxlab_entity_birth_entered_players[instance] = [ ]
+
+func _ready():
+	var _err = RunData.connect("foxlab_sec_char_changed", self, "_on_foxlab_sec_char_changed")
+	_err = RunData.connect("foxlab_weapon_added", self, "_on_foxlab_weapon_added")
+	_err = RunData.connect("foxlab_item_added", self, "_on_foxlab_item_added")
+	_err = RunData.connect("foxlab_gear_recovered", self, "_on_foxlab_gear_recovered")
+	_err = _end_wave_timer.connect("timeout", self, "_on_foxlab_EndWaveTimer_timeout")
+
+	foxlab_receive_item_stat_ready()
+	foxlab_spawn_enemy_via_gold_bag_ready()
+	foxlab_copy_pets_structures_ready()
+	foxlab_mutation_ready()
+	foxlab_piercing_is_bounce_ready()
+	foxlab_gain_stat_every_killed_enemies_ready()
+	foxlab_seed_timers_ready()
+	foxlab_extra_hit_ready()
+	foxlab_enemy_priority_queue_ready()
+
+func _on_neutral_died(neutral, args: Entity.DieArgs) -> void :
+	._on_neutral_died(neutral, args)
+	if args.cleaning_up or _cleaning_up:
+		return
+	var player_index: int = neutral._die_args_unit.killed_by_player_index
+	if player_index >= 0 and player_index < RunData.get_player_count():
+		_foxlab_process_frozen_unit_kill(neutral, player_index)

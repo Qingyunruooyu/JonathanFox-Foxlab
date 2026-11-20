@@ -31,17 +31,6 @@ var _foxlab_bounce_box:Area2D = null
 # 受击类(temp_stats_on_hit)负向最大生命的待豁免量（机械恶魔），update_player_stats同步扣减时抵扣
 var _foxlab_max_hp_shave_exempt: int = 0
 
-func _ready() -> void :
-	if _foxlab_has_curse():
-		foxlab_add_curse_particle()
-	foxlab_ball_ligntning_ready()
-	foxlab_burning_ready()
-	foxlab_enemy_temp_stats_on_hit_ready()
-	foxlab_projectile_on_hit_ready()
-	foxlab_bounce_player_projectile_ready()
-	_foxlab_has_charmed_all = RunData.get_player_effect(Utils.foxlab_charm_all_when_fully_heal_hash, player_index).empty()
-	call_deferred("foxlab_connect_jelly_shields")
-
 func foxlab_ball_ligntning_ready():
 	var ball_lightning_effect = RunData.get_player_effect(Utils.foxlab_ball_lightning_hash, player_index)
 	if ball_lightning_effect.size() > 0 and ball_lightning_effect[0] > 0:
@@ -401,6 +390,35 @@ func foxlab_remove_temp_weapon():
 				break
 
 
+# 添加临时武器：正常走RunData.add_weapon进players_data（破裂等逻辑由原版处理），
+# 记录到foxlab_temp_weapons，敌袭结束_clean_up时从players_data移除
+func foxlab_add_temp_weapon(weapon: WeaponData) -> void :
+	var new_weapon: WeaponData = RunData.add_weapon(weapon, player_index)
+	foxlab_temp_weapons.append(new_weapon)
+	RunData.emit_signal("foxlab_weapon_added", new_weapon, player_index)
+
+func foxlab_is_enemy_damage(args: TakeDamageArgs) -> bool:
+	if args.hitbox != null:
+		# from为null=攻击者节点已释放（受击入口对失效hitbox.from置null），视为敌方；
+		# 排除己方来源的hitbox（自己的武器/炮塔/宠物等，含毒奶叛变炮塔、teacher的炮塔打自己）
+		return args.from == null or args.from.player_index == -1
+	# 燃烧tick无hitbox：排除自燃和己方炮塔点燃（炮塔的burning_data.from为null，
+	# 只能用apply_burning按来源缓存的_burning_player_index判断，己方来源>=0）
+	if args.is_burning:
+		return _burning_player_index == -1
+	# 无hitbox非燃烧的伤害：排除毒果子（from为ItemData）和lose_hp_per_second（from=self），
+	# from==null的只剩酸液地形DoT，视为敌方
+	return args.from == null
+
+func _on_BurningTimer_timeout() -> void :
+	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		._on_BurningTimer_timeout()
+
+# 燃烧会按敌人的方式重置unit速度， 玩家不需要
+func reset_speed_stat(percent_modifier: int = 0) -> void :
+	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
+		.reset_speed_stat(percent_modifier)
+
 ############ 函数扩展 #########
 #　修复官方bug
 func die(args= Utils.default_die_args) -> void :
@@ -468,13 +486,6 @@ func apply_items_effects() -> void :
 			shadow.visible = false
 			return
 
-# 添加临时武器：正常走RunData.add_weapon进players_data（破裂等逻辑由原版处理），
-# 记录到foxlab_temp_weapons，敌袭结束_clean_up时从players_data移除
-func foxlab_add_temp_weapon(weapon: WeaponData) -> void :
-	var new_weapon: WeaponData = RunData.add_weapon(weapon, player_index)
-	foxlab_temp_weapons.append(new_weapon)
-	RunData.emit_signal("foxlab_weapon_added", new_weapon, player_index)
-
 func on_weapon_wanted_to_break(weapon: Weapon, gold_dropped: int) -> void :
 	var prev_weapons = current_weapons.size()
 	var weapon_data = RunData.get_player_weapons_ref(player_index)[weapon.weapon_pos]
@@ -518,19 +529,6 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 		if _foxlab_has_projectile_on_hit and foxlab_is_enemy_damage(args):
 			foxlab_manage_projectile_on_hit()
 	return ret
-
-func foxlab_is_enemy_damage(args: TakeDamageArgs) -> bool:
-	if args.hitbox != null:
-		# from为null=攻击者节点已释放（受击入口对失效hitbox.from置null），视为敌方；
-		# 排除己方来源的hitbox（自己的武器/炮塔/宠物等，含毒奶叛变炮塔、teacher的炮塔打自己）
-		return args.from == null or args.from.player_index == -1
-	# 燃烧tick无hitbox：排除自燃和己方炮塔点燃（炮塔的burning_data.from为null，
-	# 只能用apply_burning按来源缓存的_burning_player_index判断，己方来源>=0）
-	if args.is_burning:
-		return _burning_player_index == -1
-	# 无hitbox非燃烧的伤害：排除毒果子（from为ItemData）和lose_hp_per_second（from=self），
-	# from==null的只剩酸液地形DoT，视为敌方
-	return args.from == null
 
 func _on_ItemAttractArea_area_entered(item: Item) -> void:
 	._on_ItemAttractArea_area_entered(item)
@@ -578,15 +576,6 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 					SoundManager.play(preload("res://ui/sounds/Shield 4.mp3"))
 	return value_healed
 
-func _on_BurningTimer_timeout() -> void :
-	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
-		._on_BurningTimer_timeout()
-
-# 燃烧会按敌人的方式重置unit速度， 玩家不需要
-func reset_speed_stat(percent_modifier: int = 0) -> void :
-	if not RunData.get_player_effect_bool(Utils.foxlab_burning_proof_hash, player_index):
-		.reset_speed_stat(percent_modifier)
-
 func heal(value: int, is_from_torture: bool = false) -> int:
 	if value <= 0:
 		return 0
@@ -620,3 +609,14 @@ func boost_ended() -> void :
 	var prev_health: int = current_stats.health
 	.boost_ended()
 	current_stats.health = prev_health
+
+func _ready() -> void :
+	if _foxlab_has_curse():
+		foxlab_add_curse_particle()
+	foxlab_ball_ligntning_ready()
+	foxlab_burning_ready()
+	foxlab_enemy_temp_stats_on_hit_ready()
+	foxlab_projectile_on_hit_ready()
+	foxlab_bounce_player_projectile_ready()
+	_foxlab_has_charmed_all = RunData.get_player_effect(Utils.foxlab_charm_all_when_fully_heal_hash, player_index).empty()
+	call_deferred("foxlab_connect_jelly_shields")

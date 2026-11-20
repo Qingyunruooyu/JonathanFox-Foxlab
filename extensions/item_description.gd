@@ -3,9 +3,6 @@ extends "res://ui/menus/shop/item_description.gd"
 var foxlab_item_is_special_upgrade = false
 var foxlab_expand_indefinitely = true
 
-func _ready() -> void :
-    foxlab_expand_indefinitely = expand_indefinitely
-
 func foxlab_should_scroll() -> bool:
 	return not RunData.is_coop_run and foxlab_item_is_special_upgrade
 
@@ -44,3 +41,5 @@ func set_item(item_data: ItemParentData, player_index: int, item_count: int = 1)
 			if number > 1:
 				_category.text += tr("EFFECT_FOXLAB_LPAREN") + "%s/1" % [str(number)] + tr("EFFECT_FOXLAB_RPAREN")
 
+func _ready() -> void :
+    foxlab_expand_indefinitely = expand_indefinitely

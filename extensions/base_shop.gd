@@ -200,6 +200,115 @@ func foxlab_move_shop_tuple_to_front(shop_item, player_index: int) -> void :
 		player_shop_items.remove(precise)
 		player_shop_items.insert(first_same_name, tuple)
 
+func foxlab_shop_has_same_name(player_index: int) -> bool:
+	var seen = {}
+	for shop_tuple in _shop_items[player_index]:
+		var id_hash = shop_tuple[0].my_id_hash
+		if seen.has(id_hash):
+			return true
+		seen[id_hash] = true
+	return false
+
+func foxlab_upgrade_locked_items(player_locked_items: Array, player_index: int) -> void:
+	var chance = RunData.get_player_effect(Utils.foxlab_upgrade_locked_item_on_reroll_hash, player_index)
+	if chance <= 0:
+		return
+	var primal_dread = Utils.foxlab_get_dlc("primal_dread")
+	var abyssal_terrors = Utils.foxlab_get_dlc("abyssal_terrors")
+
+	for locked_item in player_locked_items:
+		if not Utils.get_chance_success(chance / 100.0):
+			continue
+		var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
+		if vanilla_item == null:
+			continue
+		var upgraded = null
+		if locked_item[0].is_cursed:
+			# 已诅咒：从原版基底重掷，诅咒系数严格更深才替换
+			if abyssal_terrors != null:
+				var recursed = abyssal_terrors.curse_item(vanilla_item, player_index, false, locked_item[0].curse_factor)
+				if recursed.curse_factor > locked_item[0].curse_factor:
+					upgraded = recursed
+		elif locked_item[0] is WeaponData and locked_item[0].is_meca:
+			# 已机械化武器：从原版基底保持rank1重掷一对属性，打分严格更优才替换
+			if primal_dread != null:
+				var current_score = _foxlab_meca_pair_score(locked_item[0], player_index)
+				for _i in 500:
+					var rerolled = primal_dread.meca_item(vanilla_item, player_index)
+					if _foxlab_meca_pair_score(rerolled, player_index) > current_score:
+						upgraded = rerolled
+						break
+		elif not locked_item[0].is_mutant:
+			# 无附加状态：与普通刷新一致尝试一次，获得任一状态即视为升级
+			for _i in 500:
+				var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
+				if modified != vanilla_item:
+					upgraded = modified
+					break
+		if upgraded != null:
+			locked_item[0] = upgraded
+			RunData.add_tracked_value(player_index, Utils.item_foxlab_fishing_net_hash, 1)
+
+func _foxlab_get_vanilla_copy(item_data):
+	if item_data is WeaponData:
+		return ItemService.foxlab_get_weapon_from_weapon_id(item_data.weapon_id_hash, item_data.tier)
+	return ItemService.get_item_from_id(item_data.my_id_hash)
+
+func _foxlab_meca_pair_score(weapon: WeaponData, player_index: int) -> int:
+	var merged_character = ItemService._foxlab_get_merged_character(player_index)
+	var is_structure_weapon = EntityService.is_weapon_spawning_structure(weapon)
+	var score = 0
+	for effect in weapon.effects:
+		if not effect is EffectOption:
+			continue
+		var stat_name = Keys.hash_to_string[effect.key_hash]
+		if merged_character != null and stat_name in merged_character.wanted_tags:
+			score += 1
+		if not is_structure_weapon and (effect.key_hash == Keys.stat_attack_speed_hash
+			or effect.key_hash == Keys.stat_percent_damage_hash
+			or effect.key_hash == Keys.stat_crit_chance_hash):
+			score += 1
+		var in_scaling = false
+		for scaling_stat in weapon.stats.scaling_stats:
+			if scaling_stat[0] == effect.key_hash and float(scaling_stat[1]) > 0.0:
+				in_scaling = true
+				break
+		if in_scaling or (is_structure_weapon and effect.key_hash == Keys.stat_engineering_hash):
+			score += 2
+	return score
+
+func foxlab_update_lose_item_icons(player_index: int) -> void :
+	var reroll_button = _get_reroll_button(player_index)
+	if reroll_button == null:
+		return
+	var icons: Array = []
+	var lose_item_num = RunData.get_player_effect(Utils.foxlab_lose_item_on_reroll_hash, player_index)
+	for item_data in Utils.foxlab_shopaholic_get_items_to_lose(player_index, lose_item_num):
+		icons.append(item_data.icon)
+	var icon_container = reroll_button.get_node_or_null("HBoxContainer/FoxlabLoseItemIcons")
+	if icon_container == null:
+		if icons.empty():
+			return
+		var hbox = reroll_button.get_node_or_null("HBoxContainer")
+		if hbox == null:
+			return
+		icon_container = HBoxContainer.new()
+		icon_container.name = "FoxlabLoseItemIcons"
+		icon_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hbox.add_child(icon_container)
+	for child in icon_container.get_children():
+		icon_container.remove_child(child)
+		child.queue_free()
+	icon_container.visible = not icons.empty()
+	for icon_texture in icons:
+		var icon = TextureRect.new()
+		icon.texture = icon_texture
+		icon.expand = true
+		icon.stretch_mode = 6
+		icon.rect_min_size = Vector2(64, 0)
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon_container.add_child(icon)
+
 ######### 扩展 #########
 func _ready() -> void :
 	if not RunData.is_connected("foxlab_sec_char_changed", self, "_on_foxlab_item_added"):
@@ -427,15 +536,6 @@ func _on_shop_item_unfocused(shop_item: ShopItem, player_index: int) -> void :
 	._on_shop_item_unfocused(shop_item, player_index)
 	hide_tags(shop_item)
 
-func foxlab_shop_has_same_name(player_index: int) -> bool:
-	var seen = {}
-	for shop_tuple in _shop_items[player_index]:
-		var id_hash = shop_tuple[0].my_id_hash
-		if seen.has(id_hash):
-			return true
-		seen[id_hash] = true
-	return false
-
 func _update_visual_locks() -> void :
 	# 无重名时基类按 my_id 匹配即可；有重名才需要精确区分
 	var has_same_name = false
@@ -477,74 +577,6 @@ func _update_visual_locks() -> void :
 			var target = precise if precise != -1 else first_same_name
 			if target != -1:
 				shop_items_container.lock_shop_item_visually(target)
-
-func foxlab_upgrade_locked_items(player_locked_items: Array, player_index: int) -> void:
-	var chance = RunData.get_player_effect(Utils.foxlab_upgrade_locked_item_on_reroll_hash, player_index)
-	if chance <= 0:
-		return
-	var primal_dread = Utils.foxlab_get_dlc("primal_dread")
-	var abyssal_terrors = Utils.foxlab_get_dlc("abyssal_terrors")
-
-	for locked_item in player_locked_items:
-		if not Utils.get_chance_success(chance / 100.0):
-			continue
-		var vanilla_item = _foxlab_get_vanilla_copy(locked_item[0])
-		if vanilla_item == null:
-			continue
-		var upgraded = null
-		if locked_item[0].is_cursed:
-			# 已诅咒：从原版基底重掷，诅咒系数严格更深才替换
-			if abyssal_terrors != null:
-				var recursed = abyssal_terrors.curse_item(vanilla_item, player_index, false, locked_item[0].curse_factor)
-				if recursed.curse_factor > locked_item[0].curse_factor:
-					upgraded = recursed
-		elif locked_item[0] is WeaponData and locked_item[0].is_meca:
-			# 已机械化武器：从原版基底保持rank1重掷一对属性，打分严格更优才替换
-			if primal_dread != null:
-				var current_score = _foxlab_meca_pair_score(locked_item[0], player_index)
-				for _i in 500:
-					var rerolled = primal_dread.meca_item(vanilla_item, player_index)
-					if _foxlab_meca_pair_score(rerolled, player_index) > current_score:
-						upgraded = rerolled
-						break
-		elif not locked_item[0].is_mutant:
-			# 无附加状态：与普通刷新一致尝试一次，获得任一状态即视为升级
-			for _i in 500:
-				var modified = ItemService.apply_item_effect_modifications(vanilla_item, player_index)
-				if modified != vanilla_item:
-					upgraded = modified
-					break
-		if upgraded != null:
-			locked_item[0] = upgraded
-			RunData.add_tracked_value(player_index, Utils.item_foxlab_fishing_net_hash, 1)
-
-func _foxlab_get_vanilla_copy(item_data):
-	if item_data is WeaponData:
-		return ItemService.foxlab_get_weapon_from_weapon_id(item_data.weapon_id_hash, item_data.tier)
-	return ItemService.get_item_from_id(item_data.my_id_hash)
-
-func _foxlab_meca_pair_score(weapon: WeaponData, player_index: int) -> int:
-	var merged_character = ItemService._foxlab_get_merged_character(player_index)
-	var is_structure_weapon = EntityService.is_weapon_spawning_structure(weapon)
-	var score = 0
-	for effect in weapon.effects:
-		if not effect is EffectOption:
-			continue
-		var stat_name = Keys.hash_to_string[effect.key_hash]
-		if merged_character != null and stat_name in merged_character.wanted_tags:
-			score += 1
-		if not is_structure_weapon and (effect.key_hash == Keys.stat_attack_speed_hash
-			or effect.key_hash == Keys.stat_percent_damage_hash
-			or effect.key_hash == Keys.stat_crit_chance_hash):
-			score += 1
-		var in_scaling = false
-		for scaling_stat in weapon.stats.scaling_stats:
-			if scaling_stat[0] == effect.key_hash and float(scaling_stat[1]) > 0.0:
-				in_scaling = true
-				break
-		if in_scaling or (is_structure_weapon and effect.key_hash == Keys.stat_engineering_hash):
-			score += 2
-	return score
 
 func fill_shop_items(player_locked_items: Array, player_index: int, just_entered_shop: bool = false) -> void :
 	if not just_entered_shop:
@@ -597,34 +629,3 @@ func set_reroll_button_price(player_index: int) -> void :
 	.set_reroll_button_price(player_index)
 	foxlab_update_lose_item_icons(player_index)
 
-func foxlab_update_lose_item_icons(player_index: int) -> void :
-	var reroll_button = _get_reroll_button(player_index)
-	if reroll_button == null:
-		return
-	var icons: Array = []
-	var lose_item_num = RunData.get_player_effect(Utils.foxlab_lose_item_on_reroll_hash, player_index)
-	for item_data in Utils.foxlab_shopaholic_get_items_to_lose(player_index, lose_item_num):
-		icons.append(item_data.icon)
-	var icon_container = reroll_button.get_node_or_null("HBoxContainer/FoxlabLoseItemIcons")
-	if icon_container == null:
-		if icons.empty():
-			return
-		var hbox = reroll_button.get_node_or_null("HBoxContainer")
-		if hbox == null:
-			return
-		icon_container = HBoxContainer.new()
-		icon_container.name = "FoxlabLoseItemIcons"
-		icon_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		hbox.add_child(icon_container)
-	for child in icon_container.get_children():
-		icon_container.remove_child(child)
-		child.queue_free()
-	icon_container.visible = not icons.empty()
-	for icon_texture in icons:
-		var icon = TextureRect.new()
-		icon.texture = icon_texture
-		icon.expand = true
-		icon.stretch_mode = 6
-		icon.rect_min_size = Vector2(64, 0)
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		icon_container.add_child(icon)

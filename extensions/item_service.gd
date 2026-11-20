@@ -99,16 +99,6 @@ func _foxlab_union_unique(base: Array, restrictions: Dictionary, key: String) ->
 const FOXLAB_MOD_NAME = "JonathanFox-FoxLab"
 var foxlab_mod = null
 
-func _ready() -> void :
-	var _err = ProgressData.connect("dlc_activated", self, "_foxlab_on_dlc_changed")
-	_err = ProgressData.connect("dlc_deactivated", self, "_foxlab_on_dlc_changed")
-	_err = ProgressData.connect("item_sets_changed", self, "_foxlab_on_item_sets_changed")
-	call_deferred("_foxlab_init_resources")
-	call_deferred("_foxlab_init_configs")
-	call_deferred("_foxlab_init_enemies")
-	call_deferred("_foxlab_fix_banned_items_for_endless")
-	call_deferred("foxlab_ensure_enemy_registry")
-
 # 修复官方bug，无尽模式道具没有真正被禁用
 func _foxlab_fix_banned_items_for_endless():
 	for i in range(banned_items_for_endless.size()):
@@ -162,51 +152,10 @@ func _foxlab_requirements_met(resource) -> bool:
 			return false
 	return true
 
-func get_disabled_required_update(character: CharacterData) -> UpdateData:
-	if "foxlab_required_item_set" in character:
-		for item_set_id in character.foxlab_required_item_set:
-			if not ProgressData.has_item_set(item_set_id):
-				for update_data in update_data_list:
-					if update_data != null and update_data.id == item_set_id:
-						return update_data
-	return .get_disabled_required_update(character)
-
-func init_unlocked_pool() -> void:
-	.init_unlocked_pool()
-	for tier_data in _tiers_data:
-		for pool in [tier_data[TierData.ALL_ITEMS], tier_data[TierData.ITEMS], tier_data[TierData.WEAPONS]]:
-			var invalid = []
-			for element in pool:
-				if not _foxlab_requirements_met(element):
-					invalid.append(element)
-			for element in invalid:
-				pool.erase(element)
-	#DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
-
 func get_foxlab_transform_characters() -> Array:
 	if foxlab_transform_characters.empty():
 		_foxlab_init_transform_characters()
 	return foxlab_transform_characters
-
-# 选角色界面按本列表顺序展示；开关开启且本mod物品集激活时，把本mod角色排到原版/DLC之前
-func _rebuild_characters() -> void:
-	._rebuild_characters()
-	if foxlab_mod == null or not foxlab_mod.is_pin_characters_enabled():
-		return
-	if not ProgressData.has_item_set("jonathanfox_foxlab"):
-		return
-	var foxlab_chars = []
-	var others = []
-	for character in _characters:
-		if character.required_item_set == "jonathanfox_foxlab":
-			foxlab_chars.push_back(character)
-		else:
-			others.push_back(character)
-	if foxlab_chars.empty():
-		return
-	_characters.clear()
-	_characters.append_array(foxlab_chars)
-	_characters.append_array(others)
 
 
 ######## 建造者的炮塔相关 ###############
@@ -414,14 +363,6 @@ func _foxlab_record_spawning_weapons():
 		if weapon.is_pet_item():
 			foxlab_weapon_spawning_pet.push_back([weapon, 0])
 
-####### 扩展 ###########
-const FOXLAB_UNAPPLY_SIDE_EFFECT_IDS = [
-	"foxlab_stat_recover",
-	"foxlab_take_away",
-]
-var _foxlab_no_mutate_curse_char_hashes: Array = []
-var _foxlab_no_mutate_curse_chars_scanned = false
-
 func _foxlab_init_no_mutate_curse_characters() -> void:
 	if _foxlab_no_mutate_curse_chars_scanned:
 		return
@@ -431,6 +372,23 @@ func _foxlab_init_no_mutate_curse_characters() -> void:
 			if FOXLAB_UNAPPLY_SIDE_EFFECT_IDS.has(effect.get_id()):
 				_foxlab_no_mutate_curse_char_hashes.append(character.my_id_hash)
 				break
+
+# 原版 get_weapon_from_weapon_id 永远返回 _weapon_id_lookup[weapon_id] 的第一把（最低阶），
+# 这里借用原版填好 lookup 缓存后，在同 id 列表里按 tier 匹配
+func foxlab_get_weapon_from_weapon_id(weapon_id_hash: int, tier: int):
+	get_weapon_from_weapon_id(weapon_id_hash)
+	for weapon in _weapon_id_lookup[weapon_id_hash]:
+		if weapon.tier == tier:
+			return weapon
+	return null
+
+####### 扩展 ###########
+const FOXLAB_UNAPPLY_SIDE_EFFECT_IDS = [
+	"foxlab_stat_recover",
+	"foxlab_take_away",
+]
+var _foxlab_no_mutate_curse_char_hashes: Array = []
+var _foxlab_no_mutate_curse_chars_scanned = false
 
 func can_item_be_mutated(item) -> bool:
 	if (not item.can_be_looted and "_foxlab_" in item.my_id) or \
@@ -528,11 +486,54 @@ func get_upgrades(level: int, number: int, old_upgrades: Array, player_index: in
 			player_appearances_ref.sort_custom(Sorter, "sort_depth_ascending")
 	return items_ret
 
-# 原版 get_weapon_from_weapon_id 永远返回 _weapon_id_lookup[weapon_id] 的第一把（最低阶），
-# 这里借用原版填好 lookup 缓存后，在同 id 列表里按 tier 匹配
-func foxlab_get_weapon_from_weapon_id(weapon_id_hash: int, tier: int):
-	get_weapon_from_weapon_id(weapon_id_hash)
-	for weapon in _weapon_id_lookup[weapon_id_hash]:
-		if weapon.tier == tier:
-			return weapon
-	return null
+
+func _ready() -> void :
+	var _err = ProgressData.connect("dlc_activated", self, "_foxlab_on_dlc_changed")
+	_err = ProgressData.connect("dlc_deactivated", self, "_foxlab_on_dlc_changed")
+	_err = ProgressData.connect("item_sets_changed", self, "_foxlab_on_item_sets_changed")
+	call_deferred("_foxlab_init_resources")
+	call_deferred("_foxlab_init_configs")
+	call_deferred("_foxlab_init_enemies")
+	call_deferred("_foxlab_fix_banned_items_for_endless")
+	call_deferred("foxlab_ensure_enemy_registry")
+
+func get_disabled_required_update(character: CharacterData) -> UpdateData:
+	if "foxlab_required_item_set" in character:
+		for item_set_id in character.foxlab_required_item_set:
+			if not ProgressData.has_item_set(item_set_id):
+				for update_data in update_data_list:
+					if update_data != null and update_data.id == item_set_id:
+						return update_data
+	return .get_disabled_required_update(character)
+
+func init_unlocked_pool() -> void:
+	.init_unlocked_pool()
+	for tier_data in _tiers_data:
+		for pool in [tier_data[TierData.ALL_ITEMS], tier_data[TierData.ITEMS], tier_data[TierData.WEAPONS]]:
+			var invalid = []
+			for element in pool:
+				if not _foxlab_requirements_met(element):
+					invalid.append(element)
+			for element in invalid:
+				pool.erase(element)
+	#DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
+
+# 选角色界面按本列表顺序展示；开关开启且本mod物品集激活时，把本mod角色排到原版/DLC之前
+func _rebuild_characters() -> void:
+	._rebuild_characters()
+	if foxlab_mod == null or not foxlab_mod.is_pin_characters_enabled():
+		return
+	if not ProgressData.has_item_set("jonathanfox_foxlab"):
+		return
+	var foxlab_chars = []
+	var others = []
+	for character in _characters:
+		if character.required_item_set == "jonathanfox_foxlab":
+			foxlab_chars.push_back(character)
+		else:
+			others.push_back(character)
+	if foxlab_chars.empty():
+		return
+	_characters.clear()
+	_characters.append_array(foxlab_chars)
+	_characters.append_array(others)

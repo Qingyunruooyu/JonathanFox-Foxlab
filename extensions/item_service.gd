@@ -99,6 +99,7 @@ func _foxlab_union_unique(base: Array, restrictions: Dictionary, key: String) ->
 const FOXLAB_MOD_NAME = "JonathanFox-FoxLab"
 var foxlab_mod = null
 
+# TODO(jona): remove when compatible
 # 修复官方bug，无尽模式道具没有真正被禁用
 func _foxlab_fix_banned_items_for_endless():
 	for i in range(banned_items_for_endless.size()):
@@ -114,11 +115,11 @@ func _foxlab_init_configs():
 	var ModsConfigInterface = get_node_or_null("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
 	foxlab_mod = get_node_or_null("/root/ModLoader/" + FOXLAB_MOD_NAME)
 	if ModsConfigInterface:
-		if not ModsConfigInterface.is_connected("setting_changed", self, "_on_setting_changed"):
-			ModsConfigInterface.connect("setting_changed", self, "_on_setting_changed")
+		if not ModsConfigInterface.is_connected("setting_changed", self, "_on_foxlab_setting_changed"):
+			ModsConfigInterface.connect("setting_changed", self, "_on_foxlab_setting_changed")
 		call_deferred("_foxlab_init_transform_characters")
 
-func _on_setting_changed(setting_name, _value, mod_name)->void :
+func _on_foxlab_setting_changed(setting_name, _value, mod_name)->void :
 	if mod_name != FOXLAB_MOD_NAME:
 		return
 	if setting_name == "FOXLAB_TRANSFORM_VANILLA_ONLY":

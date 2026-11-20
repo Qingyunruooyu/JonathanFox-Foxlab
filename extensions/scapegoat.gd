@@ -56,11 +56,11 @@ func take_damage(value: int, args: TakeDamageArgs) -> Array:
 		var movement_chance =  RunData.get_player_effect(Utils.foxlab_scapegoat_no_heal_hash, player_index)
 		if movement_chance > 0:
 			if Utils.get_chance_success(movement_chance / 100.0):
-				_alter_movement_behavior()
+				_foxlab_alter_movement_behavior()
 
 	return dmg_taken
 
-func _alter_movement_behavior():
+func _foxlab_alter_movement_behavior():
 	if _current_target_behavior == _foxlab_target_ins:
 		_current_movement_behavior = _movement_behavior
 		_current_target_behavior = _target_behavior

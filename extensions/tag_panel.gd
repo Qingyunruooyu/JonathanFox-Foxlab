@@ -36,6 +36,11 @@ func set_data(tag: String) -> bool:
 			[str(Utils.FOXLAB_SEED_PER_SECOND), str(Utils.FOXLAB_LIVING_ENEMY_DURATION_BOOST), tr("LIVING_ENEMY"), str(Utils.FOXLAB_SEED_DURATION)],\
 			[Effect.Sign.POSITIVE, Effect.Sign.POSITIVE, Effect.Sign.POSITIVE, Effect.Sign.POSITIVE])
 
+		"ITEM_FOXLAB_UV_MARK":
+			var mark = RunData.get_foxlab_backpack_char_effects(player_index)
+			if mark != null and not mark.effects.empty():
+				_tag_effects.bbcode_text += "\n" + mark.get_effects_text(player_index)
+
 	if RunData.is_coop_run:
 		if _tag_effects.text.length() >= 300:
 			_tag_effects.add_font_override("normal_font", small_font)

@@ -2,6 +2,13 @@ extends "res://ui/menus/shop/tags_container.gd"
 
 
 func set_tags_text(item_data: ItemParentData, player_index: int) -> void :
+	if item_data.my_id_hash == Utils.item_foxlab_uv_lamp_hash:
+		.set_tags_text(item_data, player_index)
+		for panel in tag_panels:
+			if not panel.visible:
+				panel.set_data(":".join(["ITEM_FOXLAB_UV_MARK", str(player_index), "0"]))
+				break
+		return
 	if not item_data.my_id_hash in Utils.foxlab_item_with_descrip:
 		.set_tags_text(item_data, player_index)
 		return

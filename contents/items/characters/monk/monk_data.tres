@@ -17,7 +17,7 @@
 [ext_resource path="res://weapons/ranged/rail_gun/2/rail_gun_2_data.tres" type="Resource" id=15]
 [ext_resource path="res://items/all/00_base_game/pocket_factory/pocket_factory_data.tres" type="Resource" id=16]
 [ext_resource path="res://weapons/melee/spear/2/spear_2_data.tres" type="Resource" id=17]
-[ext_resource path="res://dlcs/dlc_1/weapons/ranged/flute/2/flute_2_data.tres" type="Resource" id=18]
+[ext_resource path="res://weapons/ranged/pan_flute/2/pan_flute_2_data.tres" type="Resource" id=18]
 [ext_resource path="res://weapons/melee/lightning_shiv/2/lightning_shiv_2_data.tres" type="Resource" id=19]
 [ext_resource path="res://dlcs/dlc_1/weapons/melee/lute/2/lute_2_data.tres" type="Resource" id=20]
 [ext_resource path="res://weapons/melee/sword/2/sword_2_data.tres" type="Resource" id=22]
@@ -47,8 +47,6 @@
 [resource]
 script = ExtResource( 10 )
 my_id = "character_foxlab_monk"
-required_item_set = "jonathanfox_foxlab"
-foxlab_required_item_set = [ "abyssal_terrors" ]
 unlocked_by_default = true
 can_be_looted = true
 icon = ExtResource( 1 )
@@ -61,12 +59,19 @@ is_lockable = true
 unlock_codex_descr_after_get_it = 1
 is_cursed = false
 curse_factor = 0.0
+is_meca = false
+is_mutant = false
 max_nb = -1
 item_appearances = [ ExtResource( 5 ) ]
 tags = [  ]
+minimum_difficulty = 0
 wanted_tags = [ "exploration", "stat_luck" ]
 banned_item_groups = [  ]
 banned_items = [ "item_cybernetic_arm", "item_titanium_excess" ]
 banned_upgrades = [  ]
-starting_weapons = [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 17 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 8 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 25 ), ExtResource( 14 ), ExtResource( 19 ), ExtResource( 15 ), ExtResource( 51 ), ExtResource( 52 ), ExtResource( 53 ), ExtResource( 54 ) ]
+banned_meca_stats = [  ]
+banned_consumables = [  ]
+starting_weapons = [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 17 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 39 ), ExtResource( 40 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 8 ), ExtResource( 20 ), ExtResource( 25 ), ExtResource( 14 ), ExtResource( 19 ), ExtResource( 15 ), ExtResource( 51 ), ExtResource( 52 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 18 ) ]
 starting_items = [ ExtResource( 9 ), ExtResource( 11 ), ExtResource( 16 ), ExtResource( 24 ) ]
+required_item_set = "jonathanfox_foxlab"
+foxlab_required_item_set = [ "abyssal_terrors" ]

@@ -840,8 +840,8 @@ func reset_stat_keys() -> void :
 		for stat in update_data.item_set.stats:
 			if stat.is_primary_stat and not foxlab_primary_stat_keys.has(stat.stat_hash):
 				foxlab_primary_stat_keys.append(stat.stat_hash)
-				print("stat: ", Keys.hash_to_string[stat.stat_hash])
-	print("======end======")
+				# print("stat: ", Keys.hash_to_string[stat.stat_hash])
+	# print("======end======")
 	foxlab_clear_wanted_caches()
 	foxlab_evil_mob_units.clear()
 	foxlab_exploding_turret_tracking_keys = null

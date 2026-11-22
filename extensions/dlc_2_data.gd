@@ -27,6 +27,10 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"linear_scaling_effect",
 ]
 
+var _foxlab_capped_keys = {
+	Utils.foxlab_spawn_landmine_on_entering_birth_area_hash : Utils.FOXLAB_MOM_LANDMINE_MAX_PER_WAVE
+	}
+
 var _foxlab_mutation_rules_initialized = false
 var _foxlab_mutation_context_player: int = -1
 
@@ -91,6 +95,10 @@ func _foxlab_init_mutation_rules() -> void:
 func _foxlab_has_character(char_hash: int, player_index: int) -> bool:
 	return player_index >= 0 and RunData.get_nb_item(char_hash, player_index) > 0
 
+func _foxlab_is_key_capped(effect, player_index):
+	if player_index >= 0:
+		return effect.key_hash in _foxlab_capped_keys and RunData.get_player_effect(effect.key_hash, player_index) >= _foxlab_capped_keys[effect.key_hash]
+	return false
 
 ######## 扩展 ######
 
@@ -132,6 +140,8 @@ func can_effect_be_copied_by_mutation(effect, player_index: int = -1) -> bool:
 			chance += entry[0]
 		if chance >= MAX_USEFUL_CHANCE:
 			return false
+	if _foxlab_is_key_capped(effect, player_index):
+		return false
 	return .can_effect_be_copied_by_mutation(effect, player_index)
 
 

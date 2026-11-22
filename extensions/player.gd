@@ -179,11 +179,8 @@ func _foxlab_has_curse():
 	var metas = RunData.get_foxlab_mask_meta(player_index)
 	for meta in metas:
 		for prev in meta.prevs:
-			if prev is WeaponData:
-				if prev.is_cursed:
-					return true;
-			elif prev[1] > 0:
-				return true
+			if prev.is_cursed:
+				return true;
 
 func foxlab_add_curse_particle():
 	if _foxlab_curse_particle_instance == null:

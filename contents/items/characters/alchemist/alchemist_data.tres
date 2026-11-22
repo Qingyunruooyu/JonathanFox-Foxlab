@@ -52,6 +52,6 @@ banned_item_groups = [ "consumable_heal" ]
 banned_items = [ "item_tree", "item_yztato_ghost_tree", "item_garden", "item_pocket_factory", "item_lumberjack_shirt", "item_baby_gecko", "item_alien_tongue" ]
 banned_upgrades = [  ]
 banned_meca_stats = [  ]
-starting_weapons = [ ExtResource( 26 ),  ExtResource( 15 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 6 ), ExtResource( 13 ) ]
+starting_weapons = [ ExtResource( 26 ), ExtResource( 15 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 6 ), ExtResource( 13 ) ]
 starting_items = [  ]
 required_item_set = "jonathanfox_foxlab"

@@ -57,7 +57,7 @@ func _foxlab_adjust_non_float_to_int(item_data):
 			var name = prop["name"]
 			var value = item_effect.get(name)
 			if value is float and prop["type"] == TYPE_INT:
-				print("item: %s, effect: %s, member: %s changed from float to int: %d" % [item_data.my_id, item_effect.get_id(), name, value])
+				# print("item: %s, effect: %s, member: %s changed from float to int: %d" % [item_data.my_id, item_effect.get_id(), name, value])
 				item_effect.set(name, int(value))
 				need_adjust = true
 		if not need_adjust:
@@ -138,7 +138,7 @@ func serialize() -> Dictionary:
 				for res in value:
 					if res == null:
 						continue
-					assert(res is Resource)
+					# assert(res is Resource)
 					data.push_back(res.serialize())
 				meta[key] = data
 	return serialized
@@ -181,10 +181,10 @@ func deserialize(data: Dictionary):
 							deserialized = _foxlab_deserialize_item(ItemService.get_items(), item)
 						if deserialized == null:
 							deserialized = _foxlab_deserialize_item(ItemService.get_weapons(), item)
-						assert(deserialized != null)
+#						assert(deserialized != null)
 						prev_items.push_back(deserialized)
 					else:
-						assert(item is Resource)
+#						assert(item is Resource)
 						prev_items.push_back(item.duplicate())
 				meta.prevs = prev_items
 
@@ -216,7 +216,7 @@ func _cache_effect_hashes(elements: Array, weapon_effect_hashes: Dictionary) -> 
 	var prev_items = []
 	for meta in foxlab_mask_meta:
 		for prev in meta.prevs:
-			assert(prev is Resource)
+			# assert(prev is Resource)
 			prev_items.append(prev)
 
 	var cache_items = []

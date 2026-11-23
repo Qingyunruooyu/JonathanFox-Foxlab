@@ -47,6 +47,7 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_TEXT_KEYS = [
 	"EFFECT_FOXLAB_VAGABOND_FRUIT_POS",
 	"EFFECT_FOXLAB_WEAPON_STRUCT_BONUS",
 	"EFFECT_FOXLAB_WORMHOLE_UPGRADE",
+	"EFFECT_STAT_ON_EVERY_STEP_VALID_LOWEST_TWO",
 ]
 
 var _foxlab_capped_keys = {
@@ -148,7 +149,7 @@ func can_effect_be_copied_by_mutation(effect, player_index: int = -1) -> bool:
 	_foxlab_init_mutation_rules()
 	if FOXLAB_MUTATION_COPY_BLACKLIST_IDS.has(effect.get_id()):
 		return false
-	if FOXLAB_MUTATION_COPY_BLACKLIST_TEXT_KEYS.has(effect.text_key):
+	if FOXLAB_MUTATION_COPY_BLACKLIST_TEXT_KEYS.has(effect.text_key.to_upper()):
 		return false
 	if effect.custom_key_hash == Utils.foxlab_gain_stat_every_killed_enemies_hash and effect.value2 <= 0:
 		return false

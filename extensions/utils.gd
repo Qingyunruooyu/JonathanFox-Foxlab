@@ -279,6 +279,28 @@ var foxlab_item_pinned_in_inventory = {
 
 var foxlab_on_android: bool = false
 
+var foxlab_weapon_bound_key_hashes = [
+	Keys.crit_on_whip_tip_hash,
+	Keys.generate_hash("face_puncher_burning"),
+	Keys.generate_hash("gold_on_kill"),
+	Keys.generate_hash("gyrojets_effect"),
+	Keys.generate_hash("lose_gold_on_shot"),
+	Keys.generate_hash("piranha_effect"),
+	Keys.generate_hash("qmtato_reverse_knife_shotgun"),
+	Keys.generate_hash("qmtato_whip_effect"),
+]
+
+var foxlab_weapon_bound_text_keys = [
+	"EFFECT_BOOMERANG_RETURN",
+	"EFFECT_QMTATO_WHIP_RANGE",
+	"EFFECT_QMTATO_YONGCHUN_FIST",
+	"WEAPON_QMTATO_MATERIALS_GUN_DETAIL",
+]
+
+var foxlab_weapon_bound_effect_ids = [
+	"qmtato_serialize_terra_blade_effect",
+]
+
 func foxlab_log(arg1 = "", arg2 = "", arg3 = "", arg4 = "", arg5 = "", arg6 = "", arg7 = "", arg8 = "", arg9 = "", arg10 = "", arg11 = "", arg12 = "", arg13 = "", arg14 = "", arg15 = "", arg16 = "") -> void:
 	var message = str(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16)
 	if foxlab_on_android:
@@ -544,8 +566,9 @@ func foxlab_queue_free_weapon(weapon: Node2D):
 func foxlab_is_weapon_bound_effect(effect) -> bool:
 	return effect is SlowInZoneEffect or effect is PlayerNoHitEffect or effect is CrateDigChanceEffect\
 		or effect is DeflectProjectilesEffect or effect is CarbonBowStatEffect or effect is FirePuddleOnHitEffect\
-		or effect.key_hash == Keys.crit_on_whip_tip_hash\
-		or (effect.key_hash == Keys.empty_hash and effect.text_key == "EFFECT_BOOMERANG_RETURN")
+		or effect.key_hash in foxlab_weapon_bound_key_hashes\
+		or effect.get_id() in foxlab_weapon_bound_effect_ids\
+		or effect.text_key.to_upper() in foxlab_weapon_bound_text_keys
 
 # 弹射/穿透暴击、每X次投射物修改（标枪）仅远战武器有效
 func foxlab_is_useless_weapon_effect(effect, weapon) -> bool:

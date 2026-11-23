@@ -133,6 +133,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 	var new_effects = [begin_effect]
 	if meta.item == null:
 		for effect in RunData.foxlab_duplicate_effects_for_copy(item_for_effect):
+			if Utils.foxlab_is_useless_weapon_effect(effect, weapon):
+				continue
 			new_effects.append(effect)
 			if effect is SwapMaxMinStatEffect: # axolotl
 				effect.has_been_applied = false

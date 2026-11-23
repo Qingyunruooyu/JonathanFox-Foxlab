@@ -6,6 +6,7 @@ var foxlab_pinned_weapon_element = [null, null, null, null]
 # 临时去掉风味标记的武器 [WeaponData, String flag]，合成后恢复
 var foxlab_temp_deflavored = [null, null, null, null]
 var foxlab_bonus_item = [[], [], [], []]
+var foxlab_weapon_focus_item = [null, null, null, null]
 
 func foxlab_switch_turret_item(old_level: int, new_level: int, p_player_index: int) -> void :
 	var player_items_ref = RunData.get_player_items_ref(p_player_index)
@@ -110,7 +111,25 @@ func foxlab_refresh_shop_after_gear_change(item_data, player_index: int) -> void
 func _on_foxlab_weapon_gear_changed(player_index):
 	var player_gear_container = _get_gear_container(player_index)
 	var weapons = RunData.get_player_weapons_ref(player_index)
+	var focused = Utils.get_player_focused_control(self, player_index)
+	if focused != null and is_instance_valid(focused) and\
+		player_gear_container.weapons_container._elements.is_a_parent_of(focused):
+		foxlab_weapon_focus_item[player_index] = focused.item
 	player_gear_container.call_deferred("set_weapons_data", weapons)
+	call_deferred("foxlab_restore_weapon_focus", player_index)
+
+func foxlab_restore_weapon_focus(player_index):
+	var item = foxlab_weapon_focus_item[player_index]
+	foxlab_weapon_focus_item[player_index] = null
+	if item == null:
+		return
+	var focused = Utils.get_player_focused_control(self, player_index)
+	if focused != null and is_instance_valid(focused):
+		return
+	if RunData.get_player_weapons_ref(player_index).has(item):
+		_get_gear_container(player_index).weapons_container._elements.focus_element(item)
+	else:
+		_on_player_focus_lost(player_index)
 
 func _on_foxlab_item_pin_button_pressed(weapon_data: WeaponData, player_index: int) -> void :
 	var inventory = _get_gear_container(player_index).weapons_container._elements

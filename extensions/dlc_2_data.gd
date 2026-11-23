@@ -27,6 +27,28 @@ const FOXLAB_MUTATION_COPY_BLACKLIST_IDS = [
 	"linear_scaling_effect",
 ]
 
+const FOXLAB_MUTATION_COPY_BLACKLIST_TEXT_KEYS = [
+	"EFFECT_FOXLAB_ANVIL",
+	"EFFECT_FOXLAB_CAT_SHOP_EFFECT",
+	"EFFECT_FOXLAB_CRISIS",
+	"EFFECT_FOXLAB_DANTE",
+	"EFFECT_FOXLAB_EXTRA_ITEM_IN_CRATE_DUAL",
+	"EFFECT_FOXLAB_FAST_ON_HIT",
+	"EFFECT_FOXLAB_FOOD_PRICE",
+	"EFFECT_FOXLAB_FUNNEL_SPAWN",
+	"EFFECT_FOXLAB_IGNORE_NEARBY_ENEMY",
+	"EFFECT_FOXLAB_MOM_LANDMINE_SPAWN",
+	"EFFECT_FOXLAB_NO_BIG_COOLDOWN",
+	"EFFECT_FOXLAB_SPACETIME_MACHINE",
+	"EFFECT_FOXLAB_SPACETIME_MACHINE_YANG",
+	"EFFECT_FOXLAB_SPACETIME_MACHINE_YIN",
+	"EFFECT_FOXLAB_STAT_PERCENT_DEC_END_OF_WAVE",
+	"EFFECT_FOXLAB_VAGABOND_FRUIT_NEG",
+	"EFFECT_FOXLAB_VAGABOND_FRUIT_POS",
+	"EFFECT_FOXLAB_WEAPON_STRUCT_BONUS",
+	"EFFECT_FOXLAB_WORMHOLE_UPGRADE",
+]
+
 var _foxlab_capped_keys = {
 	Utils.foxlab_spawn_landmine_on_entering_birth_area_hash : Utils.FOXLAB_MOM_LANDMINE_MAX_PER_WAVE
 	}
@@ -125,6 +147,8 @@ func meca_item(item_data, player_index: int, do_not_add_effect: bool = false):
 func can_effect_be_copied_by_mutation(effect, player_index: int = -1) -> bool:
 	_foxlab_init_mutation_rules()
 	if FOXLAB_MUTATION_COPY_BLACKLIST_IDS.has(effect.get_id()):
+		return false
+	if FOXLAB_MUTATION_COPY_BLACKLIST_TEXT_KEYS.has(effect.text_key):
 		return false
 	if effect.custom_key_hash == Utils.foxlab_gain_stat_every_killed_enemies_hash and effect.value2 <= 0:
 		return false

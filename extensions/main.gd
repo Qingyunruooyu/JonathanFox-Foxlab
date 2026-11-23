@@ -606,6 +606,11 @@ func _on_foxlab_weapon_added(new_weapon: WeaponData, player_index: int):
 	_on_foxlab_item_added(new_weapon, 1, player_index)
 
 func _on_foxlab_item_added(new_item, item_count: int, player_index: int):
+	call_deferred("_on_foxlab_item_added_core", new_item, item_count, player_index)
+
+func _on_foxlab_item_added_core(new_item, item_count: int, player_index: int):
+	if get_tree() == null or get_tree().current_scene != self:
+		return
 	var player = _players[player_index]
 	var icon_scale = Utils.foxlab_fit_item_icon_scale(new_item.icon)
 	var pos = player.global_position - 1.5 * _floating_text_manager.players_add_stats_count[player_index] * _floating_text_manager.offset

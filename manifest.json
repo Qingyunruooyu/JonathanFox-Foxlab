@@ -18,7 +18,7 @@
         "characters",
         "items"
       ],
-      "compatible_mod_loader_version": "6.2.2",
+      "compatible_mod_loader_version": ["6.2.2"],
       "compatible_game_version": [
         "1.2.0.2"
       ],

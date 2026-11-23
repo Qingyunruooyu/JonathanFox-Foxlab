@@ -64,9 +64,9 @@ func foxlab_add_item_triggering_stat_gain_effects(item_data: ItemParentData, pla
 
 func foxlab_remember_item(item: ItemParentData, player_index: int):
 	var previous_remembered:Array = get_player_effect(Utils.foxlab_previous_remembered_hash, player_index)
-	# DebugService.log_data("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
+	# Utils.foxlab_log("item: %s, cursed: %s" % [tr(item.name), item.is_cursed])
 	if item.my_id_hash in previous_remembered:
-		DebugService.log_data("already remembered")
+		# Utils.foxlab_log("already remembered")
 		return
 
 	if item.get_category() == Category.WEAPON:
@@ -77,9 +77,9 @@ func foxlab_remember_item(item: ItemParentData, player_index: int):
 				break
 	else:
 		foxlab_remembered_items[player_index].push_back(item as ItemData)
-		# DebugService.log_data("before add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+		# Utils.foxlab_log("before add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		foxlab_add_item_triggering_stat_gain_effects(item, player_index)
-		# DebugService.log_data("after add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+		# Utils.foxlab_log("after add item, item num: %d/%d" % [get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 
 func foxlab_modify_weapon(player_index: int):
 	if foxlab_remembered_weapons[player_index].empty():
@@ -138,9 +138,9 @@ func foxlab_forget_item(player_index: int):
 		var previous_hp_next_wave = effects[Keys.hp_start_next_wave_hash]
 		for item in foxlab_remembered_items[player_index]:
 			if item in players_data[player_index].items:
-				# DebugService.log_data("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+				# Utils.foxlab_log("item num: %d/%d" % [ get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 				foxlab_remove_item_from_end(item, player_index, false)
-				# DebugService.log_data("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
+				# Utils.foxlab_log("remove %s, curse: %s, item num: %d/%d" % [ item.my_id, str(item.is_cursed), get_nb_item(item.my_id_hash, player_index), players_data[player_index].items.size() ])
 		#被临时道具顶掉了角色外观，恢复回来
 		if not ProgressData.settings.no_item_appearance:
 			add_item_displayed(players_data[player_index].current_character, player_index)
@@ -272,7 +272,7 @@ func foxlab_item_recycle_test():
 	for item in ItemService.get_items() + ItemService.get_characters():
 		if item.my_id in failed_items:
 			continue
-		print("test ", item.my_id)
+		Utils.foxlab_log("test ", item.my_id)
 		foxlab_add_item_triggering_stat_gain_effects(item, 0)
 		remove_item(item, 0, false, false)
 		if not item.can_be_looted or item is CharacterData:
@@ -459,12 +459,12 @@ func _reset_per_wave_properties() -> void :
 
 func add_gold(value: int, player_index: int) -> void :
 	# 如果材料不是自己捡的，自己又是要控材料的角色，把材料先记着
-	# print("picking:", foxlab_current_picking_player, " value: ", value, " player: ", player_index, " ctrl: ", RunData.get_player_effect_bool(Utils.foxlab_material_ctrl_hash, player_index))
+	# Utils.foxlab_log("picking:", foxlab_current_picking_player, " value: ", value, " player: ", player_index, " ctrl: ", RunData.get_player_effect_bool(Utils.foxlab_material_ctrl_hash, player_index))
 	if foxlab_current_picking_player >= 0 and player_index != foxlab_current_picking_player and RunData.get_player_effect_bool(Utils.foxlab_material_ctrl_hash, player_index):
 		RunData.get_player_effects(player_index)[Utils.foxlab_pending_material_hash] += value
-		# print("pending")
+		# Utils.foxlab_log("pending")
 	else:
-		# print("adding")
+		# Utils.foxlab_log("adding")
 		.add_gold(value, player_index)
 	foxlab_process_gold(value, player_index)
 
@@ -485,7 +485,7 @@ func on_wave_start(timer: WaveTimer) -> void :
 	effects[Utils.foxlab_shop_effects_checked_hash] = 0
 	for i in range(get_player_count()):
 		get_player_effects(i)[Utils.foxlab_buy_item_increase_tier_current_hash] = 0
-	DebugService.log_data("foxlab_shop_effects_checked: set false")
+	Utils.foxlab_log("foxlab_shop_effects_checked: set false")
 	#公牛等没有武器的角色，不会执行add_starting_items_and_weapons
 	effects[Utils.foxlab_wave_started_hash] = 1
 	ItemService.foxlab_add_pet_structure_stats()

@@ -550,7 +550,7 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 						var item_num = effect[i + 1]
 						var item_times = items_got.get_or_add(item_id_hash, [0, 0]) # 0 for times, 1 for pity
 						var chance = 1.0 / (1.0 + item_times[0]) + item_times[1]
-						# print("chance: ", chance, " item: ", Keys.hash_to_string[item_id_hash])
+						# Utils.foxlab_log("chance: ", chance, " item: ", Keys.hash_to_string[item_id_hash])
 						if Utils.get_chance_success(chance):
 							main.foxlab_get_item(item_id_hash, item_num, player_index)
 							item_times[0] += item_num
@@ -559,7 +559,7 @@ func on_healing_effect(value: int, tracking_key: int = Keys.empty_hash, from_tor
 							break
 						else:
 							item_times[1] += chance/item_times[0] # add pity bonus
-							# print("current pity: ", item_times[1], " item: ", Keys.hash_to_string[item_id_hash])
+							# Utils.foxlab_log("current pity: ", item_times[1], " item: ", Keys.hash_to_string[item_id_hash])
 				if play_sound:
 					SoundManager.play(preload("res://ui/sounds/Shield 4.mp3"))
 	return value_healed

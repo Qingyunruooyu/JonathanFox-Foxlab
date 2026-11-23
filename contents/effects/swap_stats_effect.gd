@@ -37,7 +37,7 @@ static func get_stat_value(stat_key: int, player_index: int):
 static func swap_stat(left_stat_key: int, right_stat_key: int, player_index: int):
 	var left_stat_gain = RunData.get_stat_gain(left_stat_key, player_index)
 	var right_stat_gain = RunData.get_stat_gain(right_stat_key, player_index)
-	# print("swap ", Keys.hash_to_string[left_stat_key], ", ", Keys.hash_to_string[right_stat_key])
+	Utils.foxlab_log("swap ", Keys.hash_to_string[left_stat_key], ", ", Keys.hash_to_string[right_stat_key])
 	var effects = RunData.get_player_effects(player_index)
 
 	# RunData + TempStats + (LinkedStats (+ structures_cooldown_reduction)) = stat value

@@ -137,7 +137,7 @@ func _foxlab_init_transform_characters():
 			available_characters.append(character)
 	if not foxlab_mod.is_transform_vanilla_only():
 		foxlab_transform_characters = available_characters
-		#DebugService.log_data("item service _foxlab_init_transform_characters done, all")
+		# Utils.foxlab_log("item service _foxlab_init_transform_characters done, all")
 		return
 	if foxlab_vanilla_characters.empty():
 		for character in available_characters:
@@ -254,7 +254,7 @@ func foxlab_ensure_enemy_registry():
 			continue
 		var scene = foxlab_get_enemy_from_item(entity)
 		if scene == null:
-			#print("%s doesn't exist. enemy item: %s" % [scene_path, enemy.resource_path])
+			Utils.foxlab_log("enemy scene doesn't exist. enemy item: ", entity.my_id)
 			continue
 		_foxlab_register_enemy_scene(scene, false)
 		foxlab_normal_scenes.append(scene)
@@ -517,7 +517,7 @@ func init_unlocked_pool() -> void:
 					invalid.append(element)
 			for element in invalid:
 				pool.erase(element)
-	#DebugService.log_data("_foxlab_init_transform_characters done, vanilla only")
+	# Utils.foxlab_log("_foxlab_init_transform_characters done, vanilla only")
 
 # 选角色界面按本列表顺序展示；开关开启且本mod物品集激活时，把本mod角色排到原版/DLC之前
 func _rebuild_characters() -> void:

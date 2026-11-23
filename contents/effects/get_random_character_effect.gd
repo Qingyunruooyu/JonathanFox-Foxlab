@@ -54,18 +54,18 @@ func apply(player_index: int) -> void:
 	var stack_effect:Array = effects[Utils.foxlab_faceless_transform_stack_hash]
 	if stack_effect[1]:
 		stack_effect[0] += 1
-		#DebugService.log_data("add transform stack: %d" % [stack_effect[0]])
+		Utils.foxlab_log("add transform stack: %d" % [stack_effect[0]])
 		return
 	stack_effect[1] = true
-	#DebugService.log_data("start transform, stack: %d" % [stack_effect[0]])
+	Utils.foxlab_log("start transform, stack: %d" % [stack_effect[0]])
 
 	try_generate(player_index)
 	var transform_chance = _get_transform_chance(player_index)
-	#DebugService.log_data("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
+	Utils.foxlab_log("transform success chance: %s%%" % [str(stepify(transform_chance,0.01))])
 	var wave_started = RunData.foxlab_is_wave_started()
 	if wave_started and not Utils.get_chance_success(transform_chance / 100.0):
 		RunData.get_player_effects(player_index)[Utils.foxlab_transform_pity_hash] += int(transform_chance / 10.0)
-		#DebugService.log_data("transform failed")
+		Utils.foxlab_log("transform failed")
 		_foxlab_refund_mask_on_fail(player_index)
 		_after_transform(player_index, stack_effect)
 		return
@@ -89,7 +89,7 @@ func apply(player_index: int) -> void:
 	for character in meta.chars:
 		var added_character = _update_character_bg(character)
 		RunData.foxlab_add_item_triggering_stat_gain_effects(added_character, player_index)
-		#DebugService.log_data("add character " + character.my_id)
+		# Utils.foxlab_log("add character " + character.my_id)
 		prev_items.append(added_character)
 	convert_stats_half_wave.append_array(convert_stats_half_wave_bak)
 	convert_stats_end_of_wave.append_array(convert_stats_end_of_wave_bak)
@@ -97,13 +97,13 @@ func apply(player_index: int) -> void:
 
 	for item in meta.items:
 		RunData.foxlab_add_item_triggering_stat_gain_effects(item, player_index)
-		#DebugService.log_data("add item " + item.my_id)
+		# Utils.foxlab_log("add item " + item.my_id)
 		prev_items.append(item)
 
 	for weapon in meta.weapons:
 		var weapon_to_add = RunData.add_weapon(weapon, player_index)
 		prev_items.append(weapon_to_add)
-		#DebugService.log_data("add weapon " + weapon_to_add.my_id + str(weapon_to_add))
+		# Utils.foxlab_log("add weapon " + weapon_to_add.my_id + str(weapon_to_add))
 	meta.items.clear()
 	meta.weapons.clear()
 
@@ -152,7 +152,7 @@ func _foxlab_refund_mask_on_fail(player_index: int) -> void:
 
 func _after_transform(player_index: int, stack_effect: Array) -> void:
 	stack_effect[1] = false
-	#DebugService.log_data("end transform, stack: %d" % [stack_effect[0]])
+	Utils.foxlab_log("end transform, stack: %d" % [stack_effect[0]])
 	if stack_effect[0] > 0:
 		stack_effect[0] -= 1
 		apply(player_index)
@@ -167,7 +167,7 @@ func _duplicate_weapon(player_index: int):
 	if  not upgrade_enabled or RunData.current_wave == upgrade_wave:
 		return null
 
-	#DebugService.log_data("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
+	Utils.foxlab_log("begin to duplicate a weapon, previous wave: " + str(upgrade_wave))
 	effects[Utils.foxlab_faceless_upgrade_on_transform_wave_hash] = RunData.current_wave if RunData.foxlab_is_wave_started() else 1
 	var weapon = Utils.get_rand_element(RunData.get_player_weapons_ref(player_index)).duplicate()
 	#附魔后加一个价值， 避免建造者的炮塔不识货
@@ -181,11 +181,11 @@ func _duplicate_weapon(player_index: int):
 			break
 	if weapon_for_effect != null:
 		weapon_for_effect = ItemService.apply_item_effect_modifications(weapon_for_effect, player_index)
-		#DebugService.log_data("get weapon for effect " + tr(weapon_for_effect.my_id))
+		Utils.foxlab_log("get weapon for effect " + tr(weapon_for_effect.my_id))
 		var new_effects :Array = RunData.foxlab_get_effects_from_another_weapon(weapon, weapon_for_effect, true)
 		weapon.effects.append_array(new_effects)
 	RunData.add_weapon(weapon, player_index)
-	#DebugService.log_data("duplicate weapon " + weapon.my_id)
+	Utils.foxlab_log("duplicate weapon " + weapon.my_id)
 	RunData.add_tracked_value(player_index, Utils.character_foxlab_faceless_hash, 1)
 	return weapon
 
@@ -217,9 +217,9 @@ func cleanup(player_index: int) -> void:
 						break
 			if should_remove_weapon:
 				RunData.remove_weapon(weapon, player_index)
-				#DebugService.log_data("remove " + weapon.my_id + str(weapon))
+				# Utils.foxlab_log("remove " + weapon.my_id + str(weapon))
 			else:
-				#DebugService.log_data("not remove missing " + weapon.my_id + str(weapon))
+				# Utils.foxlab_log("not remove missing " + weapon.my_id + str(weapon))
 				pass
 			weapon_to_remove.append(i)
 	weapon_to_remove.invert()
@@ -246,7 +246,7 @@ func cleanup(player_index: int) -> void:
 		if items_to_remove_order.size() == prev_items.size():
 			break
 	for item_data in items_to_remove_order:
-		#DebugService.log_data("remove " + item_data.my_id + str(item_data))
+		Utils.foxlab_log("remove " + item_data.my_id + str(item_data))
 		RunData.foxlab_remove_item_from_end(item_data, player_index, false)
 
 	for meta in metas:
@@ -274,15 +274,15 @@ func _are_chars_compatible(player_index: int, candidate: CharacterData, chars_da
 	var player_character = RunData.get_player_character(player_index)
 	_get_convert_stat_result(player_character, convert_stat_dict)
 	_get_convert_stat_result(candidate, convert_stat_dict)
-	#DebugService.log_data("player: %s, value: %s" % [player_character.my_id,convert_stat_dict[player_character.my_id_hash]])
-	#DebugService.log_data("candidate: %s, value: %s" % [candidate.my_id, convert_stat_dict[candidate.my_id_hash]])
+	# Utils.foxlab_log("player: %s, value: %s" % [player_character.my_id,convert_stat_dict[player_character.my_id_hash]])
+	# Utils.foxlab_log("candidate: %s, value: %s" % [candidate.my_id, convert_stat_dict[candidate.my_id_hash]])
 	var conver_stat_num = convert_stat_dict[player_character.my_id_hash]
 	for character in chars_data:
-		#DebugService.log_data("already exists:%s, value: %s " %[ character.my_id, convert_stat_dict[character.my_id_hash]])
+		# Utils.foxlab_log("already exists:%s, value: %s " %[ character.my_id, convert_stat_dict[character.my_id_hash]])
 		conver_stat_num += convert_stat_dict[character.my_id_hash]
 
 	conver_stat_num += convert_stat_dict[candidate.my_id_hash]
-	#DebugService.log_data("convert_stat_num: %d" % [conver_stat_num])
+	# Utils.foxlab_log("convert_stat_num: %d" % [conver_stat_num])
 	return ( conver_stat_num <= 1)
 
 func _get_max_entries() -> int:

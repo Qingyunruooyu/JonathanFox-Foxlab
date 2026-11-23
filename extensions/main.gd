@@ -133,7 +133,7 @@ func foxlab_spawn_enemy_via_gold_bag_ready():
 			var proc_left: int = effect[3] if effect[3] >= 0 else Utils.LARGE_NUMBER
 			while proc_left > 0 and gold_budget >= cost and RunData.bonus_gold >= cost:
 				var enemy_id_hash = Utils.get_rand_element(killed.keys())
-				# print(" spawn ", enemy_id_hash)
+				Utils.foxlab_log(" spawn ", Keys.hash_to_string[enemy_id_hash])
 				var scene = ItemService.foxlab_get_enemy_scene(enemy_id_hash)
 				if scene == null:
 					break
@@ -436,8 +436,12 @@ func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 				var add_mod :bool = Utils.get_chance_success(FOXLAB_STAT_MOD_CHANCE)
 				var stat = Utils.get_rand_element(Utils.foxlab_primary_stat_gain_map.keys()) if add_mod else Utils.get_rand_element(Utils.foxlab_primary_stat_gain_map.values())
 				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
+				if stat == Keys.stat_evolution_hash:
+					var current = RunData.get_player_effect(stat, args.from_player_index)
+					if current < 0 or (current == 0 and Utils.get_chance_success(0.5)):
+						value = -value
 				RunData.add_stat(stat, value, args.from_player_index)
-				RunData.add_tracked_value(args.from_player_index, Utils.character_foxlab_refactor_hash, value, add_mod)
+				RunData.add_tracked_value(args.from_player_index, Utils.character_foxlab_refactor_hash, abs(value), add_mod)
 
 func foxlab_process_immed_burn(enemy, value: int, args: TakeDamageArgs):
 	# 有hitbox（一定是非燃烧伤害）或者没有hitbox且没有燃烧（象宝宝之类）
@@ -1059,7 +1063,7 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 	if foxlab_enemy_summary[enemy.pool_id] == 0:
 		foxlab_on_enemy_type_change(-1, enemy)
 
-	# print("killer: ", args.from, "is enemy: ", args.from is Enemy)
+	# Utils.foxlab_log("killer: ", args.from, "is enemy: ", args.from is Enemy)
 	if args.from is Enemy:
 		_foxlab_enemy_interact(enemy)
 	if args.enemy_killed_by_player and args.killed_by_player_index >= 0 and args.killed_by_player_index < RunData.get_player_count():
@@ -1106,7 +1110,7 @@ func _on_enemy_died(enemy, args: Entity.DieArgs) -> void :
 							foxlab_gain_stat_every_killed_enemies[player_index][effect[0]] += effect[1]
 					RunData.add_stat(effect[0], effect[1], player_index)
 					if effect[2] <= 0:
-#						DebugService.log_data("num: %d, num_killed: %d, total: %d" % [num, num_killed, foxlab_enemy_killed_this_wave[player_index]])
+						# Utils.foxlab_log("num: %d, num_killed: %d, total: %d" % [num, num_killed, foxlab_enemy_killed_this_wave[player_index]])
 						foxlab_enemy_killed_this_wave_piecewise[player_index][effect[0]] = 0
 
 		effects = RunData.get_player_effect(Utils.foxlab_gain_stat_every_killed_bosses_hash, player_index)

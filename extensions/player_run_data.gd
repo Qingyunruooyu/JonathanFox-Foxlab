@@ -57,7 +57,7 @@ func _foxlab_adjust_non_float_to_int(item_data):
 			var name = prop["name"]
 			var value = item_effect.get(name)
 			if value is float and prop["type"] == TYPE_INT:
-				# print("item: %s, effect: %s, member: %s changed from float to int: %d" % [item_data.my_id, item_effect.get_id(), name, value])
+				Utils.foxlab_log("item: %s, effect: %s, member: %s changed from float to int: %d" % [item_data.my_id, item_effect.get_id(), name, value])
 				item_effect.set(name, int(value))
 				need_adjust = true
 		if not need_adjust:

@@ -8,7 +8,7 @@ func on_foxlab_seed_timer_timeout():
 		already_picked_up = true
 		main._consumables.erase(self)
 		main.add_node_to_pool(self, main._consumable_pool_id)
-		# print("disappear, id: ", consumable_data.my_id, self)
+		# Utils.foxlab_log("disappear, id: ", consumable_data.my_id, self)
 		reset()
 
 ######## 扩展 ######
@@ -38,6 +38,6 @@ func drop(pos: Vector2, p_rotation: float, p_push_back_destiation: Vector2) -> v
 func reset() -> void :
 	.reset()
 	if foxlab_seed_timer and !foxlab_seed_timer.is_stopped():
-		# print("stop the timer, my_id: ", consumable_data.my_id, self)
+		# Utils.foxlab_log("stop the timer, my_id: ", consumable_data.my_id, self)
 		foxlab_seed_timer.stop()
 

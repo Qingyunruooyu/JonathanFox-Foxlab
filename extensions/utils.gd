@@ -277,6 +277,15 @@ var foxlab_item_pinned_in_inventory = {
 		Keys.generate_hash("item_foxlab_thunder"): 0,
 }
 
+var foxlab_on_android: bool = false
+
+func foxlab_log(arg1 = "", arg2 = "", arg3 = "", arg4 = "", arg5 = "", arg6 = "", arg7 = "", arg8 = "", arg9 = "", arg10 = "", arg11 = "", arg12 = "", arg13 = "", arg14 = "", arg15 = "", arg16 = "") -> void:
+	var message = str(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16)
+	if foxlab_on_android:
+		DebugService.log_data(message)
+	else:
+		ModLoaderLog.info(message, "JonathanFox-FoxLab")
+
 func foxlab_uv_lamp_present() -> bool:
 	return RunData.sum_all_player_effects(foxlab_uv_lamp_hash) > 0 or\
 		RunData.sum_all_player_effects(foxlab_uv_lamp_instance_hash) > 0
@@ -329,7 +338,7 @@ func _foxlab_init_primary_stat_gain_map():
 		var gain_stat_hash = Keys.generate_hash(gain_stat)
 		if gain_stat_hash in effects:
 			foxlab_primary_stat_gain_map[gain_stat_hash] = stat
-			# print("gain stat ", gain_stat)
+			Utils.foxlab_log("gain stat ", gain_stat)
 
 func foxlab_get_colored_stat_str(stat_hash: int, player_index: int = RunData.DUMMY_PLAYER_INDEX) -> String:
 	var stat_data = ItemService.get_stat(stat_hash)
@@ -529,7 +538,7 @@ func foxlab_queue_free_weapon(weapon: Node2D):
 	weapon.disable_target_tracking()
 	weapon.visible = false
 	disable_node(weapon)
-	#print("disable weapon ", weapon)
+	# Utils.foxlab_log("disable weapon ", weapon)
 
 # 鱼叉/电击枪减速区、轨道炮增伤、铲子挖箱、光剑反弹、碳弓箭矢属性、燃烧瓶火洼、连枷尖端暴击、回旋镖返回提示
 func foxlab_is_weapon_bound_effect(effect) -> bool:
@@ -567,11 +576,11 @@ func foxlab_get_primary_stat_level_up_map():
 					if not effect.key_hash in level_up_value_map:
 						level_up_value_map[effect.key_hash] = effect.value
 						level_up_id_map[upgrade.upgrade_id_hash] = 1
-						# print(tr(upgrade.get_name_text()))
+						Utils.foxlab_log(tr(upgrade.get_name_text()))
 		for stat in primary_stats:
 			if not stat in level_up_value_map:
 				level_up_value_map[stat] = 1
-				# print(tr(Keys.hash_to_string[stat].to_upper()))
+				Utils.foxlab_log(tr(Keys.hash_to_string[stat].to_upper()))
 	return foxlab_primary_stat_level_up_map
 
 func foxlab_is_vanilla_upgrade(upgrade_data:UpgradeData):
@@ -621,7 +630,7 @@ func foxlab_get_stats_in_container():
 		if not hidden_stats_shown:
 			for hidden_row in hidden_stat_rows:
 				foxlab_stats_invisible_in_container[Keys.generate_hash(hidden_row.row.key.to_lower())] = 0
-		# print("stats container order: ")
+		Utils.foxlab_log("stats container order: ")
 		if stats_container._primary_stats != null and stats_container._secondary_stats != null:
 			for container in [stats_container._primary_stats, stats_container._secondary_stats]:
 				foxlab_stats_in_container.append([])
@@ -631,7 +640,7 @@ func foxlab_get_stats_in_container():
 					if "key_hash" in stat and not stat.key_hash in foxlab_stats_invisible_in_container and not stat.key_hash in stats_added:
 						stats.append(stat.key_hash)
 						stats_added[stat.key_hash] = 1
-						# print(Keys.hash_to_string[stat.key_hash], " visible: ", stat.visible)
+						Utils.foxlab_log(Keys.hash_to_string[stat.key_hash], " visible: ", stat.visible)
 		stats_container.queue_free()
 	return foxlab_stats_in_container
 
@@ -797,8 +806,8 @@ func foxlab_convert_remainder(stats: Array, player_index:int):
 		if actual_stat_added != 0:
 			RunData.emit_signal("stat_added", to_stat, actual_stat_added, 0.0, player_index)
 
-		#DebugService.log_data("remainder stat: %s, stat_value: %d, stat_dividend: %d, remainder: %d, actual_stat_added: %d, to_stat: %s" %
-		#		[stat_name, stat_value, stat_dividend, stat_remainder, actual_stat_added, to_stat ])
+		Utils.foxlab_log("remainder stat: %s, stat_value: %d, stat_dividend: %d, remainder: %d, actual_stat_added: %d, to_stat: %s" %
+			[stat_name, stat_value, stat_dividend, stat_remainder, actual_stat_added, to_stat ])
 
 		if keep_value == 1 or stat_name == Keys.random_hash:
 			continue
@@ -829,19 +838,23 @@ func foxlab_clear_wanted_caches() -> void :
 
 ######## 扩展 ######
 
+func _init() -> void :
+	foxlab_on_android = OS.get_name() == "Android"
+
 func reset_stat_keys() -> void :
 	.reset_stat_keys()
 	# 原版 ItemService.stats 是编辑器数组，只含本体属性；DLC 主属性（诅咒/进化）挂在
 	# 各内容集的 item_set.stats 里，补进 mod 自建的主属性表，主属性修改/例外显示才能覆盖它们
 	foxlab_primary_stat_keys = _primary_stat_keys.duplicate()
+	Utils.foxlab_log("======extra primary stats:======")
 	for update_data in ItemService.update_data_list:
 		if update_data == null or update_data.item_set == null:
 			continue
 		for stat in update_data.item_set.stats:
 			if stat.is_primary_stat and not foxlab_primary_stat_keys.has(stat.stat_hash):
 				foxlab_primary_stat_keys.append(stat.stat_hash)
-				# print("stat: ", Keys.hash_to_string[stat.stat_hash])
-	# print("======end======")
+				Utils.foxlab_log("stat: ", Keys.hash_to_string[stat.stat_hash])
+	Utils.foxlab_log("======end======")
 	foxlab_clear_wanted_caches()
 	foxlab_evil_mob_units.clear()
 	foxlab_exploding_turret_tracking_keys = null

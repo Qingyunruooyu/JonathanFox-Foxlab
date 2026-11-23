@@ -346,9 +346,9 @@ func _ready() -> void :
 			var _err = item_popup.connect("foxlab_item_pin_button_pressed", self, "_on_foxlab_item_pin_button_pressed", [player_index])
 
 	if RunData.get_player_effect_bool(Utils.foxlab_shop_effects_checked_hash, 0):
-		DebugService.log_data("foxlab_shop_effects_checked: is true")
+		Utils.foxlab_log("foxlab_shop_effects_checked: is true")
 		return
-	DebugService.log_data("foxlab_shop_effects_checked: is false")
+	Utils.foxlab_log("foxlab_shop_effects_checked: is false")
 	ItemService.foxlab_just_enter_shop = [true, true, true, true]
 	# 只有进商店才会重置随机敌人，和糖果袋出随机精英一样
 	RunData.foxlab_is_horde_wave = null
@@ -381,7 +381,7 @@ func _ready() -> void :
 			RunData.add_tracked_value(player_index, Utils.character_foxlab_staff_officer_hash, recycling_value)
 
 	RunData.get_player_effects(0)[Utils.foxlab_shop_effects_checked_hash] = 1
-	DebugService.log_data("foxlab_shop_effects_checked: set true")
+	Utils.foxlab_log("foxlab_shop_effects_checked: set true")
 
 func _combine_weapon(weapon_data: WeaponData, player_index: int, is_upgrade: bool) -> void :
 	foxlab_pin_weapon(weapon_data, player_index)
@@ -501,7 +501,7 @@ func _on_RerollButton_pressed(player_index: int) -> void :
 			RunData.remove_item(item, player_index)
 			update_item = true
 		else:
-			DebugService.log_data("item not exist: " + Keys.hash_to_string[item_id])
+			# Utils.foxlab_log("item not exist: " + Keys.hash_to_string[item_id])
 			non_exist_num += 1
 
 	._on_RerollButton_pressed(player_index)

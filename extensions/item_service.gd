@@ -396,8 +396,8 @@ func can_item_be_mutated(item) -> bool:
 		item.my_id_hash == Utils.item_foxlab_mask_hash or \
 		item.my_id_hash == Utils.item_foxlab_buddhas_hand_hash:
 		return false
-	_foxlab_init_no_mutate_curse_characters()
-	if item is CharacterData and _foxlab_no_mutate_curse_char_hashes.has(item.my_id_hash):
+	# TODO(jona): remove when compatible, character can't be mutated on PC
+	if item is CharacterData:
 		return false
 	return .can_item_be_mutated(item)
 

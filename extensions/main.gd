@@ -438,8 +438,12 @@ func foxlab_process_enemy_mutate(enemy, args: TakeDamageArgs):
 				var value = Utils.randi_range(3, 5) if add_mod else Utils.randi_range(1, 2)
 				if stat == Keys.stat_evolution_hash:
 					var current = RunData.get_player_effect(stat, args.from_player_index)
-					if current < 0 or (current == 0 and Utils.get_chance_success(0.5)):
+					if current < 0:
 						value = -value
+					elif current == 0:
+						if RunData.is_mutant_only(args.from_player_index) or\
+						(not RunData.is_meca_only(args.from_player_index) and not RunData.is_dual_evolution(args.from_player_index) and Utils.get_chance_success(0.5)):
+							value = -value
 				RunData.add_stat(stat, value, args.from_player_index)
 				RunData.add_tracked_value(args.from_player_index, Utils.character_foxlab_refactor_hash, abs(value), add_mod)
 

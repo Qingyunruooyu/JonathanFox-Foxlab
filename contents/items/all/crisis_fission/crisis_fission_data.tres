@@ -11,7 +11,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/crisis_fission/crisis_fission_effect_4.tres" type="Resource" id=9]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/crisis_fission/crisis_fission_effect_3.tres" type="Resource" id=10]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/crisis_fission/crisis_fission_effect_0.tres" type="Resource" id=11]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/spawner_icon.png" type="Texture" id=12]
+[ext_resource path="res://entities/units/enemies/crash_zone/basic/spawner/spawner_icon.png" type="Texture" id=12]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/crisis_fission/crisis_fission_effect_3a.tres" type="Resource" id=13]
 
 [resource]

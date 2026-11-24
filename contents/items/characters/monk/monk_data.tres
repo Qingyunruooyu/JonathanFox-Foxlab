@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=44 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/monk_icon.png" type="Texture" id=1]
+[ext_resource path="res://entities/units/enemies/crash_zone/elites/monk/monk_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_5.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_11.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/monk/monk_effect_3.tres" type="Resource" id=4]

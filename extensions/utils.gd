@@ -544,6 +544,17 @@ func foxlab_collect_item_foxlab_wanted():
 				foxlab_item_wanted.append(unknown_wanted_item)
 				foxlab_item_wanted_hash[unknown_wanted_item.my_id_hash] = 1
 
+func foxlab_wanted_pool_filtered():
+	var team = TeamEvolution.new()
+	var pool = []
+	for item in foxlab_item_wanted:
+		if item.is_meca and team.meca_weight <= 0.0:
+			continue
+		if item.is_mutant and team.mutant_weight <= 0.0:
+			continue
+		pool.append(item)
+	return pool if not pool.empty() else foxlab_item_wanted
+
 func foxlab_get_random_item_foxlab_wanted(player_index: int):
 	if foxlab_item_wanted.empty():
 		foxlab_collect_item_foxlab_wanted()
@@ -551,7 +562,7 @@ func foxlab_get_random_item_foxlab_wanted(player_index: int):
 		RunData.add_tracked_value(player_index, item_foxlab_enchanted_eyes_hash, 1)
 	if RunData.get_nb_item(character_foxlab_bounty_hunter_hash, player_index) > 0:
 		RunData.add_tracked_value(player_index, character_foxlab_bounty_hunter_hash, 1)
-	return foxlab_item_wanted.pick_random()
+	return foxlab_wanted_pool_filtered().pick_random()
 
 # 不直接销毁武器， 因为武器可能还有投射物、爆炸在外面，防止他们引用野地址
 func foxlab_queue_free_weapon(weapon: Node2D):

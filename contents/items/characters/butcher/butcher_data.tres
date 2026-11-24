@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=36 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/butcher_icon.png" type="Texture" id=1]
+[ext_resource path="res://entities/units/enemies/crash_zone/elites/butcher/butcher_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/butcher/butcher_effect_3.tres" type="Resource" id=2]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/butcher/butcher_effect_4.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/butcher/butcher_effect_1.tres" type="Resource" id=4]

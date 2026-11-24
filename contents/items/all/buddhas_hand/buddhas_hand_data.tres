@@ -5,7 +5,7 @@
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/global/item_data.gd" type="Script" id=4]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/buddhas_hand/buddhas_hand_effect_2.tres" type="Resource" id=5]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/all/buddhas_hand/buddhas_hand_effect_4.tres" type="Resource" id=6]
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/tentacle_icon.png" type="Texture" id=7]
+[ext_resource path="res://entities/units/enemies/crash_zone/basic/tentacle/tentacle_icon.png" type="Texture" id=7]
 
 [resource]
 script = ExtResource( 4 )

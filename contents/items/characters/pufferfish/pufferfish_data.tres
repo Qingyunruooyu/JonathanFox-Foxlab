@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=23 format=2]
 
-[ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/enemy_icons/pufferfish_icon.png" type="Texture" id=1]
+[ext_resource path="res://entities/units/enemies/abyss/basic/pufferfish/pufferfish_icon.png" type="Texture" id=1]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/pufferfish/pufferfish_effect_0.tres" type="Resource" id=2]
 [ext_resource path="res://items/all/02_new_dawn/fruit_basket/fruit_basket_data.tres" type="Resource" id=3]
 [ext_resource path="res://mods-unpacked/JonathanFox-FoxLab/contents/items/characters/pufferfish/pufferfish_effect_2.tres" type="Resource" id=4]

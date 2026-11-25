@@ -14,6 +14,10 @@ var _angle = rand_range(0, 2 * PI)
 var _players= []
 var _current_player = null
 const _PLAYER_TRACKING_DISTANCE_SQUARED = 100.0 * 100.0
+const _TRACKER_EDGE_DIST = 100.0
+
+var _foxlab_map_rect: Rect2 = Rect2(0, 0, -1, -1)
+var _foxlab_home_rect: Rect2 = Rect2(0, 0, -1, -1)
 
 func init(zone_min_pos: Vector2, zone_max_pos: Vector2, players_ref: Array = [], _entity_spawner_ref = null) -> void :
 	.init(zone_min_pos, zone_max_pos, players_ref, _entity_spawner_ref)
@@ -91,7 +95,30 @@ func _on_cur_player_died(_player, _args: Entity.DieArgs) -> void :
 func _is_idle() -> bool:
 	return not is_instance_valid(_current_tracking_enemy) or _current_tracking_enemy.dead
 
+func _foxlab_ensure_bounds() -> void:
+	if _foxlab_map_rect.size.x >= 0.0:
+		return
+	var map_size = ZoneService.current_zone_max_position - ZoneService.current_zone_min_position
+	_foxlab_map_rect = Rect2(ZoneService.current_zone_min_position, map_size)
+	_foxlab_home_rect = _foxlab_map_rect.grow(-_TRACKER_EDGE_DIST)
+
+func _foxlab_outside_map(position: Vector2) -> bool:
+	return not _foxlab_map_rect.has_point(position)
+
+func _foxlab_recall_to_center() -> void:
+	_current_orbit_center = ZoneService.get_rand_pos_in_area(ZoneService.get_map_center(), 200)
+
+func _foxlab_drop_tracking_enemy() -> void:
+	if _current_tracking_enemy.is_connected("died", self, "_on_tracking_enemy_died"):
+		_current_tracking_enemy.disconnect("died", self, "_on_tracking_enemy_died")
+	if _current_tracking_enemy.is_connected("charmed", self, "_on_tracking_enemy_charmed"):
+		_current_tracking_enemy.disconnect("charmed", self, "_on_tracking_enemy_charmed")
+	_current_tracking_enemy = null
+
 func _physics_process(delta: float) -> void :
+	_foxlab_ensure_bounds()
+	if not _is_idle() and _foxlab_outside_map(_current_tracking_enemy.global_position):
+		_foxlab_drop_tracking_enemy()
 	if not _in_assembling and _is_idle():
 		# 依次选择攻击范围内的血量最低的头目、选择辅助怪、选择血量最高的小怪
 		var min_hp_boss = null
@@ -99,6 +126,8 @@ func _physics_process(delta: float) -> void :
 		var max_health = -Utils.LARGE_NUMBER
 		for enemy in _targets_in_range:
 			if not enemy is Enemy:
+				continue
+			if _foxlab_outside_map(enemy.global_position):
 				continue
 			if enemy is Boss:
 				if min_hp_boss == null or enemy.current_stats.health < min_boss_health:
@@ -118,6 +147,8 @@ func _physics_process(delta: float) -> void :
 				var _error = _current_tracking_enemy.connect("died", self, "_on_tracking_enemy_died")
 			if not _current_tracking_enemy.is_connected("charmed", self, "_on_tracking_enemy_charmed"):
 				var _error = _current_tracking_enemy.connect("charmed", self, "_on_tracking_enemy_charmed")
+	if _is_idle() and not _in_assembling and not _player_tracked and not _foxlab_home_rect.has_point(global_position):
+		_foxlab_recall_to_center()
 
 
 	var new_center = _current_orbit_center

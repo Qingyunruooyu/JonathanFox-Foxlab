@@ -18,7 +18,7 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource( 2 )
 can_be_boosted = true
-slow_sound = ExtResource( 6 )
+foxlab_slow_sound = ExtResource( 6 )
 
 [node name="Sprite" parent="Animation" index="0"]
 texture = ExtResource( 1 )
@@ -54,6 +54,6 @@ shape = SubResource( 2 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="body_entered" from="Range" to="." method="_on_Range_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_Range_body_exited"]
-[connection signal="hit_something" from="SlowHitbox" to="." method="_on_SlowHitbox_hit_something"]
+[connection signal="hit_something" from="SlowHitbox" to="." method="_foxlab_on_SlowHitbox_hit_something"]
 
 [editable path="SlowHitbox"]

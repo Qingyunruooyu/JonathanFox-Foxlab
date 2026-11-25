@@ -1,113 +1,113 @@
 extends "res://entities/units/unit/unit.gd"
 
-export (Resource) var targetable_particles
-export (float) var overload_radius = 200.0
-export (int) var overload_enemy_threshold = 10
-export (float) var overload_cooldown = 2.5
+export (Resource) var foxlab_targetable_particles
+export (float) var foxlab_overload_radius = 200.0
+export (int) var foxlab_overload_enemy_threshold = 10
+export (float) var foxlab_overload_cooldown = 2.5
 
-var original: Node2D
-var targetable_particles_instance
-var _enemies_in_range = {}
-var _ending = false
+var foxlab_original: Node2D
+var foxlab_targetable_particles_instance
+var _foxlab_enemies_in_range = {}
+var _foxlab_ending = false
 
-onready var _range = $Range
-onready var _range_shape = $Range/CollisionShape2D
-onready var _overload_timer = $OverloadTimer
+onready var _foxlab_range = $Range
+onready var _foxlab_range_shape = $Range/CollisionShape2D
+onready var _foxlab_overload_timer = $OverloadTimer
 
 func _ready():
 	set_physics_process(false)
-	_range_shape.shape.radius = overload_radius
+	_foxlab_range_shape.shape.radius = foxlab_overload_radius
 
 func respawn():
 	.respawn()
-	_ending = false
-	_enemies_in_range.clear()
-	original = null
+	_foxlab_ending = false
+	_foxlab_enemies_in_range.clear()
+	foxlab_original = null
 	set_physics_process(false)
-	_range.set_deferred("monitoring", false)
+	_foxlab_range.set_deferred("monitoring", false)
 
 func _physics_process(_delta: float) -> void :
-	if original == null or not is_instance_valid(original):
+	if foxlab_original == null or not is_instance_valid(foxlab_original):
 		die()
 		return
-	global_position = original.global_position
+	global_position = foxlab_original.global_position
 
-func _update_overload() -> void:
-	if _ending:
+func _foxlab_update_overload() -> void:
+	if _foxlab_ending:
 		return
-	var enemy_count = _enemies_in_range.size()
-	if not dead and enemy_count > overload_enemy_threshold:
+	var enemy_count = _foxlab_enemies_in_range.size()
+	if not dead and enemy_count > foxlab_overload_enemy_threshold:
 		dead = true
-		_overload_timer.start(overload_cooldown)
-		targetable_particles_instance.hide()
+		_foxlab_overload_timer.start(foxlab_overload_cooldown)
+		foxlab_targetable_particles_instance.hide()
 		emit_signal("died", self, Utils.default_die_args)
-	elif dead and _overload_timer.is_stopped() and enemy_count < overload_enemy_threshold:
+	elif dead and _foxlab_overload_timer.is_stopped() and enemy_count < foxlab_overload_enemy_threshold:
 		dead = false
-		targetable_particles_instance.show()
+		foxlab_targetable_particles_instance.show()
 
-func _on_Range_body_entered(body: Node) -> void:
-	if _ending or not body is Enemy or body.dead:
+func _foxlab_on_Range_body_entered(body: Node) -> void:
+	if _foxlab_ending or not body is Enemy or body.dead:
 		return
-	if _enemies_in_range.has(body):
+	if _foxlab_enemies_in_range.has(body):
 		return
-	_enemies_in_range[body] = true
-	body.connect("died", self, "_on_range_enemy_died")
-	body.connect("tree_exiting", self, "_on_range_enemy_removed", [body])
-	_update_overload()
+	_foxlab_enemies_in_range[body] = true
+	body.connect("died", self, "_foxlab_on_range_enemy_died")
+	body.connect("tree_exiting", self, "_foxlab_on_range_enemy_removed", [body])
+	_foxlab_update_overload()
 
-func _on_Range_body_exited(body: Node) -> void:
-	_on_range_enemy_removed(body)
+func _foxlab_on_Range_body_exited(body: Node) -> void:
+	_foxlab_on_range_enemy_removed(body)
 
-func _on_range_enemy_died(enemy: Node, _args) -> void:
-	_on_range_enemy_removed(enemy)
+func _foxlab_on_range_enemy_died(enemy: Node, _args) -> void:
+	_foxlab_on_range_enemy_removed(enemy)
 
-func _on_range_enemy_removed(enemy: Node) -> void:
-	if not _enemies_in_range.has(enemy):
+func _foxlab_on_range_enemy_removed(enemy: Node) -> void:
+	if not _foxlab_enemies_in_range.has(enemy):
 		return
-	_enemies_in_range.erase(enemy)
+	_foxlab_enemies_in_range.erase(enemy)
 	if is_instance_valid(enemy):
-		enemy.disconnect("died", self, "_on_range_enemy_died")
-		enemy.disconnect("tree_exiting", self, "_on_range_enemy_removed")
-	_update_overload()
+		enemy.disconnect("died", self, "_foxlab_on_range_enemy_died")
+		enemy.disconnect("tree_exiting", self, "_foxlab_on_range_enemy_removed")
+	_foxlab_update_overload()
 
-func _on_OverloadTimer_timeout() -> void:
-	_update_overload()
+func _foxlab_on_OverloadTimer_timeout() -> void:
+	_foxlab_update_overload()
 
-func set_original(original_entity: Node2D):
-	original = original_entity
-	original.connect("died", self, "_on_original_died")
-	original.connect("tree_exiting", self, "_on_original_tree_exiting")
-	global_position = original.global_position
+func foxlab_set_original(original_entity: Node2D):
+	foxlab_original = original_entity
+	foxlab_original.connect("died", self, "_foxlab_on_original_died")
+	foxlab_original.connect("tree_exiting", self, "_foxlab_on_original_tree_exiting")
+	global_position = foxlab_original.global_position
 	_entity_spawner_ref.targetable_pets.append(self)
-	targetable_particles_instance = targetable_particles.instance()
-	add_child(targetable_particles_instance)
-	move_child(targetable_particles_instance, 0)
-	_range.set_deferred("monitoring", true)
+	foxlab_targetable_particles_instance = foxlab_targetable_particles.instance()
+	add_child(foxlab_targetable_particles_instance)
+	move_child(foxlab_targetable_particles_instance, 0)
+	_foxlab_range.set_deferred("monitoring", true)
 	set_physics_process(true)
 
-func _on_original_died(_entity: Node2D, args):
+func _foxlab_on_original_died(_entity: Node2D, args):
 	die(args)
 
-func _on_original_tree_exiting():
+func _foxlab_on_original_tree_exiting():
 	die()
 
 func die(args = Utils.default_die_args) -> void :
-	if _ending:
+	if _foxlab_ending:
 		return
-	_ending = true
+	_foxlab_ending = true
 	dead = true
 	set_physics_process(false)
-	_overload_timer.stop()
-	for enemy in _enemies_in_range.keys():
-		_on_range_enemy_removed(enemy)
-	if is_instance_valid(original):
-		original.disconnect("died", self, "_on_original_died")
-		original.disconnect("tree_exiting", self, "_on_original_tree_exiting")
+	_foxlab_overload_timer.stop()
+	for enemy in _foxlab_enemies_in_range.keys():
+		_foxlab_on_range_enemy_removed(enemy)
+	if is_instance_valid(foxlab_original):
+		foxlab_original.disconnect("died", self, "_foxlab_on_original_died")
+		foxlab_original.disconnect("tree_exiting", self, "_foxlab_on_original_tree_exiting")
 	if is_instance_valid(_entity_spawner_ref):
 		_entity_spawner_ref.targetable_pets.erase(self)
 		if not args.cleaning_up and not _entity_spawner_ref._cleaning_up:
 			emit_signal("died", self, args)
-	if is_instance_valid(targetable_particles_instance):
-		targetable_particles_instance.queue_free()
-		targetable_particles_instance = null
+	if is_instance_valid(foxlab_targetable_particles_instance):
+		foxlab_targetable_particles_instance.queue_free()
+		foxlab_targetable_particles_instance = null
 	free_entity()

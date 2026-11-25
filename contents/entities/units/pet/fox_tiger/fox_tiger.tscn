@@ -16,7 +16,7 @@ script = ExtResource( 3 )
 stats = ExtResource( 4 )
 collision_layer = 0
 collision_mask = 0
-targetable_particles = ExtResource(6)
+foxlab_targetable_particles = ExtResource(6)
 
 [node name="Sprite" parent="Animation" index="0"]
 visible = false
@@ -45,6 +45,6 @@ wait_time = 5.0
 one_shot = true
 process_mode = 0
 
-[connection signal="body_entered" from="Range" to="." method="_on_Range_body_entered"]
-[connection signal="body_exited" from="Range" to="." method="_on_Range_body_exited"]
-[connection signal="timeout" from="OverloadTimer" to="." method="_on_OverloadTimer_timeout"]
+[connection signal="body_entered" from="Range" to="." method="_foxlab_on_Range_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_foxlab_on_Range_body_exited"]
+[connection signal="timeout" from="OverloadTimer" to="." method="_foxlab_on_OverloadTimer_timeout"]

@@ -7,6 +7,6 @@ static func get_id() -> String:
 
 func get_args(player_index: int) -> Array:
 	var args = .get_args(player_index)
-	var max_range = tracker.get_max_range_melee_weapon_range(stats, player_index)
+	var max_range = tracker.foxlab_get_max_range_melee_weapon_range(stats, player_index)
 	args.push_back(str(max_range))
 	return args

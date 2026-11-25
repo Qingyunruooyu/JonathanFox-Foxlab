@@ -280,7 +280,7 @@ func _on_foxlab_fox_entity_birth_timeout(birth: EntityBirth, targetable: bool, i
 		var args = EntitySpawner.SpawnEntityArgs.new(copy.global_position, - 1)
 		args.player_index = birth.request.player_index
 		var fake_fox_pet = _entity_spawner.spawn_entity(_foxlab_fox_tiger_scene,args)
-		fake_fox_pet.set_original(copy)
+		fake_fox_pet.foxlab_set_original(copy)
 
 ########### 异变相关 ###############
 func _foxlab_should_check_mutation(player_index: int)-> bool:

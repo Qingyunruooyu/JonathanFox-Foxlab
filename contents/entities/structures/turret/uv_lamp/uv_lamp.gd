@@ -1,65 +1,65 @@
 extends "res://entities/structures/turret/turret.gd"
 
-export (Color) var color_entity_modulation = Color(0.8, 0.5, 1.4)
-export (AudioStreamSample) var sound_enter_zone = null
-export (AudioStreamSample) var sound_exit_zone = null
+export (Color) var foxlab_color_entity_modulation = Color(0.8, 0.5, 1.4)
+export (AudioStreamSample) var foxlab_sound_enter_zone = null
+export (AudioStreamSample) var foxlab_sound_exit_zone = null
 
-var _instance_counted: bool = false
-var _exposed_enemies: Dictionary = {}
+var _foxlab_instance_counted: bool = false
+var _foxlab_exposed_enemies: Dictionary = {}
 # player -> 进照射区时 apply 的紫外印记（effects 即该组叠加效果）；退出时按同一印记 unapply 并移除，
 # 避免照射期间背包角色变动、缓存重建导致 apply/unapply 错配
-var _players_in_zone: Dictionary = {}
-var _expose_range_ratio: float = 2.0
-var _aura_base_radius: float = 0.0
-onready var _expose_shape = $ExposeRange / CollisionShape2D
-onready var _aura = $ExposeRange / aura
+var _foxlab_players_in_zone: Dictionary = {}
+var _foxlab_expose_range_ratio: float = 2.0
+var _foxlab_aura_base_radius: float = 0.0
+onready var _foxlab_expose_shape = $ExposeRange / CollisionShape2D
+onready var _foxlab_aura = $ExposeRange / aura
 
 func set_data(data: Resource) -> void :
 	.set_data(data)
-	_expose_range_ratio = data.expose_range_ratio
-	if not _instance_counted:
-		_instance_counted = true
+	_foxlab_expose_range_ratio = data.expose_range_ratio
+	if not _foxlab_instance_counted:
+		_foxlab_instance_counted = true
 		RunData.get_player_effects(player_index)[Utils.foxlab_uv_lamp_instance_hash] += 1
 
 
 func set_current_stats(new_stats) -> void :
 	.set_current_stats(new_stats)
-	_sync_expose_range()
+	_foxlab_sync_expose_range()
 
 
 func reload_data() -> void :
 	.reload_data()
-	_sync_expose_range()
+	_foxlab_sync_expose_range()
 
 
-func _sync_expose_range() -> void :
-	var radius: float = min(stats.max_range, base_stats.max_range * _expose_range_ratio)
-	if _expose_shape:
-		_expose_shape.shape.radius = radius
-	if _aura:
-		if _aura_base_radius <= 0.0:
-			_aura_base_radius = _aura.texture.get_size().x / 2.0
-		_aura.scale = Vector2(radius / _aura_base_radius, radius / _aura_base_radius)
+func _foxlab_sync_expose_range() -> void :
+	var radius: float = min(stats.max_range, base_stats.max_range * _foxlab_expose_range_ratio)
+	if _foxlab_expose_shape:
+		_foxlab_expose_shape.shape.radius = radius
+	if _foxlab_aura:
+		if _foxlab_aura_base_radius <= 0.0:
+			_foxlab_aura_base_radius = _foxlab_aura.texture.get_size().x / 2.0
+		_foxlab_aura.scale = Vector2(radius / _foxlab_aura_base_radius, radius / _foxlab_aura_base_radius)
 
 
 func _physics_process(_delta: float) -> void :
-	if _aura and not dead:
-		_aura.rotation_degrees += 90.0 * _delta
+	if _foxlab_aura and not dead:
+		_foxlab_aura.rotation_degrees += 90.0 * _delta
 
 
-func _on_ExposeRange_body_entered(body: Node) -> void :
+func _foxlab_on_ExposeRange_body_entered(body: Node) -> void :
 	if body is Player:
 		if not dead:
 			_foxlab_player_entered(body)
 		return
 	if not dead and body is Enemy:
-		_exposed_enemies[body] = true
+		_foxlab_exposed_enemies[body] = true
 		_foxlab_expose(body)
-		var _error = body.connect("died", self, "_on_exposed_enemy_died")
-		var _error_charm = body.connect("charmed", self, "_on_exposed_enemy_charmed")
+		var _error = body.connect("died", self, "_foxlab_on_exposed_enemy_died")
+		var _error_charm = body.connect("charmed", self, "_foxlab_on_exposed_enemy_charmed")
 
 
-func _on_ExposeRange_body_exited(body: Node) -> void :
+func _foxlab_on_ExposeRange_body_exited(body: Node) -> void :
 	if body is Player:
 		_foxlab_player_left(body)
 		return
@@ -67,26 +67,26 @@ func _on_ExposeRange_body_exited(body: Node) -> void :
 		return
 	if not dead and not body.dead:
 		_foxlab_unexpose(body)
-	_exposed_enemies.erase(body)
-	body.disconnect("died", self, "_on_exposed_enemy_died")
-	body.disconnect("charmed", self, "_on_exposed_enemy_charmed")
+	_foxlab_exposed_enemies.erase(body)
+	body.disconnect("died", self, "_foxlab_on_exposed_enemy_died")
+	body.disconnect("charmed", self, "_foxlab_on_exposed_enemy_charmed")
 
 
-func _on_exposed_enemy_died(target, _args) -> void :
+func _foxlab_on_exposed_enemy_died(target, _args) -> void :
 	if not dead:
 		_foxlab_unexpose(target)
-	_exposed_enemies.erase(target)
+	_foxlab_exposed_enemies.erase(target)
 
 
-func _on_exposed_enemy_charmed(target) -> void :
+func _foxlab_on_exposed_enemy_charmed(target) -> void :
 	if not dead:
 		_foxlab_set_exposed_hurtbox(target)
 
 
-func _on_player_in_zone_died(player, _args) -> void :
-	if _players_in_zone.has(player):
-		_foxlab_cleanup_player(player, _players_in_zone[player], false)
-		_players_in_zone.erase(player)
+func _foxlab_on_player_in_zone_died(player, _args) -> void :
+	if _foxlab_players_in_zone.has(player):
+		_foxlab_cleanup_player(player, _foxlab_players_in_zone[player], false)
+		_foxlab_players_in_zone.erase(player)
 
 
 func _foxlab_player_entered(player) -> void :
@@ -95,43 +95,43 @@ func _foxlab_player_entered(player) -> void :
 	RunData.foxlab_apply_effects_array(mark.effects, player_index)
 	RunData.get_player_items_ref(player_index).push_back(mark)
 	RunData.emit_signal("foxlab_item_added", mark, 1, player_index)
-	player._set_color_modulation(color_entity_modulation)
-	if sound_enter_zone:
-		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", sound_enter_zone, 2, global_position, 0, 0.1)
-	_players_in_zone[player] = mark
-	var _error = player.connect("died", self, "_on_player_in_zone_died")
+	player._set_color_modulation(foxlab_color_entity_modulation)
+	if foxlab_sound_enter_zone:
+		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", foxlab_sound_enter_zone, 2, global_position, 0, 0.1)
+	_foxlab_players_in_zone[player] = mark
+	var _error = player.connect("died", self, "_foxlab_on_player_in_zone_died")
 
 
 func _foxlab_player_left(player) -> void :
-	if not _players_in_zone.has(player):
+	if not _foxlab_players_in_zone.has(player):
 		return
-	_foxlab_cleanup_player(player, _players_in_zone[player], true)
-	_players_in_zone.erase(player)
+	_foxlab_cleanup_player(player, _foxlab_players_in_zone[player], true)
+	_foxlab_players_in_zone.erase(player)
 
 
 func _foxlab_cleanup_player(player, mark, play_sound: bool) -> void :
 	if not is_instance_valid(player):
 		return
 	var player_index: int = player.player_index
-	player.disconnect("died", self, "_on_player_in_zone_died")
+	player.disconnect("died", self, "_foxlab_on_player_in_zone_died")
 	RunData.foxlab_unapply_effects_array(mark.effects, player_index)
 	RunData.get_player_items_ref(player_index).erase(mark)
 	RunData.emit_signal("foxlab_item_added", mark, -1, player_index)
-	player.remove_color_modulation(color_entity_modulation)
-	if play_sound and sound_exit_zone:
-		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", sound_exit_zone, 2, global_position, 0, 0.1)
+	player.remove_color_modulation(foxlab_color_entity_modulation)
+	if play_sound and foxlab_sound_exit_zone:
+		SoundService.play_sound2d_with_limit("foxlab_uv_lamp", foxlab_sound_exit_zone, 2, global_position, 0, 0.1)
 
 
 func die(args= Utils.default_die_args) -> void :
-	if _instance_counted:
-		_instance_counted = false
+	if _foxlab_instance_counted:
+		_foxlab_instance_counted = false
 		RunData.get_player_effects(player_index)[Utils.foxlab_uv_lamp_instance_hash] -= 1
-	for body in _exposed_enemies.keys():
+	for body in _foxlab_exposed_enemies.keys():
 		_foxlab_unexpose(body)
-	_exposed_enemies.clear()
-	for player in _players_in_zone.keys():
-		_foxlab_cleanup_player(player, _players_in_zone[player], false)
-	_players_in_zone.clear()
+	_foxlab_exposed_enemies.clear()
+	for player in _foxlab_players_in_zone.keys():
+		_foxlab_cleanup_player(player, _foxlab_players_in_zone[player], false)
+	_foxlab_players_in_zone.clear()
 	.die(args)
 
 func _foxlab_expose(enemy) -> void :
@@ -141,7 +141,7 @@ func _foxlab_expose(enemy) -> void :
 		if enemy._foxlab_uv_hurtbox_mask == -1:
 			enemy._foxlab_uv_hurtbox_mask = enemy._hurtbox.collision_mask
 		_foxlab_set_exposed_hurtbox(enemy)
-		enemy._set_color_modulation(color_entity_modulation)
+		enemy._set_color_modulation(foxlab_color_entity_modulation)
 		RunData.foxlab_exposed_enemies[enemy.enemy_id_hash] = RunData.foxlab_exposed_enemies.get(enemy.enemy_id_hash, 0) + 1
 
 
@@ -159,7 +159,7 @@ func _foxlab_unexpose(body) -> void :
 	body._foxlab_uv_lamps.erase(self)
 	if not body._foxlab_uv_lamps.empty():
 		return
-	body.remove_color_modulation(color_entity_modulation)
+	body.remove_color_modulation(foxlab_color_entity_modulation)
 	if body._foxlab_uv_hurtbox_mask != -1:
 		body._hurtbox.set_deferred("collision_mask", body._foxlab_uv_hurtbox_mask)
 		body._foxlab_uv_hurtbox_mask = -1

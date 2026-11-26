@@ -247,6 +247,9 @@ static func init_stats(all_null_values: bool = false)->Dictionary:
 		var vanilla_stats = .init_stats(all_null_values)
 		var foxlab_stats = init_foxlab_stats()
 		foxlab_stats.merge(vanilla_stats)
+		if Utils.on_editor:
+			foxlab_stats[Keys.next_level_xp_needed_hash] = 0
+			foxlab_stats[Keys.stronger_elites_on_kill_hash] = 0
 
 		return foxlab_stats;
 	else:

@@ -89,6 +89,34 @@ func _on_foxlab_acid_timer_timeout() -> void :
 		if lamp_owner >= 0:
 			RunData.add_tracked_value(lamp_owner, Utils.item_foxlab_uv_lamp_hash, dmg_taken[1], 1)
 
+func _foxlab_get_charm_material() -> ShaderMaterial:
+	for effect_behavior in effect_behaviors.get_children():
+		if "charmed" in effect_behavior and effect_behavior.charmed:
+			var new_shader = effect_behavior.projectile_shader.duplicate()
+			new_shader.set_shader_param("hue", Utils.CHARM_COLOR.h)
+			return new_shader
+	return null
+
+func foxlab_on_charmed(_enemy) -> void:
+	var charm_material = _foxlab_get_charm_material()
+	for proj in _all_additional_projectiles:
+		if is_instance_valid(proj):
+			proj.set_collision_layer(Utils.PET_PROJECTILES_BIT)
+			if charm_material != null:
+				proj.set_sprite_material(charm_material)
+
+	if "is_elite" in self:
+		for effect_behavior in effect_behaviors.get_children():
+			if "charmed" in effect_behavior and effect_behavior.charmed:
+				effect_behavior._charm_timer.start(max(_entity_spawner_ref._wave_timer.time_left - 5, Utils.CHARM_DURATION))
+
+func foxlab_on_died(_entity, _die_args) -> void:
+	for proj in _all_additional_projectiles:
+		if is_instance_valid(proj) and proj._has_custom_material:
+			proj.set_collision_layer(proj._original_collision_layer)
+			proj._has_custom_material = false
+			proj._sprite.material = Utils.projectile_outline_petrol_shadermat if proj.evolution_puddle_type == proj.EVOLUTION_PUDDLE_PETROL else Utils.projectile_outline_shadermat
+
 ######## 扩展 ######
 
 func _ready():
@@ -97,6 +125,8 @@ func _ready():
 	add_child(_foxlab_acid_timer)
 	_foxlab_acid_damage_args.dodgeable = false
 	_foxlab_acid_damage_args.armor_applied = false
+	var _e_charmed = connect("charmed", self, "foxlab_on_charmed")
+	var _e_died = connect("died", self, "foxlab_on_died")
 
 func init(zone_min_pos: Vector2, zone_max_pos: Vector2, p_players_ref: Array = [], entity_spawner_ref = null) -> void:
 	.init(zone_min_pos, zone_max_pos, p_players_ref, entity_spawner_ref)
@@ -117,6 +147,33 @@ func respawn() -> void :
 	remove_color_modulation(FOXLAB_COLOR_PETROL)
 	if _foxlab_acid_timer != null:
 		_foxlab_acid_timer.stop()
+
+func register_attack_behavior(p_attack_behavior: AttackBehavior) -> void:
+	.register_attack_behavior(p_attack_behavior)
+	if not _is_charmed or not (p_attack_behavior is ShootingAttackBehavior):
+		return
+	if p_attack_behavior.custom_collision_layer == Utils.PET_PROJECTILES_BIT:
+		return
+	for effect_behavior in effect_behaviors.get_children():
+		if "charmed" in effect_behavior and effect_behavior.charmed:
+			var shooting_states = effect_behavior.get("_original_shooting_states") # TODO(jona): remove when compatible
+			if shooting_states != null:
+				shooting_states.push_back([p_attack_behavior, p_attack_behavior.custom_collision_layer, p_attack_behavior.custom_sprite_material])
+	p_attack_behavior.custom_collision_layer = Utils.PET_PROJECTILES_BIT
+	var charm_material = _foxlab_get_charm_material()
+	if charm_material != null:
+		p_attack_behavior.custom_sprite_material = charm_material
+
+func register_additional_projectile(p_additional_projectile: EnemyProjectile) -> void:
+	.register_additional_projectile(p_additional_projectile)
+	if not _is_charmed or p_additional_projectile == null or not is_instance_valid(p_additional_projectile):
+		return
+	if p_additional_projectile._hitbox.collision_layer == Utils.PET_PROJECTILES_BIT:
+		return
+	p_additional_projectile.set_collision_layer(Utils.PET_PROJECTILES_BIT)
+	var charm_material = _foxlab_get_charm_material()
+	if charm_material != null:
+		p_additional_projectile.set_sprite_material(charm_material)
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	var dmg_taken: Array = .take_damage(value, args)

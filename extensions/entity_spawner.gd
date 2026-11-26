@@ -23,29 +23,6 @@ func get_nb_bosses_and_elites_alive() -> int:
 				boss_num += 1
 	return boss_num
 
-func on_enemy_charmed(enemy: Entity) -> void :
-	.on_enemy_charmed(enemy)
-	var is_boss = enemy is Boss
-	for effect_behavior in enemy.effect_behaviors.get_children():
-		if not "charmed" in effect_behavior:
-			continue
-		for proj in enemy._all_additional_projectiles:
-			if is_instance_valid(proj):
-				proj.set_collision_layer(Utils.PET_PROJECTILES_BIT)
-				var new_shader = effect_behavior.projectile_shader.duplicate()
-				new_shader.set_shader_param("hue", Utils.CHARM_COLOR.h)
-				proj.set_sprite_material(new_shader)
-		if is_boss:
-			effect_behavior._charm_timer.start(max(_wave_timer.time_left - 5, Utils.CHARM_DURATION))
-
-func _on_enemy_died(enemy: Node2D, _args: Entity.DieArgs) -> void :
-	._on_enemy_died(enemy, _args)
-	for proj in enemy._all_additional_projectiles:
-		if is_instance_valid(proj) and proj._has_custom_material:
-			proj.set_collision_layer(proj._original_collision_layer)
-			proj._has_custom_material = false
-			proj._sprite.material = Utils.projectile_outline_petrol_shadermat if proj.evolution_puddle_type == proj.EVOLUTION_PUDDLE_PETROL else Utils.projectile_outline_shadermat
-
 func spawn_entity(scene: PackedScene, args: SpawnEntityArgs, data: Resource = null, source = null, charmed_by: int = - 1) -> KinematicBody2D:
 	if args.type == EntityType.ENEMY or args.type == EntityType.BOSS:
 		if not scene.get_instance_id() in ItemService.foxlab_enemy_seed_effect_map:

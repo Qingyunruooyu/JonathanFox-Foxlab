@@ -10,9 +10,9 @@ var foxlab_targetable_particles_instance
 var _foxlab_enemies_in_range = {}
 var _foxlab_ending = false
 
-onready var _foxlab_range = $Range
-onready var _foxlab_range_shape = $Range/CollisionShape2D
-onready var _foxlab_overload_timer = $OverloadTimer
+onready var _foxlab_range = $FoxlabRange
+onready var _foxlab_range_shape = $FoxlabRange/CollisionShape2D
+onready var _foxlab_overload_timer = $FoxlabOverloadTimer
 
 func _ready():
 	set_physics_process(false)

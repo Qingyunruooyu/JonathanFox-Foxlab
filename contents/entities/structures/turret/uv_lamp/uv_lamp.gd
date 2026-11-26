@@ -11,8 +11,8 @@ var _foxlab_exposed_enemies: Dictionary = {}
 var _foxlab_players_in_zone: Dictionary = {}
 var _foxlab_expose_range_ratio: float = 2.0
 var _foxlab_aura_base_radius: float = 0.0
-onready var _foxlab_expose_shape = $ExposeRange / CollisionShape2D
-onready var _foxlab_aura = $ExposeRange / aura
+onready var _foxlab_expose_shape = $FoxlabExposeRange / CollisionShape2D
+onready var _foxlab_aura = $FoxlabExposeRange / FoxlabAura
 
 func set_data(data: Resource) -> void :
 	.set_data(data)

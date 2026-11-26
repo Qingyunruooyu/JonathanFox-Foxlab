@@ -42,18 +42,18 @@ monitorable = false
 rotation = 1.5708
 shape = SubResource( 1 )
 
-[node name="SlowHitbox" parent="." index="4" instance=ExtResource( 5 )]
+[node name="FoxlabSlowHitbox" parent="." index="4" instance=ExtResource( 5 )]
 position = Vector2( -24, 4 )
 collision_layer = 8
 deals_damage = false
 
-[node name="Collision" parent="SlowHitbox" index="0"]
+[node name="Collision" parent="FoxlabSlowHitbox" index="0"]
 position = Vector2( 25, 0 )
 shape = SubResource( 2 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="body_entered" from="Range" to="." method="_on_Range_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_Range_body_exited"]
-[connection signal="hit_something" from="SlowHitbox" to="." method="_foxlab_on_SlowHitbox_hit_something"]
+[connection signal="hit_something" from="FoxlabSlowHitbox" to="." method="_foxlab_on_SlowHitbox_hit_something"]
 
-[editable path="SlowHitbox"]
+[editable path="FoxlabSlowHitbox"]

@@ -75,23 +75,23 @@ position = Vector2( -1, -31 )
 rotation = 0.0
 shape = SubResource( 2 )
 
-[node name="ExposeRange" type="Area2D" parent="." index="5"]
+[node name="FoxlabExposeRange" type="Area2D" parent="." index="5"]
 collision_layer = 0
 collision_mask = 518
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ExposeRange" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FoxlabExposeRange" index="0"]
 position = Vector2( -1, -31 )
 shape = SubResource( 1 )
 
-[node name="aura" type="Sprite" parent="ExposeRange" index="1"]
+[node name="FoxlabAura" type="Sprite" parent="FoxlabExposeRange" index="1"]
 modulate = Color( 0.568627, 0.243137, 1, 0.352941 )
 material = SubResource( 6 )
 position = Vector2( -1, -31 )
 scale = Vector2( 2.24, 2.24 )
 texture = ExtResource( 4 )
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="ExposeRange/aura" index="0"]
+[node name="CPUParticles2D" type="CPUParticles2D" parent="FoxlabExposeRange/FoxlabAura" index="0"]
 material = SubResource( 7 )
 rotation = 1.81118
 amount = 10
@@ -107,5 +107,5 @@ scale_amount = 0.35
 scale_amount_random = 0.39
 color_ramp = SubResource( 8 )
 
-[connection signal="body_entered" from="ExposeRange" to="." method="_foxlab_on_ExposeRange_body_entered"]
-[connection signal="body_exited" from="ExposeRange" to="." method="_foxlab_on_ExposeRange_body_exited"]
+[connection signal="body_entered" from="FoxlabExposeRange" to="." method="_foxlab_on_ExposeRange_body_entered"]
+[connection signal="body_exited" from="FoxlabExposeRange" to="." method="_foxlab_on_ExposeRange_body_exited"]

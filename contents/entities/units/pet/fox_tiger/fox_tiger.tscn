@@ -31,20 +31,20 @@ monitoring = false
 [node name="MovementBehavior" type="Node2D" parent="." index="3"]
 script = ExtResource( 5 )
 
-[node name="Range" type="Area2D" parent="."]
+[node name="FoxlabRange" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 4
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FoxlabRange"]
 shape = SubResource( 1 )
 
-[node name="OverloadTimer" type="Timer" parent="."]
+[node name="FoxlabOverloadTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 process_mode = 0
 
-[connection signal="body_entered" from="Range" to="." method="_foxlab_on_Range_body_entered"]
-[connection signal="body_exited" from="Range" to="." method="_foxlab_on_Range_body_exited"]
-[connection signal="timeout" from="OverloadTimer" to="." method="_foxlab_on_OverloadTimer_timeout"]
+[connection signal="body_entered" from="FoxlabRange" to="." method="_foxlab_on_Range_body_entered"]
+[connection signal="body_exited" from="FoxlabRange" to="." method="_foxlab_on_Range_body_exited"]
+[connection signal="timeout" from="FoxlabOverloadTimer" to="." method="_foxlab_on_OverloadTimer_timeout"]

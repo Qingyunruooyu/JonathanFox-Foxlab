@@ -553,7 +553,7 @@ func foxlab_wanted_pool_filtered():
 		if item.is_mutant and team.mutant_weight <= 0.0:
 			continue
 		pool.append(item)
-	return pool if not pool.empty() else foxlab_item_wanted
+	return pool
 
 func foxlab_get_random_item_foxlab_wanted(player_index: int):
 	if foxlab_item_wanted.empty():
@@ -563,6 +563,48 @@ func foxlab_get_random_item_foxlab_wanted(player_index: int):
 	if RunData.get_nb_item(character_foxlab_bounty_hunter_hash, player_index) > 0:
 		RunData.add_tracked_value(player_index, character_foxlab_bounty_hunter_hash, 1)
 	return foxlab_wanted_pool_filtered().pick_random()
+
+func foxlab_find_buddhas_hand_effect(item_data):
+	if item_data is WeaponData:
+		return null
+	for effect in item_data.effects:
+		if effect.get_id() == "foxlab_get_rand_weapon":
+			return effect
+	return null
+
+func foxlab_graft_buddhas_hand_display(item_data, player_index: int):
+	var effect = foxlab_find_buddhas_hand_effect(item_data)
+	if effect == null:
+		return null
+	effect.try_generate(player_index)
+	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[0 if effect.value == 1 else 1]
+	if meta.weapon == null or not meta.weapon.is_meca:
+		return null
+	var options = []
+	for e in meta.weapon.effects:
+		if e is EffectOption:
+			options.append(e.duplicate())
+	if options.size() < 2:
+		return null
+	var display = item_data.duplicate()
+	display.is_meca = true
+	display.effects = item_data.effects.duplicate()
+	display.effects.append_array(options)
+	return display
+
+func foxlab_store_buddhas_hand_choice(item_data, choice: int, player_index: int) -> void:
+	var effect = foxlab_find_buddhas_hand_effect(item_data)
+	if effect == null:
+		return
+	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[0 if effect.value == 1 else 1]
+	meta.meca_choice = choice
+	var cleaned = []
+	for e in item_data.effects:
+		if e is EffectOption:
+			continue
+		cleaned.append(e)
+	item_data.effects = cleaned
+	item_data.is_meca = false
 
 # 不直接销毁武器， 因为武器可能还有投射物、爆炸在外面，防止他们引用野地址
 func foxlab_queue_free_weapon(weapon: Node2D):

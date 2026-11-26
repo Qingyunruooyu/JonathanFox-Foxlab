@@ -418,6 +418,9 @@ func on_shop_item_bought(shop_item: ShopItem, player_index: int) -> void :
 			items.append(item)
 			args.owned_and_shop_items.append(item)
 
+	if shop_item.item_data.is_meca and Utils.foxlab_find_buddhas_hand_effect(shop_item.item_data) != null:
+		Utils.foxlab_store_buddhas_hand_choice(shop_item.item_data, shop_item.effect_choice_selected, player_index)
+
 	.on_shop_item_bought(shop_item, player_index)
 
 	if shop_value != 0 and RunData.get_player_effect_bool(Utils.foxlab_buy_item_increase_tier_hash, player_index):

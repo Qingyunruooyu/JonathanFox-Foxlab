@@ -31,6 +31,18 @@ func apply(player_index: int) -> void:
 	try_generate(player_index)
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]
+	if meta.weapon.is_meca:
+		var has_option = false
+		for e in meta.weapon.effects:
+			if e is EffectOption:
+				has_option = true
+				break
+		if has_option:
+			var meca_choice = meta.meca_choice
+			if meca_choice < 0:
+				meca_choice = Utils.get_rand_element([0, 1])
+			meta.weapon = DLC2Data.change_effect_option_to_modular_effect(meta.weapon, meca_choice)
+			meta.meca_choice = -1
 	var new_weapon = RunData.add_weapon(meta.weapon, player_index)
 	RunData.emit_signal("foxlab_weapon_added", new_weapon, player_index)
 	if meta.is_const_weapon:
@@ -91,8 +103,6 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 		while not weapon is WeaponData:
 			weapon = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.WEAPONS, args)
 		weapon = weapon.duplicate()
-	if weapon.is_meca:
-		DLC2Data.change_effect_option_to_modular_effect(weapon, Utils.get_rand_element([0, 1]))
 	if weapon.type ==  WeaponData.Type.MELEE and _get_chance_success(CHANCE_BOOST_MELEE, luck_chance):
 		var melee_stats = weapon.stats.duplicate()
 		melee_stats.deal_dmg_on_return = true
@@ -114,6 +124,8 @@ func _get_rand_weapon(player_index: int) -> WeaponData:
 			args.increase_tier = 3
 			# items (except hourglass) can be get even if it may exceed the limited number
 		item_for_effect = ItemService._get_rand_item_for_wave(RunData.current_wave, player_index, ItemService.TierData.ITEMS, args)
+	else:
+		item_for_effect = ItemService.apply_item_effect_modifications(item_for_effect, player_index)
 
 	var is_cursed:int = value != VALUE_BASE
 	var meta = RunData.get_foxlab_buddhas_hand_meta(player_index)[is_cursed]

@@ -25,8 +25,27 @@ func on_foxlab_item_left():
 
 ## 扩展 ##
 func show_item(item_data: ItemParentData) -> void :
-	.show_item(item_data)
+	var grafted = Utils.foxlab_graft_buddhas_hand_display(item_data, player_index)
+	.show_item(grafted if grafted != null else item_data)
+	if _item_data != null and _item_data.is_meca and not _needs_meca_effect_choice():
+		_meca_effect_container.visible = false
+		_meca_effect_button_0.visible = false
+		_meca_effect_button_1.visible = false
 	on_foxlab_item_hovered()
+
+func _on_TakeButton_pressed():
+	if _item_data.is_meca:
+		if Utils.foxlab_find_buddhas_hand_effect(_item_data) != null:
+			if _meca_effect_choice_selected < 0:
+				return
+			Utils.foxlab_store_buddhas_hand_choice(_item_data, _meca_effect_choice_selected, player_index)
+		elif not _needs_meca_effect_choice():
+			var taken = _item_data
+			taken.is_meca = false
+			._on_TakeButton_pressed()
+			taken.is_meca = true
+			return
+	._on_TakeButton_pressed()
 
 func show_upgrades_for_level(level: int) -> void :
 	.show_upgrades_for_level(level)

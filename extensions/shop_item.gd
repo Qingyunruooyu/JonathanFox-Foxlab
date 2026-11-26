@@ -4,7 +4,12 @@ onready var foxlab_material_icon = preload("res://items/materials/material_ui.pn
 
 var _foxlab_steal_timer: Timer
 
+## 扩展 ##
+
 func set_shop_item(p_item_data: ItemParentData, p_wave_value: int = RunData.current_wave)->void :
+	var grafted = Utils.foxlab_graft_buddhas_hand_display(p_item_data, player_index)
+	if grafted != null:
+		p_item_data = grafted
 	.set_shop_item(p_item_data, p_wave_value)
 	if !RunData.get_player_effect_bool(Keys.hp_shop_hash, player_index):
 		if RunData.is_coop_run:

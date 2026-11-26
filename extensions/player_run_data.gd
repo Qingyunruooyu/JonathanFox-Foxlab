@@ -82,6 +82,7 @@ func _init():
 				"is_const_weapon": 0,
 				"extra_item_id": "",
 				"item": null, # for special item effect (duplicate_item, increase_tier_on_reroll, item_hourglass)
+				"meca_choice": -1,
 				})
 	foxlab_buddhas_hand_meta.push_back(foxlab_buddhas_hand_meta[0].duplicate())
 
@@ -247,10 +248,11 @@ static func init_stats(all_null_values: bool = false)->Dictionary:
 		var vanilla_stats = .init_stats(all_null_values)
 		var foxlab_stats = init_foxlab_stats()
 		foxlab_stats.merge(vanilla_stats)
+		# 为了过 RunData.add_stat的 assert
 		if Utils.on_editor:
 			foxlab_stats[Keys.next_level_xp_needed_hash] = 0
 			foxlab_stats[Keys.stronger_elites_on_kill_hash] = 0
-
+			foxlab_stats[Keys.enemy_gold_drops_hash] = 0
 		return foxlab_stats;
 	else:
 		return {}

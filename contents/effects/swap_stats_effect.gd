@@ -14,6 +14,7 @@ func is_ignored_stats(effects, stat_hash, stat_gain_hash):
 	return false
 
 func apply(player_index: int) -> void:
+	Utils.reset_stat_cache(player_index)
 	var stats_in_container = Utils.foxlab_get_stats_in_container()
 	var effects = RunData.get_player_effects(player_index)
 	for stats in stats_in_container:

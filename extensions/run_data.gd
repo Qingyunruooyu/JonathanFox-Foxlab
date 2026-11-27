@@ -327,10 +327,20 @@ func _foxlab_recover_lost_item(item_data: Resource, player_index: int, player_da
 			return
 		item_data = new_weapon
 		emit_signal("foxlab_weapon_gear_changed", player_index)
+		emit_signal("foxlab_item_gear_changed", player_index)
 	else:
 		foxlab_add_item_triggering_stat_gain_effects(item_data, player_index)
 		emit_signal("foxlab_item_gear_changed", player_index)
+	foxlab_push_recovered_marker(player_index)
 	emit_signal("foxlab_gear_recovered", item_data, player_index)
+
+func foxlab_push_recovered_marker(player_index: int) -> void:
+	var lab_notes = get_player_item(Utils.item_foxlab_experiment_log_hash, player_index)
+	if lab_notes == null:
+		return
+	var recently = players_data[player_index].recently_mutated
+	if not recently.has(lab_notes):
+		recently.push_back(lab_notes)
 
 func foxlab_apply_effects_array(effects: Array, player_index: int) -> void :
 	Utils.reset_stat_cache(player_index)
@@ -476,6 +486,12 @@ func remove_gold(value: int, player_index: int) -> void :
 	else:
 		.remove_gold(value, player_index)
 	foxlab_process_gold(-value, player_index)
+
+func on_wave_end() -> void :
+	.on_wave_end()
+	for player_index in players_data.size():
+		if not get_player_effects(player_index)[Utils.foxlab_recovered_items_this_wave_hash].empty():
+			foxlab_push_recovered_marker(player_index)
 
 func on_wave_start(timer: WaveTimer) -> void :
 	for player_index in get_player_count():

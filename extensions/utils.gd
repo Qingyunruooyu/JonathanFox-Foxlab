@@ -15,6 +15,7 @@ const FOXLAB_FOX_FREE_REROLL = 1
 const FOXLAB_MOM_LANDMINE_MAX_PER_WAVE = 6
 const FOXLAB_COPY_PETS_STRUCTURES_DELAY = 8.0
 var FOXLAB_STRUCT_WITH_EFFECTS = [Keys.generate_hash("item_foxlab_reactor"), Keys.generate_hash("item_foxlab_tracker")]
+var foxlab_dependent_summon_hashes = {Keys.generate_hash("brachiosaurus_foot"): 1}
 
 # Effects
 var foxlab_recover_lost_item_hash: int = Keys.generate_hash("foxlab_recover_lost_item")

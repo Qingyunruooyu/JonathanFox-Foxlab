@@ -7,7 +7,7 @@ static func get_id() -> String:
 
 func apply(player_index: int) -> void :
 	var main = Utils.get_scene_node()
-	if main._cleaning_up or enemy_to_spawn == null:
+	if main._cleaning_up or enemy_to_spawn == null or ItemService.foxlab_enemy_scene_blacklisted(enemy_to_spawn):
 		 return
 	var entity_spawner = main._entity_spawner
 	var source_spawner = null

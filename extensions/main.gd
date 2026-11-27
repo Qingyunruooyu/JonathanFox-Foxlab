@@ -544,6 +544,8 @@ func foxlab_spawn_crate(unit) -> bool:
 	return false
 
 func foxlab_spawn_seed(unit, player_index: int):
+	if Utils.foxlab_dependent_summon_hashes.has(unit.enemy_id_hash):
+		return
 	var timer = foxlab_seed_timers[player_index]
 	if timer == null or not timer.is_stopped():
 		return

@@ -256,16 +256,18 @@ func foxlab_ensure_enemy_registry():
 		if scene == null:
 			Utils.foxlab_log("enemy scene doesn't exist. enemy item: ", entity.my_id)
 			continue
-		_foxlab_register_enemy_scene(scene, false)
-		foxlab_normal_scenes.append(scene)
+		if _foxlab_register_enemy_scene(scene, false):
+			foxlab_normal_scenes.append(scene)
 
 	for enemy_data in Utils.foxlab_get_available_zone_units(true) + Utils.foxlab_get_available_zone_units(false):
 		_foxlab_register_enemy_scene(enemy_data.scene, true)
 
-func _foxlab_register_enemy_scene(scene: PackedScene, is_boss: bool) -> void:
+func _foxlab_register_enemy_scene(scene: PackedScene, is_boss: bool) -> bool:
 	var enemy = scene.instance()
+	var id_hash: int = Keys.generate_hash(enemy.enemy_id)
 	var entry = {
 		"scene": scene,
+		"enemy_id_hash": id_hash,
 		"texture": enemy.get_node("Animation/Sprite").texture,
 		"is_boss": is_boss,
 		"collision_radii": Vector3(
@@ -275,19 +277,38 @@ func _foxlab_register_enemy_scene(scene: PackedScene, is_boss: bool) -> void:
 		)
 	}
 	# 同enemy_id多场景（精英机械/变异/普通形态、吞兽和宝箱怪的地图皮肤等）
-	var id_hash: int = Keys.generate_hash(enemy.enemy_id)
 	if not foxlab_hash_to_entry.has(id_hash):
 		foxlab_hash_to_entry[id_hash] = []
 	foxlab_hash_to_entry[id_hash].append(entry)
 	foxlab_scene_to_entry[scene] = entry
 	enemy.free()
+	return not Utils.foxlab_dependent_summon_hashes.has(id_hash)
 
 func foxlab_get_enemy_scene(enemy_id_hash: int) -> PackedScene:
 	foxlab_ensure_enemy_registry()
+	if Utils.foxlab_dependent_summon_hashes.has(enemy_id_hash):
+		return null
 	var entries = foxlab_hash_to_entry.get(enemy_id_hash)
 	if entries == null or entries.empty():
 		return null
 	return entries.pick_random().scene
+
+func foxlab_enemy_scene_blacklisted(scene: PackedScene) -> bool:
+	if scene == null:
+		return false
+	foxlab_ensure_enemy_registry()
+	var entry = foxlab_scene_to_entry.get(scene)
+	if entry == null:
+		return false
+	return Utils.foxlab_dependent_summon_hashes.has(entry["enemy_id_hash"])
+
+func foxlab_pick_zone_unit(is_boss: bool):
+	var pool = Utils.foxlab_get_available_zone_units(is_boss)
+	for _i in pool.size():
+		var candidate = Utils.get_rand_element(pool)
+		if not foxlab_enemy_scene_blacklisted(candidate.scene):
+			return candidate
+	return null
 
 func foxlab_get_enemy_entry_by_scene(scene) -> Dictionary:
 	foxlab_ensure_enemy_registry()
@@ -312,9 +333,9 @@ func foxlab_spawn_random_enemy(enemy, boss_spawned_this_wave: int, player_index:
 			return new_boss_num
 		var enemy_data = null
 		if RunData.current_wave >= 13 and Utils.get_chance_success(FOXLAB_BOSS_CHANCE):
-			enemy_data = Utils.get_rand_element(Utils.foxlab_get_available_zone_units(true))
+			enemy_data = foxlab_pick_zone_unit(true)
 		else:
-			enemy_data = Utils.get_rand_element(Utils.foxlab_get_available_zone_units(false))
+			enemy_data = foxlab_pick_zone_unit(false)
 		var main = Utils.get_scene_node()
 		for _player_index in RunData.get_player_count():
 			var player =  main._players[_player_index]

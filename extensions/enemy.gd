@@ -218,6 +218,8 @@ func register_additional_projectile(p_additional_projectile: EnemyProjectile) ->
 		p_additional_projectile.set_sprite_material(charm_material)
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
+	if _is_charmed:
+		return [0, 0, false]
 	var dmg_taken: Array = .take_damage(value, args)
 	if not _foxlab_uv_lamps.empty() and args.hitbox != null and dmg_taken[1] > 0:
 		var layer: int = args.hitbox.collision_layer

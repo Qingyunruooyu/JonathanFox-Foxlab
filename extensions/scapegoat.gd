@@ -52,6 +52,7 @@ func update_highlight(_value: bool = true):
 
 func take_damage(value: int, args: TakeDamageArgs) -> Array:
 	var dmg_taken = [0, 0]
+	# TODO(jona): remove when compatible
 	if not (args.hitbox and args.hitbox.is_healing):
 		dmg_taken = .take_damage(value, args)
 	if dmg_taken[1] > 0:

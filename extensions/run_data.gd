@@ -372,6 +372,7 @@ func get_foxlab_backpack_char_effects(player_index: int):
 		for effect in item.effects:
 			if effect is TurretEffect or effect is SwapMaxMinStatEffect or effect is StatCapEffect\
 				or effect is LinearScalingEffect or effect is GainMecaPartsEffect or effect is BurnChanceEffect\
+				or effect is NullEffect\
 				or effect.storage_method == Effect.StorageMethod.REPLACE or effect.storage_method == Effect.StorageMethod.APPEND_KEY\
 				or effect.key_hash in FOXLAB_AURA_BLACKLIST_EFFECT or effect.custom_key_hash in FOXLAB_AURA_BLACKLIST_EFFECT\
 				or boolean_keys.has(effect.key_hash)\
@@ -642,6 +643,7 @@ const FOXLAB_AURA_UNSAFE_EFFECT_IDS = {
 	"foxlab_stats_end_of_wave_after_wave": true,
 	"foxlab_swap_stats": true,
 	"foxlab_take_away": true,
+	"foxlab_convert_remainder": true,
 }
 
 var FOXLAB_AURA_BLACKLIST_EFFECT = {

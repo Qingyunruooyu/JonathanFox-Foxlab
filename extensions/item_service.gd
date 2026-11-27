@@ -133,7 +133,7 @@ func _foxlab_init_transform_characters():
 	_foxlab_clear_transform_character_caches()
 	var available_characters = []
 	for character in get_characters():
-		if _foxlab_requirements_met(character):
+		if get_disabled_required_update(character) == null:
 			available_characters.append(character)
 	if not foxlab_mod.is_transform_vanilla_only():
 		foxlab_transform_characters = available_characters

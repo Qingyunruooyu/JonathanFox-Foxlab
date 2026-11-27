@@ -913,6 +913,19 @@ func foxlab_clear_wanted_caches() -> void :
 	foxlab_item_wanted_hash.clear()
 	foxlab_unknown_elites.clear()
 
+func foxlab_is_dlc_stat_active(stat_hash: int) -> bool:
+	if stat_hash == Keys.stat_curse_hash:
+		# TODO(jona): remove when compatible
+		if not ProgressData.has_method("is_curse_active"):
+			return true
+		return ProgressData.is_curse_active()
+	if stat_hash == Keys.stat_evolution_hash:
+		# TODO(jona): remove when compatible
+		if not ProgressData.has_method("is_evolution_active"):
+			return true
+		return ProgressData.is_evolution_active()
+	return true
+
 ######## 扩展 ######
 
 func _init() -> void :
@@ -928,6 +941,8 @@ func reset_stat_keys() -> void :
 		if update_data == null or update_data.item_set == null:
 			continue
 		for stat in update_data.item_set.stats:
+			if stat.is_dlc_stat and not foxlab_is_dlc_stat_active(stat.stat_hash):
+				continue
 			if stat.is_primary_stat and not foxlab_primary_stat_keys.has(stat.stat_hash):
 				foxlab_primary_stat_keys.append(stat.stat_hash)
 				Utils.foxlab_log("stat: ", Keys.hash_to_string[stat.stat_hash])
@@ -937,6 +952,7 @@ func reset_stat_keys() -> void :
 	foxlab_exploding_turret_tracking_keys = null
 
 	foxlab_stats_in_container.clear()
+	foxlab_stats_invisible_in_container.clear()
 	if is_instance_valid(foxlab_stats_container):
 		foxlab_stats_container.queue_free()
 	foxlab_stats_container = load("res://ui/menus/shop/stats_container.tscn").instance()

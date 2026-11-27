@@ -89,6 +89,43 @@ func _on_foxlab_acid_timer_timeout() -> void :
 		if lamp_owner >= 0:
 			RunData.add_tracked_value(lamp_owner, Utils.item_foxlab_uv_lamp_hash, dmg_taken[1], 1)
 
+# 腕龙的脚的魅惑外观：可见图形是根级Sprite（$Sprite2下落的脚/$Sprite3落地环），基础sprite只是地面标记，
+# 原版魅惑描边只装饰基础sprite（entity.gd _set_outlines），魅惑时需给根级Sprite补描边并记录原值供复原
+var _foxlab_charmed_outline_sprites: Array = []
+
+func _foxlab_convert_charmed_attack_behavior(p_attack_behavior: AttackBehavior, charm_material) -> void:
+	if p_attack_behavior.custom_collision_layer == Utils.PET_PROJECTILES_BIT:
+		return
+	for effect_behavior in effect_behaviors.get_children():
+		if "charmed" in effect_behavior and effect_behavior.charmed:
+			var shooting_states = effect_behavior.get("_original_shooting_states") # TODO(jona): remove when compatible
+			if shooting_states != null:
+				shooting_states.push_back([p_attack_behavior, p_attack_behavior.custom_collision_layer, p_attack_behavior.custom_sprite_material])
+	p_attack_behavior.custom_collision_layer = Utils.PET_PROJECTILES_BIT
+	if charm_material != null:
+		p_attack_behavior.custom_sprite_material = charm_material
+
+func _foxlab_apply_charm_outline_to_root_sprites() -> void:
+	if outline_material == null:
+		return
+	for node in get_children():
+		if not (node is Sprite) or node.texture == null:
+			continue
+		_foxlab_charmed_outline_sprites.push_back([node, node.material])
+		var outline_mat = ShaderMaterial.new()
+		outline_mat.shader = outline_material.shader
+		outline_mat.set_shader_param("texture_size", node.texture.get_size())
+		outline_mat.set_shader_param("alpha", 0.4)
+		outline_mat.set_shader_param("desaturation", 0.75)
+		outline_mat.set_shader_param("outline_color_0", Utils.CHARM_COLOR)
+		node.material = outline_mat
+
+func _foxlab_restore_charm_outline_sprites() -> void:
+	for sprite_entry in _foxlab_charmed_outline_sprites:
+		if is_instance_valid(sprite_entry[0]):
+			sprite_entry[0].material = sprite_entry[1]
+	_foxlab_charmed_outline_sprites.clear()
+
 func _foxlab_get_charm_material() -> ShaderMaterial:
 	for effect_behavior in effect_behaviors.get_children():
 		if "charmed" in effect_behavior and effect_behavior.charmed:
@@ -110,12 +147,20 @@ func foxlab_on_charmed(_enemy) -> void:
 			if "charmed" in effect_behavior and effect_behavior.charmed:
 				effect_behavior._charm_timer.start(max(_entity_spawner_ref._wave_timer.time_left - 5, Utils.CHARM_DURATION))
 
+	# 腕龙的脚的攻击不注册，补充一下，不然踩到玩家可能有伤害
+	for node in get_children():
+		if node is ShootingAttackBehavior and not _all_attack_behaviors.has(node):
+			_foxlab_convert_charmed_attack_behavior(node, charm_material)
+
+	_foxlab_apply_charm_outline_to_root_sprites()
+
 func foxlab_on_died(_entity, _die_args) -> void:
 	for proj in _all_additional_projectiles:
 		if is_instance_valid(proj) and proj._has_custom_material:
 			proj.set_collision_layer(proj._original_collision_layer)
 			proj._has_custom_material = false
 			proj._sprite.material = Utils.projectile_outline_petrol_shadermat if proj.evolution_puddle_type == proj.EVOLUTION_PUDDLE_PETROL else Utils.projectile_outline_shadermat
+	_foxlab_restore_charm_outline_sprites()
 
 ######## 扩展 ######
 
@@ -145,6 +190,13 @@ func respawn() -> void :
 	_foxlab_petrol_color_applied = false
 	remove_color_modulation(FOXLAB_COLOR_ACID)
 	remove_color_modulation(FOXLAB_COLOR_PETROL)
+	_foxlab_restore_charm_outline_sprites()
+	# 腕龙的脚踩完即死入池而魅惑计时未到点，且uncharm不复位charmed标记：
+	# 复用后set_charmed会因charm()早退而空转（脚被标记已魅惑但层是敌方的），残留计时还会中途杀死复用实例
+	for effect_behavior in effect_behaviors.get_children():
+		if "charmed" in effect_behavior and effect_behavior.charmed:
+			effect_behavior.charmed = false
+			effect_behavior._charm_timer.stop()
 	if _foxlab_acid_timer != null:
 		_foxlab_acid_timer.stop()
 
@@ -152,17 +204,7 @@ func register_attack_behavior(p_attack_behavior: AttackBehavior) -> void:
 	.register_attack_behavior(p_attack_behavior)
 	if not _is_charmed or not (p_attack_behavior is ShootingAttackBehavior):
 		return
-	if p_attack_behavior.custom_collision_layer == Utils.PET_PROJECTILES_BIT:
-		return
-	for effect_behavior in effect_behaviors.get_children():
-		if "charmed" in effect_behavior and effect_behavior.charmed:
-			var shooting_states = effect_behavior.get("_original_shooting_states") # TODO(jona): remove when compatible
-			if shooting_states != null:
-				shooting_states.push_back([p_attack_behavior, p_attack_behavior.custom_collision_layer, p_attack_behavior.custom_sprite_material])
-	p_attack_behavior.custom_collision_layer = Utils.PET_PROJECTILES_BIT
-	var charm_material = _foxlab_get_charm_material()
-	if charm_material != null:
-		p_attack_behavior.custom_sprite_material = charm_material
+	_foxlab_convert_charmed_attack_behavior(p_attack_behavior, _foxlab_get_charm_material())
 
 func register_additional_projectile(p_additional_projectile: EnemyProjectile) -> void:
 	.register_additional_projectile(p_additional_projectile)

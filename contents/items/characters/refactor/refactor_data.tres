@@ -40,6 +40,7 @@
 script = ExtResource( 13 )
 my_id = "character_foxlab_refactor"
 foxlab_required_item_set = [ "abyssal_terrors" ]
+required_dlc_stat = "curse"
 required_item_set = "jonathanfox_foxlab"
 unlocked_by_default = true
 can_be_looted = true

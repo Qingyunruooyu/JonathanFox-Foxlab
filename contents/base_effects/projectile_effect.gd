@@ -5,6 +5,8 @@ static func get_id() -> String:
 
 func unapply(player_index: int) -> void:
 	var effect: Array = RunData.get_player_effect(key_hash, player_index)
+	if effect.empty():
+		return
 	if effect[0] - value <= 0:
 		effect.clear()
 	else:

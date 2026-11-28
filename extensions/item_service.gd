@@ -133,7 +133,7 @@ func _foxlab_init_transform_characters():
 	_foxlab_clear_transform_character_caches()
 	var available_characters = []
 	for character in get_characters():
-		if get_disabled_required_update(character) == null:
+		if get_disabled_required_update(character) == null and foxlab_get_disabled_required_dlc_stat(character) == "":
 			available_characters.append(character)
 	if not foxlab_mod.is_transform_vanilla_only():
 		foxlab_transform_characters = available_characters
@@ -527,6 +527,12 @@ func get_disabled_required_update(character: CharacterData) -> UpdateData:
 					if update_data != null and update_data.id == item_set_id:
 						return update_data
 	return .get_disabled_required_update(character)
+
+func foxlab_get_disabled_required_dlc_stat(character: CharacterData) -> String:
+	# TODO(jona): remove when compatible
+	if has_method("get_disabled_required_dlc_stat"):
+		return get_disabled_required_dlc_stat(character)
+	return ""
 
 func init_unlocked_pool() -> void:
 	.init_unlocked_pool()

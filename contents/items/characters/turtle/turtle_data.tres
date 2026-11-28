@@ -65,3 +65,4 @@ starting_weapons = [ ExtResource( 9 ), ExtResource( 37 ), ExtResource( 10 ), Ext
 starting_items = [ ExtResource( 7 ) ]
 required_item_set = "jonathanfox_foxlab"
 foxlab_required_item_set = [ "abyssal_terrors" ]
+required_dlc_stat = "curse"
